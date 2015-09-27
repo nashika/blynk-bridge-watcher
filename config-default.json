@@ -1,17 +1,17 @@
 {
   "board": {
-    "token": "381074a8e4664e1383158154ccf2ea34"
+    "token": "your node dummy board token"
   },
   "bridges": [
     {
       "name": "0001",
-      "token": "381074a8e4664e1383158154ccf2ea34",
+      "token": "your board token 1",
       "action": {
       }
     },
     {
       "name": "0002",
-      "token": "",
+      "token": "your board token 2",
       "action": {
       }
     }

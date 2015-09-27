@@ -1,5 +1,7 @@
 core =
   logger: null
-  boards: []
+  blynk: null
+  inputVPin: null
+  bridges: {}
 
 module.exports = core

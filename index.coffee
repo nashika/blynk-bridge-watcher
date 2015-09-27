@@ -1,21 +1,26 @@
+require('source-map-support').install()
+
 path = require 'path'
 
 Blynk = require 'blynk-library'
 log4js = require 'log4js'
 
-core = './lib/core'
-config = './config'
+global.core = require './lib/core'
+config = require './config'
+Bridge = require './lib/Bridge'
 
 log4js.configure path.normalize(__dirname + '/./log4js-config.json'), {cwd: path.normalize(__dirname + '/.')}
 core.logger = log4js.getLogger('system')
 
 
 
-for boardConfig in config.boards
-  core.boardsblynk = new Blynk.Blynk('', options = {certs_path : './node_modules/blynk-library/certs/'})
+core.blynk = new Blynk.Blynk(config.board.token, options = {certs_path : './node_modules/blynk-library/certs/'})
 
-v1 = new blynk.VirtualPin(1)
+core.inputVPin = new core.blynk.VirtualPin(0)
 
-v1.on 'write', (param) ->
-  console.log 'V1 write: ' + param
+core.inputVPin.on 'write', (param) ->
+  console.log 'V0 write: ' + param
 
+core.blynk.on 'connect', ->
+  for bridgeConfig in config.bridges
+    core.bridges[bridgeConfig.name] = new Bridge(bridgeConfig)
