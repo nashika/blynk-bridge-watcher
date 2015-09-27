@@ -1,0 +1,19 @@
+{
+  "board": {
+    "token": "381074a8e4664e1383158154ccf2ea34"
+  },
+  "bridges": [
+    {
+      "name": "0001",
+      "token": "381074a8e4664e1383158154ccf2ea34",
+      "action": {
+      }
+    },
+    {
+      "name": "0002",
+      "token": "",
+      "action": {
+      }
+    }
+  ]
+}
