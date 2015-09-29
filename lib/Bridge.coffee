@@ -2,13 +2,30 @@ core = require './core'
 
 class Bridge
 
-  @virtualPinCounter: 1
+  ###*
+  # @public
+  # @type {Board}
+  ###
+  board: null
+
+  ###*
+  # @public
+  # @type {Object}
+  ###
   config: null
+
+  ###*
+  # @public
+  # @type {Blynk.Blynk.WidgetBridge}
+  ###
   widgetBridge: null
 
-  constructor: (config) ->
+  constructor: (board, config, vPin) ->
+    @board = board
     @config = config
-    @widgetBridge = new core.blynk.WidgetBridge(Bridge.virtualPinCounter++)
+    @widgetBridge = new @board.blynk.WidgetBridge(vPin)
+
+  connect: =>
     @widgetBridge.setAuthToken(@config.token)
 
 module.exports = Bridge
