@@ -38,22 +38,32 @@ class Board
     @bridges = {}
     i = 1
     for bridgeConfig in config.bridges
-      core.logger.debug "Construct #{bridgeConfig.name} Bridge objects was started."
       @bridges[bridgeConfig.name] = new Bridge(this, bridgeConfig, i++)
-      core.logger.debug "Construct #{bridgeConfig.name} Bridge objects was finished."
     core.logger.debug "Construct Bridge objects was finished."
 
-    @inputVPin.on 'write', @onInputVPin
-    @blynk.on 'connect', @onConnect
+    @inputVPin.on 'write', @_onInputVPin
+    @blynk.on 'connect', @_onConnect
 
-  onConnect: =>
+  _onConnect: =>
     core.logger.debug "Auth dummy blynk board was finished."
     for bridgeConfig in config.bridges
       @bridges[bridgeConfig.name].connect()
 
-  onInputVPin: (param) =>
-    console.log 'V0 write: ' + param
-
-
+  _onInputVPin: (param) =>
+    params = param[0].split(',')
+    if params.length <= 2
+      core.logger.error "Input data '#{param}' is invalid format."
+      return
+    bridgeName = params[0]
+    eventName = params[1]
+    eventArgs = params.splice(2)
+    core.logger.debug "Receive input data, bridge='#{bridgeName}' event='#{eventName}' args=#{JSON.stringify(eventArgs)}"
+    if not @bridges[bridgeName]
+      core.logger.warn "Bridge '#{bridgeName}' was not found."
+      return
+    if @bridges[bridgeName].listeners(eventName).length is 0
+      core.logger.warn "Bridge '#{bridgeName}' not have '#{eventName}' event."
+      return
+    @bridges[bridgeName].emit eventName, eventArgs...
 
 module.exports = Board
