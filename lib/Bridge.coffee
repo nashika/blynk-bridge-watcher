@@ -28,6 +28,7 @@ class Bridge extends EventEmitter
     @config = config
     @widgetBridge = new @board.blynk.WidgetBridge(vPin)
     @on '$ping', @_onPing
+    @on '$notify', @_onNotify
     core.logger.debug "Construct '#{@config.name}' bridge objects was finished."
 
   connect: =>
@@ -38,5 +39,8 @@ class Bridge extends EventEmitter
   _onPing: =>
     core.logger.info "Ping from '#{@config.name}' bridge, response Pong."
     @widgetBridge.virtualWrite 0, '$pong'
+
+  _onNotify: (message) =>
+    core.logger.info "Notify from '#{@config.name}' bridge, message='#{message}'"
 
 module.exports = Bridge
