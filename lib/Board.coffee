@@ -51,7 +51,7 @@ class Board
 
   _onInputVPin: (param) =>
     params = param[0].split(',')
-    if params.length <= 2
+    if params.length < 2
       core.logger.error "Input data '#{param}' is invalid format."
       return
     bridgeName = params[0]
