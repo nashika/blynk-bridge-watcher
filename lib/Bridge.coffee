@@ -22,25 +22,46 @@ class Bridge extends EventEmitter
   ###
   widgetBridge: null
 
+  ###*
+  # @public
+  # @type {string}
+  ###
+  name: ''
+
   constructor: (board, config, vPin) ->
     core.logger.debug "Construct #{config.name} bridge objects was started."
     @board = board
     @config = config
     @widgetBridge = new @board.blynk.WidgetBridge(vPin)
-    @on '$ping', @_onPing
+
+    if not config.name
+      core.logger.error "config.name was not defined."
+      process.exit 1
+    @name = config.name
+
+    @on '$ping', @_onReceivePing
+    @on '$pong', @_onReceivePong
     @on '$notify', @_onNotify
-    core.logger.debug "Construct '#{@config.name}' bridge objects was finished."
+    core.logger.debug "Construct '#{@name}' bridge objects was finished."
 
   connect: =>
-    core.logger.debug "Connect '#{@config.name}' bridge was started."
+    core.logger.debug "Connect '#{@name}' bridge was started."
     @widgetBridge.setAuthToken @config.token
-    core.logger.debug "Connect '#{@config.name}' bridge was finished."
+    core.logger.debug "Connect '#{@name}' bridge was finished."
+    setInterval @ping, 60000
 
-  _onPing: =>
-    core.logger.info "Ping from '#{@config.name}' bridge, response Pong."
+  ping: =>
+    core.logger.info "Ping to '#{@name}' bridge, waiting Pong..."
+    @widgetBridge.virtualWrite 0, '$ping'
+
+  _onReceivePing: =>
+    core.logger.info "Ping from '#{@name}' bridge, response Pong."
     @widgetBridge.virtualWrite 0, '$pong'
 
+  _onReceivePong: =>
+    core.logger.info "Pong from '#{@name}' bridge."
+
   _onNotify: (message) =>
-    core.logger.info "Notify from '#{@config.name}' bridge, message='#{message}'"
+    core.logger.info "Notify from '#{@name}' bridge, message='#{message}'"
 
 module.exports = Bridge
