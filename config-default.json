@@ -4,15 +4,23 @@
   },
   "bridges": [
     {
-      "name": "0001",
+      "name": "B001",
+      "label": "Default bridge 001",
       "token": "your board token 1",
-      "action": {
+      "ping": {
+        "interval": 60000
+      },
+      "events": {
       }
     },
     {
-      "name": "0002",
+      "name": "B002",
+      "label": "Default bridge 002",
       "token": "your board token 2",
-      "action": {
+      "ping": {
+        "interval": 60000
+      },
+      "events": {
       }
     }
   ]
