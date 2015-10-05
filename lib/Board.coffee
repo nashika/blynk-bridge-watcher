@@ -44,6 +44,10 @@ class Board
     @inputVPin.on 'write', @_onInputVPin
     @blynk.on 'connect', @_onConnect
 
+    core.logger.debug "Construct Notifier objects was started."
+    for notifierConfig in config.notifiers
+    core.logger.debug "Construct Notifier objects was finished."
+
   _onConnect: =>
     core.logger.debug "Auth dummy blynk board was finished."
     for bridgeConfig in config.bridges
