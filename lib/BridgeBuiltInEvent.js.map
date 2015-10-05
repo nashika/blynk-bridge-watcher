@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "BridgeBuiltInEvent.js",
+  "sourceRoot": "",
+  "sources": [
+    "BridgeBuiltInEvent.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,8BAAA;IAAA;;;;EAAA,UAAA,GAAa,OAAA,CAAQ,cAAR;;EAEP;;;;AAEJ;;;;IAGa,4BAAC,KAAD,EAAQ,MAAR,EAAgB,IAAhB;;MACX,oDAAM,KAAN,EAAa,MAAb,EAAqB,IAArB;MACA,IAAC,CAAA,EAAD,CAAI,MAAJ,EAAY,IAAC,CAAA,MAAb;IAFW;;iCAIb,MAAA,GAAQ,SAAC,OAAD;aACN,IAAC,CAAA,GAAD,CAAK,MAAL,EAAa,OAAb;IADM;;;;KATuB;;EAYjC,MAAM,CAAC,OAAP,GAAiB;AAdjB"
+}

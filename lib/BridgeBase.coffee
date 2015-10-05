@@ -48,21 +48,31 @@ class BridgeBase extends EventEmitter
   ###
   status: @::STATUS_TYPE.constructing
 
+  ###*
+  # @constructor
+  # @param {Board} board
+  # @param {Object} config
+  # @param {number} vPin
+  ###
   constructor: (board, config, vPin) ->
     @board = board
     @config = config
     @widgetBridge = new @board.blynk.WidgetBridge(vPin)
 
     if not config.name
-      core.logger.error "config.name was not defined."
+      @log 'error', "config.name was not defined."
       process.exit 1
     @name = config.name
 
-    @on '$notify', @_onNotify
-
+  ###*
+  # @public
+  ###
   connect: =>
     @status = @STATUS_TYPE.connecting
     @widgetBridge.setAuthToken @config.token
     @status = @STATUS_TYPE.ready
+
+  log: (level, args...) =>
+    core.logger.log level, "[Bridge-#{@config?.name}]", args...
 
 module.exports = BridgeBase

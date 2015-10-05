@@ -1,4 +1,3 @@
-core = require './core'
 BridgeBase = require './BridgeBase'
 
 class BridgePing extends BridgeBase
@@ -49,17 +48,16 @@ class BridgePing extends BridgeBase
     @_pingFailureLimit = @config?.ping.failureLimit ? @_pingFailureLimit
     @on '$ping', @_onPing
     @on '$pong', @_onPong
-    @on '$notify', @_onNotify
 
   ###*
   # @override
   ###
   connect: =>
-    core.logger.info "'#{@name}' bridge ping setting, interval=#{@_pingIntervalMs}ms timeout=#{@_pingTimeoutMs}ms failureLimit=#{@_pingFailureLimit}"
+    @log 'info', "Ping setting, interval=#{@_pingIntervalMs}ms timeout=#{@_pingTimeoutMs}ms failureLimit=#{@_pingFailureLimit}"
     @_pingIntervalId = setInterval @_ping, @_pingIntervalMs
 
   _ping: =>
-    core.logger.info "Ping to '#{@name}' bridge, waiting Pong..."
+    @log 'info', "Ping to bridge, waiting Pong..."
     @widgetBridge.virtualWrite 0, '$ping' if not @_pinging
     @_pinging = true
     setTimeout @_pingTimeout, @_pingTimeoutMs
@@ -67,19 +65,19 @@ class BridgePing extends BridgeBase
   _pingTimeout: =>
     if @_pinging
       @_pingFailureCount++
-      core.logger.error "Ping to '#{@name}' bridge is no response, failure count #{@_pingFailureCount} / #{@_pingFailureLimit}."
+      @log 'error', "Ping was no response, failure count #{@_pingFailureCount} / #{@_pingFailureLimit}."
       @_pinging = false
       if @_pingFailureCount > @_pingFailureLimit
-        core.logger.error "Ping to '#{@name}' bridge failed #{@_pingFailureCount} times, this bridge will stop."
+        @log 'error', "Ping failed #{@_pingFailureCount} times, this bridge will stop."
         clearInterval @_pingIntervalId
         @status = @STATUS_TYPE.error
 
   _onPing: =>
-    core.logger.info "Ping from '#{@name}' bridge, response Pong."
+    @log 'info', "Ping from bridge, response Pong."
     @widgetBridge.virtualWrite 0, '$pong'
 
   _onPong: =>
-    core.logger.info "Pong from '#{@name}' bridge."
+    @log 'info', "Pong from bridge."
     @_pinging = false
     @_pingFailureCount = 0
 

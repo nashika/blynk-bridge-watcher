@@ -1,22 +1,21 @@
-core = require './core'
-BridgeEvent = require './BridgeEvent'
+BridgeCustomEvent = require './BridgeCustomEvent'
 
-class Bridge extends BridgeEvent
+class Bridge extends BridgeCustomEvent
 
   ###*
   # @override
   ###
   constructor: (board, config, vPin) ->
-    core.logger.debug "Construct #{config.name} bridge objects was started."
+    @log 'debug', "Construct objects was started."
     super board, config, vPin
-    core.logger.debug "Construct '#{@name}' bridge objects was finished."
+    @log 'debug', "Construct objects was finished."
 
   ###*
   # @override
   ###
   connect: =>
-    core.logger.info "Connect '#{@name}' bridge was started."
+    @log 'info', "Connect bridge was started."
     super()
-    core.logger.info "Connect '#{@name}' bridge was finished."
+    @log 'info', "Connect bridge was finished."
 
 module.exports = Bridge

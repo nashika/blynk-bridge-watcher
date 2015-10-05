@@ -8,20 +8,16 @@
       "label": "Default bridge 001",
       "token": "your board token 1",
       "ping": {
-        "interval": 60000
+        "interval": 60000,
+        "timeout": 5000,
+        "limit": 3
       },
       "events": {
       }
     },
     {
       "name": "B002",
-      "label": "Default bridge 002",
       "token": "your board token 2",
-      "ping": {
-        "interval": 60000
-      },
-      "events": {
-      }
     }
   ]
 }
