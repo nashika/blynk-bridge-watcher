@@ -9,8 +9,6 @@ class BridgeBuiltInEvent extends BridgePing
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @on '$log', @_onLog
-    @on '$l', @_onLog
     @on '$notify', @_onNotify
     @on '$n', @_onNotify
     @on '$read', @_onRead
@@ -18,12 +16,6 @@ class BridgeBuiltInEvent extends BridgePing
     @on '$write', @_onWrite
     @on '$w', @_onWrite
     @on '$if', @_onIf
-
-  _onLog: (options, args...) =>
-    logLevel = options?.level ? 'info'
-    message = options?.message ? '%s'
-    message = util.format(message, args...)
-    @log logLevel, message
 
   _onNotify: (options, args...) =>
 

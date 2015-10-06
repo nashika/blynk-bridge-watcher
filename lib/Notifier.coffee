@@ -15,9 +15,10 @@ class Notifier extends Base
     @on '$notify', @_onNotify
 
   _onNotify: (options, args...) =>
-    logLevel = options?.level ? 'info'
+
+  _makeMessage: (options, args...) =>
     message = options?.message ? '%s'
     message = util.format(message, args...)
-    @log 'info', message
+    return message
 
 module.exports = Notifier

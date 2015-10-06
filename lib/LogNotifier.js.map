@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "LogNotifier.js",
+  "sourceRoot": "",
+  "sources": [
+    "LogNotifier.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,MAAA,qBAAA;IAAA;;;;;EAAA,QAAA,GAAW,OAAA,CAAQ,UAAR;;EAEL;;;IAES,qBAAC,MAAD,EAAS,MAAT,EAAiB,KAAjB;;MACX,6CAAM,MAAN,EAAc,MAAd,EAAsB,KAAtB;IADW;;0BAGb,SAAA,GAAW,SAAA;AACT,UAAA;MADU,wBAAS;MACnB,KAAA,oEAAyB;aACzB,IAAC,CAAA,GAAD,CAAK,KAAL,EAAY,IAAC,CAAA,YAAD,aAAc,CAAA,OAAS,SAAA,WAAA,IAAA,CAAA,CAAvB,CAAZ;IAFS;;;;KALa;AAF1B"
+}
