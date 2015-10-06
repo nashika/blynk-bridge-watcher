@@ -1,7 +1,7 @@
 Blynk = require 'blynk-library'
 
 Base = require './Base'
-Bridge = require './Bridge'
+Bridge = require './bridges/Bridge'
 
 class Board extends Base
 

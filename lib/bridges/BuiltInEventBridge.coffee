@@ -1,8 +1,8 @@
 util = require 'util'
 
-BridgePing = require './BridgePing'
+PingBridge = require './PingBridge'
 
-class BridgeBuiltInEvent extends BridgePing
+class BuiltInEventBridge extends PingBridge
 
   ###*
   # @override
@@ -25,4 +25,4 @@ class BridgeBuiltInEvent extends BridgePing
 
   _onIf: (options, args...) =>
 
-module.exports = BridgeBuiltInEvent
+module.exports = BuiltInEventBridge

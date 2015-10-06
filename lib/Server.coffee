@@ -1,5 +1,6 @@
 Base = require './Base'
 Board = require './Board'
+Notifier = require './notifiers/Notifier'
 
 class Server extends Base
 

@@ -1,6 +1,6 @@
-BridgeBase = require './BridgeBase'
+BaseBridge = require './BaseBridge'
 
-class BridgePing extends BridgeBase
+class PingBridge extends BaseBridge
 
   ###
   # @protected
@@ -81,4 +81,4 @@ class BridgePing extends BridgeBase
     @_pinging = false
     @_pingFailureCount = 0
 
-module.exports = BridgePing
+module.exports = PingBridge

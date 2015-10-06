@@ -1,6 +1,6 @@
-Base = require './Base'
+Base = require './../Base'
 
-class BridgeBase extends Base
+class BaseBridge extends Base
 
   ###*
   # @override
@@ -53,4 +53,4 @@ class BridgeBase extends Base
     @_widgetBridge.setAuthToken @_token
     @status = @STATUS_TYPE.ready
 
-module.exports = BridgeBase
+module.exports = BaseBridge

@@ -1,9 +1,9 @@
 {
   "version": 3,
-  "file": "BridgeCustomEvent.js",
+  "file": "CustomEventBridge.js",
   "sourceRoot": "",
   "sources": [
-    "BridgeCustomEvent.coffee"
+    "CustomEventBridge.coffee"
   ],
   "names": [],
   "mappings": ";AAAA;AAAA,MAAA,qCAAA;IAAA;;;EAAA,kBAAA,GAAqB,OAAA,CAAQ,sBAAR;;EAEf;;;;AAEJ;;;;IAGa,2BAAC,MAAD,EAAS,MAAT,EAAiB,KAAjB;MACX,mDAAM,MAAN,EAAc,MAAd,EAAsB,KAAtB;IADW;;;;KALiB;;EAQhC,MAAM,CAAC,OAAP,GAAiB;AAVjB"

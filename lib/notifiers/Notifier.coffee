@@ -1,4 +1,4 @@
-Base = require './Base'
+Base = require './../Base'
 
 class Notifier extends Base
 
