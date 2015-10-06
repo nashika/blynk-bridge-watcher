@@ -3,7 +3,7 @@
   "boards": [
     {
       "name": "BD01",
-      "token": "your node dummy board token"
+      "token": "your node dummy board token",
       "bridges": [
         {
           "name": "BR01",
@@ -14,8 +14,7 @@
             "timeout": 5000,
             "limit": 3
           },
-          "events": {
-          }
+          "events": {}
         },
         {
           "name": "BR02",
