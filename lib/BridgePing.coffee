@@ -43,9 +43,9 @@ class BridgePing extends BridgeBase
   ###
   constructor: (board, config, vPin) ->
     super board, config, vPin
-    @_pingIntervalMs = @config?.ping.interval ? @_pingIntervalMs
-    @_pingTimeoutMs = @config?.ping.timeout ? @_pingTimeoutMs
-    @_pingFailureLimit = @config?.ping.failureLimit ? @_pingFailureLimit
+    @_pingIntervalMs = config.ping?.interval ? @_pingIntervalMs
+    @_pingTimeoutMs = config.ping?.timeout ? @_pingTimeoutMs
+    @_pingFailureLimit = config.ping?.failureLimit ? @_pingFailureLimit
     @on '$ping', @_onPing
     @on '$pong', @_onPong
 
@@ -58,7 +58,7 @@ class BridgePing extends BridgeBase
 
   _ping: =>
     @log 'info', "Ping to bridge, waiting Pong..."
-    @widgetBridge.virtualWrite 0, '$ping' if not @_pinging
+    @_widgetBridge.virtualWrite 0, '$ping' if not @_pinging
     @_pinging = true
     setTimeout @_pingTimeout, @_pingTimeoutMs
 
@@ -68,13 +68,13 @@ class BridgePing extends BridgeBase
       @log 'error', "Ping was no response, failure count #{@_pingFailureCount} / #{@_pingFailureLimit}."
       @_pinging = false
       if @_pingFailureCount > @_pingFailureLimit
-        @log 'error', "Ping failed #{@_pingFailureCount} times, this bridge will stop."
+        @log 'error', "Ping failed #{@_pingFailureCount} times, the bridge will stop."
         clearInterval @_pingIntervalId
         @status = @STATUS_TYPE.error
 
   _onPing: =>
     @log 'info', "Ping from bridge, response Pong."
-    @widgetBridge.virtualWrite 0, '$pong'
+    @_widgetBridge.virtualWrite 0, '$pong'
 
   _onPong: =>
     @log 'info', "Pong from bridge."

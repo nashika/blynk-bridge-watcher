@@ -6,9 +6,9 @@ class Bridge extends BridgeCustomEvent
   # @override
   ###
   constructor: (board, config, vPin) ->
-    @log 'debug', "Construct objects was started."
+    board.log 'debug', "Construct #{config.name} bridge objects was started."
     super board, config, vPin
-    @log 'debug', "Construct objects was finished."
+    board.log 'debug', "Construct #{config.name} bridge objects was finished."
 
   ###*
   # @override

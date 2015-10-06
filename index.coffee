@@ -4,11 +4,11 @@ path = require 'path'
 
 log4js = require 'log4js'
 
-core = require './lib/core'
-Board = require './lib/Board'
+config = require './config'
+Server = require './lib/Server'
 
-
+# initialize logger
 log4js.configure path.normalize(__dirname + '/./log4js-config.json'), {cwd: path.normalize(__dirname + '/.')}
-core.logger = log4js.getLogger('system')
+logger = log4js.getLogger('system')
 
-core.board = new Board()
+server = new Server(config, logger)
