@@ -41,8 +41,8 @@ class BridgePing extends BridgeBase
   ###*
   # @override
   ###
-  constructor: (board, config, vPin) ->
-    super board, config, vPin
+  constructor: (parent, config, index) ->
+    super parent, config, index
     @_pingIntervalMs = config.ping?.interval ? @_pingIntervalMs
     @_pingTimeoutMs = config.ping?.timeout ? @_pingTimeoutMs
     @_pingFailureLimit = config.ping?.failureLimit ? @_pingFailureLimit

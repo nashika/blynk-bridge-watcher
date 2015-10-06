@@ -7,8 +7,8 @@ class BridgeBuiltInEvent extends BridgePing
   ###*
   # @override
   ###
-  constructor: (board, config, vPin) ->
-    super board, config, vPin
+  constructor: (parent, config, index) ->
+    super parent, config, index
     @on '$log', @_onLog
     @on '$l', @_onLog
     @on '$notify', @_onNotify

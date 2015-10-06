@@ -1,12 +1,12 @@
+Base = require './Base'
 Board = require './Board'
 
-class Server
+class Server extends Base
 
   ###*
-  # @protected
-  # @type {Logger}
+  # @override
   ###
-  _logger: null
+  TYPE: 'Server'
 
   ###*
   # @protected
@@ -14,20 +14,28 @@ class Server
   ###
   _boards: null
 
-  constructor: (config, logger) ->
-    @_logger = logger
+  ###*
+  # @protected
+  # @type {Object.<Notifier>}
+  ###
+  _notifiers: null
+
+  constructor: (config, logger, index) ->
+    super null, config, index, logger
+    @checkConfig config.boards, 'config.boards', 'array'
     @log 'debug', 'Construct board objects was started.'
     @_boards = {}
+    i = 0
     for boardConfig in config.boards
-      @_boards[boardConfig.name] = new Board(this, boardConfig)
+      @_boards[boardConfig.name] = new Board(this, boardConfig, i++)
     @log 'debug', 'Construct board objects was finished.'
 
+    @checkConfig config.notifiers, 'config.notifiers', 'array'
     @log 'debug', "Construct Notifier objects was started."
+    @_notifiers = {}
+    i = 0
     for notifierConfig in config.notifiers
-      a
+      @_notifiers[notifierConfig.name] = new Notifier(this, notifierConfig, i++)
     @log 'debug', "Construct Notifier objects was finished."
-
-  log: (level, args...) =>
-    @_logger.log level, args...
 
 module.exports = Server

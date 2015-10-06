@@ -11,4 +11,4 @@ Server = require './lib/Server'
 log4js.configure path.normalize(__dirname + '/./log4js-config.json'), {cwd: path.normalize(__dirname + '/.')}
 logger = log4js.getLogger('system')
 
-server = new Server(config, logger)
+server = new Server(config, logger, 0)

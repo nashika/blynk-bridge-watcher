@@ -18,7 +18,7 @@
 
   logger = log4js.getLogger('system');
 
-  server = new Server(config, logger);
+  server = new Server(config, logger, 0);
 
 }).call(this);
 

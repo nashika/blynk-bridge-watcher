@@ -5,7 +5,7 @@ class BridgeCustomEvent extends BridgeBuiltInEvent
   ###*
   # @override
   ###
-  constructor: (board, config, vPin) ->
-    super board, config, vPin
+  constructor: (parent, config, index) ->
+    super parent, config, index
 
 module.exports = BridgeCustomEvent
