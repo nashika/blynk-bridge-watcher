@@ -49,6 +49,9 @@ class Board extends Base
     @_inputVPin.on 'write', @_onInputVPin
     @blynk.on 'connect', @_onConnect
 
+  notify: (options, args...) =>
+    @_parent.notify options, args...
+
   _onConnect: =>
     @log 'debug', "Auth dummy blynk board was finished."
     for bridgeName, bridge of @_bridges

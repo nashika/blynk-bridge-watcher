@@ -18,6 +18,7 @@ class BuiltInEventBridge extends PingBridge
     @on '$if', @_onIf
 
   _onNotify: (options, args...) =>
+    @parent.notify options, args...
 
   _onRead: (options, args...) =>
 
