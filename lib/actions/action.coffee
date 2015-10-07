@@ -1,32 +1,31 @@
-Base = require '../Base'
+Base = require '../base'
 
-class Event extends Base
+class Action extends Base
 
   ###*
   # @override
   ###
-  TYPE: 'Event'
+  TYPE: 'Action'
 
   ###*
   # @protected
   # @type {string}
   ###
-  event: ''
+  action: ''
 
   ###*
   # @override
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @checkConfig config.event, 'config.event', 'string'
-    @event = config.event
+    @checkConfig config.action, 'config.action', 'string'
+    @action = config.action
 
   ###*
   # @public
   # @param {Base} caller
   ###
   run: (caller, args...) =>
-    @log 'debug', "Notify started."
-    caller.emit @event, caller, args...
+    @log 'error', "Action.run is abstract function"
 
-module.exports = Event
+module.exports = Action

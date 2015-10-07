@@ -1,6 +1,6 @@
-Base = require './Base'
-Board = require './Board'
-Notifier = require './notifiers/Notifier'
+Base = require './base'
+Board = require './board'
+Notifier = require './notifiers/notifier'
 
 class Server extends Base
 
@@ -39,8 +39,8 @@ class Server extends Base
       @_notifiers[notifierConfig.name] = new Notifier(this, notifierConfig, i++)
     @log 'debug', "Construct Notifier objects was finished."
 
-  notify: (event, args...) =>
-    if @_notifiers[event.notifier]
-      @_notifiers[event.notifier].emit 'notify', event.notifier, args...
+  notify: (action, args...) =>
+    if @_notifiers[action.notifier]
+      @_notifiers[action.notifier].emit '$notify', action, args...
 
 module.exports = Server

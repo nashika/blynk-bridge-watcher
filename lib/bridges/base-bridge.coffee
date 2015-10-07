@@ -1,4 +1,4 @@
-Base = require './../Base'
+Base = require './../base'
 
 class BaseBridge extends Base
 

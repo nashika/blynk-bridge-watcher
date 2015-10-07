@@ -1,7 +1,7 @@
 Blynk = require 'blynk-library'
 
-Base = require './Base'
-Bridge = require './bridges/Bridge'
+Base = require './base'
+Bridge = require './bridges/bridge'
 
 class Board extends Base
 
@@ -49,8 +49,8 @@ class Board extends Base
     @_inputVPin.on 'write', @_onInputVPin
     @blynk.on 'connect', @_onConnect
 
-  notify: (event, args...) =>
-    @_parent.notify event, args...
+  notify: (action, args...) =>
+    @_parent.notify action, args...
 
   _onConnect: =>
     @log 'debug', "Auth dummy blynk board was finished."

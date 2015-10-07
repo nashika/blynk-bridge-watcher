@@ -1,8 +1,8 @@
 util = require 'util'
 
-PingBridge = require './PingBridge'
+PingBridge = require './ping-bridge'
 
-class BuiltInEventBridge extends PingBridge
+class BuiltInActionBridge extends PingBridge
 
   ###*
   # @override
@@ -17,7 +17,7 @@ class BuiltInEventBridge extends PingBridge
     #@on '$w', @_onWrite
     #@on '$if', @_onIf
 
-  notify: (event, args...) =>
-    @_parent.notify event, args...
+  notify: (action, args...) =>
+    @_parent.notify action, args...
 
-module.exports = BuiltInEventBridge
+module.exports = BuiltInActionBridge

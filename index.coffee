@@ -5,7 +5,7 @@ path = require 'path'
 log4js = require 'log4js'
 
 config = require './config'
-Server = require './lib/Server'
+Server = require './lib/server'
 
 # initialize logger
 log4js.configure path.normalize(__dirname + '/./log4js-config.json'), {cwd: path.normalize(__dirname + '/.')}

@@ -10,7 +10,7 @@
 
   config = require('./config');
 
-  Server = require('./lib/Server');
+  Server = require('./lib/server');
 
   log4js.configure(path.normalize(__dirname + '/./log4js-config.json'), {
     cwd: path.normalize(__dirname + '/.')

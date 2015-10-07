@@ -1,6 +1,6 @@
-Event = require './Event'
+Action = require './action'
 
-class NotifyEvent extends Event
+class NotifyAction extends Action
 
   ###*
   # @public
@@ -25,4 +25,4 @@ class NotifyEvent extends Event
     @log 'debug', "Notify started."
     caller.notify this, args...
 
-module.exports = NotifyEvent
+module.exports = NotifyAction

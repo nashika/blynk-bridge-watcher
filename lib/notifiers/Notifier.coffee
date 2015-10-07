@@ -1,4 +1,4 @@
-Base = require './../Base'
+Base = require './../base'
 
 class Notifier extends Base
 
@@ -14,9 +14,10 @@ class Notifier extends Base
     super server, config, index
     @on '$notify', @_onNotify
 
-  _onNotify: (options, args...) =>
+  _onNotify: (action, args...) =>
+    @log 'info', @_makeMessage(action, args...)
 
-  _makeMessage: (options, args...) =>
+  _makeMessage: (action, args...) =>
     message = options?.message ? '%s'
     message = util.format(message, args...)
     return message

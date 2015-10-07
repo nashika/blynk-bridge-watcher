@@ -1,4 +1,4 @@
-BaseBridge = require './BaseBridge'
+BaseBridge = require './base-bridge'
 
 class PingBridge extends BaseBridge
 
