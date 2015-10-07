@@ -39,9 +39,8 @@ class Server extends Base
       @_notifiers[notifierConfig.name] = new Notifier(this, notifierConfig, i++)
     @log 'debug', "Construct Notifier objects was finished."
 
-  notify: (options, args...) =>
-    notifierName = options?.notifier
-    if @_notifiers[notifierName]
-      @_notifiers[notifierName].emit 'notify', options, args...
+  notify: (event, args...) =>
+    if @_notifiers[event.notifier]
+      @_notifiers[event.notifier].emit 'notify', event.notifier, args...
 
 module.exports = Server

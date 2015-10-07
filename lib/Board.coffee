@@ -49,8 +49,8 @@ class Board extends Base
     @_inputVPin.on 'write', @_onInputVPin
     @blynk.on 'connect', @_onConnect
 
-  notify: (options, args...) =>
-    @_parent.notify options, args...
+  notify: (event, args...) =>
+    @_parent.notify event, args...
 
   _onConnect: =>
     @log 'debug', "Auth dummy blynk board was finished."
@@ -72,6 +72,6 @@ class Board extends Base
     if @_bridges[bridgeName].listeners(eventName).length is 0
       @log 'warn', "Bridge '#{bridgeName}' not have '#{eventName}' event."
       return
-    @_bridges[bridgeName].emit eventName, eventArgs...
+    @_bridges[bridgeName].emit eventName,  @_bridges[bridgeName], eventArgs...
 
 module.exports = Board

@@ -53,6 +53,7 @@ class PingBridge extends BaseBridge
   # @override
   ###
   connect: =>
+    super()
     @log 'info', "Ping setting, interval=#{@_pingIntervalMs}ms timeout=#{@_pingTimeoutMs}ms failureLimit=#{@_pingFailureLimit}"
     @_pingIntervalId = setInterval @_ping, @_pingIntervalMs
 
@@ -67,7 +68,7 @@ class PingBridge extends BaseBridge
       @_pingFailureCount++
       @log 'error', "Ping was no response, failure count #{@_pingFailureCount} / #{@_pingFailureLimit}."
       @_pinging = false
-      if @_pingFailureCount > @_pingFailureLimit
+      if @_pingFailureCount >= @_pingFailureLimit
         @log 'error', "Ping failed #{@_pingFailureCount} times, the bridge will stop."
         clearInterval @_pingIntervalId
         @status = @STATUS_TYPE.error

@@ -10,12 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "blynk-library": "0.0.15",
-    "coffee-script": "^1.10.0",
-    "log4js": "^0.6.27",
-    "pushbullet": "^1.4.3",
-    "source-map-support": "^0.3.2"
+    "log4js": "0.6.27",
+    "pushbullet": "1.4.3",
+    "source-map-support": "0.3.2"
   },
   "devDependencies": {
-    "coffee-script": "^1.10.0"
+    "coffee-script": "1.10.0"
   }
 }

@@ -46,16 +46,17 @@ class Base extends EventEmitter
     @checkConfig config, 'config', 'object'
     @checkConfig config.name, 'config.name', 'string'
     @name = config.name
+    @log 'trace', "Constructing #{@constructor.name} object."
 
   log: (level, args...) =>
     if @_parent
-      @_parent.log level, "[#{@TYPE}(#{@index}-#{@name})]", args...
+      @_parent.log level, @_keyLabel(), args...
     else
       @_logger.log level, args...
 
   checkConfig: (config, key, type, args...) =>
     if @_parent
-      @_parent.checkConfig config, key, type, "[#{@TYPE}(#{@index}-#{@name})]", args...
+      @_parent.checkConfig config, key, type, @_keyLabel(), args...
     else
       if typeof config is 'undefined'
         @log 'fatal', args..., "Config '#{key}' is undefined."
@@ -63,5 +64,11 @@ class Base extends EventEmitter
       if (if type is 'array' then not Array.isArray(config) else not (typeof config is type))
         @log 'fatal', args..., "Config '#{key}' is unexpected type, expects #{type}."
         process.exit 1
+
+  _keyLabel: =>
+    if @index >= 0
+      return "[#{@TYPE}(#{@index}-#{@name})]"
+    else
+      return "[#{@TYPE}]"
 
 module.exports = Base
