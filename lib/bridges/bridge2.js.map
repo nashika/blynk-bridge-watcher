@@ -1,9 +1,9 @@
 {
   "version": 3,
-  "file": "bridge.js",
+  "file": "bridge2.js",
   "sourceRoot": "",
   "sources": [
-    "bridge.coffee"
+    "bridge2.coffee"
   ],
   "names": [],
   "mappings": ";AAAA;AAAA,MAAA,0BAAA;IAAA;;;;EAAA,kBAAA,GAAqB,OAAA,CAAQ,wBAAR;;EAEf;;;;AAEJ;;;;IAGa,gBAAC,MAAD,EAAS,MAAT,EAAiB,KAAjB;;MACX,wCAAM,MAAN,EAAc,MAAd,EAAsB,KAAtB;IADW;;;AAGb;;;;qBAGA,OAAA,GAAS,SAAA;MACP,IAAC,CAAA,GAAD,CAAK,MAAL,EAAa,6BAAb;MACA,kCAAA;aACA,IAAC,CAAA,GAAD,CAAK,MAAL,EAAa,8BAAb;IAHO;;;;KAXU;;EAgBrB,MAAM,CAAC,OAAP,GAAiB;AAlBjB"
