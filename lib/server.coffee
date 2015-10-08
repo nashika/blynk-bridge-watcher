@@ -41,6 +41,6 @@ class Server extends Base
 
   notify: (action, args...) =>
     if @_notifiers[action.notifier]
-      @_notifiers[action.notifier].emit '$notify', action, args...
+      @_notifiers[action.notifier].emit 'notify', action, args...
 
 module.exports = Server
