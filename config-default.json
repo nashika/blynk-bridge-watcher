@@ -14,12 +14,15 @@
             "timeout": 5000,
             "limit": 3
           },
-          "events": {}
-        },
-        {
-          "name": "BR02",
-          "token": "your board token 2"
+          "actions": [
+          ]
         }
+      ]
+    },
+    {
+      "name": "BD02",
+      "token": "your board token 2",
+      "bridges": [
       ]
     }
   ],

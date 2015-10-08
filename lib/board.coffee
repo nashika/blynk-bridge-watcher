@@ -39,6 +39,7 @@ class Board extends Base
     @log 'debug', "Construct Input Virtual Pin 0 was started."
     @_inputVPin = new @blynk.VirtualPin(0)
     @log 'debug', "Construct Input Virtual Pin 0 was finished."
+    @checkConfig config.bridges, 'config.bridges', 'array'
     @log 'debug', "Construct Bridge objects was started."
     @_bridges = {}
     i = 0
