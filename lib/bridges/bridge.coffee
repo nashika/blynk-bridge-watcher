@@ -1,6 +1,6 @@
-CustomActionBridge = require './custom-action-bridge'
+ActionBridge = require './action-bridge'
 
-class Bridge extends CustomActionBridge
+class Bridge extends ActionBridge
 
   ###*
   # @override

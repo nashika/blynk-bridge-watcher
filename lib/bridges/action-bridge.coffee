@@ -1,7 +1,7 @@
-BuiltInActionBridge = require './built-in-action-bridge'
+PingBridge = require './ping-bridge'
 ActionGenerator = require '../actions/action-generator'
 
-class CustomActionBridge extends BuiltInActionBridge
+class ActionBridge extends PingBridge
 
   ###*
   # @protected
@@ -25,4 +25,7 @@ class CustomActionBridge extends BuiltInActionBridge
         @on actionConfig.name, @_actions[actionConfig.name].run
       @log 'debug', "Construct event objects was finished."
 
-module.exports = CustomActionBridge
+  notify: (action, args...) =>
+    @_parent.notify action, args...
+
+module.exports = ActionBridge
