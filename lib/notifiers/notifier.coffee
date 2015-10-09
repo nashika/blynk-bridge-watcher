@@ -12,13 +12,24 @@ class Notifier extends Base
   ###
   constructor: (server, config, index) ->
     super server, config, index
-    @on '$notify', @_onNotify
+    @on 'notify', @_onNotify
 
+  ###*
+  # @protected
+  # @param {Action} action
+  # @param {Array} args
+  ###
   _onNotify: (action, args...) =>
-    @log 'info', @_makeMessage(action, args...)
+    @log 'error', "_onNotify method is abstract function"
 
+  ###*
+  # @protected
+  # @param {Action} action
+  # @param {Array} args
+  # @return {string}
+  ###
   _makeMessage: (action, args...) =>
-    message = options?.message ? '%s'
+    message = action.message ? '%s'
     message = util.format(message, args...)
     return message
 

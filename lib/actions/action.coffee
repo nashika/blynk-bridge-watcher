@@ -11,15 +11,15 @@ class Action extends Base
   # @protected
   # @type {string}
   ###
-  action: ''
+  type: ''
 
   ###*
   # @override
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @checkConfig config.action, 'config.action', 'string'
-    @action = config.action
+    @checkConfig config.type, 'config.type', 'string'
+    @type = config.type
 
   ###*
   # @public

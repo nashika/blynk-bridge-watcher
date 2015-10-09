@@ -1,6 +1,6 @@
 Base = require './base'
 Board = require './board'
-Notifier = require './notifiers/notifier'
+NotifierGenerator = require './notifiers/notifier-generator'
 
 class Server extends Base
 
@@ -33,10 +33,11 @@ class Server extends Base
 
     @checkConfig config.notifiers, 'config.notifiers', 'array'
     @log 'debug', "Construct Notifier objects was started."
+    notifierGenerator = new NotifierGenerator(this)
     @_notifiers = {}
     i = 0
     for notifierConfig in config.notifiers
-      @_notifiers[notifierConfig.name] = new Notifier(this, notifierConfig, i++)
+      @_notifiers[notifierConfig.name] = notifierGenerator.generate(this, notifierConfig, i++)
     @log 'debug', "Construct Notifier objects was finished."
 
   notify: (action, args...) =>

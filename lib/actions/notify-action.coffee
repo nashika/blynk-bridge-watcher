@@ -12,6 +12,11 @@ class NotifyAction extends Action
   # @public
   # @type {string}
   ###
+
+  ###*
+  # @public
+  # @type {string}
+  ###
   message: ''
 
   constructor: (parent, config, index) ->
