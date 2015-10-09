@@ -28,7 +28,7 @@ class PushbulletNotifier extends Notifier
   # @override
   ###
   _onSend: (messages) =>
-    title = "Receive #{messages.length} messages."
+    title = if messages.length is 1 then messages[0] else "Receive #{messages.length} messages."
     message = messages.join("\n")
     @_pushbullet.note null, title, message, (err) =>
       if err

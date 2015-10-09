@@ -65,7 +65,7 @@ class Notifier extends Base
   ###
   _sendFirst: =>
     @emit 'send', @_messages
-    @_pushes = []
+    @_messages = []
     setTimeout @_sendNext, @_nextDelay
 
   ###*
@@ -76,7 +76,7 @@ class Notifier extends Base
       @_waiting = false
     else
       @emit 'send', @_messages
-      @_pushes = []
+      @_messages = []
       setTimeout @_sendNext, @_nextDelay
 
   ###*

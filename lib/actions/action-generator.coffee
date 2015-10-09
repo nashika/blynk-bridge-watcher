@@ -1,26 +1,19 @@
-Base = require '../base'
+Generator = require '../generator'
 NotifyAction = require './notify-action'
 CustomAction = require './custom-action'
 
-class ActionGenerator extends Base
+class ActionGenerator extends Generator
 
   ###*
   # @override
   ###
   TYPE: 'ActionGenerator'
 
-  constructor: (parent) ->
-    config =
-      name: 'generator'
-    super parent, config, -1
-
-  generate: (parent, config, index) =>
-    type = @_checkConfig config, 'type', 'string'
-    switch type
-      when 'notify'
-        return new NotifyAction(parent, config, index)
-      else
-        @log 'fatal', "Action type '#{config.type}' is not defined."
-        process.exit 1
+  ###*
+  # @override
+  ###
+  TYPE_TO_CLASS:
+    notify: NotifyAction
+    custom: CustomAction
 
 module.exports = ActionGenerator

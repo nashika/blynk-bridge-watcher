@@ -1,8 +1,8 @@
-Base = require '../base'
+Generator = require '../generator'
 LogNotifier = require './log-notifier'
 PushbulletNotifier = require './pushbullet-notifier'
 
-class NotifierGenerator extends Base
+class NotifierGenerator extends Generator
 
   ###*
   # @override
@@ -12,20 +12,8 @@ class NotifierGenerator extends Base
   ###*
   # @override
   ###
-  constructor: (parent) ->
-    config =
-      name: 'generator'
-    super parent, config, -1
-
-  generate: (parent, config, index) =>
-    type = @_checkConfig config, 'type', 'string'
-    switch type
-      when 'log'
-        return new LogNotifier(parent, config, index)
-      when 'pushbullet'
-        return new PushbulletNotifier(parent, config, index)
-      else
-        @log 'fatal', "Notifier type '#{type}' is not defined."
-        process.exit 1
+  TYPE_TO_CLASS:
+    log: LogNotifier
+    pushbullet: PushbulletNotifier
 
 module.exports = NotifierGenerator
