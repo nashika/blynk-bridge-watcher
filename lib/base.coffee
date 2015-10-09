@@ -5,12 +5,6 @@ dot = require 'dot-object'
 class Base extends EventEmitter
 
   ###*
-  # @const
-  # @type {string}
-  ###
-  TYPE: 'Base'
-
-  ###*
   # @public
   # @type {number}
   ###
@@ -96,8 +90,8 @@ class Base extends EventEmitter
   ###
   _keyLabel: =>
     if @index >= 0
-      return "[#{@TYPE}(#{@index}-#{@name})]"
+      return "[#{@constructor.name}(#{@index}-#{@name})]"
     else
-      return "[#{@TYPE}]"
+      return "[#{@constructor.name}]"
 
 module.exports = Base

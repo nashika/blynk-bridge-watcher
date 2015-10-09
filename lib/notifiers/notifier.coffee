@@ -3,11 +3,6 @@ Base = require './../base'
 class Notifier extends Base
 
   ###*
-  # @override
-  ###
-  TYPE: 'Notifier'
-
-  ###*
   # @protected
   # @type {number}
   ###

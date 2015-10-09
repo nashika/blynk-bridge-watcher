@@ -3,11 +3,6 @@ Base = require './../base'
 class BaseBridge extends Base
 
   ###*
-  # @override
-  ###
-  TYPE: 'Bridge'
-
-  ###*
   # @const
   # @type {Object}
   ###

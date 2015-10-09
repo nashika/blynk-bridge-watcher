@@ -5,11 +5,6 @@ NotifierGenerator = require './notifiers/notifier-generator'
 class Server extends Base
 
   ###*
-  # @override
-  ###
-  TYPE: 'Server'
-
-  ###*
   # @protected
   # @type {Object.<Board>}
   ###

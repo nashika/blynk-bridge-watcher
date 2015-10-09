@@ -3,11 +3,6 @@ Base = require './base'
 class Generator extends Base
 
   ###*
-  # @override
-  ###
-  TYPE: 'Generator'
-
-  ###*
   # @const
   # @type {Object}
   ###

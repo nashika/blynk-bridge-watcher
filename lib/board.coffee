@@ -6,11 +6,6 @@ Bridge = require './bridges/bridge'
 class Board extends Base
 
   ###*
-  # @override
-  ###
-  TYPE: 'Board'
-
-  ###*
   # @public
   # @type {Blynk.Blynk}
   ###

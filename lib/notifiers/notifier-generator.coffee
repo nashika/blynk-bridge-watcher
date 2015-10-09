@@ -7,11 +7,6 @@ class NotifierGenerator extends Generator
   ###*
   # @override
   ###
-  TYPE: 'NotifierGenerator'
-
-  ###*
-  # @override
-  ###
   TYPE_TO_CLASS:
     log: LogNotifier
     pushbullet: PushbulletNotifier

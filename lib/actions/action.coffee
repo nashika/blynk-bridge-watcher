@@ -3,11 +3,6 @@ Base = require '../base'
 class Action extends Base
 
   ###*
-  # @override
-  ###
-  TYPE: 'Action'
-
-  ###*
   # @protected
   # @type {string}
   ###
