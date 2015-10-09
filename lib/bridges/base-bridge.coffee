@@ -41,8 +41,7 @@ class BaseBridge extends Base
 
   constructor: (parent, config, index) ->
     super parent, config, index
-    @checkConfig config.token, 'config.token', 'string'
-    @_token = config.token
+    @_token = @_checkConfig config, 'token', 'string'
     @_widgetBridge = new @_parent.blynk.WidgetBridge(index + 1)
 
   ###*

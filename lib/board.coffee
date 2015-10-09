@@ -33,17 +33,17 @@ class Board extends Base
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @checkConfig config.token, 'config.token', 'string'
+    token = @_checkConfig config, 'token', 'string'
     @log 'debug', "Auth dummy blynk board was started."
-    @blynk = new Blynk.Blynk(config.token, {certs_path : './node_modules/blynk-library/certs/'})
+    @blynk = new Blynk.Blynk(token, {certs_path : './node_modules/blynk-library/certs/'})
     @log 'debug', "Construct Input Virtual Pin 0 was started."
     @_inputVPin = new @blynk.VirtualPin(0)
     @log 'debug', "Construct Input Virtual Pin 0 was finished."
-    @checkConfig config.bridges, 'config.bridges', 'array'
+    bridges = @_checkConfig config, 'bridges', 'array'
     @log 'debug', "Construct Bridge objects was started."
     @_bridges = {}
     i = 0
-    for bridgeConfig in config.bridges
+    for bridgeConfig in bridges
       @_bridges[bridgeConfig.name] = new Bridge(this, bridgeConfig, i++)
     @log 'debug', "Construct Bridge objects was finished."
 

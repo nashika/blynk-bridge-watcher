@@ -43,9 +43,9 @@ class PingBridge extends BaseBridge
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @_pingIntervalMs = config.ping?.interval ? @_pingIntervalMs
-    @_pingTimeoutMs = config.ping?.timeout ? @_pingTimeoutMs
-    @_pingFailureLimit = config.ping?.failureLimit ? @_pingFailureLimit
+    @_pingIntervalMs = @_checkConfig config, 'ping.interval', 'number', @_pingIntervalMs
+    @_pingTimeoutMs = @_checkConfig config, 'ping.timeout', 'number', @_pingTimeoutMs
+    @_pingFailureLimit = @_checkConfig config, 'ping.failureLimit', 'number', @_pingFailureLimit
     @on '$ping', @_onPing
     @on '$pong', @_onPong
 

@@ -15,8 +15,8 @@ class ActionGenerator extends Base
     super parent, config, -1
 
   generate: (parent, config, index) =>
-    @checkConfig config.type, 'config.type', 'string'
-    switch config.type
+    type = @_checkConfig config, 'type', 'string'
+    switch type
       when 'notify'
         return new NotifyAction(parent, config, index)
       else

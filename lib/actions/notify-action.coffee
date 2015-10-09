@@ -21,10 +21,8 @@ class NotifyAction extends Action
 
   constructor: (parent, config, index) ->
     super parent, config, index
-    @checkConfig config.notifier, 'config.notifier', 'string'
-    @notifier = config.notifier
-    @checkConfig config.message, 'config.message', 'string'
-    @message = config.message
+    @notifier = @_checkConfig config, 'notifier', 'string'
+    @message = @_checkConfig config, 'message', 'string'
 
   run: (caller, args...) =>
     @log 'debug', "Notify started."

@@ -18,8 +18,7 @@ class Action extends Base
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @checkConfig config.type, 'config.type', 'string'
-    @type = config.type
+    @type = @_checkConfig config, 'type', 'string'
 
   ###*
   # @public

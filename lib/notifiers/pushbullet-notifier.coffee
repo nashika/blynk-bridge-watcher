@@ -15,8 +15,8 @@ class PushbulletNotifier extends Notifier
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @checkConfig config.apikey, 'config.apikey', 'string'
-    @_pushbullet = new Pushbullet(config.apikey)
+    apiKey = @_checkConfig config, 'apiKey', 'string'
+    @_pushbullet = new Pushbullet(config.apiKey)
     @_pushbullet.me (err, response) =>
       if err
         @log 'fatal', 'Pushbullet auth failed.'

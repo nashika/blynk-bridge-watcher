@@ -1,5 +1,7 @@
 EventEmitter = require 'events'
 
+dot = require 'dot-object'
+
 class Base extends EventEmitter
 
   ###*
@@ -43,9 +45,7 @@ class Base extends EventEmitter
     @_parent = parent
     @index = index
     @_logger = @_parent?._logger ? logger
-    @checkConfig config, 'config', 'object'
-    @checkConfig config.name, 'config.name', 'string'
-    @name = config.name
+    @name = @_checkConfig config, 'name', 'string'
     @log 'trace', "Constructing #{@constructor.name} object."
 
   log: (level, args...) =>
@@ -54,13 +54,21 @@ class Base extends EventEmitter
     else
       @_logger.log level, args...
 
-  checkConfig: (config, key, type, args...) =>
-    if typeof config is 'undefined'
-      @log 'fatal', @_allKeyLabel(), "Config '#{key}' is undefined."
+  _checkConfig: (config, key, type, defaultValue = undefined) =>
+    if (typeof config isnt 'object') or Array.isArray(config)
+      @log 'fatal', @_allKeyLabel(), "Check config. 'config' is not object."
       process.exit 1
-    if (if type is 'array' then not Array.isArray(config) else not (typeof config is type))
-      @log 'fatal', args..., "Config '#{key}' is unexpected type, expects #{type}."
+    target = dot.pick(key, config)
+    if typeof target is 'undefined'
+      if defaultValue isnt undefined
+        return defaultValue
+      else
+        @log 'fatal', @_allKeyLabel(), "Check config. 'config.#{key}' is undefined."
+        process.exit 1
+    if (if type is 'array' then not Array.isArray(target) else not (typeof target is type))
+      @log 'fatal', @_allKeyLabel(), "Check config. 'config.#{key}' type=#{typeof target} is unexpected, expects #{type}."
       process.exit 1
+    return target
 
   _keyLabel: =>
     if @index >= 0

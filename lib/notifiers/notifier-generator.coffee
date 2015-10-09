@@ -18,14 +18,14 @@ class NotifierGenerator extends Base
     super parent, config, -1
 
   generate: (parent, config, index) =>
-    @checkConfig config.type, 'config.type', 'string'
-    switch config.type
+    type = @_checkConfig config, 'type', 'string'
+    switch type
       when 'log'
         return new LogNotifier(parent, config, index)
       when 'pushbullet'
         return new PushbulletNotifier(parent, config, index)
       else
-        @log 'fatal', "Notifier type '#{config.type}' is not defined."
+        @log 'fatal', "Notifier type '#{type}' is not defined."
         process.exit 1
 
 module.exports = NotifierGenerator

@@ -8,10 +8,24 @@ class Notifier extends Base
   TYPE: 'Notifier'
 
   ###*
+  # @protected
+  # @type {number}
+  ###
+  _firstDelay: 3000
+
+  ###*
+  # @protected
+  # @type {number}
+  ###
+  _nextDelay: 10000
+
+  ###*
   # @override
   ###
   constructor: (server, config, index) ->
     super server, config, index
+    @_firstDelay = @_checkConfig config, 'firstDelay', 'number', @_firstDelay
+    @_nextDelay = @_checkConfig config, 'nextDelay', 'number', @_nextDelay
     @on 'notify', @_onNotify
 
   ###*
