@@ -20,13 +20,27 @@ class Notifier extends Base
   _nextDelay: 10000
 
   ###*
+  # @private
+  # @type {boolean}
+  ###
+  _waiting: false
+
+  ###*
+  # @private
+  # @type {Array}
+  ###
+  _messages: null
+
+  ###*
   # @override
   ###
   constructor: (server, config, index) ->
     super server, config, index
     @_firstDelay = @_checkConfig config, 'firstDelay', 'number', @_firstDelay
     @_nextDelay = @_checkConfig config, 'nextDelay', 'number', @_nextDelay
+    @_messages = []
     @on 'notify', @_onNotify
+    @on 'send', @_onSend
 
   ###*
   # @protected
@@ -34,7 +48,36 @@ class Notifier extends Base
   # @param {Array} args
   ###
   _onNotify: (action, args...) =>
-    @log 'error', "_onNotify method is abstract function"
+    message = @_makeMessage(action, args...)
+    @_messages.push message
+    if not @_waiting
+      @_waiting = true
+      setTimeout @_sendFirst, @_firstDelay
+
+  ###*
+  # @protected
+  # @param {Array.<string>} messages
+  ###
+  _onSend: (messages) =>
+
+  ###*
+  # @protected
+  ###
+  _sendFirst: =>
+    @emit 'send', @_messages
+    @_pushes = []
+    setTimeout @_sendNext, @_nextDelay
+
+  ###*
+  # @private
+  ###
+  _sendNext: =>
+    if @_pushes.length is 0
+      @_waiting = false
+    else
+      @emit 'send', @_messages
+      @_pushes = []
+      setTimeout @_sendNext, @_nextDelay
 
   ###*
   # @protected
@@ -44,7 +87,7 @@ class Notifier extends Base
   ###
   _makeMessage: (action, args...) =>
     message = action.message ? '%s'
-    message = util.format(message, args...)
+    message = action.allKeyLabel() + ' ' + util.format(message, args...)
     return message
 
 module.exports = Notifier

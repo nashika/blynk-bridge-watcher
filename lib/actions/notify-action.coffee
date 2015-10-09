@@ -25,7 +25,6 @@ class NotifyAction extends Action
     @message = @_checkConfig config, 'message', 'string'
 
   run: (caller, args...) =>
-    @log 'debug', "Notify started."
     caller.notify this, args...
 
 module.exports = NotifyAction

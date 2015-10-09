@@ -27,8 +27,13 @@ class PushbulletNotifier extends Notifier
   ###*
   # @override
   ###
-  _onNotify: (options, args...) =>
-    message = @_makeMessage(options, args...)
-    @_pushbullet.note null, message, message, (err) =>
+  _onSend: (messages) =>
+    title = "Receive #{messages.length} messages."
+    message = messages.join("\n")
+    @_pushbullet.note null, title, message, (err) =>
+      if err
+        @log 'error', "Send pushbullet note was failed."
+      else
+        @log 'debug', "Send pushbullet not was succeed."
 
 module.exports = PushbulletNotifier

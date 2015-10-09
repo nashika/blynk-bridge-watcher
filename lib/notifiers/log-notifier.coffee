@@ -2,11 +2,11 @@ Notifier = require './notifier'
 
 class LogNotifier extends Notifier
 
-  constructor: (parent, config, index) ->
-    super parent, config, index
-
-  _onNotify: (action, args...) =>
-    level = action?.level ? 'info'
-    @log level, @_makeMessage(action, args...)
+  ###*
+  # @override
+  ###
+  _onSend: (messages) =>
+    for message in messages
+      @log 'info', message
 
 module.exports = LogNotifier
