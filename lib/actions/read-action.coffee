@@ -11,7 +11,7 @@ class ReadAction extends Action
   # @protected
   # @type {number}
   ###
-  _pin:
+  _pin: -1
 
   ###*
   # @override

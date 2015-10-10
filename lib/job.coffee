@@ -1,4 +1,4 @@
-#CronJob = require('cron').CronJob
+CronJob = require('cron').CronJob
 
 Base = require './base'
 
@@ -47,11 +47,11 @@ class Job extends Base
       @log 'fatal', "Board '#{boardName}' -> Bridge '#{bridgeName}' -> Action '#{@_action}' was not found."
       process.exit 1
     try
-      #@_cronJob = new CronJob @_cronTime, @_run
+      @_cronJob = new CronJob @_cronTime, @_run
     catch e
       @log 'fatal', "cronTime '#{@_cronTime}' is invalid format."
       process.exit 1
-    #@_cronJob.start()
+    @_cronJob.start()
 
   ###*
   # @protected
