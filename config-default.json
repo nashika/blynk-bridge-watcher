@@ -27,5 +27,14 @@
     }
   ],
   "notifiers": [
+  ],
+  "jobs": [
+    {
+      "name": "JB01",
+      "cronTime": "*/20 * * * * *",
+      "board": "BD01",
+      "bridge": "BR01",
+      "action": "AC01"
+    }
   ]
 }

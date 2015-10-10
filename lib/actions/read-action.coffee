@@ -1,18 +1,17 @@
 Action = require './action'
 
-class NotifyAction extends Action
+class ReadAction extends Action
 
   ###*
-  # @public
-  # @type {string}
+  # @protected
   ###
-  notifier: ''
+  _pinType: ''
 
   ###*
-  # @public
-  # @type {string}
+  # @protected
+  # @type {number}
   ###
-  message: ''
+  _pin:
 
   ###*
   # @override
@@ -28,4 +27,4 @@ class NotifyAction extends Action
   run: (caller, args...) =>
     caller.notify this, args...
 
-module.exports = NotifyAction
+module.exports = ReadAction

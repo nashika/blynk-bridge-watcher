@@ -67,7 +67,7 @@ class Notifier extends Base
   # @private
   ###
   _sendNext: =>
-    if @_pushes.length is 0
+    if @_messages.length is 0
       @_waiting = false
     else
       @emit 'send', @_messages

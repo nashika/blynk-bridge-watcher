@@ -1,6 +1,7 @@
 Base = require './base'
 Board = require './board'
 NotifierGenerator = require './notifiers/notifier-generator'
+Job = require './job'
 
 class Server extends Base
 
@@ -15,6 +16,12 @@ class Server extends Base
   # @type {Object.<Notifier>}
   ###
   _notifiers: null
+
+  ###*
+  # @protected
+  # @type {Object.<Job>}
+  ###
+  _jobs: null
 
   constructor: (config, logger, index) ->
     super null, config, index, logger
@@ -34,6 +41,14 @@ class Server extends Base
     for notifierConfig in notifiers
       @_notifiers[notifierConfig.name] = notifierGenerator.generate(this, notifierConfig, i++)
     @log 'debug', "Construct Notifier objects was finished."
+
+    jobs = @_checkConfig config, 'jobs', 'array'
+    @log 'debug', "Construct Job objects was started."
+    @_jobs = {}
+    i = 0
+    for jobConfig in jobs
+      @_jobs[jobConfig.name] = new Job(this, jobConfig, i++)
+    @log 'debug', "Construct Job objects was finished."
 
   notify: (action, args...) =>
     if @_notifiers[action.notifier]
