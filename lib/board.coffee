@@ -13,15 +13,15 @@ class Board extends Base
 
   ###*
   # @public
-  # @type {Blynk.Blynk.VirtualPin}
+  # @type {Object.<Bridge>}
   ###
-  _inputVPin: null
+  bridges: null
 
   ###*
   # @public
-  # @type {Object.<Bridge>}
+  # @type {Blynk.Blynk.VirtualPin}
   ###
-  _bridges: null
+  _inputVPin: null
 
   ###*
   # @constructor
@@ -36,21 +36,18 @@ class Board extends Base
     @log 'debug', "Construct Input Virtual Pin 0 was finished."
     bridges = @_checkConfig config, 'bridges', 'array'
     @log 'debug', "Construct Bridge objects was started."
-    @_bridges = {}
+    @bridges = {}
     i = 0
     for bridgeConfig in bridges
-      @_bridges[bridgeConfig.name] = new Bridge(this, bridgeConfig, i++)
+      @bridges[bridgeConfig.name] = new Bridge(this, bridgeConfig, i++)
     @log 'debug', "Construct Bridge objects was finished."
 
     @_inputVPin.on 'write', @_onInputVPin
     @blynk.on 'connect', @_onConnect
 
-  notify: (action, args...) =>
-    @_parent.notify action, args...
-
   _onConnect: =>
     @log 'debug', "Auth dummy blynk board was finished."
-    for bridgeName, bridge of @_bridges
+    for bridgeName, bridge of @bridges
       bridge.connect()
 
   _onInputVPin: (param) =>
@@ -62,12 +59,12 @@ class Board extends Base
     eventName = params[1]
     eventArgs = params.splice(2)
     @log 'debug', "Receive input data, bridge='#{bridgeName}' event='#{eventName}' args=#{JSON.stringify(eventArgs)}"
-    if not @_bridges[bridgeName]
+    if not @bridges[bridgeName]
       @log 'warn', "Bridge '#{bridgeName}' was not found."
       return
-    if @_bridges[bridgeName].listeners(eventName).length is 0
+    if @bridges[bridgeName].listeners(eventName).length is 0
       @log 'warn', "Bridge '#{bridgeName}' not have '#{eventName}' event."
       return
-    @_bridges[bridgeName].emit eventName,  @_bridges[bridgeName], eventArgs...
+    @bridges[bridgeName].emit eventName,  @bridges[bridgeName], eventArgs...
 
 module.exports = Board

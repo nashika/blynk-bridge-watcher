@@ -17,10 +17,10 @@ class Base extends EventEmitter
   name: ''
 
   ###*
-  # @protected
+  # @public
   # @type {Base}
   ###
-  _parent: null
+  parent: null
 
   ###*
   # @protected
@@ -36,14 +36,14 @@ class Base extends EventEmitter
   # @param {Logger} logger
   ###
   constructor: (parent, config, index, logger) ->
-    @_parent = parent
+    @parent = parent
     @index = index
-    @_logger = @_parent?._logger ? logger
+    @_logger = @parent?._logger ? logger
     @name = @_checkConfig config, 'name', 'string'
     @log 'trace', "Constructing #{@constructor.name} object."
 
   log: (level, args...) =>
-    if @_parent
+    if @parent
       @_logger.log level, @allKeyLabel(), args...
     else
       @_logger.log level, args...
@@ -53,8 +53,8 @@ class Base extends EventEmitter
   # @return {string}
   ###
   allKeyLabel: (args...) =>
-    if @_parent
-      return @_parent.allKeyLabel(@_keyLabel(), args...)
+    if @parent
+      return @parent.allKeyLabel(@_keyLabel(), args...)
     else
       return args.join(' ')
 

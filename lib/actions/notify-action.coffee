@@ -3,10 +3,10 @@ Action = require './action'
 class NotifyAction extends Action
 
   ###*
-  # @public
+  # @protected
   # @type {string}
   ###
-  notifier: ''
+  _notifier: ''
 
   ###*
   # @public
@@ -19,13 +19,13 @@ class NotifyAction extends Action
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @notifier = @_checkConfig config, 'notifier', 'string'
+    @_notifier = @_checkConfig config, 'notifier', 'string'
     @message = @_checkConfig config, 'message', 'string'
 
   ###*
   # @override
   ###
   run: (caller, args...) =>
-    caller.notify this, args...
+    caller.parent.parent.notifiers[@_notifier].emit 'notify', this, args...
 
 module.exports = NotifyAction

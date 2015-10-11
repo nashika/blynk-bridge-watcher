@@ -25,7 +25,4 @@ class ActionBridge extends PingBridge
         @on actionConfig.name, @_actions[actionConfig.name].run
       @log 'debug', "Construct event objects was finished."
 
-  notify: (action, args...) =>
-    @_parent.notify action, args...
-
 module.exports = ActionBridge

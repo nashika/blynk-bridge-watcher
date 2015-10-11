@@ -35,11 +35,11 @@ class Job extends Base
     super server, config, index
     @_cronTime = @_checkConfig config, 'cronTime', 'string'
     boardName = @_checkConfig config, 'board', 'string'
-    if not board = @_parent._boards[boardName]
+    if not board = @parent.boards[boardName]
       @log 'fatal', "Board '#{boardName}' was not found."
       process.exit 1
     bridgeName = @_checkConfig config, 'bridge', 'string'
-    if not @_bridge = board._bridges[bridgeName]
+    if not @_bridge = board.bridges[bridgeName]
       @log 'fatal', "Board '#{boardName}' -> Bridge '#{bridgeName}' was not found."
       process.exit 1
     @_action = @_checkConfig config, 'action', 'string'

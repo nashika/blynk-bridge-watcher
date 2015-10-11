@@ -18,7 +18,7 @@ class ReadAction extends Action
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @notifier = @_checkConfig config, 'notifier', 'string'
+    @_notifier = @_checkConfig config, '_notifier', 'string'
     @message = @_checkConfig config, 'message', 'string'
 
   ###*
