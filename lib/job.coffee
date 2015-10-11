@@ -43,7 +43,7 @@ class Job extends Base
       @log 'fatal', "Board '#{boardName}' -> Bridge '#{bridgeName}' was not found."
       process.exit 1
     @_action = @_checkConfig config, 'action', 'string'
-    if not @_bridge._actions[@_action]
+    if not @_bridge.actions[@_action]
       @log 'fatal', "Board '#{boardName}' -> Bridge '#{bridgeName}' -> Action '#{@_action}' was not found."
       process.exit 1
     try

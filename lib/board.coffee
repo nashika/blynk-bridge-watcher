@@ -28,19 +28,16 @@ class Board extends Base
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
+
     token = @_checkConfig config, 'token', 'string'
     @log 'debug', "Auth dummy blynk board was started."
     @blynk = new Blynk.Blynk(token, {certs_path : './node_modules/blynk-library/certs/'})
+
     @log 'debug', "Construct Input Virtual Pin 0 was started."
     @_inputVPin = new @blynk.VirtualPin(0)
     @log 'debug', "Construct Input Virtual Pin 0 was finished."
-    bridges = @_checkConfig config, 'bridges', 'array'
-    @log 'debug', "Construct Bridge objects was started."
-    @bridges = {}
-    i = 0
-    for bridgeConfig in bridges
-      @bridges[bridgeConfig.name] = new Bridge(this, bridgeConfig, i++)
-    @log 'debug', "Construct Bridge objects was finished."
+
+    @_initializeChildren config, 'bridges', Bridge
 
     @_inputVPin.on 'write', @_onInputVPin
     @blynk.on 'connect', @_onConnect

@@ -86,6 +86,29 @@ class Base extends EventEmitter
 
   ###*
   # @protected
+  #
+  ###
+  _initializeChildren: (config, key, ChildClass)=>
+    childrenConfig = @_checkConfig config, key, 'array'
+    @log 'debug', "Construct child '#{key}' objects was started."
+    @[key] = {}
+    i = 0
+    for childConfig in childrenConfig
+      @[key][childConfig.name] = new ChildClass(this, childConfig, i++)
+    @log 'debug', "Construct child '#{key}' objects was finished."
+
+  _initializeChildrenWithGenerator: (config, key, ChildGenerator) =>
+    childrenConfig = @_checkConfig config, key, 'array'
+    @log 'debug', "Construct child '#{key}' objects was started."
+    @[key] = {}
+    i = 0
+    generator = new ChildGenerator(this)
+    for childConfig in childrenConfig
+      @[key][childConfig.name] = generator.generate(this, childConfig, i++)
+    @log 'debug', "Construct child '#{key}' objects was finished."
+
+  ###*
+  # @protected
   # @return {string}
   ###
   _keyLabel: =>
