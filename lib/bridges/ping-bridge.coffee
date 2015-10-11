@@ -59,7 +59,7 @@ class PingBridge extends BaseBridge
 
   _ping: =>
     @log 'info', "Ping to bridge, waiting Pong..."
-    @_widgetBridge.virtualWrite 0, '$ping' if not @_pinging
+    @_widgetBridge.virtualWrite 0, 'pi' if not @_pinging
     @_pinging = true
     setTimeout @_pingTimeout, @_pingTimeoutMs
 
@@ -75,7 +75,7 @@ class PingBridge extends BaseBridge
 
   _onPing: =>
     @log 'info', "Ping from bridge, response Pong."
-    @_widgetBridge.virtualWrite 0, '$pong'
+    @_widgetBridge.virtualWrite 0, 'po'
 
   _onPong: =>
     @log 'info', "Pong from bridge."

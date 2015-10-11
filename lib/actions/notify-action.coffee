@@ -25,7 +25,7 @@ class NotifyAction extends Action
   ###*
   # @override
   ###
-  run: (caller, args...) =>
-    caller.parent.parent.notifiers[@_notifier].emit 'notify', this, args...
+  run: (bridge, args...) =>
+    bridge.parent.parent.notifiers[@_notifier].emit 'notify', this, args...
 
 module.exports = NotifyAction
