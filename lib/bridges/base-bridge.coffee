@@ -1,4 +1,5 @@
 Base = require './../base'
+ActionGenerator = require '../actions/action-generator'
 
 class BaseBridge extends Base
 
@@ -23,6 +24,12 @@ class BaseBridge extends Base
   status: @::STATUS_TYPE.constructing
 
   ###*
+  # @public
+  # @type {Object.<Action>}
+  ###
+  actions: null
+
+  ###*
   # @protected
   # @type {string}
   ###
@@ -38,6 +45,9 @@ class BaseBridge extends Base
     super parent, config, index
     @_token = @_checkConfig config, 'token', 'string'
     @_widgetBridge = new @parent.blynk.WidgetBridge(index + 1)
+    @_initializeChildrenWithGenerator config, 'actions', ActionGenerator
+    for actionName, action of @actions
+      @on actionName, action.run
 
   ###*
   # @public

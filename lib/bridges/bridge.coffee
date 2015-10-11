@@ -1,6 +1,6 @@
-ActionBridge = require './action-bridge'
+PingBridge = require './ping-bridge'
 
-class Bridge extends ActionBridge
+class Bridge extends PingBridge
 
   ###*
   # @override
