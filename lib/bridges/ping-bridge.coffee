@@ -1,6 +1,6 @@
-BaseBridge = require './base-bridge'
+TransceiverBridge = require './transceiver-bridge'
 
-class PingBridge extends BaseBridge
+class PingBridge extends TransceiverBridge
 
   ###
   # @protected
@@ -47,7 +47,6 @@ class PingBridge extends BaseBridge
     @_pingTimeoutMs = @_checkConfig config, 'ping.timeout', 'number', @_pingTimeoutMs
     @_pingFailureLimit = @_checkConfig config, 'ping.failureLimit', 'number', @_pingFailureLimit
     @on '$ping', @_onPing
-    @on '$pong', @_onPong
 
   ###*
   # @override
@@ -59,9 +58,15 @@ class PingBridge extends BaseBridge
 
   _ping: =>
     @log 'info', "Ping to bridge, waiting Pong..."
-    @_widgetBridge.virtualWrite 0, 'pi' if not @_pinging
+    if not @_pinging
+      @send 'pi,0', @_pingCallback
     @_pinging = true
     setTimeout @_pingTimeout, @_pingTimeoutMs
+
+  _pingCallback: =>
+    @log 'info', "Pong from bridge."
+    @_pinging = false
+    @_pingFailureCount = 0
 
   _pingTimeout: =>
     if @_pinging
@@ -75,11 +80,6 @@ class PingBridge extends BaseBridge
 
   _onPing: =>
     @log 'info', "Ping from bridge, response Pong."
-    @_widgetBridge.virtualWrite 0, 'po'
-
-  _onPong: =>
-    @log 'info', "Pong from bridge."
-    @_pinging = false
-    @_pingFailureCount = 0
+    @send 'po'
 
 module.exports = PingBridge

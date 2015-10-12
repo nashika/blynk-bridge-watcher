@@ -4,6 +4,13 @@ class ReadAction extends Action
 
   ###*
   # @protected
+  # @type {string}
+  ###
+  _next: ''
+
+  ###*
+  # @protected
+  # @type {string}
   ###
   _pinType: ''
 
@@ -18,13 +25,21 @@ class ReadAction extends Action
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @_notifier = @_checkConfig config, '_notifier', 'string'
-    @message = @_checkConfig config, 'message', 'string'
+    @_next = @_checkConfig config, 'next', 'string'
+    @_pinType = @_checkConfig config, 'pinType', 'string'
+    @_pin = @_checkConfig config, 'pin', 'number'
 
   ###*
   # @override
   ###
-  run: (caller, args...) =>
-    caller.notify this, args...
+  run: (bridge, args...) =>
+    output = ''
+    switch @_pinType
+      when 'digital' then output = 'dr'
+      when 'analog' then output = 'ar'
+      when 'virtual' then output = 'vr'
+    output +=  ',' + @_pin
+    bridge.send output, (args...) =>
+      bridge.emit @_next, bridge, args...
 
 module.exports = ReadAction

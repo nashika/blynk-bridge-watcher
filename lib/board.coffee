@@ -59,6 +59,9 @@ class Board extends Base
     if not @bridges[bridgeName]
       @log 'warn', "Bridge '#{bridgeName}' was not found."
       return
+    if eventName is '$r'
+      @bridges[bridgeName].sendCallback(eventArgs...)
+      return
     if @bridges[bridgeName].listeners(eventName).length is 0
       @log 'warn', "Bridge '#{bridgeName}' not have '#{eventName}' event."
       return
