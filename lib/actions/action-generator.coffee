@@ -1,7 +1,7 @@
 Generator = require '../generator'
 ReadAction = require './read-action'
+WriteAction = require './write-action'
 NotifyAction = require './notify-action'
-CustomAction = require './custom-action'
 
 class ActionGenerator extends Generator
 
@@ -10,7 +10,7 @@ class ActionGenerator extends Generator
   ###
   TYPE_TO_CLASS:
     read: ReadAction
+    write: WriteAction
     notify: NotifyAction
-    custom: CustomAction
 
 module.exports = ActionGenerator

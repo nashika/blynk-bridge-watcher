@@ -20,13 +20,15 @@ class TransceiverBridge extends BaseBridge
   # @public
   # @param {string} output
   ###
-  send: (output = '', callback) =>
+  send: (command, params..., callback) =>
+    pin = params[0] ? 0
+    param = params[1] ? ''
     while true
       requestId = uid(3)
       if @_sendCallbacks[requestId] then continue
       @_sendCallbacks[requestId] = callback
       break
-    output += ",#{requestId}"
+    output = "#{requestId},#{command},#{pin},#{param}"
     @log 'debug', "Send output data, bridge='#{@name}' output='#{output}'"
     @_widgetBridge.virtualWrite 0, output
 

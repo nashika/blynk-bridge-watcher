@@ -59,7 +59,7 @@ class PingBridge extends TransceiverBridge
   _ping: =>
     @log 'info', "Ping to bridge, waiting Pong..."
     if not @_pinging
-      @send 'pi,0', @_pingCallback
+      @send 'pi', @_pingCallback
     @_pinging = true
     setTimeout @_pingTimeout, @_pingTimeoutMs
 
