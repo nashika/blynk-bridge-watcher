@@ -11,6 +11,6 @@ class ReadAction extends PinAction
       when 'analog' then command = 'ar'
       when 'virtual' then command = 'vr'
     bridge.send command, @_pin, (args...) =>
-      bridge.emit @_next, bridge, args...
+      bridge.emit @_next, bridge, args... if @_next
 
 module.exports = ReadAction

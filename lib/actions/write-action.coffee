@@ -24,6 +24,6 @@ class WriteAction extends PinAction
       when 'analog' then command = 'aw'
       when 'virtual' then command = 'vw'
     bridge.send command, @_pin, @_value, (args...) =>
-      bridge.emit @_next, bridge, args...
+      bridge.emit @_next, bridge, args... if @_next
 
 module.exports = WriteAction

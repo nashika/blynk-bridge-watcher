@@ -25,7 +25,7 @@ class PinAction extends Action
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @_next = @_checkConfig config, 'next', 'string'
+    @_next = @_checkConfig config, 'next', 'string', ''
     @_pinType = @_checkConfig config, 'pinType', 'string'
     @_pin = @_checkConfig config, 'pin', 'number'
 
