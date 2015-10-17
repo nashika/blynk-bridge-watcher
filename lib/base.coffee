@@ -64,25 +64,37 @@ class Base extends EventEmitter
   # @protected
   # @param {Object} config
   # @param {string} key
-  # @param {string} type
+  # @param {string|Array.<string>} types
   # @param {*} defaultValue
   # @return {*} picked config
   ###
-  _checkConfig: (config, key, type, defaultValue = undefined) =>
+  _checkConfig: (config, key, types, defaultValue = undefined) =>
     if (typeof config isnt 'object') or Array.isArray(config)
       @log 'fatal', @allKeyLabel(), "Check config. 'config' is not object."
       process.exit 1
     target = dot.pick(key, config)
+
     if typeof target is 'undefined'
       if defaultValue isnt undefined
         return defaultValue
       else
         @log 'fatal', @allKeyLabel(), "Check config. 'config.#{key}' is undefined."
         process.exit 1
-    if (if type is 'array' then not Array.isArray(target) else not (typeof target is type))
-      @log 'fatal', @allKeyLabel(), "Check config. 'config.#{key}' type=#{typeof target} is unexpected, expects #{type}."
-      process.exit 1
-    return target
+
+    types = [types] if typeof types is 'string'
+    if types[0] is 'in'
+      types.shift()
+      for type in types
+        if target is type then return target
+      @log 'fatal', @allKeyLabel(), "Check config. 'config.#{key}' value=#{target} is unexpected, expects #{JSON.stringify(types)}."
+    else
+      for type in types
+        if type is 'array'
+          if Array.isArray(target) then return target
+        else
+          if typeof target is type then return target
+      @log 'fatal', @allKeyLabel(), "Check config. 'config.#{key}' type=#{typeof target} is unexpected, expects #{JSON.stringify(types)}."
+    process.exit 1
 
   ###*
   # @protected
@@ -92,19 +104,17 @@ class Base extends EventEmitter
     childrenConfig = @_checkConfig config, key, 'array'
     @log 'debug', "Construct child '#{key}' objects was started."
     @[key] = {}
-    i = 0
     for childConfig in childrenConfig
-      @[key][childConfig.name] = new ChildClass(this, childConfig, i++)
+      @[key][childConfig.name] = new ChildClass(this, childConfig, Object.keys(@[key]).length)
     @log 'debug', "Construct child '#{key}' objects was finished."
 
   _initializeChildrenWithGenerator: (config, key, ChildGenerator) =>
     childrenConfig = @_checkConfig config, key, 'array'
     @log 'debug', "Construct child '#{key}' objects was started."
     @[key] = {}
-    i = 0
     generator = new ChildGenerator(this)
     for childConfig in childrenConfig
-      @[key][childConfig.name] = generator.generate(this, childConfig, i++)
+      @[key][childConfig.name] = generator.generate(this, childConfig, Object.keys(@[key]).length)
     @log 'debug', "Construct child '#{key}' objects was finished."
 
   ###*

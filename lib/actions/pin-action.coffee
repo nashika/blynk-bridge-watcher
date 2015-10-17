@@ -25,8 +25,8 @@ class PinAction extends Action
   ###
   constructor: (parent, config, index) ->
     super parent, config, index
-    @_next = @_checkConfig config, 'next', 'string', ''
-    @_pinType = @_checkConfig config, 'pinType', 'string'
+    @_pinType = @_checkConfig config, 'pinType', ['in', 'digital', 'analog', 'virtual']
     @_pin = @_checkConfig config, 'pin', 'number'
+    @_next = @_addSubAction parent, config, 'next'
 
 module.exports = PinAction

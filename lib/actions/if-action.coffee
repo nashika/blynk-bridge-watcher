@@ -33,8 +33,8 @@ class IfAction extends Action
     super parent, config, index
     @_operator = @_checkConfig config, 'operator', 'string'
     @_value = @_checkConfig config, 'value', 'number'
-    @_then = @_checkConfig config, 'then', 'string'
-    @_else = @_checkConfig config, 'else', 'string'
+    @_then = @_addSubAction parent, config, 'then'
+    @_else = @_addSubAction parent, config, 'else'
 
   ###*
   # @override
