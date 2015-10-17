@@ -31,8 +31,8 @@ class Job extends Base
   ###*
   # @override
   ###
-  constructor: (server, config, index) ->
-    super server, config, index
+  constructor: (server, config) ->
+    super server, config
     @_cronTime = @_checkConfig config, 'cronTime', 'string'
     boardName = @_checkConfig config, 'board', 'string'
     if not board = @parent.boards[boardName]

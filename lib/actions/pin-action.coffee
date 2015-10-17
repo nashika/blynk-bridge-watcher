@@ -23,8 +23,8 @@ class PinAction extends Action
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @_pinType = @_checkConfig config, 'pinType', ['in', 'digital', 'analog', 'virtual']
     @_pin = @_checkConfig config, 'pin', 'number'
     @_next = @_addSubAction parent, config, 'next'

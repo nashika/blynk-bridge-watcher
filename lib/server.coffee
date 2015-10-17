@@ -23,8 +23,8 @@ class Server extends Base
   ###
   jobs: null
 
-  constructor: (config, logger, index) ->
-    super null, config, index, logger
+  constructor: (config, logger) ->
+    super null, config, logger
     @_initializeChildren config, 'boards', Board
     @_initializeChildrenWithGenerator config, 'notifiers', NotifierGenerator
     @_initializeChildren config, 'jobs', Job

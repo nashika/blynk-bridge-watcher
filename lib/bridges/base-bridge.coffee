@@ -41,10 +41,10 @@ class BaseBridge extends Base
   ###
   _widgetBridge: null
 
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @_token = @_checkConfig config, 'token', 'string'
-    @_widgetBridge = new @parent.blynk.WidgetBridge(index + 1)
+    @_widgetBridge = new @parent.blynk.WidgetBridge(Object.keys(parent.bridges).length + 1)
     @_initializeChildrenWithGenerator config, 'actions', ActionGenerator
     for actionName, action of @actions
       @on actionName, action.run

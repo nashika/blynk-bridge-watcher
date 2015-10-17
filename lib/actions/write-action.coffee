@@ -11,8 +11,8 @@ class WriteAction extends PinAction
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @_value = @_checkConfig config, 'value', 'number'
 
   ###*

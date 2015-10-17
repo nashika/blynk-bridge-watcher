@@ -5,8 +5,8 @@ class Bridge extends PingBridge
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
 
   ###*
   # @override

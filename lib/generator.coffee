@@ -16,10 +16,10 @@ class Generator extends Base
       name: 'generator'
     super parent, config, -1
 
-  generate: (parent, config, index) =>
+  generate: (parent, config) =>
     type = @_checkConfig config, 'type', 'string'
     if @TYPE_TO_CLASS[type]
-      return new @TYPE_TO_CLASS[type](parent, config, index)
+      return new @TYPE_TO_CLASS[type](parent, config)
     else
       @log 'fatal', "Generator type='#{type}' is not defined."
       process.exit 1

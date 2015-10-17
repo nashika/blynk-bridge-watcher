@@ -11,8 +11,8 @@ class Action extends Base
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @type = @_checkConfig config, 'type', 'string'
 
   ###*

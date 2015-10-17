@@ -12,8 +12,8 @@ class TransceiverBridge extends BaseBridge
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @_sendCallbacks = {}
 
   ###*

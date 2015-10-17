@@ -17,8 +17,8 @@ class NotifyAction extends Action
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @_notifier = @_checkConfig config, 'notifier', 'string'
     @message = @_checkConfig config, 'message', 'string'
 

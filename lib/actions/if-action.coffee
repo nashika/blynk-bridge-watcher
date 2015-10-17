@@ -29,8 +29,8 @@ class IfAction extends Action
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @_operator = @_checkConfig config, 'operator', 'string'
     @_value = @_checkConfig config, 'value', 'number'
     @_then = @_addSubAction parent, config, 'then'

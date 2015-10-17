@@ -41,8 +41,8 @@ class PingBridge extends TransceiverBridge
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     @_pingIntervalMs = @_checkConfig config, 'ping.interval', 'number', @_pingIntervalMs
     @_pingTimeoutMs = @_checkConfig config, 'ping.timeout', 'number', @_pingTimeoutMs
     @_pingFailureLimit = @_checkConfig config, 'ping.failureLimit', 'number', @_pingFailureLimit

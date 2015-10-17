@@ -13,8 +13,8 @@ class PushbulletNotifier extends Notifier
   ###*
   # @override
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
     apiKey = @_checkConfig config, 'apiKey', 'string'
     @_pushbullet = new Pushbullet(config.apiKey)
     @_pushbullet.me (err, response) =>

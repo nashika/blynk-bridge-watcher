@@ -26,8 +26,8 @@ class Board extends Base
   ###*
   # @constructor
   ###
-  constructor: (parent, config, index) ->
-    super parent, config, index
+  constructor: (parent, config) ->
+    super parent, config
 
     token = @_checkConfig config, 'token', 'string'
     @log 'debug', "Auth dummy blynk board was started."

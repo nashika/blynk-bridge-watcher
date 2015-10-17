@@ -5,12 +5,6 @@ dot = require 'dot-object'
 class Base extends EventEmitter
 
   ###*
-  # @public
-  # @type {number}
-  ###
-  index: -1
-
-  ###*
   # @protected
   # @type {string}
   ###
@@ -32,12 +26,10 @@ class Base extends EventEmitter
   # @constructor
   # @param {Base} parent
   # @param {Object} config
-  # @param {number} vPin
   # @param {Logger} logger
   ###
-  constructor: (parent, config, index, logger) ->
+  constructor: (parent, config, logger) ->
     @parent = parent
-    @index = index
     @_logger = @parent?._logger ? logger
     @name = @_checkConfig config, 'name', 'string'
     @log 'trace', "Constructing #{@constructor.name} object."
@@ -56,7 +48,7 @@ class Base extends EventEmitter
     if @parent
       return @parent.allKeyLabel(@_keyLabel(), args...)
     else
-      return args.join(' ')
+      return '[' + args.join('->') + ']'
 
   ###*
   # Check config object and return picked element.
@@ -122,9 +114,6 @@ class Base extends EventEmitter
   # @return {string}
   ###
   _keyLabel: =>
-    if @index >= 0
-      return "[#{@constructor.name}(#{@index}-#{@name})]"
-    else
-      return "[#{@constructor.name}]"
+    return "#{@name}(#{@constructor.name})"
 
 module.exports = Base

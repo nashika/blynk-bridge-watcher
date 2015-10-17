@@ -29,8 +29,8 @@ class Notifier extends Base
   ###*
   # @override
   ###
-  constructor: (server, config, index) ->
-    super server, config, index
+  constructor: (server, config) ->
+    super server, config
     @_firstDelay = @_checkConfig config, 'firstDelay', 'number', @_firstDelay
     @_nextDelay = @_checkConfig config, 'nextDelay', 'number', @_nextDelay
     @_messages = []
