@@ -29,7 +29,7 @@ class TransceiverBridge extends BaseBridge
       @_sendCallbacks[requestId] = callback
       break
     output = "#{requestId},#{command},#{pin},#{param}"
-    @log 'debug', "Send output data, bridge='#{@name}' output='#{output}'"
+    @log 'trace', "Send output data, bridge='#{@name}' output='#{output}'"
     @_widgetBridge.virtualWrite 0, output
 
   sendCallback: (requestId, args...) =>
@@ -38,5 +38,14 @@ class TransceiverBridge extends BaseBridge
       return
     callback(args...)
     delete @_sendCallbacks[requestId]
+
+  write: (type, pin, value) =>
+    switch type
+      when 'digital'
+        @_widgetBridge.digitalWrite pin, value
+      when 'analog'
+        @_widgetBridge.analogWrite pin, value
+      when 'virtual'
+        @_widgetBridge.virtualWrite pin, value
 
 module.exports = TransceiverBridge

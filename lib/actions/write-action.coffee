@@ -19,11 +19,7 @@ class WriteAction extends PinAction
   # @override
   ###
   run: (bridge, args...) =>
-    switch @_pinType
-      when 'digital' then command = 'dw'
-      when 'analog' then command = 'aw'
-      when 'virtual' then command = 'vw'
-    bridge.send command, @_pin, @_value, (args...) =>
-      bridge.emit @_next, bridge, args... if @_next
+    @log 'debug', "Write action. type=#{@_pinType}, pin=#{@_pin}, value=#{@_value}"
+    bridge.write @_pinType, @_pin, @_value
 
 module.exports = WriteAction

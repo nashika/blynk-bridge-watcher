@@ -55,7 +55,7 @@ class Board extends Base
     bridgeName = params[0]
     eventName = params[1]
     eventArgs = params.splice(2)
-    @log 'debug', "Receive input data, bridge='#{bridgeName}' event='#{eventName}' args=#{JSON.stringify(eventArgs)}"
+    @log 'trace', "Receive input data, bridge='#{bridgeName}' event='#{eventName}' args=#{JSON.stringify(eventArgs)}"
     if not @bridges[bridgeName]
       @log 'warn', "Bridge '#{bridgeName}' was not found."
       return

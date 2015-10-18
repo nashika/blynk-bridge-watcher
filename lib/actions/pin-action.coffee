@@ -6,12 +6,6 @@ class PinAction extends Action
   # @protected
   # @type {string}
   ###
-  _next: ''
-
-  ###*
-  # @protected
-  # @type {string}
-  ###
   _pinType: ''
 
   ###*
@@ -27,6 +21,5 @@ class PinAction extends Action
     super parent, config
     @_pinType = @_checkConfig config, 'pinType', ['in', 'digital', 'analog', 'virtual']
     @_pin = @_checkConfig config, 'pin', 'number'
-    @_next = @_addSubAction parent, config, 'next'
 
 module.exports = PinAction
