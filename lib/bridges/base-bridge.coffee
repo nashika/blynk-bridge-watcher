@@ -7,7 +7,7 @@ class BaseBridge extends Base
   # @const
   # @type {Object}
   ###
-  STATUS_TYPE:
+  STATUS_TYPES:
     constructing:
       label: 'Constructing'
     connecting:
@@ -21,7 +21,7 @@ class BaseBridge extends Base
   # @public
   # @type {Object}
   ###
-  status: @::STATUS_TYPE.constructing
+  status: @::STATUS_TYPES.constructing
 
   ###*
   # @public
@@ -53,8 +53,8 @@ class BaseBridge extends Base
   # @public
   ###
   connect: =>
-    @status = @STATUS_TYPE.connecting
+    @status = @STATUS_TYPES.connecting
     @_widgetBridge.setAuthToken @_token
-    @status = @STATUS_TYPE.ready
+    @status = @STATUS_TYPES.ready
 
 module.exports = BaseBridge

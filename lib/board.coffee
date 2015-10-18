@@ -30,8 +30,15 @@ class Board extends Base
     super parent, config
 
     token = @_checkConfig config, 'token', 'string'
+    addr = @_checkConfig config, 'addr', 'string', ''
+    port = @_checkConfig config, 'port', 'number', 0
     @log 'debug', "Auth dummy blynk board was started."
-    @blynk = new Blynk.Blynk(token, {certs_path : './node_modules/blynk-library/certs/'})
+    options =
+      connector: new Blynk.TcpClient
+        addr: addr
+        port: port
+      #certs_path : './node_modules/blynk-library/certs/'
+    @blynk = new Blynk.Blynk(token, options)
 
     @log 'debug', "Construct Input Virtual Pin 0 was started."
     @_inputVPin = new @blynk.VirtualPin(0)

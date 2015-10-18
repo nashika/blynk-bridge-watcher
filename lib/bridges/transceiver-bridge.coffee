@@ -21,6 +21,7 @@ class TransceiverBridge extends BaseBridge
   # @param {string} output
   ###
   send: (command, params..., callback) =>
+    if @status isnt @STATUS_TYPES.ready then return
     pin = params[0] ? 0
     param = params[1] ? ''
     while true
@@ -40,6 +41,7 @@ class TransceiverBridge extends BaseBridge
     delete @_sendCallbacks[requestId]
 
   write: (type, pin, value) =>
+    if @status isnt @STATUS_TYPES.ready then return
     switch type
       when 'digital'
         @_widgetBridge.digitalWrite pin, value

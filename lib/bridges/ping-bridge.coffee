@@ -72,11 +72,13 @@ class PingBridge extends TransceiverBridge
     if @_pinging
       @_pingFailureCount++
       @log 'error', "Ping was no response, failure count #{@_pingFailureCount} / #{@_pingFailureLimit}."
+      @emit '$pingFailure'
       @_pinging = false
       if @_pingFailureCount >= @_pingFailureLimit
         @log 'error', "Ping failed #{@_pingFailureCount} times, the bridge will stop."
         clearInterval @_pingIntervalId
-        @status = @STATUS_TYPE.error
+        @status = @STATUS_TYPES.error
+        @emit '$pingFailureLimit'
 
   _onPing: =>
     @log 'info', "Ping from bridge, response Pong."
