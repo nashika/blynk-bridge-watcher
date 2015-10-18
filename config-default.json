@@ -4,6 +4,8 @@
     {
       "name": "BD01",
       "token": "your node dummy board token",
+      "addr": "your.host",
+      "port": 8442,
       "bridges": [
         {
           "name": "BR01",
