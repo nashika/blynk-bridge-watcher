@@ -15,6 +15,34 @@
             "limit": 3
           },
           "actions": [
+            {
+              "name": "read2",
+              "type": "read",
+              "pinType": "digital",
+              "pin": 2,
+              "next": {
+                "type": "if",
+                "operator": "=",
+                "value": 0,
+                "then": {
+                  "type": "notify",
+                  "notifier": "NT01",
+                  "message": "value 0"
+                },
+                "else": {
+                  "type": "notify",
+                  "notifier": "NT01",
+                  "message": "value 1"
+                }
+              }
+            },
+            {
+              "name": "write13",
+              "type": "write",
+              "pinType": "digital",
+              "pin": 13,
+              "value": 1
+            }
           ]
         }
       ]
@@ -27,6 +55,17 @@
     }
   ],
   "notifiers": [
+    {
+      "name": "NT01",
+      "label": "Notice log",
+      "type": "log"
+    },
+    {
+      "name": "NT02",
+      "label": "Notice pushbullet",
+      "type": "log",
+      "apiKey": "your pushbullet api key"
+    }
   ],
   "jobs": [
     {
