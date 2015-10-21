@@ -21,7 +21,9 @@ class TransceiverBridge extends BaseBridge
   # @param {string} output
   ###
   send: (command, params..., callback) =>
-    if @status isnt @STATUS_TYPES.ready then return
+    if command isnt 'st' and @status isnt @STATUS_TYPES.ready
+      @log 'warn', "Send command='#{command}' params=#{JSON.stringify(params)} can not run. Bridge status='#{@status.label}' is not ready."
+      return
     pin = params[0] ? 0
     param = params[1] ? ''
     while true
@@ -30,7 +32,7 @@ class TransceiverBridge extends BaseBridge
       @_sendCallbacks[requestId] = callback
       break
     output = "#{requestId},#{command},#{pin},#{param}"
-    @log 'trace', "Send output data, bridge='#{@name}' output='#{output}'"
+    @log 'trace', "Send data='#{output}'"
     @_widgetBridge.virtualWrite 0, output
 
   sendCallback: (requestId, args...) =>

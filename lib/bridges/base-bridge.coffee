@@ -43,6 +43,7 @@ class BaseBridge extends Base
 
   constructor: (parent, config) ->
     super parent, config
+    @log 'info', "Connect bridge was started."
     @_token = @_checkConfig config, 'token', 'string'
     @_widgetBridge = new @parent.blynk.WidgetBridge(Object.keys(parent.bridges).length + 1)
     @_initializeChildrenWithGenerator config, 'actions', ActionGenerator
@@ -53,8 +54,13 @@ class BaseBridge extends Base
   # @public
   ###
   connect: =>
+    @log 'info', "Connection started."
     @status = @STATUS_TYPES.connecting
     @_widgetBridge.setAuthToken @_token
-    @status = @STATUS_TYPES.ready
+    setTimeout =>
+      @send 'st', =>
+        @log 'info', "Connection succeed."
+        @status = @STATUS_TYPES.ready
+    , 1000
 
 module.exports = BaseBridge
