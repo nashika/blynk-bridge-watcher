@@ -58,7 +58,8 @@ class Job extends Base
   ###
   _run: =>
     if @_bridge.status isnt @_bridge.STATUS_TYPES.ready
-      @log 'warn', "Job '#{@name}' can not run. Bridge '#{@_bridge.name}' status='#{@_bridge.status.label}' is not ready."
+      @_bridge.log 'warn', "Job '#{@name}' can not run. Bridge '#{@_bridge.name}' status='#{@_bridge.status.label}' is not ready."
+      return
     @log 'debug', "Job '#{@name}' was kicked."
     @_bridge.emit @_action, @_bridge
 

@@ -63,4 +63,11 @@ class BaseBridge extends Base
         @status = @STATUS_TYPES.ready
     , 1000
 
+  ###*
+  # @override
+  ###
+  log: (level, args...) =>
+    super level, args...
+    @emit "$#{level}", this, "#{args.join(' ')}"
+
 module.exports = BaseBridge
