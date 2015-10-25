@@ -54,10 +54,10 @@ class PingBridge extends TransceiverBridge
   connect: =>
     super()
     @log 'info', "Ping setting, interval=#{@_pingIntervalMs}ms timeout=#{@_pingTimeoutMs}ms failureLimit=#{@_pingFailureLimit}"
+    setTimeout @_ping, 1000
     @_pingIntervalId = setInterval @_ping, @_pingIntervalMs
 
   _ping: =>
-    if @status isnt @STATUS_TYPES.ready then return
     @log 'info', "Ping to bridge, waiting Pong..."
     if not @_pinging
       @send 'pi', @_pingCallback
@@ -67,6 +67,7 @@ class PingBridge extends TransceiverBridge
   _pingCallback: =>
     @log 'info', "Pong from bridge."
     @_pinging = false
+    @status = @STATUS_TYPES.ready
     @_pingFailureCount = 0
 
   _pingTimeout: =>

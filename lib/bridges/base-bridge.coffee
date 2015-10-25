@@ -57,11 +57,6 @@ class BaseBridge extends Base
     @log 'info', "Connection started."
     @status = @STATUS_TYPES.connecting
     @_widgetBridge.setAuthToken @_token
-    setTimeout =>
-      @send 'st', =>
-        @log 'info', "Connection succeed."
-        @status = @STATUS_TYPES.ready
-    , 1000
 
   ###*
   # @override

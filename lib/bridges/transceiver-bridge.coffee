@@ -21,7 +21,7 @@ class TransceiverBridge extends BaseBridge
   # @param {string} output
   ###
   send: (command, params..., callback) =>
-    if command isnt 'st' and @status isnt @STATUS_TYPES.ready
+    if command isnt 'pi' and @status isnt @STATUS_TYPES.ready
       @log 'warn', "Send command='#{command}' params=#{JSON.stringify(params)} can not run. Bridge status='#{@status.label}' is not ready."
       return
     pin = params[0] ? 0
