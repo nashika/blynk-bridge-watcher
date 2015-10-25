@@ -14,12 +14,6 @@ class PingBridge extends TransceiverBridge
   ###
   _pingIntervalMs: 60000
 
-  ###
-  # @protected
-  # @type {number}
-  ###
-  _pingTimeoutMs: 5000
-
   ###*
   # @protected
   # @type {number}
@@ -44,7 +38,6 @@ class PingBridge extends TransceiverBridge
   constructor: (parent, config) ->
     super parent, config
     @_pingIntervalMs = @_checkConfig config, 'ping.interval', 'number', @_pingIntervalMs
-    @_pingTimeoutMs = @_checkConfig config, 'ping.timeout', 'number', @_pingTimeoutMs
     @_pingFailureLimit = @_checkConfig config, 'ping.failureLimit', 'number', @_pingFailureLimit
     @on '$ping', @_onPing
 
@@ -60,9 +53,8 @@ class PingBridge extends TransceiverBridge
   _ping: =>
     @log 'info', "Ping to bridge, waiting Pong..."
     if not @_pinging
-      @send 'pi', @_pingCallback
+      @send 'pi', @_pingCallback, @_pingTimeout
     @_pinging = true
-    setTimeout @_pingTimeout, @_pingTimeoutMs
 
   _pingCallback: =>
     @log 'info', "Pong from bridge."
@@ -77,11 +69,10 @@ class PingBridge extends TransceiverBridge
       @_pinging = false
       if @_pingFailureCount >= @_pingFailureLimit
         @log 'error', "Ping failed #{@_pingFailureCount} times, the bridge will stop."
-        clearInterval @_pingIntervalId
         @status = @STATUS_TYPES.error
 
   _onPing: =>
     @log 'info', "Ping from bridge, response Pong."
-    @send 'po'
+    @send 'po', ((args...) =>), (=>)
 
 module.exports = PingBridge
