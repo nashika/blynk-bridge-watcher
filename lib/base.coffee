@@ -1,6 +1,7 @@
 EventEmitter = require 'events'
 
 dot = require 'dot-object'
+merge = require 'merge'
 
 class Base extends EventEmitter
 
@@ -97,7 +98,11 @@ class Base extends EventEmitter
     @log 'debug', "Construct child '#{key}' objects was started."
     @[key] = {}
     for childConfig in childrenConfig
-      @[key][childConfig.name] = new ChildClass(this, childConfig, Object.keys(@[key]).length)
+      if Array.isArray(childConfig.name)
+        for name in childConfig.name
+          @[key][childConfig.name] = new ChildClass(this, childConfig, Object.keys(@[key]).length)
+      else
+        @[key][childConfig.name] = new ChildClass(this, childConfig, Object.keys(@[key]).length)
     @log 'debug', "Construct child '#{key}' objects was finished."
 
   _initializeChildrenWithGenerator: (config, key, ChildGenerator) =>
@@ -108,6 +113,8 @@ class Base extends EventEmitter
     for childConfig in childrenConfig
       @[key][childConfig.name] = generator.generate(this, childConfig, Object.keys(@[key]).length)
     @log 'debug', "Construct child '#{key}' objects was finished."
+
+  _initializeChildrenCommon: (config, key, GenClass, generator) =>
 
   ###*
   # @protected
