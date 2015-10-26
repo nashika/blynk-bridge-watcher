@@ -93,28 +93,22 @@ class Base extends EventEmitter
   # @protected
   #
   ###
-  _initializeChildren: (config, key, ChildClass)=>
-    childrenConfig = @_checkConfig config, key, 'array'
-    @log 'debug', "Construct child '#{key}' objects was started."
-    @[key] = {}
-    for childConfig in childrenConfig
-      if Array.isArray(childConfig.name)
-        for name in childConfig.name
-          @[key][childConfig.name] = new ChildClass(this, childConfig, Object.keys(@[key]).length)
-      else
-        @[key][childConfig.name] = new ChildClass(this, childConfig, Object.keys(@[key]).length)
-    @log 'debug', "Construct child '#{key}' objects was finished."
+  _initializeChildren: (config, key, ChildClass) =>
+    @_initializeChildrenCommon config, key, ChildClass, (ChildClass, childConfig) =>
+      return new ChildClass(this, childConfig)
 
   _initializeChildrenWithGenerator: (config, key, ChildGenerator) =>
+    generator = new ChildGenerator(this)
+    @_initializeChildrenCommon config, key, generator, (generator, childConfig) =>
+      return generator.generate(this, childConfig)
+
+  _initializeChildrenCommon: (config, key, generator, genFunc) =>
     childrenConfig = @_checkConfig config, key, 'array'
     @log 'debug', "Construct child '#{key}' objects was started."
     @[key] = {}
-    generator = new ChildGenerator(this)
     for childConfig in childrenConfig
-      @[key][childConfig.name] = generator.generate(this, childConfig, Object.keys(@[key]).length)
+      @[key][childConfig.name] = genFunc(generator, childConfig)
     @log 'debug', "Construct child '#{key}' objects was finished."
-
-  _initializeChildrenCommon: (config, key, GenClass, generator) =>
 
   ###*
   # @protected

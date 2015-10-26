@@ -49,6 +49,8 @@ class BaseBridge extends Base
     @_initializeChildrenWithGenerator config, 'actions', ActionGenerator
     for actionName, action of @actions
       @on actionName, action.run
+      for alias in action.aliases
+        @on alias, action.run
 
   ###*
   # @public

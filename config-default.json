@@ -44,6 +44,13 @@
               "pinType": "digital",
               "pin": 13,
               "value": 1
+            },
+            {
+              "name": "report",
+              "aliases": ["$fatal", "$error", "$warn"],
+              "type": "notify",
+              "notifier": "NT01",
+              "message": "%s"
             }
           ]
         }
@@ -65,7 +72,7 @@
     {
       "name": "NT02",
       "label": "Notice pushbullet",
-      "type": "log",
+      "type": "pushbullet",
       "apiKey": "your pushbullet api key"
     }
   ],

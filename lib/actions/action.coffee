@@ -3,17 +3,17 @@ Base = require '../base'
 class Action extends Base
 
   ###*
-  # @protected
-  # @type {string}
+  # @public
+  # @type {Array.<string>}
   ###
-  type: ''
+  aliases: null
 
   ###*
   # @override
   ###
   constructor: (parent, config) ->
     super parent, config
-    @type = @_checkConfig config, 'type', 'string'
+    @aliases = @_checkConfig config, 'aliases', 'array', []
 
   ###*
   # @public
