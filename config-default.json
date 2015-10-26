@@ -27,13 +27,13 @@
                 "operator": "=",
                 "value": 0,
                 "then": {
-                  "type": "notify",
-                  "notifier": "NT01",
+                  "type": "log",
+                  "level": "info",
                   "message": "value 0"
                 },
                 "else": {
-                  "type": "notify",
-                  "notifier": "NT01",
+                  "type": "log",
+                  "level": "info",
                   "message": "value 1"
                 }
               }
@@ -47,7 +47,7 @@
             },
             {
               "name": "report",
-              "aliases": ["$fatal", "$error", "$warn"],
+              "aliases": ["$fatal", "$error", "$warn", "$info"],
               "type": "notify",
               "notifier": "NT01",
               "message": "%s"

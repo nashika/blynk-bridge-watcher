@@ -51,13 +51,13 @@ class PingBridge extends TransceiverBridge
     @_pingIntervalId = setInterval @_ping, @_pingIntervalMs
 
   _ping: =>
-    @log 'info', "Ping to bridge, waiting Pong..."
+    @log 'debug', "Ping to bridge, waiting Pong..."
     if not @_pinging
       @send 'pi', @_pingCallback, @_pingTimeout
     @_pinging = true
 
   _pingCallback: =>
-    @log 'info', "Pong from bridge."
+    @log 'debug', "Pong from bridge."
     @_pinging = false
     @status = @STATUS_TYPES.ready
     @_pingFailureCount = 0
@@ -72,7 +72,7 @@ class PingBridge extends TransceiverBridge
         @status = @STATUS_TYPES.error
 
   _onPing: =>
-    @log 'info', "Ping from bridge, response Pong."
+    @log 'debug', "Ping from bridge, response Pong."
     @send 'po', ((args...) =>), (=>)
 
 module.exports = PingBridge
