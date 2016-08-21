@@ -10,16 +10,20 @@
     "tsc": "tsc",
     "typings": "typings"
   },
-  "author": "",
+  "author": {
+    "name": "nashika",
+    "email": "info@nashika.net",
+    "url": "http://github.com/nashika/"
+  },
   "license": "ISC",
   "dependencies": {
     "blynk-library": "0.0.37",
-    "cron": "1.0.9",
+    "cron": "1.1.0",
     "lodash": "^4.15.0",
     "log4js": "0.6.38",
     "pushbullet": "1.4.3",
-    "source-map-support": "0.3.2",
-    "strip-json-comments": "1.0.4"
+    "source-map-support": "0.4.2",
+    "strip-json-comments": "2.0.1"
   },
   "devDependencies": {
     "typescript": "^1.8.10",
