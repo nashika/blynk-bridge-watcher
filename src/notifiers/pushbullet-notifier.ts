@@ -23,7 +23,7 @@ export class PushbulletNotifier extends Notifier {
     });
   }
 
-  protected _onSend = (messages:string[]):void => {
+  protected send(messages:string[]) {
     let title = messages.length == 1 ? messages[0] : `Receive ${messages.length} messages.`;
     let message = messages.join("\n");
     this._pushbullet.note(null, title, message, (err:any) => {
@@ -32,6 +32,6 @@ export class PushbulletNotifier extends Notifier {
       else
         this.log("debug", `Send pushbullet not was succeed.`);
     });
-  };
+  }
 
 }

@@ -4,7 +4,7 @@ import {Base} from "../base";
 import {Server} from "../server";
 import {NotifyAction} from "../actions/notify-action";
 
-export class Notifier extends Base {
+export abstract class Notifier extends Base {
 
   protected _firstDelay:number = 3000;
   protected _nextDelay:number = 10000;
@@ -30,7 +30,10 @@ export class Notifier extends Base {
   };
 
   protected _onSend = (messages:string[]) => {
+    this.send(messages);
   };
+
+  protected abstract send(messages:string[]):void;
 
   protected _sendFirst = ():void => {
     this.emit("send", this._messages);
