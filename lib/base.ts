@@ -1,17 +1,21 @@
-import EventEmitter = require("events");
+import {EventEmitter} from "events";
 
+import log4js = require("log4js");
 import {Logger} from "log4js";
 import _ = require("lodash");
+import {Generator} from "./generator";
 
-class Base extends EventEmitter {
+export class Base extends EventEmitter {
 
-  protected name:string = "";
+  public parent:Base;
+  public name:string = "";
 
   protected _logger:Logger;
 
-  constructor(public parent:Base, config:Object, logger:Logger) {
+  constructor(parent:Base, config:Object) {
     super();
-    this._logger = this.parent._logger || logger;
+    this.parent = parent;
+    this._logger = log4js.getLogger("system");
     this.name = this._checkConfig(config, "name", "string");
     this.log("trace", `Constructing ${this.constructor.name} object.`);
   }
@@ -35,7 +39,7 @@ class Base extends EventEmitter {
     }
   }
 
-  protected allKeyLabel(...args:string[]):string {
+  public allKeyLabel(...args:string[]):string {
     if (this.parent)
       return this.parent.allKeyLabel(this._keyLabel(), ...args);
     else
@@ -56,45 +60,45 @@ class Base extends EventEmitter {
         process.exit(1);
       }
     }
-    types = _.castArray(types);
-    if (types[0] == "in") {
-      types.shift();
-      for (let type of types) {
+    let arrTypes = _.castArray(types);
+    if (arrTypes[0] == "in") {
+      arrTypes.shift();
+      for (let type of arrTypes) {
         if (target == type) return target;
       }
-      this.log("fatal", `Check config. 'config.${key}' value=${target} is unexpected, expects ${JSON.stringify(types)}.`);
+      this.log("fatal", `Check config. 'config.${key}' value=${target} is unexpected, expects ${JSON.stringify(arrTypes)}.`);
     } else {
-      for (let type of types) {
+      for (let type of arrTypes) {
         if (type == "array") {
           if (Array.isArray(target)) return target;
         } else {
           if (typeof target == type) return target;
         }
       }
-      this.log("fatal", `Check config. 'config.${key}' type=${typeof target} is unexpected, expects ${JSON.stringify(types)}.`);
+      this.log("fatal", `Check config. 'config.${key}' type=${typeof target} is unexpected, expects ${JSON.stringify(arrTypes)}.`);
     }
     process.exit(1);
   }
 
-  protected _initializeChildren(config:Object, key:string, ChildClass:typeof Base):Base {
-    this._initializeChildrenCommon(config, key, ChildClass, (ChildClass, childConfig) => {
+  protected _initializeChildren<T extends Base>(config:Object, key:string, ChildClass:typeof Base) {
+    this._initializeChildrenCommon(config, key, (childConfig) => {
       return new ChildClass(this, childConfig);
     });
   }
 
-  protected _initializeChildrenWithGenerator(config:Object, key:string, ChildGenerator) {
+  protected _initializeChildrenWithGenerator<T extends Base>(config:Object, key:string, ChildGenerator:typeof Generator) {
     let generator = new ChildGenerator(this);
-    this._initializeChildrenCommon(config, key, generator, (generator, childConfig) => {
+    this._initializeChildrenCommon(config, key, (childConfig) => {
       return generator.generate(this, childConfig);
     });
   }
 
-  protected _initializeChildrenCommon(config:Object, key:string, generator:typeof Base, genFunc) {
+  protected _initializeChildrenCommon<T extends Base>(config:Object, key:string, genFunc:(config:Object)=>Base) {
     let childrenConfig = this._checkConfig(config, key, "array");
     this.log("debug", `Construct child '${key}' objects was started.`);
     _.set(this, key, {});
     for (let childConfig of childrenConfig) {
-      _.set(_.get(this, key), childConfig.name, genFunc(generator, childConfig));
+      _.set(_.get(this, key), childConfig.name, genFunc(childConfig));
     }
     this.log("debug", `Construct child '${key}' objects was finished.`);
   }
@@ -104,5 +108,3 @@ class Base extends EventEmitter {
   }
 
 }
-
-module.exports = Base;
