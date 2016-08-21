@@ -1,0 +1,12 @@
+{
+  "name": "blynk-controller",
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20160723033700",
+    "source-map-support": "registry:npm/source-map-support#0.3.0+20160723033700",
+    "strip-json-comments": "registry:npm/strip-json-comments#2.0.0+20160723033700"
+  },
+  "globalDependencies": {
+    "log4js": "registry:dt/log4js#0.0.0+20160608042355",
+    "node": "registry:dt/node#6.0.0+20160818175514"
+  }
+}

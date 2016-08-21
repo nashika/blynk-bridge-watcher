@@ -1,5 +1,6 @@
-.idea/libraries/Generated_files.xml
-.idea/workspace.xml
-config.json
-logs/*.log*
-node_modules
+/.idea/libraries/Generated_files.xml
+/.idea/workspace.xml
+/config.json
+/logs/*.log*
+/node_modules
+/typings
