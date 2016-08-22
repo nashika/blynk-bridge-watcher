@@ -1,0 +1,26 @@
+[
+  {
+    "server": "*",
+    "board": "base",
+    "token": "your node dummy board token",
+    "addr": "your.host",
+    "port": 8442
+  },
+  {},
+  {
+    "server": "default",
+    "board": "BD01",
+    "extends": "base"
+  },
+  {
+    "server": "default",
+    "board": "BD02",
+    "extends": "base"
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+]

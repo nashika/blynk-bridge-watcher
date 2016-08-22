@@ -1,0 +1,24 @@
+[
+  {
+    "server": "*",
+    "board": "*",
+    "bridge": "*",
+    "action": "base"
+  },
+  {},
+  {
+    "server": "default",
+    "board": "BD01",
+    "bridge": "BR01",
+    "action": "read2",
+    "type": "read",
+    "pinType": "digital"
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+]

@@ -1,0 +1,43 @@
+{
+  "name": "board",
+  "columns": [
+    {
+      "header": "Server",
+      "data": "server",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Board",
+      "data": "board",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Extends",
+      "data": "extends",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Token",
+      "data": "token",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Address",
+      "data": "addr",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Port",
+      "data": "port",
+      "type": "numeric",
+      "width": 60
+    }
+  ],
+  "parent": "server",
+  "freezeColumn": 2
+}

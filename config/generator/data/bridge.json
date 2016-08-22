@@ -1,0 +1,40 @@
+[
+  {
+    "server": "*",
+    "board": "*",
+    "bridge": "base",
+    "token": "your board token",
+    "ping": {
+      "interval": 60000,
+      "timeout": 5000,
+      "limit": 3
+    }
+  },
+  {},
+  {
+    "server": "default",
+    "board": "BD01",
+    "bridge": "BR01",
+    "extends": "base",
+    "label": "Default bridge 001"
+  },
+  {
+    "server": "default",
+    "board": "BD01",
+    "bridge": "BR02",
+    "extends": "base",
+    "label": "Default bridge 002"
+  },
+  {
+    "server": "default",
+    "board": "BD02",
+    "bridge": "BR01",
+    "extends": "base",
+    "label": "Default bridge 001"
+  },
+  {},
+  {},
+  {},
+  {},
+  {}
+]

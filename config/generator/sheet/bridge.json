@@ -1,0 +1,61 @@
+{
+  "name": "bridge",
+  "columns": [
+    {
+      "header": "Server",
+      "data": "server",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Board",
+      "data": "board",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Bridge",
+      "data": "bridge",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Extends",
+      "data": "extends",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Label",
+      "data": "label",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Token",
+      "data": "token",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Interval(Ping)",
+      "data": "ping.interval",
+      "type": "numeric",
+      "width": 60
+    },
+    {
+      "header": "Timeout(Ping)",
+      "data": "ping.timeout",
+      "type": "numeric",
+      "width": 60
+    },
+    {
+      "header": "Limit(Ping)",
+      "data": "ping.limit",
+      "type": "numeric",
+      "width": 60
+    }
+  ],
+  "parent": "board",
+  "freezeColumn": 3
+}

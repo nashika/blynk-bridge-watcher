@@ -1,0 +1,85 @@
+{
+  "name": "action",
+  "columns": [
+    {
+      "header": "Server",
+      "data": "server",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Board",
+      "data": "board",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Bridge",
+      "data": "bridge",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Action",
+      "data": "action",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Extends",
+      "data": "extends",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Aliases",
+      "data": "aliases",
+      "type": "text",
+      "width": 120,
+      "json": true
+    },
+    {
+      "header": "Type",
+      "data": "type",
+      "type": "select",
+      "width": 60,
+      "options": [
+        "read",
+        "write",
+        "log",
+        "notify"
+      ]
+    },
+    {
+      "header": "Pin Type",
+      "data": "pinType",
+      "type": "select",
+      "width": 60,
+      "options": [
+        "digital",
+        "analog",
+        "virtual"
+      ]
+    },
+    {
+      "header": "Pin",
+      "data": "pin",
+      "type": "numeric",
+      "width": 60
+    },
+    {
+      "header": "Value",
+      "data": "value",
+      "type": "numeric",
+      "width": 60
+    },
+    {
+      "header": "Col4",
+      "data": "data4",
+      "type": "text",
+      "width": 80
+    }
+  ],
+  "parent": "bridge",
+  "freezeColumn": 4
+}
