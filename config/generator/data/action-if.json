@@ -1,0 +1,27 @@
+[
+  {
+    "server": "*",
+    "board": "*",
+    "bridge": "*",
+    "actionIf": "base"
+  },
+  {},
+  {
+    "server": "default",
+    "board": "BD01",
+    "bridge": "BR01",
+    "actionIf": "RD2IF",
+    "extends": "base",
+    "operator": "=",
+    "value": 0,
+    "then": "RD2IFTH",
+    "else": "RD2IFEL"
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+]

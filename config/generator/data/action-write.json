@@ -1,0 +1,35 @@
+[
+  {
+    "server": "*",
+    "board": "*",
+    "bridge": "*",
+    "actionWrite": "base"
+  },
+  {},
+  {
+    "server": "default",
+    "board": "BD01",
+    "bridge": "BR01",
+    "actionWrite": "WR13O",
+    "extends": "base",
+    "data1": "digital",
+    "pin": 13,
+    "value": 0
+  },
+  {
+    "server": "default",
+    "board": "BD01",
+    "bridge": "BR01",
+    "actionWrite": "WR13C",
+    "extends": "base",
+    "data1": "digital",
+    "pin": 13,
+    "value": 1
+  },
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+]

@@ -1,0 +1,60 @@
+{
+  "name": "action-write",
+  "columns": [
+    {
+      "header": "Server",
+      "data": "server",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Board",
+      "data": "board",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Bridge",
+      "data": "bridge",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Action Write",
+      "data": "actionWrite",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Extends",
+      "data": "extends",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Pin Type",
+      "data": "data1",
+      "type": "select",
+      "width": 60,
+      "options": [
+        "digital",
+        "analog",
+        "virtual"
+      ]
+    },
+    {
+      "header": "Pin",
+      "data": "pin",
+      "type": "numeric",
+      "width": 60
+    },
+    {
+      "header": "Value",
+      "data": "value",
+      "type": "numeric",
+      "width": 60
+    }
+  ],
+  "parent": "bridge",
+  "freezeColumn": 4
+}

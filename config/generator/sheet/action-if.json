@@ -1,0 +1,69 @@
+{
+  "name": "action-if",
+  "columns": [
+    {
+      "header": "Server",
+      "data": "server",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Board",
+      "data": "board",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Bridge",
+      "data": "bridge",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Action If",
+      "data": "actionIf",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Extends",
+      "data": "extends",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Operator",
+      "data": "operator",
+      "type": "select",
+      "width": 60,
+      "options": [
+        "=",
+        "<",
+        ">",
+        "<=",
+        ">=",
+        "!="
+      ]
+    },
+    {
+      "header": "Value",
+      "data": "value",
+      "type": "numeric",
+      "width": 60
+    },
+    {
+      "header": "Then",
+      "data": "then",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Else",
+      "data": "else",
+      "type": "text",
+      "width": 80
+    }
+  ],
+  "parent": "bridge",
+  "freezeColumn": 4
+}
