@@ -1,0 +1,71 @@
+{
+  "name": "action-io",
+  "columns": [
+    {
+      "header": "Server",
+      "data": "server",
+      "type": "text",
+      "width": 120
+    },
+    {
+      "header": "Board",
+      "data": "board",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Bridge",
+      "data": "bridge",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Action Io",
+      "data": "actionIo",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Extends",
+      "data": "extends",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Type",
+      "data": "type",
+      "type": "select",
+      "width": 60,
+      "options": [
+        "read",
+        "write"
+      ]
+    },
+    {
+      "header": "Col1",
+      "data": "data1",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Col2",
+      "data": "data2",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Col3",
+      "data": "data3",
+      "type": "text",
+      "width": 80
+    },
+    {
+      "header": "Col4",
+      "data": "data4",
+      "type": "text",
+      "width": 80
+    }
+  ],
+  "parent": "bridge",
+  "freezeColumn": 4
+}

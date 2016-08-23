@@ -17,7 +17,7 @@ export class Base extends EventEmitter {
     this.parent = parent;
     this._logger = log4js.getLogger("system");
     this.name = this._checkConfig(config, "name", "string");
-    this.log("trace", `Constructing ${this.constructor.name} object.`);
+    this.log("trace", `Constructing ${(<any>this.constructor).name} object.`);
   }
 
   log(level:string, message:string, ...args:any[]) {
@@ -104,7 +104,7 @@ export class Base extends EventEmitter {
   }
 
   protected _keyLabel():string {
-    return `${this.name}(${this.constructor.name})`;
+    return `${this.name}(${(<any>this.constructor).name})`;
   }
 
 }
