@@ -56,7 +56,7 @@ export class Base extends EventEmitter {
       if (defaultValue !== undefined)
         return defaultValue;
       else {
-        this.log("fatal", "Check config. 'config.#{key}' is undefined.");
+        this.log("fatal", `Check config. 'config.${key}' is undefined.`);
         process.exit(1);
       }
     }

@@ -1,0 +1,51 @@
+{
+  "name": "SV01",
+  "boards": [
+    {
+      "name": "BD01",
+      "token": "your node dummy board token",
+      "addr": "your.host",
+      "port": 8442,
+      "bridges": [
+        {
+          "name": "BR01",
+          "token": "your board token 1",
+          "actions": [
+            {
+              "name": "RD01",
+              "type": "read",
+              "pinType": "digital",
+              "pin": 2,
+              "next": {
+                "type": "if",
+                "operator": "=",
+                "value": 0,
+                "then": {
+                  "type": "log",
+                  "level": "info",
+                  "message": "value 0"
+                },
+                "else": {
+                  "type": "log",
+                  "level": "info",
+                  "message": "value 1"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notifiers": [
+  ],
+  "jobs": [
+    {
+      "name": "JB01",
+      "cronTime": "*/5 * * * * *",
+      "board": "BD01",
+      "bridge": "BR01",
+      "action": "RD01"
+    }
+  ]
+}

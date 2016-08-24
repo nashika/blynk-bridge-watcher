@@ -24,13 +24,13 @@ export class PushbulletNotifier extends Notifier {
   }
 
   protected send(messages:string[]) {
-    let title = messages.length == 1 ? messages[0] : `Receive ${messages.length} messages.`;
+    let title = `Receive ${messages.length} messages.`;
     let message = messages.join("\n");
     this._pushbullet.note(null, title, message, (err:any) => {
       if (err)
-        this.log("error", `Send pushbullet note was failed.`);
+        this.log("error", `Send pushbullet was failed.`);
       else
-        this.log("debug", `Send pushbullet not was succeed.`);
+        this.log("debug", `Send pushbullet was succeed.`);
     });
   }
 

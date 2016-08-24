@@ -6,6 +6,7 @@ import {NotifyAction} from "../actions/notify-action";
 
 export abstract class Notifier extends Base {
 
+  public parent:Server;
   protected _firstDelay:number = 3000;
   protected _nextDelay:number = 10000;
   private _waiting:boolean = false;

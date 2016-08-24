@@ -50,7 +50,7 @@ export class BaseBridge extends Base {
 
   log(level:string, message:string, ...args:string[]) {
     super.log(level, message, ...args);
-    this.emit(`$${level}`, this, `${args.join(" ")}`);
+    this.emit(`$${level}`, this, `[${level}] ${message}`, ...args);
   }
 
 }

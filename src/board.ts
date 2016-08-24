@@ -15,7 +15,7 @@ export class Board extends Base {
     super(parent, config);
     let token:string = this._checkConfig(config, "token", "string");
     let addr:string = this._checkConfig(config, "addr", "string", "");
-    let port:number = this._checkConfig(config, "port", "number", 0);
+    let port:number = this._checkConfig(config, "port", "number", 8442);
     this.log("debug", `Auth dummy blynk board was started.`);
     let options = {
       connector: new Blynk.TcpClient({
