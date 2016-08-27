@@ -1,5 +1,5 @@
 import {BaseBridge} from "./base-bridge";
-import {uid} from "../common/uid";
+import {uid} from "../../common/uid";
 import {Board} from "../board";
 
 export class TransceiverBridge extends BaseBridge {

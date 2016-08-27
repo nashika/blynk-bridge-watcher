@@ -3,7 +3,6 @@ import {Board} from "./board";
 import {Notifier} from "./notifiers/notifier";
 import {NotifierGenerator} from "./notifiers/notifier-generator";
 import {Job} from "./job";
-import {Logger} from "log4js";
 
 export class Server extends Base {
 
