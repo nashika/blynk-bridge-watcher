@@ -1,0 +1,9 @@
+section.server {
+  margin: 20px 0px;
+  @include box-shadow(0 5px 5px rgba(0, 0, 0, 0.25));
+  border: 1px solid $brand-lightest;
+
+  > h1 {
+    display: none;
+  }
+}

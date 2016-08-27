@@ -8,6 +8,7 @@
   "globalDependencies": {
     "body-parser": "registry:dt/body-parser#0.0.0+20160619023215",
     "cookie-parser": "registry:dt/cookie-parser#1.3.4+20160316155526",
+    "core-js": "registry:dt/core-js#0.0.0+20160725163759",
     "cron": "registry:dt/cron#1.0.9+20160316155526",
     "express": "registry:dt/express#4.0.0+20160708185218",
     "express-serve-static-core": "registry:dt/express-serve-static-core#4.0.0+20160819131900",

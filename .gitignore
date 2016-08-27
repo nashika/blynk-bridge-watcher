@@ -1,6 +1,5 @@
 /.idea/libraries/Generated_files.xml
 /.idea/workspace.xml
-/config/config.json
 /logs/*.log*
 /node_modules
 /public/dist
