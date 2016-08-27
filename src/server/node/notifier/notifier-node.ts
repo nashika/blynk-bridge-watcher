@@ -3,8 +3,11 @@ import util = require("util");
 import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
 import {NotifyActionNode} from "../action/notify-action-node";
+import {NotifierEntity} from "../../../common/entity/notifier-entity";
 
 export abstract class NotifierNode extends BaseNode {
+
+  static modelName = "notifier";
 
   public parent:ServerNode;
   protected _firstDelay:number = 3000;
@@ -12,10 +15,10 @@ export abstract class NotifierNode extends BaseNode {
   private _waiting:boolean = false;
   private _messages:string[] = null;
 
-  constructor(server:ServerNode, config:Object) {
-    super(server, config);
-    this._firstDelay = this._checkConfig(config, "firstDelay", "number", this._firstDelay);
-    this._nextDelay = this._checkConfig(config, "nextDelay", "number", this._nextDelay);
+  constructor(server:ServerNode, entity:NotifierEntity) {
+    super(server, entity);
+    this._firstDelay = this._checkConfig(entity, "firstDelay", "number", this._firstDelay);
+    this._nextDelay = this._checkConfig(entity, "nextDelay", "number", this._nextDelay);
     this._messages = [];
     this.on("notify", this._onNotify);
     this.on("send", this._onSend);

@@ -1,3 +1,4 @@
+import {BoardEntity} from "../../common/entity/board-entity";
 var Blynk = require("blynk-library");
 
 import {BaseNode} from "./base-node";
@@ -6,16 +7,18 @@ import {BridgeNode} from "./bridge/bridge-node";
 
 export class BoardNode extends BaseNode {
 
+  static modelName = "board";
+
   parent:ServerNode;
   blynk:any;
   bridges:{[name:string]:BridgeNode};
   _inputVPin:any;
 
-  constructor(parent:ServerNode, config:Object) {
-    super(parent, config);
-    let token:string = this._checkConfig(config, "token", "string");
-    let addr:string = this._checkConfig(config, "addr", "string", "");
-    let port:number = this._checkConfig(config, "port", "number", 8442);
+  constructor(parent:ServerNode, entity:BoardEntity) {
+    super(parent, entity);
+    let token:string = this._checkConfig(entity, "token", "string");
+    let addr:string = this._checkConfig(entity, "addr", "string", "");
+    let port:number = this._checkConfig(entity, "port", "number", 8442);
     this.log("debug", `Auth dummy blynk board was started.`);
     let options = {
       connector: new Blynk.TcpClient({
@@ -30,7 +33,7 @@ export class BoardNode extends BaseNode {
     this._inputVPin = new this.blynk.VirtualPin(0);
     this.log("debug", `Construct Input Virtual Pin 0 was finished.`);
 
-    this._initializeChildren(config, "bridges", BridgeNode);
+    this.initializeChildren("bridges", BridgeNode);
 
     this._inputVPin.on("write", this._onInputVPin);
     this.blynk.on("connect", this._onConnect);

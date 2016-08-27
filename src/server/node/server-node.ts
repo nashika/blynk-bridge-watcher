@@ -8,27 +8,41 @@ import {ServerEntity} from "../../common/entity/server-entity";
 
 export class ServerNode extends BaseNode {
 
+  static modelName = "server";
+
   boards:{[name:string]:BoardNode};
   notifiers:{[name:string]:NotifierNode};
   jobs:{[name:string]:JobNode};
 
-  constructor() {
-    super(null);
+  constructor(entity:ServerEntity) {
+    super(null, entity);
+  }
 
-    //this._initializeChildren(config, "boards", BoardNode);
-    //this._initializeChildrenWithGenerator(config, "notifiers", NotifierGeneratorNode);
-    //this._initializeChildren(config, "jobs", JobNode);
+  static generate():Promise<ServerNode> {
+    let result:ServerNode;
+    return tableRegistry.server.findOne().then(serverEntity => {
+      if (serverEntity) {
+        return serverEntity;
+      } else {
+        let entity = new ServerEntity({name: "SV01"});
+        return tableRegistry.server.insert(entity);
+      }
+    }).then((entity:ServerEntity) => {
+      result = new ServerNode(entity);
+      return result.initialize();
+    }).then(() => {
+      return result;
+    });
   }
 
   initialize():Promise<void> {
-    return tableRegistry.server.findOne().then(serverEntity => {
-      if (serverEntity) {
-        this.entity = serverEntity;
-      } else {
-        this.entity = new ServerEntity({name: "SV01"});
-        return tableRegistry.server.upsert(this.entity);
-      }
-    })
+    return Promise.resolve().then(() => {
+      return this.initializeChildren("boards", BoardNode);
+    }).then(() => {
+      return this.initializeChildrenWithGenerator("notifiers", NotifierGeneratorNode);
+    }).then(() => {
+      return this.initializeChildren("jobs", JobNode);
+    });
   }
 
 }

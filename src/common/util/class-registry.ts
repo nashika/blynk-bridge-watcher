@@ -10,7 +10,7 @@ export abstract class ClassRegistry<T> {
     this.instances = {};
   }
 
-  public getClass(name:string):Function {
+  getClass(name:string):Function {
     let key = _.camelCase(name);
     if (this.Classes[key]) {
       return this.Classes[key];
@@ -18,7 +18,7 @@ export abstract class ClassRegistry<T> {
     return undefined;
   }
 
-  public getAllClasses():{[key:string]:Function} {
+  getAllClasses():{[key:string]:Function} {
     let result:{[key:string]:Function} = {};
     for (let key in this.Classes) {
       result[key] = this.Classes[key]
@@ -26,13 +26,13 @@ export abstract class ClassRegistry<T> {
     return result;
   }
 
-  public getAllClassesArray():Function[] {
+  getAllClassesArray():Function[] {
     let result:Function[];
     result = Object.keys(this.Classes).map(key => this.Classes[key]);
     return result;
   }
 
-  public getInstance(name:string):T {
+  getInstance(name:string):T {
     let key = _.camelCase(name);
     if (this.instances[key]) {
       return this.instances[key];
@@ -46,7 +46,7 @@ export abstract class ClassRegistry<T> {
     return undefined;
   }
 
-  public getAllInstance():{[key:string]:T} {
+  getAllInstance():{[key:string]:T} {
     let result:{[key:string]:T} = {};
     for (let key in this.Classes) {
       result[key] = this.getInstance(key);
@@ -54,7 +54,7 @@ export abstract class ClassRegistry<T> {
     return this.instances;
   }
 
-  public getAllInstanceArray():T[] {
+  getAllInstanceArray():T[] {
     let result:T[];
     result = Object.keys(this.Classes).map(key => this.getInstance(key));
     return result;

@@ -1,23 +1,37 @@
+import path = require("path");
+
 import NeDBDataStore = require("nedb");
+
 import {BaseEntity} from "../../common/entity/base-entity";
+import {entityRegistry} from "../../common/entity/entity-registry";
 
-export abstract class BaseTable<T> {
+export class BaseTable<T extends BaseEntity> {
 
-  NAME:string;
+  static modelName:string;
+
   db:NeDBDataStore;
 
   constructor() {
     this.db = new NeDBDataStore({
-      filename: `../../../db/${this.NAME}.db`,
+      filename: path.join(__dirname, `../../../db/${this.Class.modelName}.db`),
       autoload: true,
     });
   }
 
-  findAll():Promise<T[]> {
+  get Class():typeof BaseTable {
+    return <typeof BaseTable>this.constructor;
+  }
+
+  get EntityClass():typeof BaseEntity {
+    return entityRegistry.getClass(this.Class.modelName);
+  }
+
+  find(query:any = {}):Promise<T[]> {
     return new Promise<T[]>((resolve, reject) => {
-      this.db.find<T>({}, (err, docs) => {
+      this.db.find<T>(query, (err, docs) => {
         if (err) return reject(err);
-        resolve(docs);
+        let entities:T[] = docs.map(doc => <T>new this.EntityClass(doc));
+        resolve(entities);
       });
     });
   }
@@ -27,23 +41,26 @@ export abstract class BaseTable<T> {
       if (id) {
         this.db.findOne<T>({_id: id}, (err, doc) => {
           if (err) return reject(err);
-          resolve(doc);
+          let entity:T = <T>new this.EntityClass(doc);
+          resolve(entity);
         });
       } else {
         this.db.find<T>({}).limit(1).exec((err, docs) => {
           if (err) return reject(err);
-          resolve(docs[0] ? docs[0] : null);
+          let entity:T = docs[0] ? <T>new this.EntityClass(docs[0]) : null;
+          resolve(entity);
         });
       }
     });
   }
 
-  upsert(entity:BaseEntity):Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      this.db.update(entity, {}, {upsert: true}, (err) => {
+  insert(entity:BaseEntity):Promise<T> {
+    return new Promise((resolve, reject) => {
+      this.db.insert(entity, (err, newDoc) => {
         if (err) return reject(err);
-        resolve();
-      })
+        let entity:T = <T>new this.EntityClass(newDoc);
+        resolve(entity);
+      });
     });
   }
 

@@ -1,6 +1,6 @@
 import _ = require("lodash");
 
-export abstract class BaseEntity {
+export class BaseEntity {
 
   _id:string;
   name:string;

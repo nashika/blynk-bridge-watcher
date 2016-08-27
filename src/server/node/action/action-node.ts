@@ -1,15 +1,18 @@
 import {BaseNode} from "../base-node";
 import {BridgeNode} from "../bridge/bridge-node";
 import {ActionGeneratorNode} from "./action-generator-node";
+import {ActionEntity} from "../../../common/entity/action-entity";
 
 export class ActionNode extends BaseNode {
+
+  static modelName = "action";
 
   parent:BridgeNode;
   aliases:string[];
 
-  constructor(parent:BridgeNode, config:Object) {
-    super(parent, config);
-    this.aliases = this._checkConfig(config, "aliases", "array", []);
+  constructor(parent:BridgeNode, entity:ActionEntity) {
+    super(parent, entity);
+    this.aliases = this._checkConfig(entity, "aliases", "array", []);
   }
 
   run = (caller:BaseNode, ...args:string[]) => {

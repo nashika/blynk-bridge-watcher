@@ -8,22 +8,27 @@ import {tableRegistry} from "../table/table-registry";
 import {BaseTable} from "../table/base-table";
 import {BaseEntity} from "../../common/entity/base-entity";
 
-export abstract class BaseNode extends EventEmitter {
+export class BaseNode extends EventEmitter {
 
-  MODEL_NAME:string;
+  static modelName:string;
 
   parent:BaseNode;
   entity:BaseEntity;
   name:string = "";
 
-  constructor(parent:BaseNode, id:string = "") {
+  constructor(parent:BaseNode, entity:BaseEntity) {
     super();
     this.parent = parent;
+    this.entity = entity;
     this.log("trace", `Constructing ${(<any>this.constructor).name} object.`);
   }
 
-  get table():BaseTable<BaseEntity> {
-    return tableRegistry.getInstance(this.MODEL_NAME);
+  get Class():typeof BaseNode {
+    return <typeof BaseNode>this.constructor;
+  }
+
+  static table():BaseTable<BaseEntity> {
+    return tableRegistry.getInstance(this.modelName);
   }
 
   log(level:string, message:string, ...args:any[]) {
@@ -87,27 +92,28 @@ export abstract class BaseNode extends EventEmitter {
     process.exit(1);
   }
 
-  protected _initializeChildren<T extends BaseNode>(config:Object, key:string, ChildClass:typeof BaseNode) {
-    this._initializeChildrenCommon(config, key, (childConfig) => {
-      return new (<any>ChildClass)(this, childConfig);
+  protected initializeChildren(key:string, ChildClass:typeof BaseNode):Promise<void> {
+    return this._initializeChildrenCommon(key, ChildClass, childEntity => {
+      return new ChildClass(this, childEntity);
     });
   }
 
-  protected _initializeChildrenWithGenerator<T extends BaseNode>(config:Object, key:string, ChildGenerator:typeof GeneratorNode) {
+  protected initializeChildrenWithGenerator(key:string, ChildGenerator:typeof GeneratorNode):Promise<void> {
     let generator = new ChildGenerator(this);
-    this._initializeChildrenCommon(config, key, (childConfig) => {
-      return generator.generate(this, childConfig);
+    return this._initializeChildrenCommon(key, ChildGenerator, childEntity => {
+      return generator.generate(this, childEntity);
     });
   }
 
-  protected _initializeChildrenCommon<T extends BaseNode>(config:Object, key:string, genFunc:(config:Object)=>BaseNode) {
-    let childrenConfig = this._checkConfig(config, key, "array");
+  private _initializeChildrenCommon(key:string, ChildClass:typeof BaseNode, genFunc:(entity:BaseEntity)=>BaseNode):Promise<void> {
     this.log("debug", `Construct child '${key}' objects was started.`);
     _.set(this, key, {});
-    for (let childConfig of childrenConfig) {
-      _.set(_.get(this, key), childConfig.name, genFunc(childConfig));
-    }
-    this.log("debug", `Construct child '${key}' objects was finished.`);
+    return ChildClass.table().find({_id: this.entity._id}).then(entities => {
+      for (let entity of entities) {
+        _.set(_.get(this, key), entity.name, genFunc(entity));
+      }
+      this.log("debug", `Construct child '${key}' objects was finished.`);
+    });
   }
 
   protected _keyLabel():string {

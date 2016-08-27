@@ -2,10 +2,13 @@ import {BaseNode} from "../base-node";
 import {ActionGeneratorNode} from "../action/action-generator-node";
 import {BoardNode} from "../board-node";
 import {ActionNode} from "../action/action-node";
+import {BridgeEntity} from "../../../common/entity/bridge-entity";
 
 export type WidgetBridge = any;
 
 export class BaseBridgeNode extends BaseNode {
+
+  static modelName = "bridge";
 
   STATUS_TYPES:{[status:string]:{label:string}} = {
     constructing: {
@@ -28,12 +31,12 @@ export class BaseBridgeNode extends BaseNode {
   protected _token:string;
   protected _widgetBridge:WidgetBridge;
 
-  constructor(parent:BoardNode, config:Object) {
-    super(parent, config);
+  constructor(parent:BoardNode, entity:BridgeEntity) {
+    super(parent, entity);
     this.log("info", `Connect bridge was started.`);
-    this._token = this._checkConfig(config, "token", "string");
+    this._token = this._checkConfig(entity, "token", "string");
     this._widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(parent.bridges).length + 1);
-    this._initializeChildrenWithGenerator(config, "actions", ActionGeneratorNode);
+    this.initializeChildrenWithGenerator("actions", ActionGeneratorNode);
     for (let actionName in this.actions) {
       let action:ActionNode = this.actions[actionName];
       this.on(actionName, action.run);

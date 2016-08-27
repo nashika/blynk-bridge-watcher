@@ -4,6 +4,8 @@ import {PushbulletNotifierNode} from "./pushbullet-notifier-node";
 
 export class NotifierGeneratorNode extends GeneratorNode {
 
+  static modelName = "notifier";
+
   TYPE_TO_CLASS = {
     log: LogNotifierNode,
     pushbullet: PushbulletNotifierNode,
