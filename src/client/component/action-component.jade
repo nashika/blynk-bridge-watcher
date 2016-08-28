@@ -1,12 +1,15 @@
-extends ./base-entity-component.jade
+-
+  var actions = [
+    "if",
+    "log",
+    "notify",
+    "read",
+    "write",
+  ];
 
-block variables
-  -
-    var icon = "gavel"
-    var singularName = "action";
-    var singularTitleizeName = "Action";
-
-block body
-  p now construction
-
-block form
+section(v-if="!add", class!=singularName)
+  each action in actions
+    #{action + "-action-component"}(v-if="entity.type == '#{action}'", :entity="entity")
+.add(v-else)
+  each action in actions
+    #{action + "-action-component"}(:add="true")
