@@ -16,7 +16,7 @@ export class BaseNode extends EventEmitter {
   entity:BaseEntity;
   name:string = "";
 
-  constructor(parent:BaseNode, entity:BaseEntity) {
+  constructor(parent:BaseNode = null, entity:BaseEntity = null) {
     super();
     this.parent = parent;
     this.entity = entity;

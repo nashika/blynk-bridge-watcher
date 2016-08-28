@@ -5,35 +5,35 @@ import log4js = require("log4js");
 let logger = log4js.getLogger("system");
 
 export class CodeError extends Error {
-  code:number;
+  code: number;
 }
 
 export class Code403Error extends CodeError {
-  code:number = 403;
-  message:string = "Access Forbidden";
+  code: number = 403;
+  message: string = "Access Forbidden";
 }
 
 export class Code404Error extends CodeError {
-  code:number = 404;
-  message:string = "Not Found";
+  code: number = 404;
+  message: string = "Not Found";
 }
 
 export class Code500Error extends CodeError {
-  code:number = 500;
-  message:string = "Internal Server Error";
+  code: number = 500;
+  message: string = "Internal Server Error";
 }
 
 export class BaseRoute {
 
-  constructor(protected app:Express) {
+  constructor(protected app: Express) {
   }
 
-  protected responseErrorHtml(res:Response, err:any) {
+  protected responseErrorHtml(res: Response, err: any) {
     let parse = this.parseError(err);
     res.status(parse.code).render("error", {error: {status: parse.code, message: parse.message, stack: parse.stack}});
   }
 
-  protected responseErrorJson(res:Response, err:any) {
+  protected responseErrorJson(res: Response, err: any) {
     let parse = this.parseError(err);
     let result = {
       result: false,
@@ -45,8 +45,8 @@ export class BaseRoute {
     res.status(parse.code).json(result);
   }
 
-  private parseError(err:any):{code:number, message:string, stack:string} {
-    let code:number, message:string, stack:string;
+  private parseError(err: any): {code: number, message: string, stack: string} {
+    let code: number, message: string, stack: string;
     if (err instanceof CodeError) {
       let codeError = <CodeError>err;
       code = codeError.code;

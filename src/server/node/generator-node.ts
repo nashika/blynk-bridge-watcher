@@ -5,7 +5,7 @@ export class GeneratorNode extends BaseNode {
   TYPE_TO_CLASS:{[type:string]:any} = {};
 
   constructor(parent:BaseNode) {
-    super(parent, {_id: null, name: "generator"});
+    super(parent, <any>{_id: null, _parent:parent.entity._id, name: "generator"});
   }
 
   generate(parent:BaseNode, config:Object) {

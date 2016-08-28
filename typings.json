@@ -16,6 +16,7 @@
     "mime": "registry:dt/mime#0.0.0+20160316155526",
     "nedb": "registry:dt/nedb#0.0.0+20160505185910",
     "node": "registry:dt/node#6.0.0+20160818175514",
-    "serve-static": "registry:dt/serve-static#0.0.0+20160606155157"
+    "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",
+    "superagent": "registry:dt/superagent#2.0.0+20160811085415"
   }
 }

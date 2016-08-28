@@ -1,2 +1,3 @@
 .container
-  server-component
+  server-component(v-if="server", ":entity"="server")
+  div(v-else) Loading server...

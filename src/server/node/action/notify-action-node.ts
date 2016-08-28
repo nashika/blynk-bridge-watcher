@@ -1,5 +1,6 @@
 import {ActionNode} from "./action-node";
 import {BridgeNode} from "../bridge/bridge-node";
+import {ActionEntity} from "../../../common/entity/action-entity";
 
 export class NotifyActionNode extends ActionNode {
 
@@ -7,10 +8,10 @@ export class NotifyActionNode extends ActionNode {
 
   protected _notifier:string;
 
-  constructor(parent:BridgeNode, config:Object) {
-    super(parent, config);
-    this._notifier = this._checkConfig(config, "notifier", "string");
-    this.message = this._checkConfig(config, "message", "string");
+  constructor(parent:BridgeNode, entity:ActionEntity) {
+    super(parent, entity);
+    this._notifier = this._checkConfig(entity, "notifier", "string");
+    this.message = this._checkConfig(entity, "message", "string");
   }
 
   run = (bridge:BridgeNode, ...args:string[]) => {

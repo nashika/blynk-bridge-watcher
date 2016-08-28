@@ -10,6 +10,7 @@ import {routes} from './routes/index';
 
 import "./log4js";
 import {ServerNode} from "./node/server-node";
+import {nodeRegistry} from "./node/node-registry";
 let logger = log4js.getLogger("system");
 
 logger.info("Web server initialize started.");
@@ -63,7 +64,7 @@ app.use((err:any, req:Request, res:Response, next:NextFunction) => {
 logger.info("Web server initialize finished.");
 
 logger.info("Server node initialize started.");
-ServerNode.generate().then(() => {
+nodeRegistry.server.initialize().then(() => {
   logger.info("Server node initialize finished.");
 }).catch(err => {
   logger.fatal(err);

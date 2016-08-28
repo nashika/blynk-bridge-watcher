@@ -1,6 +1,7 @@
 import {BaseBridgeNode} from "./base-bridge-node";
 import {uid} from "../../../common/util/uid";
 import {BoardNode} from "../board-node";
+import {BridgeEntity} from "../../../common/entity/bridge-entity";
 
 export class TransceiverBridgeNode extends BaseBridgeNode {
 
@@ -8,8 +9,8 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
 
   protected _sendCallbacks:{[key:string]:(...args:string[]) => void};
 
-  constructor(parent:BoardNode, config:Object) {
-    super(parent, config);
+  constructor(parent:BoardNode, entity:BridgeEntity) {
+    super(parent, entity);
     this._sendCallbacks = {};
   }
 

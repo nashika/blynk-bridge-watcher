@@ -1,5 +1,6 @@
 import {TransceiverBridgeNode} from "./transceiver-bridge-node";
 import {BoardNode} from "../board-node";
+import {BridgeEntity} from "../../../common/entity/bridge-entity";
 
 export class PingBridgeNode extends TransceiverBridgeNode {
 
@@ -9,10 +10,10 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   protected _pingFailureCount:number = 0;
   protected _pingIntervalId:any = 0;
 
-  constructor(parent:BoardNode, config:Object) {
-    super(parent, config);
-    this._pingIntervalMs = this._checkConfig(config, "ping.interval", "number", this._pingIntervalMs);
-    this._pingFailureLimit = this._checkConfig(config, "ping.failureLimit", "number", this._pingFailureLimit);
+  constructor(parent:BoardNode, entity:BridgeEntity) {
+    super(parent, entity);
+    this._pingIntervalMs = this._checkConfig(entity, "ping.interval", "number", this._pingIntervalMs);
+    this._pingFailureLimit = this._checkConfig(entity, "ping.failureLimit", "number", this._pingFailureLimit);
     this.on("$ping", this._onPing);
   }
 

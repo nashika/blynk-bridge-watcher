@@ -6,12 +6,12 @@ import {Express} from "express";
 
 export class IndexRoute extends BaseRoute {
 
-  constructor(app:Express) {
+  constructor(app: Express) {
     super(app);
     app.get("/", this.index);
   }
 
-  index = (req:Request, res:Response) => {
+  index = (req: Request, res: Response) => {
     res.render("index", {});
   };
 

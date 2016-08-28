@@ -10,33 +10,26 @@ export class ServerNode extends BaseNode {
 
   static modelName = "server";
 
+  entity:ServerEntity;
   boards:{[name:string]:BoardNode};
   notifiers:{[name:string]:NotifierNode};
   jobs:{[name:string]:JobNode};
 
-  constructor(entity:ServerEntity) {
-    super(null, entity);
-  }
-
-  static generate():Promise<ServerNode> {
-    let result:ServerNode;
-    return tableRegistry.server.findOne().then(serverEntity => {
+  initialize():Promise<void> {
+    return Promise.resolve().then(() => {
+      return tableRegistry.server.findOne();
+    }).then(serverEntity => {
       if (serverEntity) {
         return serverEntity;
       } else {
-        let entity = new ServerEntity({name: "SV01"});
+        let entity = ServerEntity.generateDefault();
         return tableRegistry.server.insert(entity);
       }
-    }).then((entity:ServerEntity) => {
-      result = new ServerNode(entity);
-      return result.initialize();
+    }).then(entity => {
+      this.parent = null;
+      this.entity = entity;
+      return;
     }).then(() => {
-      return result;
-    });
-  }
-
-  initialize():Promise<void> {
-    return Promise.resolve().then(() => {
       return this.initializeChildren("boards", BoardNode);
     }).then(() => {
       return this.initializeChildrenWithGenerator("notifiers", NotifierGeneratorNode);

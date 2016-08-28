@@ -1,2 +1,13 @@
 section.server
-  h1 Server
+  .header
+    dropdown.pull-right(text="Menu", type="primary")
+      li
+        a(href="#") Action
+      li
+        a(href="#") Another action
+    h1 Server: {{entity.name}}
+  .body
+    board-component(v-for="board in boards", :entity="board")
+    div(v-if="!boards") Loading boards...
+    .nothing(v-if="boards && boards.length == 0") No boards
+    board-component(:add="true")

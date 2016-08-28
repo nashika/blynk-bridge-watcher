@@ -1,5 +1,6 @@
 import {ActionNode} from "./action-node";
 import {BridgeNode} from "../bridge/bridge-node";
+import {ActionEntity} from "../../../common/entity/action-entity";
 
 export class IfActionNode extends ActionNode {
 
@@ -8,12 +9,12 @@ export class IfActionNode extends ActionNode {
   protected _then:string = "";
   protected _else:string = "";
 
-  constructor(parent:BridgeNode, config:Object) {
-    super(parent, config);
-    this._operator = this._checkConfig(config, "operator", "string");
-    this._value = this._checkConfig(config, "value", "number");
-    this._then = this._addSubAction(parent, config, "then");
-    this._else = this._addSubAction(parent, config, "else");
+  constructor(parent:BridgeNode, entity:ActionEntity) {
+    super(parent, entity);
+    this._operator = this._checkConfig(entity, "operator", "string");
+    this._value = this._checkConfig(entity, "value", "number");
+    this._then = this._addSubAction(parent, entity, "then");
+    this._else = this._addSubAction(parent, entity, "else");
   }
 
   run = (bridge:BridgeNode, ...args:string[]) => {

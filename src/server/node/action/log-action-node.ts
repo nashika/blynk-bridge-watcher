@@ -2,16 +2,17 @@ import util = require("util");
 
 import {ActionNode} from "./action-node";
 import {BridgeNode} from "../bridge/bridge-node";
+import {ActionEntity} from "../../../common/entity/action-entity";
 
 export class LogActionNode extends ActionNode {
 
   protected _level:string;
   protected _message:string;
 
-  constructor(parent:BridgeNode, config:Object) {
-    super(parent, config);
-    this._level = this._checkConfig(config, "level", ["in", "fatal", "error", "warn", "info", "debug", "trace"], "info");
-    this._message = this._checkConfig(config, "message", "string");
+  constructor(parent:BridgeNode, entity:ActionEntity) {
+    super(parent, entity);
+    this._level = this._checkConfig(entity, "level", ["in", "fatal", "error", "warn", "info", "debug", "trace"], "info");
+    this._message = this._checkConfig(entity, "message", "string");
   }
 
   run = (bridge:BridgeNode, ...args:string[]) => {

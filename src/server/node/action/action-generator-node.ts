@@ -7,6 +7,8 @@ import {IfActionNode} from "./if-action-node";
 
 export class ActionGeneratorNode extends GeneratorNode {
 
+  static modelName = "action";
+
   TYPE_TO_CLASS = {
     read: ReadActionNode,
     write: WriteActionNode,

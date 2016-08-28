@@ -2,3 +2,13 @@ html, body {
   height: 100%;
   overflow: hidden;
 }
+
+.nothing {
+  @include border-top-radius(5px);
+  @include border-bottom-radius(5px);
+  border: 3px dotted $mono-light;
+  margin: 10px;
+  padding: 10px;
+  font-size: 150%;
+  text-align: center;
+}
