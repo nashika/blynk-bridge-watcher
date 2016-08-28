@@ -2,10 +2,10 @@ import Component from "vue-class-component";
 import _ = require("lodash");
 
 import {BaseEntityComponent} from "./base-entity-component";
-import {ActionEntity} from "../../common/entity/action-entity";
-import {BridgeComponent} from "./bridge-component";
+import {JobEntity} from "../../common/entity/job-entity";
+import {ServerComponent} from "./server-component";
 
-let template = require("./action-component.jade");
+let template = require("./job-component.jade");
 
 @Component({
   template: template,
@@ -14,15 +14,15 @@ let template = require("./action-component.jade");
     modal: require("vue-strap").modal,
   },
   props: ["entity", "add"],
-  ready: ActionComponent.prototype.onReady,
+  ready: JobComponent.prototype.onReady,
 })
-export class ActionComponent extends BaseEntityComponent<ActionEntity> {
+export class JobComponent extends BaseEntityComponent<JobEntity> {
 
-  $parent: BridgeComponent;
+  $parent: ServerComponent;
 
   data(): any {
     return _.merge(super.data(), {
-      EntityClass: ActionEntity,
+      EntityClass: JobEntity,
     });
   }
 

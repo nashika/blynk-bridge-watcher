@@ -1,3 +1,7 @@
 section.bridge {
   @include component-box;
 }
+
+section.actions {
+  @include component-list-box;
+}

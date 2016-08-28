@@ -2,9 +2,12 @@ extends ./base-entity-component.jade
 
 block variables
   -
+    var icon = "globe";
     var singularName = "server";
     var singularTitleizeName = "Server";
     var disableDelete = true;
 
 block body
   +children("board-component", "board", "boards")
+  +children("notifier-component", "notifier", "notifiers")
+  +children("job-component", "job", "jobs")

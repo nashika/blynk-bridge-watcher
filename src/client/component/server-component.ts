@@ -7,6 +7,8 @@ import {BoardEntity} from "../../common/entity/board-entity";
 import {NotifierEntity} from "../../common/entity/notifier-entity";
 import {JobEntity} from "../../common/entity/job-entity";
 import {BaseEntityComponent} from "./base-entity-component";
+import {NotifierComponent} from "./notifier-component";
+import {JobComponent} from "./job-component";
 
 let template = require("./server-component.jade");
 
@@ -16,6 +18,8 @@ let template = require("./server-component.jade");
     dropdown: require("vue-strap").dropdown,
     modal: require("vue-strap").modal,
     "board-component": BoardComponent,
+    "notifier-component": NotifierComponent,
+    "job-component": JobComponent,
   },
   props: ["entity"],
   ready: ServerComponent.prototype.onReady,

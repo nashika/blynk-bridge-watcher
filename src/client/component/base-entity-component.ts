@@ -42,6 +42,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
     if (this.add) {
       this.editEntity._parent = this.$parent.entity._id;
       serviceRegistry.entity.add(this.editEntity).then(entity => {
+        this.editEntity = <T>this.EntityClass.generateDefault();
         this.$parent.reload();
       });
     } else {

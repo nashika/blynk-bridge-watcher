@@ -1,3 +1,15 @@
 section.server {
   @include component-box;
 }
+
+section.boards {
+  @include component-list-box;
+}
+
+section.notifiers {
+  @include component-list-box;
+}
+
+section.jobs {
+  @include component-list-box;
+}
