@@ -6,9 +6,9 @@ import {BoardNode} from "./board-node";
 import {BridgeNode} from "./bridge/bridge-node";
 import {JobEntity} from "../../common/entity/job-entity";
 
-export class JobNode extends BaseNode {
+export class JobNode extends BaseNode<JobEntity> {
 
-  static modelName = "job";
+  static EntityClass = JobEntity;
 
   parent:ServerNode;
 

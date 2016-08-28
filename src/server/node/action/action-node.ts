@@ -2,10 +2,11 @@ import {BaseNode} from "../base-node";
 import {BridgeNode} from "../bridge/bridge-node";
 import {ActionGeneratorNode} from "./action-generator-node";
 import {ActionEntity} from "../../../common/entity/action-entity";
+import {BaseEntity} from "../../../common/entity/base-entity";
 
-export class ActionNode extends BaseNode {
+export class ActionNode extends BaseNode<ActionEntity> {
 
-  static modelName = "action";
+  static EntityClass = ActionEntity;
 
   parent:BridgeNode;
   aliases:string[];
@@ -15,7 +16,7 @@ export class ActionNode extends BaseNode {
     this.aliases = this._checkConfig(entity, "aliases", "array", []);
   }
 
-  run = (caller:BaseNode, ...args:string[]) => {
+  run = (caller:BaseNode<BaseEntity>, ...args:string[]) => {
     this.log("error", `Action.run is abstract function`);
   };
 

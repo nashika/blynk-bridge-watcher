@@ -3,6 +3,6 @@ import {BoardEntity} from "../../common/entity/board-entity";
 
 export class BoardTable extends BaseTable<BoardEntity> {
 
-  static modelName = "board";
+  static EntityClass = BoardEntity;
 
 }

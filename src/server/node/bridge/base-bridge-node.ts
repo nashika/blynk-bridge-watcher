@@ -6,9 +6,9 @@ import {BridgeEntity} from "../../../common/entity/bridge-entity";
 
 export type WidgetBridge = any;
 
-export class BaseBridgeNode extends BaseNode {
+export class BaseBridgeNode extends BaseNode<BridgeEntity> {
 
-  static modelName = "bridge";
+  static EntityClass = BridgeEntity;
 
   STATUS_TYPES:{[status:string]:{label:string}} = {
     constructing: {

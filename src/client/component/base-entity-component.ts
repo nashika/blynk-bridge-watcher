@@ -23,9 +23,16 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   onReady(EntityClass:typeof BaseEntity) {
     if (this.add) this.editEntity = <T>EntityClass.generateDefault();
     else this.editEntity = _.cloneDeep(this.entity);
+    if (!this.add) this.reload();
   }
 
-  reload() {
+  reload(children:{[key:string]:typeof BaseEntity} = {}) {
+    _.forIn(children, (EntityClass:typeof BaseEntity, key:string) => {
+      _.set(this, key, null);
+      serviceRegistry.entity.getChildren(EntityClass, this.entity._id).then(entities => {
+        _.set(this, key, entities);
+      });
+    });
   }
 
   edit() {

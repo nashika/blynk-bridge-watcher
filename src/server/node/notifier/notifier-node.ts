@@ -5,9 +5,9 @@ import {ServerNode} from "../server-node";
 import {NotifyActionNode} from "../action/notify-action-node";
 import {NotifierEntity} from "../../../common/entity/notifier-entity";
 
-export abstract class NotifierNode extends BaseNode {
+export abstract class NotifierNode extends BaseNode<NotifierEntity> {
 
-  static modelName = "notifier";
+  static EntityClass = NotifierEntity;
 
   public parent:ServerNode;
   protected _firstDelay:number = 3000;

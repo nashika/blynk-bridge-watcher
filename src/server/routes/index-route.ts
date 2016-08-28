@@ -3,11 +3,12 @@ import _ = require("lodash");
 
 import {BaseRoute} from "./base-route";
 import {Express} from "express";
+import {BaseEntity} from "../../common/entity/base-entity";
 
-export class IndexRoute extends BaseRoute {
+export class IndexRoute extends BaseRoute<BaseEntity> {
 
   constructor(app: Express) {
-    super(app);
+    super(app, false);
     app.get("/", this.onIndex);
   }
 

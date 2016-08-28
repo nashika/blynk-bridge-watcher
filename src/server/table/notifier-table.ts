@@ -3,6 +3,6 @@ import {NotifierEntity} from "../../common/entity/notifier-entity";
 
 export class NotifierTable extends BaseTable<NotifierEntity> {
 
-  static modelName = "notifier";
+  static EntityClass = NotifierEntity;
 
 }

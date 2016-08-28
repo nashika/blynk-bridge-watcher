@@ -19,9 +19,13 @@ export class EntityService extends BaseService {
     });
   }
 
-  getAll<T extends BaseEntity>(EntityClass: typeof BaseEntity): Promise<T[]> {
+  getChildren<T extends BaseEntity>(EntityClass: typeof BaseEntity, parent:string): Promise<T[]> {
+    return this.getAll(EntityClass, {_parent: parent});
+  }
+
+  getAll<T extends BaseEntity>(EntityClass: typeof BaseEntity, query:any): Promise<T[]> {
     let url: string = `/${EntityClass.modelName}`;
-    return request.get(url).then(res => {
+    return request.post(url).send(query).then(res => {
       if (!_.isArray(res.body)) throw new Error(`getAll expects entity array.`);
       return _.map(res.body, data => <T>new EntityClass(data));
     });

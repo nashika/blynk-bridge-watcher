@@ -3,7 +3,6 @@ import _ = require("lodash");
 import log4js = require("log4js");
 
 import {tableRegistry} from "../table/table-registry";
-import {entityRegistry} from "../../common/entity/entity-registry";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {BaseTable} from "../table/base-table";
 
@@ -28,11 +27,17 @@ export class Code500Error extends CodeError {
   message: string = "Internal Server Error";
 }
 
-export abstract class BaseRoute {
+export abstract class BaseRoute<T extends BaseEntity> {
 
-  static modelName:string;
+  static EntityClass:typeof BaseEntity;
 
-  constructor(protected app: Express) {
+  constructor(protected app: Express, applyDefaultRoute:boolean) {
+    if (applyDefaultRoute) {
+      app.post(`/${this.Class.EntityClass.modelName}`, this.onIndex);
+      app.post(`/${this.Class.EntityClass.modelName}/add`, this.onAdd);
+      app.post(`/${this.Class.EntityClass.modelName}/edit`, this.onEdit);
+      app.post(`/${this.Class.EntityClass.modelName}/delete`, this.onDelete);
+    }
   }
 
   get Class():typeof BaseRoute {
@@ -40,11 +45,7 @@ export abstract class BaseRoute {
   }
 
   get table():BaseTable<BaseEntity> {
-    return tableRegistry.getInstance(this.Class.modelName);
-  }
-
-  get EntityClass():typeof BaseEntity {
-    return entityRegistry.getClass(this.Class.modelName);
+    return tableRegistry.getInstance(this.Class.EntityClass.modelName);
   }
 
   onIndex = (req: Request, res: Response) => {
@@ -64,27 +65,27 @@ export abstract class BaseRoute {
   };
 
   index(req: Request, res: Response) {
-    this.table.find().then(entities => {
+    this.table.find(req.body).then(entities => {
       res.json(entities);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   add(req: Request, res: Response) {
-    let entity = new this.EntityClass(req.body);
+    let entity = new this.Class.EntityClass(req.body);
     this.table.insert(entity).then(newEntity => {
       res.json(newEntity);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   edit(req: Request, res: Response) {
-    let entity = new this.EntityClass(req.body);
+    let entity = new this.Class.EntityClass(req.body);
     this.table.update(entity).then(updatedEntity => {
       res.json(updatedEntity);
     });
   }
 
   delete(req: Request, res: Response) {
-    let entity = new this.EntityClass(req.body);
+    let entity = new this.Class.EntityClass(req.body);
     this.table.delete(entity).then(() => {
       res.json(true);
     });

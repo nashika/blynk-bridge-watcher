@@ -1,16 +1,13 @@
 import {BaseRoute} from "./base-route";
 import {Express} from "express";
+import {ActionEntity} from "../../common/entity/action-entity";
 
-export class ActionRoute extends BaseRoute {
+export class ActionRoute extends BaseRoute<ActionEntity> {
 
-  static modelName = "action";
+  static EntityClass = ActionEntity;
 
   constructor(app: Express) {
-    super(app);
-    app.get("/action", this.onIndex);
-    app.post("/action/add", this.onAdd);
-    app.post("/action/edit", this.onEdit);
-    app.post("/action/delete", this.onDelete);
+    super(app, true);
   }
 
 }

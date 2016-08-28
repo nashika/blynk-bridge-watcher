@@ -1,13 +1,14 @@
 import {BaseRoute} from "./base-route";
 import {Express, Response, Request} from "express";
 import {tableRegistry} from "../table/table-registry";
+import {ServerEntity} from "../../common/entity/server-entity";
 
-export class ServerRoute extends BaseRoute {
+export class ServerRoute extends BaseRoute<ServerEntity> {
 
-  static modelName = "server";
+  static EntityClass = ServerEntity;
 
   constructor(app: Express) {
-    super(app);
+    super(app, false);
     app.get("/server", this.onIndex);
     app.post("/server/edit", this.onEdit);
   }

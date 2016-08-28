@@ -5,9 +5,9 @@ import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {BridgeNode} from "./bridge/bridge-node";
 
-export class BoardNode extends BaseNode {
+export class BoardNode extends BaseNode<BoardEntity> {
 
-  static modelName = "board";
+  static EntityClass = BoardEntity;
 
   parent:ServerNode;
   blynk:any;

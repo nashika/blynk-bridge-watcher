@@ -1,16 +1,13 @@
 import {BaseRoute} from "./base-route";
 import {Express} from "express";
+import {JobEntity} from "../../common/entity/job-entity";
 
-export class JobRoute extends BaseRoute {
+export class JobRoute extends BaseRoute<JobEntity> {
 
-  static modelName = "job";
+  static EntityClass = JobEntity;
 
   constructor(app: Express) {
-    super(app);
-    app.get("/job", this.onIndex);
-    app.post("/job/add", this.onAdd);
-    app.post("/job/edit", this.onEdit);
-    app.post("/job/delete", this.onDelete);
+    super(app, true);
   }
 
 }

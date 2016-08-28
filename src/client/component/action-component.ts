@@ -1,41 +1,37 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 
-import {BoardComponent} from "./board-component";
 import {BridgeEntity} from "../../common/entity/bridge-entity";
 import {BaseEntityComponent} from "./base-entity-component";
 import {ActionEntity} from "../../common/entity/action-entity";
-import {ActionComponent} from "./action-component";
+import {BridgeComponent} from "./bridge-component";
 
-let template = require("./bridge-component.jade");
+let template = require("./action-component.jade");
 
 @Component({
   template: template,
   components: {
     dropdown: require("vue-strap").dropdown,
     modal: require("vue-strap").modal,
-    "action-component": ActionComponent,
   },
   props: ["entity", "add"],
-  ready: BridgeComponent.prototype.onReady,
+  ready: ActionComponent.prototype.onReady,
 })
-export class BridgeComponent extends BaseEntityComponent<BridgeEntity> {
+export class ActionComponent extends BaseEntityComponent<ActionEntity> {
 
-  $parent: BoardComponent;
-  actions:ActionEntity[];
+  $parent: BridgeComponent;
 
   data(): any {
     return _.merge(super.data(), {
-      actions: null,
     });
   }
 
   onReady() {
-    super.onReady(BridgeEntity);
+    super.onReady(ActionEntity);
   }
 
   reload() {
-    super.reload({actions: ActionEntity});
+    super.reload({});
   }
 
   edit() {

@@ -4,10 +4,11 @@ import {WriteActionNode} from "./write-action-node";
 import {LogActionNode} from "./log-action-node";
 import {NotifyActionNode} from "./notify-action-node";
 import {IfActionNode} from "./if-action-node";
+import {ActionEntity} from "../../../common/entity/action-entity";
 
-export class ActionGeneratorNode extends GeneratorNode {
+export class ActionGeneratorNode extends GeneratorNode<ActionEntity> {
 
-  static modelName = "action";
+  static EntityClass = ActionEntity;
 
   TYPE_TO_CLASS = {
     read: ReadActionNode,

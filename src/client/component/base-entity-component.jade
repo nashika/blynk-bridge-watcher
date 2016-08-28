@@ -8,7 +8,7 @@ mixin children(componentName, singularName, pluralName)
 
 section(v-if="!add", class!=singularName)
   .header
-    dropdown.pull-right(text="Menu", type="primary")
+    dropdown.pull-right(text="Menu", type="default")
       li
         a(@click="showModal = true") Edit
       if !disableDelete

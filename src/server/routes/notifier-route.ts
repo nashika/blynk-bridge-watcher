@@ -1,16 +1,13 @@
 import {BaseRoute} from "./base-route";
 import {Express} from "express";
+import {NotifierEntity} from "../../common/entity/notifier-entity";
 
-export class NotifierRoute extends BaseRoute {
+export class NotifierRoute extends BaseRoute<NotifierEntity> {
 
-  static modelName = "notifier";
+  static EntityClass = NotifierEntity;
 
   constructor(app: Express) {
-    super(app);
-    app.get("/notifier", this.onIndex);
-    app.post("/notifier/add", this.onAdd);
-    app.post("/notifier/edit", this.onEdit);
-    app.post("/notifier/delete", this.onDelete);
+    super(app, true);
   }
 
 }

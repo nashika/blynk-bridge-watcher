@@ -1,16 +1,13 @@
 import {BaseRoute} from "./base-route";
 import {Express} from "express";
+import {BoardEntity} from "../../common/entity/board-entity";
 
-export class BoardRoute extends BaseRoute {
+export class BoardRoute extends BaseRoute<BoardEntity> {
 
-  static modelName = "board";
+  static EntityClass = BoardEntity;
 
   constructor(app: Express) {
-    super(app);
-    app.get("/board", this.onIndex);
-    app.post("/board/add", this.onAdd);
-    app.post("/board/edit", this.onEdit);
-    app.post("/board/delete", this.onDelete);
+    super(app, true);
   }
 
 }

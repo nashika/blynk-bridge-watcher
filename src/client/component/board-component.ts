@@ -34,10 +34,10 @@ export class BoardComponent extends BaseEntityComponent<BoardEntity> {
 
   onReady() {
     super.onReady(BoardEntity);
-    this.bridges = null;
-    serviceRegistry.entity.getAll<BridgeEntity>(BridgeEntity).then(entities => {
-      this.bridges = entities;
-    });
+  }
+
+  reload() {
+    super.reload({bridges: BridgeEntity});
   }
 
   edit() {

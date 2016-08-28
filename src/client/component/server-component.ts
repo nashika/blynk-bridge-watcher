@@ -3,7 +3,6 @@ import _ = require("lodash");
 
 import {BoardComponent} from "./board-component";
 import {ServerEntity} from "../../common/entity/server-entity";
-import {serviceRegistry} from "../service/service-registry";
 import {BoardEntity} from "../../common/entity/board-entity";
 import {NotifierEntity} from "../../common/entity/notifier-entity";
 import {JobEntity} from "../../common/entity/job-entity";
@@ -23,8 +22,6 @@ let template = require("./server-component.jade");
 })
 export class ServerComponent extends BaseEntityComponent<ServerEntity> {
 
-  static EntityClass = ServerEntity;
-
   boards: BoardEntity[];
   notifiers: NotifierEntity[];
   jobs: JobEntity[];
@@ -39,17 +36,10 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
 
   onReady() {
     super.onReady(ServerEntity);
-    this.reload();
   }
 
   reload() {
-    super.reload();
-    this.boards = null;
-    this.notifiers = null;
-    this.jobs = null;
-    serviceRegistry.entity.getAll<BoardEntity>(BoardEntity).then(entities => {
-      this.boards = entities;
-    });
+    super.reload({boards: BoardEntity, notifiers: NotifierEntity, jobs: JobEntity});
   }
 
   edit() {

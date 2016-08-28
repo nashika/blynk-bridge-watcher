@@ -6,9 +6,9 @@ import {JobNode} from "./job-node";
 import {tableRegistry} from "../table/table-registry";
 import {ServerEntity} from "../../common/entity/server-entity";
 
-export class ServerNode extends BaseNode {
+export class ServerNode extends BaseNode<ServerEntity> {
 
-  static modelName = "server";
+  static EntityClass= ServerEntity;
 
   entity:ServerEntity;
   boards:{[name:string]:BoardNode};

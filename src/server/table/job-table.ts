@@ -3,6 +3,6 @@ import {JobEntity} from "../../common/entity/job-entity";
 
 export class JobTable extends BaseTable<JobEntity> {
 
-  static modelName = "job";
+  static EntityClass = JobEntity;
 
 }

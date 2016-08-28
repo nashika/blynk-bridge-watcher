@@ -3,6 +3,6 @@ import {ActionEntity} from "../../common/entity/action-entity";
 
 export class ActionTable extends BaseTable<ActionEntity> {
 
-  static modelName = "action";
+  static EntityClass = ActionEntity;
 
 }
