@@ -1,11 +1,13 @@
-section.server
-  .header
-    - var disableDelete = true;
-    include ./includes/dropdown.jade
-    h1 Server: {{entity.name}}
-  .body
-    board-component(v-for="board in boards", :entity="board")
-    div(v-if="!boards") Loading boards...
-    .nothing(v-if="boards && boards.length == 0") No boards
-    board-component(:add="true")
-include includes/modal.jade
+extends ./base-entity-component.jade
+
+block variables
+  -
+    var singularName = "server";
+    var singularTitleizeName = "Server";
+    var disableDelete = true;
+
+block body
+  board-component(v-for="board in boards", :entity="board")
+  div(v-if="!boards") Loading boards...
+  .nothing(v-if="boards && boards.length == 0") No boards
+  board-component(:add="true")

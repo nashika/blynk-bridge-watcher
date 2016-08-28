@@ -8,10 +8,10 @@ export class IndexRoute extends BaseRoute {
 
   constructor(app: Express) {
     super(app);
-    app.get("/", this.index);
+    app.get("/", this.onIndex);
   }
 
-  index = (req: Request, res: Response) => {
+  onIndex = (req: Request, res: Response) => {
     res.render("index", {});
   };
 

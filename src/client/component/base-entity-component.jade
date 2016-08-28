@@ -1,3 +1,18 @@
+block variables
+
+section(v-if="!add", class!=singularName)
+  .header
+    dropdown.pull-right(text="Menu", type="primary")
+      li
+        a(@click="showModal = true") Edit
+      if !disableDelete
+        li
+          a(@click="delete") Delete
+    h1 #{singularTitleizeName}: {{entity.name}}
+  .body
+    block body
+.add(v-else)
+  button.btn.btn-primary.btn-block(type="button", @click="showModal = true") Add #{singularTitleizeName}
 modal(title="Edit", :show.sync="showModal", effect="fade")
   .modal-body(slot="modal-body")
     form(v-if="editEntity", @submit.prevent="edit()")
@@ -7,7 +22,7 @@ modal(title="Edit", :show.sync="showModal", effect="fade")
       .form-group
         label Label
         input.form-control(type="text", v-model="editEntity.label")
-      yield
+      block form
       button.btn.btn-primary.btn-block(type="submit") Submit
   .modal-footer(slot="modal-footer")
     button.btn.btn-default(type="button", @click="showModal = false") Close

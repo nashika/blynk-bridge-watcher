@@ -1,13 +1,15 @@
-section.board(v-if="!add")
-  .header
-    include includes/dropdown.jade
-    h1 Board: {{entity.name}}
-  .body
-    div(v-if="!bridges") Loading bridges...
-    .nothing(v-if="bridges && bridges.length == 0") No bridges
-.add(v-else)
-  button.btn.btn-primary.btn-block(type="button", @click="showModal = true") Add Board
-include includes/modal.jade
+extends ./base-entity-component.jade
+
+block variables
+  -
+    var singularName = "board";
+    var singularTitleizeName = "Board";
+
+block body
+  div(v-if="!bridges") Loading bridges...
+  .nothing(v-if="bridges && bridges.length == 0") No bridges
+
+block form
   .form-group
     label Token
     input.form-control(type="text", v-model="editEntity.token", required)
