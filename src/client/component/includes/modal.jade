@@ -1,0 +1,13 @@
+modal(title="Edit", :show.sync="showModal", effect="fade")
+  .modal-body(slot="modal-body")
+    form(v-if="editEntity", @submit.prevent="edit()")
+      .form-group
+        label Name
+        input.form-control(type="text", v-model="editEntity.name", required)
+      .form-group
+        label Label
+        input.form-control(type="text", v-model="editEntity.label")
+      yield
+      button.btn.btn-primary.btn-block(type="submit") Submit
+  .modal-footer(slot="modal-footer")
+    button.btn.btn-default(type="button", @click="showModal = false") Close

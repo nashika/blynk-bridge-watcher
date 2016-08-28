@@ -1,11 +1,11 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 
-import {BoardEntity} from "../../common/entity/board-entity";
-import {ServerComponent} from "./server-component";
+import {BoardComponent} from "./board-component";
+import {BridgeEntity} from "../../common/entity/bridge-entity";
 import {BaseEntityComponent} from "./base-entity-component";
 
-let template = require("./board-component.jade");
+let template = require("./bridge-component.jade");
 
 @Component({
   template: template,
@@ -14,18 +14,18 @@ let template = require("./board-component.jade");
     modal: require("vue-strap").modal,
   },
   props: ["entity", "add"],
-  ready: BoardComponent.prototype.onReady,
+  ready: BridgeComponent.prototype.onReady,
 })
-export class BoardComponent extends BaseEntityComponent<BoardEntity> {
+export class BridgeComponent extends BaseEntityComponent<BridgeEntity> {
 
-  $parent: ServerComponent;
+  $parent:BoardComponent;
 
-  data(): any {
+  data():any {
     return super.data();
   }
 
   onReady() {
-    super.onReady(BoardEntity);
+    super.onReady(BridgeEntity);
   }
 
   edit() {

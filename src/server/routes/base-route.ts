@@ -2,6 +2,11 @@ import {Express, Request, Response} from "express";
 import _ = require("lodash");
 import log4js = require("log4js");
 
+import {tableRegistry} from "../table/table-registry";
+import {entityRegistry} from "../../common/entity/entity-registry";
+import {BaseEntity} from "../../common/entity/base-entity";
+import {BaseTable} from "../table/base-table";
+
 let logger = log4js.getLogger("system");
 
 export class CodeError extends Error {
@@ -23,9 +28,66 @@ export class Code500Error extends CodeError {
   message: string = "Internal Server Error";
 }
 
-export class BaseRoute {
+export abstract class BaseRoute {
+
+  static modelName:string;
 
   constructor(protected app: Express) {
+  }
+
+  get Class():typeof BaseRoute {
+    return <typeof BaseRoute>this.constructor;
+  }
+
+  get table():BaseTable<BaseEntity> {
+    return tableRegistry.getInstance(this.Class.modelName);
+  }
+
+  get EntityClass():typeof BaseEntity {
+    return entityRegistry.getClass(this.Class.modelName);
+  }
+
+  onIndex = (req: Request, res: Response) => {
+    this.index(req, res);
+  };
+
+  onAdd = (req: Request, res: Response) => {
+    this.add(req, res);
+  };
+
+  onEdit = (req: Request, res: Response) => {
+    this.edit(req, res);
+  };
+
+  onDelete = (req: Request, res: Response) => {
+    this.delete(req, res);
+  };
+
+  index(req: Request, res: Response) {
+    this.table.find().then(entities => {
+      res.json(entities);
+    }).catch(err => this.responseErrorJson(res, err));
+  }
+
+  add(req: Request, res: Response) {
+    let entity = new this.EntityClass(req.body);
+    this.table.insert(entity).then(newEntity => {
+      res.json(newEntity);
+    }).catch(err => this.responseErrorJson(res, err));
+  }
+
+  edit(req: Request, res: Response) {
+    let entity = new this.EntityClass(req.body);
+    this.table.update(entity).then(updatedEntity => {
+      res.json(updatedEntity);
+    });
+  }
+
+  delete(req: Request, res: Response) {
+    let entity = new this.EntityClass(req.body);
+    this.table.delete(entity).then(() => {
+      res.json(true);
+    });
   }
 
   protected responseErrorHtml(res: Response, err: any) {

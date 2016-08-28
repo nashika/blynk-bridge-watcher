@@ -27,22 +27,22 @@ export class EntityService extends BaseService {
     });
   }
 
-  add<T extends BaseEntity>(EntityClass: typeof BaseEntity, entity:T): Promise<T> {
-    let url: string = `/${EntityClass.modelName}/add`;
+  add<T extends BaseEntity>(entity:T): Promise<T> {
+    let url: string = `/${entity.Class.modelName}/add`;
     return request.post(url).send(entity).then(res => {
-      return <T>new EntityClass(res.body);
+      return <T>new entity.Class(res.body);
     });
   }
 
-  edit<T extends BaseEntity>(EntityClass: typeof BaseEntity, entity:T): Promise<T> {
-    let url: string = `/${EntityClass.modelName}/edit`;
+  edit<T extends BaseEntity>(entity:T): Promise<T> {
+    let url: string = `/${entity.Class.modelName}/edit`;
     return request.post(url).send(entity).then(res => {
-      return <T>new EntityClass(res.body);
+      return <T>new entity.Class(res.body);
     });
   }
 
-  delete<T extends BaseEntity>(EntityClass: typeof BaseEntity, entity:T): Promise<void> {
-    let url: string = `/${EntityClass.modelName}/delete`;
+  delete<T extends BaseEntity>(entity:T): Promise<void> {
+    let url: string = `/${entity.Class.modelName}/delete`;
     return request.post(url).send(entity).then(res => {
       return;
     });
