@@ -4,6 +4,9 @@ import _ = require("lodash");
 import {BoardEntity} from "../../common/entity/board-entity";
 import {ServerComponent} from "./server-component";
 import {BaseEntityComponent} from "./base-entity-component";
+import {BridgeComponent} from "./bridge-component";
+import {BridgeEntity} from "../../common/entity/bridge-entity";
+import {serviceRegistry} from "../service/service-registry";
 
 let template = require("./board-component.jade");
 
@@ -12,6 +15,7 @@ let template = require("./board-component.jade");
   components: {
     dropdown: require("vue-strap").dropdown,
     modal: require("vue-strap").modal,
+    "bridge-component": BridgeComponent,
   },
   props: ["entity", "add"],
   ready: BoardComponent.prototype.onReady,
@@ -20,12 +24,20 @@ export class BoardComponent extends BaseEntityComponent<BoardEntity> {
 
   $parent: ServerComponent;
 
+  bridges:BridgeEntity[];
+
   data(): any {
-    return super.data();
+    return _.merge(super.data(), {
+      bridges: null,
+    });
   }
 
   onReady() {
     super.onReady(BoardEntity);
+    this.bridges = null;
+    serviceRegistry.entity.getAll<BridgeEntity>(BridgeEntity).then(entities => {
+      this.bridges = entities;
+    });
   }
 
   edit() {

@@ -6,8 +6,7 @@ block variables
     var singularTitleizeName = "Board";
 
 block body
-  div(v-if="!bridges") Loading bridges...
-  .nothing(v-if="bridges && bridges.length == 0") No bridges
+  +children("bridge-component", "bridge", "bridges")
 
 block form
   .form-group

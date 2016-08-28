@@ -3,7 +3,7 @@ html, body {
   overflow: hidden;
 }
 
-.nothing {
+.nothing, .loading {
   @include border-top-radius(5px);
   @include border-bottom-radius(5px);
   border: 3px dotted $mono-light;

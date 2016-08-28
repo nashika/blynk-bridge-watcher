@@ -47,7 +47,7 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
     this.boards = null;
     this.notifiers = null;
     this.jobs = null;
-    serviceRegistry.entity.getAll(BoardEntity).then(entities => {
+    serviceRegistry.entity.getAll<BoardEntity>(BoardEntity).then(entities => {
       this.boards = entities;
     });
   }

@@ -1,0 +1,13 @@
+extends ./base-entity-component.jade
+
+block variables
+  -
+    var singularName = "bridge";
+    var singularTitleizeName = "Bridge";
+
+block body
+
+block form
+  .form-group
+    label Token
+    input.form-control(type="text", v-model="editEntity.token", required)

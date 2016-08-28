@@ -31,6 +31,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   edit() {
     this.showModal = false;
     if (this.add) {
+      this.editEntity._parent = this.$parent.entity._id;
       serviceRegistry.entity.add(this.editEntity).then(entity => {
         this.$parent.reload();
       });

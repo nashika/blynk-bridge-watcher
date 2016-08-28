@@ -7,7 +7,4 @@ block variables
     var disableDelete = true;
 
 block body
-  board-component(v-for="board in boards", :entity="board")
-  div(v-if="!boards") Loading boards...
-  .nothing(v-if="boards && boards.length == 0") No boards
-  board-component(:add="true")
+  +children("board-component", "board", "boards")

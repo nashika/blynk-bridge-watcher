@@ -1,5 +1,11 @@
 block variables
 
+mixin children(componentName, singularName, pluralName)
+  #{componentName}(v-for="#{singularName} in #{pluralName}", :entity="#{singularName}")
+  .loading(v-if="!#{pluralName}") Loading #{pluralName}...
+  .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") No #{pluralName}
+  #{componentName}(:add="true")
+
 section(v-if="!add", class!=singularName)
   .header
     dropdown.pull-right(text="Menu", type="primary")
