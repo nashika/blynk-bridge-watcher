@@ -28,6 +28,7 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
 
   data(): any {
     return _.merge(super.data(), {
+      EntityClass: ServerEntity,
       boards: null,
       notifiers: null,
       jobs: null,
@@ -35,11 +36,11 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
   }
 
   onReady() {
-    super.onReady(ServerEntity);
+    super.onReady();
   }
 
   reload() {
-    super.reload({boards: BoardEntity, notifiers: NotifierEntity, jobs: JobEntity});
+    super.reload();
   }
 
   edit() {

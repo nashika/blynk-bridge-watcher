@@ -1,14 +1,20 @@
 import _ = require("lodash");
 
+export interface IEntityParams {
+  children: {[key: string]: typeof BaseEntity};
+}
+
 export class BaseEntity {
 
-  static modelName:string;
+  static modelName: string;
 
-  _id:string;
-  _parent:string;
-  name:string;
+  static params: IEntityParams;
 
-  constructor(data:any = {}) {
+  _id: string;
+  _parent: string;
+  name: string;
+
+  constructor(data: any = {}) {
     _.forIn(data, (value, key) => {
       _.set(this, key, value);
     });
@@ -18,7 +24,7 @@ export class BaseEntity {
     return <typeof BaseEntity>this.constructor;
   }
 
-  static generateDefault():BaseEntity {
+  static generateDefault(): BaseEntity {
     return new BaseEntity();
   }
 

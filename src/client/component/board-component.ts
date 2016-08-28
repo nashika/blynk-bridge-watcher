@@ -28,16 +28,17 @@ export class BoardComponent extends BaseEntityComponent<BoardEntity> {
 
   data(): any {
     return _.merge(super.data(), {
+      EntityClass: BoardEntity,
       bridges: null,
     });
   }
 
   onReady() {
-    super.onReady(BoardEntity);
+    super.onReady();
   }
 
   reload() {
-    super.reload({bridges: BridgeEntity});
+    super.reload();
   }
 
   edit() {

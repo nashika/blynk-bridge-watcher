@@ -3,6 +3,8 @@ import path = require("path");
 import NeDBDataStore = require("nedb");
 
 import {BaseEntity} from "../../common/entity/base-entity";
+import {MyPromise} from "../../common/util/my-promise";
+import {tableRegistry} from "./table-registry";
 
 export class BaseTable<T extends BaseEntity> {
 
@@ -75,6 +77,15 @@ export class BaseTable<T extends BaseEntity> {
       this.db.remove({_id: entity._id}, {}, err => {
         if (err) return reject(err);
         resolve();
+      });
+    }).then(() => {
+      return MyPromise.eachPromiseSeries(entity.Class.params.children, (ChildEntityClass:typeof BaseEntity) => {
+        let childTable = tableRegistry.getInstance(ChildEntityClass.modelName);
+        return childTable.find({_parent: entity._id}).then(childEntities => {
+          return MyPromise.eachPromiseSeries(childEntities, childEntity => {
+            return childTable.delete(childEntity);
+          });
+        });
       });
     });
   }

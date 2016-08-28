@@ -1,8 +1,15 @@
-import {BaseEntity} from "./base-entity";
+import {BaseEntity, IEntityParams} from "./base-entity";
+import {ActionEntity} from "./action-entity";
 
 export class BridgeEntity extends BaseEntity {
 
   static modelName = "bridge";
+
+  static params: IEntityParams = {
+    children: {
+      actions: ActionEntity,
+    },
+  };
 
   token: string;
   ping: {

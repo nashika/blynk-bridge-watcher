@@ -23,15 +23,16 @@ export class ActionComponent extends BaseEntityComponent<ActionEntity> {
 
   data(): any {
     return _.merge(super.data(), {
+      EntityClass: ActionEntity,
     });
   }
 
   onReady() {
-    super.onReady(ActionEntity);
+    super.onReady();
   }
 
   reload() {
-    super.reload({});
+    super.reload();
   }
 
   edit() {

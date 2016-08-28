@@ -26,16 +26,17 @@ export class BridgeComponent extends BaseEntityComponent<BridgeEntity> {
 
   data(): any {
     return _.merge(super.data(), {
+      EntityClass: BridgeEntity,
       actions: null,
     });
   }
 
   onReady() {
-    super.onReady(BridgeEntity);
+    super.onReady();
   }
 
   reload() {
-    super.reload({actions: ActionEntity});
+    super.reload();
   }
 
   edit() {

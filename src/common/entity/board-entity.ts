@@ -1,8 +1,15 @@
-import {BaseEntity} from "./base-entity";
+import {BaseEntity, IEntityParams} from "./base-entity";
+import {BridgeEntity} from "./bridge-entity";
 
 export class BoardEntity extends BaseEntity {
 
   static modelName = "board";
+
+  static params: IEntityParams = {
+    children: {
+      bridges: BridgeEntity,
+    },
+  };
 
   token: string;
   addr: string;
