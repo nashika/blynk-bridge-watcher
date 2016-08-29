@@ -1,5 +1,5 @@
 import {BaseEntity, IEntityParams} from "./base-entity";
-import {ActionEntity} from "./action-entity";
+import {BaseActionEntity} from "./action/base-action-entity";
 
 export class BridgeEntity extends BaseEntity {
 
@@ -7,7 +7,7 @@ export class BridgeEntity extends BaseEntity {
 
   static params: IEntityParams = {
     children: {
-      actions: ActionEntity,
+      actions: BaseActionEntity,
     },
   };
 

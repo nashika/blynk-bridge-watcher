@@ -1,8 +1,8 @@
 import {BaseTable} from "./base-table";
-import {ActionEntity} from "../../common/entity/action-entity";
+import {BaseActionEntity} from "../../common/entity/action/base-action-entity";
 
-export class ActionTable extends BaseTable<ActionEntity> {
+export class ActionTable extends BaseTable<BaseActionEntity> {
 
-  static EntityClass = ActionEntity;
+  static EntityClass = BaseActionEntity;
 
 }

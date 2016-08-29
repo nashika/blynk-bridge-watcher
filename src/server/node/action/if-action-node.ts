@@ -1,6 +1,6 @@
 import {ActionNode} from "./action-node";
 import {BridgeNode} from "../bridge/bridge-node";
-import {ActionEntity} from "../../../common/entity/action-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 
 export class IfActionNode extends ActionNode {
 
@@ -9,7 +9,7 @@ export class IfActionNode extends ActionNode {
   protected _then:string = "";
   protected _else:string = "";
 
-  constructor(parent:BridgeNode, entity:ActionEntity) {
+  constructor(parent:BridgeNode, entity:BaseActionEntity) {
     super(parent, entity);
     this._operator = this._checkConfig(entity, "operator", "string");
     this._value = this._checkConfig(entity, "value", "number");

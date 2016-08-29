@@ -1,17 +1,17 @@
 import {BaseNode} from "../base-node";
 import {BridgeNode} from "../bridge/bridge-node";
 import {ActionGeneratorNode} from "./action-generator-node";
-import {ActionEntity} from "../../../common/entity/action-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 import {BaseEntity} from "../../../common/entity/base-entity";
 
-export class ActionNode extends BaseNode<ActionEntity> {
+export class ActionNode extends BaseNode<BaseActionEntity> {
 
-  static EntityClass = ActionEntity;
+  static EntityClass = BaseActionEntity;
 
   parent:BridgeNode;
   aliases:string[];
 
-  constructor(parent:BridgeNode, entity:ActionEntity) {
+  constructor(parent:BridgeNode, entity:BaseActionEntity) {
     super(parent, entity);
     this.aliases = this._checkConfig(entity, "aliases", "array", []);
   }

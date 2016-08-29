@@ -1,12 +1,12 @@
 import {PinActionNode} from "./pin-action-node";
 import {BridgeNode} from "../bridge/bridge-node";
-import {ActionEntity} from "../../../common/entity/action-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 
 export class ReadActionNode extends PinActionNode {
 
   protected _next:string;
 
-  constructor(parent:BridgeNode, entity:ActionEntity) {
+  constructor(parent:BridgeNode, entity:BaseActionEntity) {
     super(parent, entity);
     this._next = this._addSubAction(parent, entity, "next");
   }

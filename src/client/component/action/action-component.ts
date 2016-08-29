@@ -2,7 +2,7 @@ import Component from "vue-class-component";
 import _ = require("lodash");
 
 import {BaseEntityComponent} from "../base-entity-component";
-import {ActionEntity} from "../../../common/entity/action-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 import {BridgeComponent} from "../bridge-component";
 import {IfActionComponent} from "./if-action-component";
 import {LogActionComponent} from "./log-action-component";
@@ -26,13 +26,13 @@ let template = require("./action-component.jade");
   props: ["entity", "add"],
   ready: ActionComponent.prototype.onReady,
 })
-export class ActionComponent extends BaseEntityComponent<ActionEntity> {
+export class ActionComponent extends BaseEntityComponent<BaseActionEntity> {
 
   $parent: BridgeComponent;
 
   data(): any {
     return _.merge(super.data(), {
-      EntityClass: ActionEntity,
+      EntityClass: BaseActionEntity,
     });
   }
 

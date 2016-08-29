@@ -1,40 +1,13 @@
-block variables
+include ./base-entity-component-mixin.jade
 
-mixin children(componentName, singularName, pluralName)
-  section(class!=pluralName)
-    .header
-      h1 List of #{pluralName}
-    .body
-      #{componentName}(v-for="#{singularName} in #{pluralName}", :entity="#{singularName}")
-      .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
-      .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
-      #{componentName}(:add="true")
+block variables
 
 section(v-if="!add", class!=singularName)
   .header
-    dropdown.pull-right
-      button.btn.btn-default.btn-sm(slot="button", type="button") #[i.fa.fa-bars] Menu #[i.fa.fa-caret-down]
-      ul.dropdown-menu(slot="dropdown-menu")
-        li
-          a(@click="showModal = true") Edit
-        if !disableDelete
-          li
-            a(@click="delete") Delete
+    +dropdown()
     h1 #[i.fa(class="fa-#{icon}")] #{singularTitleizeName}: {{entity.name}}
   .body
     block body
 .add(v-else)
   button.btn.btn-primary.btn-block(type="button", @click="showModal = true") #[i.fa.fa-plus] Add #{singularTitleizeName}
-modal(title="Edit", :show.sync="showModal", effect="fade")
-  .modal-body(slot="modal-body")
-    form(v-if="editEntity", @submit.prevent="edit()")
-      .form-group
-        label Name
-        input.form-control(type="text", v-model="editEntity.name", required)
-      .form-group
-        label Label
-        input.form-control(type="text", v-model="editEntity.label")
-      block form
-      button.btn.btn-primary.btn-block(type="submit") Submit
-  .modal-footer(slot="modal-footer")
-    button.btn.btn-default(type="button", @click="showModal = false") Close
++modal()

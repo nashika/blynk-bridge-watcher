@@ -1,12 +1,12 @@
 import {PinActionNode} from "./pin-action-node";
 import {BridgeNode} from "../bridge/bridge-node";
-import {ActionEntity} from "../../../common/entity/action-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 
 export class WriteActionNode extends PinActionNode {
 
   protected _value:number;
 
-  constructor(parent:BridgeNode, entity:ActionEntity) {
+  constructor(parent:BridgeNode, entity:BaseActionEntity) {
     super(parent, entity);
     this._value = this._checkConfig(entity, "value", "number");
   }
