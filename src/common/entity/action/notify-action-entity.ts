@@ -5,7 +5,10 @@ import {IEntityFieldParams, IEntityParams} from "../base-entity";
 
 export class NotifyActionEntity extends BaseActionEntity {
 
-  static params:IEntityParams = {
+  static defaultName = "ACNT01";
+  static defaultType = "notify";
+
+  static params: IEntityParams = {
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
       {
@@ -20,12 +23,5 @@ export class NotifyActionEntity extends BaseActionEntity {
       },
     ]),
   };
-
-  static generateDefault(): NotifyActionEntity {
-    let result = new NotifyActionEntity();
-    result.name = "ACNT01";
-    result.type = "notify";
-    return result;
-  }
 
 }

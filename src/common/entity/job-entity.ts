@@ -5,6 +5,7 @@ import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
 export class JobEntity extends BaseEntity {
 
   static modelName = "job";
+  static defaultName = "JB01";
 
   static params: IEntityParams = {
     children: {},
@@ -12,6 +13,7 @@ export class JobEntity extends BaseEntity {
       {
         name: "cronTime",
         type: "text",
+        default: "0 0 0 * * *",
         required: true,
       },
       {
@@ -31,11 +33,5 @@ export class JobEntity extends BaseEntity {
       },
     ]),
   };
-
-  static generateDefault(): JobEntity {
-    let result = new JobEntity();
-    result.name = "JB01";
-    return result;
-  }
 
 }

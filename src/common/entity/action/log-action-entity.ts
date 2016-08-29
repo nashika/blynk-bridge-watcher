@@ -5,6 +5,9 @@ import {IEntityFieldParams, IEntityParams} from "../base-entity";
 
 export class LogActionEntity extends BaseActionEntity {
 
+  static defaultName = "ACLG01";
+  static defaultType = "log";
+
   static params:IEntityParams = {
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
@@ -19,6 +22,8 @@ export class LogActionEntity extends BaseActionEntity {
           debug: "debug",
           trace: "trace",
         },
+        default: "info",
+        required: true,
       },
       {
         name: "message",
@@ -27,12 +32,5 @@ export class LogActionEntity extends BaseActionEntity {
       },
     ]),
   };
-
-  static generateDefault(): LogActionEntity {
-    let result = new LogActionEntity();
-    result.name = "ACLG01";
-    result.type = "log";
-    return result;
-  }
 
 }

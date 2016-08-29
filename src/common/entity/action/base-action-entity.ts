@@ -5,6 +5,7 @@ import {BaseEntity, IEntityParams, IEntityFieldParams} from "../base-entity";
 export class BaseActionEntity extends BaseEntity {
 
   static modelName = "action";
+  static defaultName = "AC01";
 
   static params: IEntityParams = {
     children: {},
@@ -19,11 +20,5 @@ export class BaseActionEntity extends BaseEntity {
   };
 
   type:string;
-
-  static generateDefault(): BaseActionEntity {
-    let result = new BaseActionEntity();
-    result.name = "AC01";
-    return result;
-  }
 
 }

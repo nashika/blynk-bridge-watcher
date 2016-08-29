@@ -6,6 +6,7 @@ import {BridgeEntity} from "./bridge-entity";
 export class BoardEntity extends BaseEntity {
 
   static modelName = "board";
+  static defaultName = "BD01";
 
   static params: IEntityParams = {
     children: {
@@ -24,6 +25,7 @@ export class BoardEntity extends BaseEntity {
       {
         name: "port",
         type: "number",
+        default: 8442,
       },
     ]),
   };
@@ -31,11 +33,5 @@ export class BoardEntity extends BaseEntity {
   token: string;
   addr: string;
   port: number;
-
-  static generateDefault(): BoardEntity {
-    let result = new BoardEntity();
-    result.name = "BD01";
-    return result;
-  }
 
 }

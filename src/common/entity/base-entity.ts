@@ -8,6 +8,7 @@ export interface IEntityParams {
 export interface IEntityFieldParams {
   name: string;
   type: string;
+  default?: any;
   required?: boolean;
   disabled?: boolean;
   options?: {[key: string]: string};
@@ -16,6 +17,8 @@ export interface IEntityFieldParams {
 export class BaseEntity {
 
   static modelName: string;
+  static defaultName: string;
+  static defaultType: string;
 
   static params: IEntityParams = {
     children: {},
@@ -46,7 +49,14 @@ export class BaseEntity {
   }
 
   static generateDefault(): BaseEntity {
-    return new BaseEntity();
+    let result:BaseEntity = new this();
+    for (let field of this.params.fields) {
+      if (!_.isUndefined(field.default) && field.required)
+        _.set(result, field.name, field.default);
+    }
+    if (this.defaultName) result.name = this.defaultName;
+    if (this.defaultType) _.set(result, "type", this.defaultType);
+    return result;
   }
 
 }

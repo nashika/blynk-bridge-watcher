@@ -6,6 +6,7 @@ import {BaseActionEntity} from "./action/base-action-entity";
 export class BridgeEntity extends BaseEntity {
 
   static modelName = "bridge";
+  static defaultName = "BR01";
 
   static params: IEntityParams = {
     children: {
@@ -20,14 +21,17 @@ export class BridgeEntity extends BaseEntity {
       {
         name: "pingInterval",
         type: "number",
+        default: 60000,
       },
       {
         name: "pingTimeout",
         type: "number",
+        default: 10000,
       },
       {
         name: "pingLimit",
         type: "number",
+        default: 3,
       },
     ]),
   };
@@ -36,11 +40,5 @@ export class BridgeEntity extends BaseEntity {
   pingInterval: number;
   pingTimeout: number;
   pingLimit: number;
-
-  static generateDefault(): BridgeEntity {
-    let result = new BridgeEntity();
-    result.name = "BR01";
-    return result;
-  }
 
 }

@@ -5,6 +5,9 @@ import {IEntityParams, IEntityFieldParams} from "../base-entity";
 
 export class IfActionEntity extends BaseActionEntity {
 
+  static defaultName = "ACIF01";
+  static defaultType = "if";
+
   static params:IEntityParams = {
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
@@ -19,6 +22,8 @@ export class IfActionEntity extends BaseActionEntity {
           $lte: "<=",
           $ne: "!=",
         },
+        default: "$eq",
+        required: true,
       },
       {
         name: "value",
@@ -40,12 +45,5 @@ export class IfActionEntity extends BaseActionEntity {
   value:number;
   then:string;
   else:string;
-
-  static generateDefault(): IfActionEntity {
-    let result = new IfActionEntity();
-    result.name = "ACIF01";
-    result.type = "if";
-    return result;
-  }
 
 }

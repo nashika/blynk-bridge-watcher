@@ -8,6 +8,5 @@ section.action(v-if="!add")
     h1 #[i.fa(class="fa-#{icon}")] #{singularTitleizeName} Action: {{entity.name}}
   .body
     block body
-.add(v-else)
-  button.btn.btn-primary(type="button", @click="showModal = true") #[i.fa.fa-plus] Add #{singularTitleizeName} Action
+button.btn.btn-primary(v-else, type="button", @click="showModal = true") #[i.fa(class="fa-#{icon}")] #{singularTitleizeName} Action
 +modal(true)

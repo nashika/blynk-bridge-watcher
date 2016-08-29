@@ -5,7 +5,10 @@ import {IEntityFieldParams, IEntityParams} from "../base-entity";
 
 export class WriteActionEntity extends BaseActionEntity {
 
-  static params:IEntityParams = {
+  static defaultName = "ACWR01";
+  static defaultType = "write";
+
+  static params: IEntityParams = {
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
       {
@@ -16,6 +19,8 @@ export class WriteActionEntity extends BaseActionEntity {
           analog: "analog",
           virtual: "virtual",
         },
+        default: "digital",
+        required: true,
       },
       {
         name: "pin",
@@ -29,12 +34,5 @@ export class WriteActionEntity extends BaseActionEntity {
       },
     ]),
   };
-
-  static generateDefault(): WriteActionEntity {
-    let result = new WriteActionEntity();
-    result.name = "ACWR01";
-    result.type = "write";
-    return result;
-  }
 
 }

@@ -5,6 +5,7 @@ import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
 export class NotifierEntity extends BaseEntity {
 
   static modelName = "notifier";
+  static defaultName = "NT01";
 
   static params: IEntityParams = {
     children: {},
@@ -17,11 +18,5 @@ export class NotifierEntity extends BaseEntity {
       },
     ]),
   };
-
-  static generateDefault(): NotifierEntity {
-    let result = new NotifierEntity();
-    result.name = "NT01";
-    return result;
-  }
 
 }

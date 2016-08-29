@@ -8,6 +8,7 @@ import {JobEntity} from "./job-entity";
 export class ServerEntity extends BaseEntity {
 
   static modelName = "server";
+  static defaultName = "SV01";
 
   static params:IEntityParams = {
     children: {
@@ -18,11 +19,5 @@ export class ServerEntity extends BaseEntity {
     fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
     ]),
   };
-
-  static generateDefault():ServerEntity {
-    let result = new ServerEntity();
-    result.name = "SV01";
-    return result;
-  }
 
 }

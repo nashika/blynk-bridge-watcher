@@ -11,5 +11,9 @@ section(v-if="!add", class!=singularName)
   each action in actions
     #{action + "-action-component"}(v-if="entity.type == '#{action}'", :entity="entity")
 .add(v-else)
-  each action in actions
-    #{action + "-action-component"}(:add="true")
+  section.add
+    .header
+      h1 #[i.fa.fa-plus] Add action
+    .body
+      each action in actions
+        #{action + "-action-component"}(:add="true")

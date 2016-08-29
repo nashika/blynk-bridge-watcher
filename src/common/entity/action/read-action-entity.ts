@@ -5,7 +5,10 @@ import {IEntityFieldParams, IEntityParams} from "../base-entity";
 
 export class ReadActionEntity extends BaseActionEntity {
 
-  static params:IEntityParams = {
+  static defaultName = "ACRD01";
+  static defaultType = "read";
+
+  static params: IEntityParams = {
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
       {
@@ -16,6 +19,8 @@ export class ReadActionEntity extends BaseActionEntity {
           analog: "analog",
           virtual: "virtual",
         },
+        default: "digital",
+        required: true,
       },
       {
         name: "pin",
@@ -29,12 +34,5 @@ export class ReadActionEntity extends BaseActionEntity {
       },
     ]),
   };
-
-  static generateDefault(): ReadActionEntity {
-    let result = new ReadActionEntity();
-    result.name = "ACRD01";
-    result.type = "read";
-    return result;
-  }
 
 }
