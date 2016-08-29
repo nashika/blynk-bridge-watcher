@@ -4,10 +4,11 @@ import {BaseEntity, IEntityParams, IEntityFieldParams} from "../base-entity";
 
 export class BaseActionEntity extends BaseEntity {
 
-  static modelName = "action";
   static defaultName = "AC01";
 
   static params: IEntityParams = {
+    tableName: "action",
+    entityName: "action",
     icon: "cog",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [

@@ -7,10 +7,11 @@ import {JobEntity} from "./job-entity";
 
 export class ServerEntity extends BaseEntity {
 
-  static modelName = "server";
   static defaultName = "SV01";
 
   static params:IEntityParams = {
+    tableName: "server",
+    entityName: "server",
     icon: "globe",
     children: {
       boards: BoardEntity,

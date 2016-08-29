@@ -5,10 +5,11 @@ import {BaseActionEntity} from "./action/base-action-entity";
 
 export class BridgeEntity extends BaseEntity {
 
-  static modelName = "bridge";
   static defaultName = "BR01";
 
   static params: IEntityParams = {
+    tableName: "bridge",
+    entityName: "bridge",
     icon: "plug",
     children: {
       actions: BaseActionEntity,

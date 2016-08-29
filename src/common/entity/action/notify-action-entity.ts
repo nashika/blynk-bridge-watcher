@@ -9,6 +9,8 @@ export class NotifyActionEntity extends BaseActionEntity {
   static defaultType = "notify";
 
   static params: IEntityParams = {
+    tableName: "action",
+    entityName: "notifyAction",
     icon: "bell",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [

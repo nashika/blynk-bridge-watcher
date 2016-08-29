@@ -3,8 +3,8 @@ include ../base-entity-component-mixin.jade
 section.action(v-if="!add")
   .header
     +dropdown()
-    h1 #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.modelName)}}: {{entity.name}}
+    h1 #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}: {{entity.name}}
   .body
     block body
-button.btn.btn-primary(v-else, type="button", @click="showModal = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.modelName)}}
+button.btn.btn-primary(v-else, type="button", @click="showModal = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}
 +modal(true)

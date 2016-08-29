@@ -9,6 +9,8 @@ export class WriteActionEntity extends BaseActionEntity {
   static defaultType = "write";
 
   static params: IEntityParams = {
+    tableName: "board",
+    entityName: "writeAction",
     icon: "pencil-square-o",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [

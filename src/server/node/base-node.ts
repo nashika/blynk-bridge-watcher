@@ -28,7 +28,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   }
 
   static table():BaseTable<BaseEntity> {
-    return tableRegistry.getInstance(this.EntityClass.modelName);
+    return tableRegistry.getInstance(this.EntityClass.params.tableName);
   }
 
   log(level:string, message:string, ...args:any[]) {

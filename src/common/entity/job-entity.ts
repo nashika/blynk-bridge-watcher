@@ -4,10 +4,11 @@ import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
 
 export class JobEntity extends BaseEntity {
 
-  static modelName = "job";
   static defaultName = "JB01";
 
   static params: IEntityParams = {
+    tableName: "job",
+    entityName: "job",
     icon: "clock-o",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [

@@ -56,7 +56,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   remove() {
-    if (!confirm(`Are you sure you want to remove ${this.entity.Class.modelName} name:${this.entity.name}?`)) return;
+    if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} name:${this.entity.name}?`)) return;
     serviceRegistry.entity.remove(this.entity).then(entity => {
       this.parentEntityComponent.reload();
     });

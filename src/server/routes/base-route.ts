@@ -33,10 +33,10 @@ export abstract class BaseRoute<T extends BaseEntity> {
 
   constructor(protected app: Express, applyDefaultRoute:boolean) {
     if (applyDefaultRoute) {
-      app.post(`/${this.Class.EntityClass.modelName}`, this.onIndex);
-      app.post(`/${this.Class.EntityClass.modelName}/add`, this.onAdd);
-      app.post(`/${this.Class.EntityClass.modelName}/edit`, this.onEdit);
-      app.post(`/${this.Class.EntityClass.modelName}/remove`, this.onRemove);
+      app.post(`/${this.Class.EntityClass.params.tableName}`, this.onIndex);
+      app.post(`/${this.Class.EntityClass.params.tableName}/add`, this.onAdd);
+      app.post(`/${this.Class.EntityClass.params.tableName}/edit`, this.onEdit);
+      app.post(`/${this.Class.EntityClass.params.tableName}/remove`, this.onRemove);
     }
   }
 
@@ -45,7 +45,7 @@ export abstract class BaseRoute<T extends BaseEntity> {
   }
 
   get table():BaseTable<BaseEntity> {
-    return tableRegistry.getInstance(this.Class.EntityClass.modelName);
+    return tableRegistry.getInstance(this.Class.EntityClass.params.tableName);
   }
 
   onIndex = (req: Request, res: Response) => {

@@ -5,10 +5,11 @@ import {BridgeEntity} from "./bridge-entity";
 
 export class BoardEntity extends BaseEntity {
 
-  static modelName = "board";
   static defaultName = "BD01";
 
   static params: IEntityParams = {
+    tableName: "board",
+    entityName: "board",
     icon: "sitemap",
     children: {
       bridges: BridgeEntity,
