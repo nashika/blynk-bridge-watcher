@@ -45,8 +45,8 @@ export class EntityService extends BaseService {
     });
   }
 
-  delete<T extends BaseEntity>(entity:T): Promise<void> {
-    let url: string = `/${entity.Class.modelName}/delete`;
+  remove<T extends BaseEntity>(entity:T): Promise<void> {
+    let url: string = `/${entity.Class.modelName}/remove`;
     return request.post(url).send(entity).then(res => {
       return;
     });

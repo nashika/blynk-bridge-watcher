@@ -6,7 +6,7 @@ mixin dropdown()
         a(@click="showModal = true") Edit
       if !disableDelete
         li
-          a(@click="delete()") Delete
+          a(@click="remove()") Remove
 
 mixin children(componentName, singularName, pluralName)
   section(class!=pluralName)

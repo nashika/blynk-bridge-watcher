@@ -36,7 +36,7 @@ export abstract class BaseRoute<T extends BaseEntity> {
       app.post(`/${this.Class.EntityClass.modelName}`, this.onIndex);
       app.post(`/${this.Class.EntityClass.modelName}/add`, this.onAdd);
       app.post(`/${this.Class.EntityClass.modelName}/edit`, this.onEdit);
-      app.post(`/${this.Class.EntityClass.modelName}/delete`, this.onDelete);
+      app.post(`/${this.Class.EntityClass.modelName}/remove`, this.onRemove);
     }
   }
 
@@ -60,8 +60,8 @@ export abstract class BaseRoute<T extends BaseEntity> {
     this.edit(req, res);
   };
 
-  onDelete = (req: Request, res: Response) => {
-    this.delete(req, res);
+  onRemove = (req: Request, res: Response) => {
+    this.remove(req, res);
   };
 
   index(req: Request, res: Response) {
@@ -84,9 +84,9 @@ export abstract class BaseRoute<T extends BaseEntity> {
     });
   }
 
-  delete(req: Request, res: Response) {
+  remove(req: Request, res: Response) {
     let entity = new this.Class.EntityClass(req.body);
-    this.table.delete(entity).then(() => {
+    this.table.remove(entity).then(() => {
       res.json(true);
     });
   }
