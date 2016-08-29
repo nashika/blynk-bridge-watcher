@@ -1,4 +1,6 @@
-import {BaseEntity, IEntityParams} from "./base-entity";
+import _ = require("lodash");
+
+import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
 import {BaseActionEntity} from "./action/base-action-entity";
 
 export class BridgeEntity extends BaseEntity {
@@ -9,6 +11,25 @@ export class BridgeEntity extends BaseEntity {
     children: {
       actions: BaseActionEntity,
     },
+    fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
+      {
+        name: "token",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "ping.interval",
+        type: "number",
+      },
+      {
+        name: "ping.timeout",
+        type: "number",
+      },
+      {
+        name: "ping.limit",
+        type: "number",
+      },
+    ]),
   };
 
   token: string;

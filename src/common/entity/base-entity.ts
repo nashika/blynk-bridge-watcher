@@ -2,13 +2,34 @@ import _ = require("lodash");
 
 export interface IEntityParams {
   children: {[key: string]: typeof BaseEntity};
+  fields: IEntityFieldParams[];
+}
+
+export interface IEntityFieldParams {
+  name: string;
+  type: string;
+  required?: boolean;
+  disabled?: boolean;
+  options?: {[key: string]: string};
 }
 
 export class BaseEntity {
 
   static modelName: string;
 
-  static params: IEntityParams;
+  static params: IEntityParams = {
+    children: {},
+    fields: [
+      {
+        name: "name",
+        type: "text",
+      },
+      {
+        name: "label",
+        type: "text",
+      },
+    ],
+  };
 
   _id: string;
   _parent: string;

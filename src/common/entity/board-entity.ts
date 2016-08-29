@@ -1,4 +1,6 @@
-import {BaseEntity, IEntityParams} from "./base-entity";
+import _ = require("lodash");
+
+import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
 import {BridgeEntity} from "./bridge-entity";
 
 export class BoardEntity extends BaseEntity {
@@ -9,6 +11,21 @@ export class BoardEntity extends BaseEntity {
     children: {
       bridges: BridgeEntity,
     },
+    fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
+      {
+        name: "token",
+        type: "text",
+        required: true,
+      },
+      {
+        name: "addr",
+        type: "text",
+      },
+      {
+        name: "port",
+        type: "number",
+      },
+    ]),
   };
 
   token: string;
