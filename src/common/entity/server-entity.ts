@@ -11,6 +11,7 @@ export class ServerEntity extends BaseEntity {
   static defaultName = "SV01";
 
   static params:IEntityParams = {
+    icon: "globe",
     children: {
       boards: BoardEntity,
       notifiers: NotifierEntity,

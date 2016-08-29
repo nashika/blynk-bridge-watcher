@@ -9,6 +9,7 @@ export class LogActionEntity extends BaseActionEntity {
   static defaultType = "log";
 
   static params:IEntityParams = {
+    icon: "terminal",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
       {

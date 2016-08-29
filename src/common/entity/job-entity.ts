@@ -8,6 +8,7 @@ export class JobEntity extends BaseEntity {
   static defaultName = "JB01";
 
   static params: IEntityParams = {
+    icon: "clock-o",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
       {

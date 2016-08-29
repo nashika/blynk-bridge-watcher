@@ -18,14 +18,14 @@ mixin children(componentName, singularName, pluralName)
       .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
       #{componentName}(:add="true")
 
-mixin modal(enableType)
+mixin modal()
   modal(title="Edit", :show.sync="showModal", effect="fade")
     .modal-body(slot="modal-body")
       form(v-if="editEntity", @submit.prevent="edit()")
         .form-group(v-for="field in EntityClass.params.fields")
           label {{lodash.startCase(field.name)}}
-          input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled")
-          input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled")
+          input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
+          input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
           select.form-control(v-if="field.type == 'select'", v-model="editEntity[field.name]", :disabled="field.disabled")
             option(v-for="value in field.options", :value="$key") {{value}}
         button.btn.btn-primary.btn-block(type="submit") Submit

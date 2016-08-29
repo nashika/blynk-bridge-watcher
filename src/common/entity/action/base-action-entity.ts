@@ -8,6 +8,7 @@ export class BaseActionEntity extends BaseEntity {
   static defaultName = "AC01";
 
   static params: IEntityParams = {
+    icon: "cog",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
       {

@@ -8,6 +8,7 @@ export class NotifierEntity extends BaseEntity {
   static defaultName = "NT01";
 
   static params: IEntityParams = {
+    icon: "bell",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
       {

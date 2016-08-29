@@ -9,6 +9,7 @@ export class BridgeEntity extends BaseEntity {
   static defaultName = "BR01";
 
   static params: IEntityParams = {
+    icon: "plug",
     children: {
       actions: BaseActionEntity,
     },

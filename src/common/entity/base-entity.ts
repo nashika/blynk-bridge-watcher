@@ -1,6 +1,7 @@
 import _ = require("lodash");
 
 export interface IEntityParams {
+  icon: string;
   children: {[key: string]: typeof BaseEntity};
   fields: IEntityFieldParams[];
 }
@@ -21,6 +22,7 @@ export class BaseEntity {
   static defaultType: string;
 
   static params: IEntityParams = {
+    icon: "times",
     children: {},
     fields: [
       {

@@ -9,6 +9,7 @@ export class IfActionEntity extends BaseActionEntity {
   static defaultType = "if";
 
   static params:IEntityParams = {
+    icon: "code-fork",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
       {

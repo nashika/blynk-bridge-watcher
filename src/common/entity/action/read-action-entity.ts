@@ -9,6 +9,7 @@ export class ReadActionEntity extends BaseActionEntity {
   static defaultType = "read";
 
   static params: IEntityParams = {
+    icon: "eye",
     children: {},
     fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
       {

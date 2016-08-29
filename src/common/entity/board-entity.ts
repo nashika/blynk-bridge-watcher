@@ -9,6 +9,7 @@ export class BoardEntity extends BaseEntity {
   static defaultName = "BD01";
 
   static params: IEntityParams = {
+    icon: "sitemap",
     children: {
       bridges: BridgeEntity,
     },
