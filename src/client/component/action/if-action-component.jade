@@ -7,15 +7,24 @@ block variables
     var singularTitleizeName = "If";
 
 block body
-  now construction
+  p now construction
 
 block form
   .form-group
-    label Token
-    input.form-control(type="text", v-model="editEntity.token", required)
+    label Operator
+    select.form-control(v-model="editEntity.operator")
+      option(value="=") =
+      option(value=">") >
+      option(value="<") <
+      option(value=">=") >=
+      option(value="<=") <=
+      option(value="!=") !=
   .form-group
-    label Address
-    input.form-control(type="text", v-model="editEntity.addr")
+    label Value
+    input.form-control(type="number", v-model="editEntity.value")
   .form-group
-    label Port
-    input.form-control(type="number", v-model="editEntity.port")
+    label Then
+    input.form-control(type="text", v-model="editEntity.then")
+  .form-group
+    label Else
+    input.form-control(type="text", v-model="editEntity.else")

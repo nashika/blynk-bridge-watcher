@@ -1,7 +1,7 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 import {BaseActionComponent} from "./base-action-component";
-import {ActionComponent} from "../action-component";
+import {ActionComponent} from "./action-component";
 
 let template = require("./read-action-component.jade");
 
@@ -21,22 +21,6 @@ export class ReadActionComponent extends BaseActionComponent {
   data(): any {
     return _.merge(super.data(), {
     });
-  }
-
-  onReady() {
-    super.onReady();
-  }
-
-  reload() {
-    super.reload();
-  }
-
-  edit() {
-    super.edit();
-  }
-
-  delete() {
-    super.delete();
   }
 
 }

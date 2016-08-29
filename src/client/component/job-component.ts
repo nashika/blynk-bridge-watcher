@@ -26,20 +26,4 @@ export class JobComponent extends BaseEntityComponent<JobEntity> {
     });
   }
 
-  onReady() {
-    super.onReady();
-  }
-
-  reload() {
-    super.reload();
-  }
-
-  edit() {
-    super.edit();
-  }
-
-  delete() {
-    super.delete();
-  }
-
 }

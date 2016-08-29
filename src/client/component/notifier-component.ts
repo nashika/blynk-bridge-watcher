@@ -26,20 +26,4 @@ export class NotifierComponent extends BaseEntityComponent<NotifierEntity> {
     });
   }
 
-  onReady() {
-    super.onReady();
-  }
-
-  reload() {
-    super.reload();
-  }
-
-  edit() {
-    super.edit();
-  }
-
-  delete() {
-    super.delete();
-  }
-
 }

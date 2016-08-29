@@ -39,16 +39,4 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
     });
   }
 
-  onReady() {
-    super.onReady();
-  }
-
-  reload() {
-    super.reload();
-  }
-
-  edit() {
-    super.edit();
-  }
-
 }

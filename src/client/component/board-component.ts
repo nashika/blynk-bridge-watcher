@@ -6,7 +6,6 @@ import {ServerComponent} from "./server-component";
 import {BaseEntityComponent} from "./base-entity-component";
 import {BridgeComponent} from "./bridge-component";
 import {BridgeEntity} from "../../common/entity/bridge-entity";
-import {serviceRegistry} from "../service/service-registry";
 
 let template = require("./board-component.jade");
 
@@ -24,29 +23,13 @@ export class BoardComponent extends BaseEntityComponent<BoardEntity> {
 
   $parent: ServerComponent;
 
-  bridges:BridgeEntity[];
+  bridges: BridgeEntity[];
 
   data(): any {
     return _.merge(super.data(), {
       EntityClass: BoardEntity,
       bridges: null,
     });
-  }
-
-  onReady() {
-    super.onReady();
-  }
-
-  reload() {
-    super.reload();
-  }
-
-  edit() {
-    super.edit();
-  }
-
-  delete() {
-    super.delete();
   }
 
 }

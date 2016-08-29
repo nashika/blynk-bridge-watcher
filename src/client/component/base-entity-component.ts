@@ -14,9 +14,12 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   showModal: boolean;
   editEntity: T;
 
+  get parentEntityComponent():BaseEntityComponent<BaseEntity> {
+    return this.$parent;
+  }
+
   data(): any {
     return {
-      EntityClass: null,
       showModal: false,
       editEntity: null,
     };
@@ -40,14 +43,14 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   edit() {
     this.showModal = false;
     if (this.add) {
-      this.editEntity._parent = this.$parent.entity._id;
+      this.editEntity._parent = this.parentEntityComponent.entity._id;
       serviceRegistry.entity.add(this.editEntity).then(entity => {
         this.editEntity = <T>this.EntityClass.generateDefault();
-        this.$parent.reload();
+        this.parentEntityComponent.reload();
       });
     } else {
       serviceRegistry.entity.edit(this.editEntity).then(entity => {
-        this.$parent.reload();
+        this.parentEntityComponent.reload();
       });
     }
   }
@@ -55,7 +58,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   delete() {
     if (!confirm(`Are you sure you want to delete ${this.entity.Class.modelName} name:${this.entity.name}?`)) return;
     serviceRegistry.entity.delete(this.entity).then(entity => {
-      this.$parent.reload();
+      this.parentEntityComponent.reload();
     });
   }
 
