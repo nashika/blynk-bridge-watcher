@@ -6,16 +6,18 @@ log4js.configure({
     {
       category: "system",
       type: "dateFile",
-      filename: path.join(__dirname, "../../logs/system.log"),
-      pattern: "-yyyyMMdd",
+      filename: path.join(__dirname, "../../logs/system"),
+      pattern: "-yyyyMMdd.log",
       backups: 365,
+      alwaysIncludePattern: true,
     },
     {
       category: "express",
       type: "dateFile",
-      filename: path.join(__dirname, "../../logs/express.log"),
-      pattern: "-yyyyMMdd",
+      filename: path.join(__dirname, "../../logs/express"),
+      pattern: "-yyyyMMdd.log",
       backups: 365,
+      alwaysIncludePattern: true,
     },
     {
       type: "console",
