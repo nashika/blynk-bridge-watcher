@@ -29,8 +29,13 @@ section.add {
 
   > .body {
     padding: 10px;
-    > button {
-      margin: 5px;
+
+    > .add {
+      display: inline;
+
+      > button {
+        margin: 5px;
+      }
     }
   }
 }
