@@ -21,8 +21,6 @@ let template = require("./board-component.jade");
 })
 export class BoardComponent extends BaseEntityComponent<BoardEntity> {
 
-  $parent: ServerComponent;
-
   bridges: BridgeEntity[];
 
   data(): any {

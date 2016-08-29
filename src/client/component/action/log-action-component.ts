@@ -18,8 +18,6 @@ let template = require("./log-action-component.jade");
 })
 export class LogActionComponent extends BaseActionComponent {
 
-  $parent: ActionComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: LogActionEntity,

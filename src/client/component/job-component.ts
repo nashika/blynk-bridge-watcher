@@ -18,8 +18,6 @@ let template = require("./job-component.jade");
 })
 export class JobComponent extends BaseEntityComponent<JobEntity> {
 
-  $parent: ServerComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: JobEntity,

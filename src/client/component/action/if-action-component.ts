@@ -18,8 +18,6 @@ let template = require("./if-action-component.jade");
 })
 export class IfActionComponent extends BaseActionComponent {
 
-  $parent: ActionComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: IfActionEntity,

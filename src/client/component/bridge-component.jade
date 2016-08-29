@@ -8,17 +8,3 @@ block variables
 
 block body
   +children("action-component", "action", "actions")
-
-block form
-  .form-group
-    label Token
-    input.form-control(type="text", v-model="editEntity.token", required)
-  .form-group
-    label Ping Interval
-    input.form-control(type="number", v-model="editEntity.ping.interval")
-  .form-group
-    label Ping Timeout
-    input.form-control(type="number", v-model="editEntity.ping.timeout")
-  .form-group
-    label Ping Limit
-    input.form-control(type="number", v-model="editEntity.ping.limit")

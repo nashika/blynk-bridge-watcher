@@ -18,8 +18,6 @@ let template = require("./notifier-component.jade");
 })
 export class NotifierComponent extends BaseEntityComponent<NotifierEntity> {
 
-  $parent: ServerComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: NotifierEntity,

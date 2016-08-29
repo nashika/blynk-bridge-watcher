@@ -18,8 +18,6 @@ let template = require("./read-action-component.jade");
 })
 export class ReadActionComponent extends BaseActionComponent {
 
-  $parent: ActionComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: ReadActionEntity,

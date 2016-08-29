@@ -18,8 +18,6 @@ let template = require("./notify-action-component.jade");
 })
 export class NotifyActionComponent extends BaseActionComponent {
 
-  $parent: ActionComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: NotifyActionEntity,

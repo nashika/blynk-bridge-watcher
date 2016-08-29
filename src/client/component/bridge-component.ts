@@ -21,7 +21,6 @@ let template = require("./bridge-component.jade");
 })
 export class BridgeComponent extends BaseEntityComponent<BridgeEntity> {
 
-  $parent: BoardComponent;
   actions:BaseActionEntity[];
 
   data(): any {

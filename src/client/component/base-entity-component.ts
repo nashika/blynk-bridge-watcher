@@ -19,10 +19,10 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   data(): any {
-    return {
+    return _.merge(super.data(), {
       showModal: false,
       editEntity: null,
-    };
+    });
   }
 
   onReady() {

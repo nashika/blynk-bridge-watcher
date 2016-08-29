@@ -18,8 +18,6 @@ let template = require("./write-action-component.jade");
 })
 export class WriteActionComponent extends BaseActionComponent {
 
-  $parent: ActionComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: WriteActionEntity,

@@ -8,23 +8,3 @@ block variables
 
 block body
   p now construction
-
-block form
-  .form-group
-    label Operator
-    select.form-control(v-model="editEntity.operator")
-      option(value="=") =
-      option(value=">") >
-      option(value="<") <
-      option(value=">=") >=
-      option(value="<=") <=
-      option(value="!=") !=
-  .form-group
-    label Value
-    input.form-control(type="number", v-model="editEntity.value")
-  .form-group
-    label Then
-    input.form-control(type="text", v-model="editEntity.then")
-  .form-group
-    label Else
-    input.form-control(type="text", v-model="editEntity.else")

@@ -8,14 +8,3 @@ block variables
 
 block body
   +children("bridge-component", "bridge", "bridges")
-
-block form
-  .form-group
-    label Token
-    input.form-control(type="text", v-model="editEntity.token", required)
-  .form-group
-    label Address
-    input.form-control(type="text", v-model="editEntity.addr")
-  .form-group
-    label Port
-    input.form-control(type="number", v-model="editEntity.port")

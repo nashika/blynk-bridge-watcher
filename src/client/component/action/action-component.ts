@@ -28,8 +28,6 @@ let template = require("./action-component.jade");
 })
 export class ActionComponent extends BaseEntityComponent<BaseActionEntity> {
 
-  $parent: BridgeComponent;
-
   data(): any {
     return _.merge(super.data(), {
       EntityClass: BaseActionEntity,

@@ -18,35 +18,28 @@ export class BridgeEntity extends BaseEntity {
         required: true,
       },
       {
-        name: "ping.interval",
+        name: "pingInterval",
         type: "number",
       },
       {
-        name: "ping.timeout",
+        name: "pingTimeout",
         type: "number",
       },
       {
-        name: "ping.limit",
+        name: "pingLimit",
         type: "number",
       },
     ]),
   };
 
   token: string;
-  ping: {
-    interval: number;
-    timeout: number;
-    limit: number;
-  };
+  pingInterval: number;
+  pingTimeout: number;
+  pingLimit: number;
 
   static generateDefault(): BridgeEntity {
     let result = new BridgeEntity();
     result.name = "BR01";
-    result.ping = {
-      interval: null,
-      timeout: null,
-      limit: null,
-    };
     return result;
   }
 

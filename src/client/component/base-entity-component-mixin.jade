@@ -22,17 +22,12 @@ mixin modal(enableType)
   modal(title="Edit", :show.sync="showModal", effect="fade")
     .modal-body(slot="modal-body")
       form(v-if="editEntity", @submit.prevent="edit()")
-        .form-group
-          label Name
-          input.form-control(type="text", v-model="editEntity.name", required)
-        .form-group
-          label Label
-          input.form-control(type="text", v-model="editEntity.label")
-        if enableType
-          .form-group
-            label Type
-            input.form-control(type="text", v-model="editEntity.type", required, disabled)
-        block form
+        .form-group(v-for="field in EntityClass.params.fields")
+          label {{lodash.startCase(field.name)}}
+          input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled")
+          input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled")
+          select.form-control(v-if="field.type == 'select'", v-model="editEntity[field.name]", :disabled="field.disabled")
+            option(v-for="value in field.options", :value="$key") {{value}}
         button.btn.btn-primary.btn-block(type="submit") Submit
     .modal-footer(slot="modal-footer")
       button.btn.btn-default(type="button", @click="showModal = false") Close
