@@ -11,6 +11,8 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
     super(app, false);
     app.get("/server", this.onIndex);
     app.post("/server/edit", this.onEdit);
+    app.post("/server/start", this.onStart);
+    app.post("/server/stop", this.onStop);
   }
 
   index(req: Request, res: Response) {
@@ -18,5 +20,17 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
       res.json(entity);
     }).catch(err => this.responseErrorJson(res, err));
   }
+
+  onStart = (req: Request, res: Response) => {
+    setTimeout(() => {
+      res.json(true);
+    }, 3000);
+  };
+
+  onStop = (req: Request, res: Response) => {
+    setTimeout(() => {
+      res.json(true);
+    }, 3000);
+  };
 
 }
