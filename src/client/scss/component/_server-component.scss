@@ -1,36 +1,3 @@
 section.server {
-
-  > .header {
-    margin: 10px 0px;
-    @include border-top-radius(5px);
-    @include border-bottom-radius(5px);
-    @include box-shadow(0 5px 5px rgba(0, 0, 0, 0.25));
-    background-color: $brand-darkest;
-
-    .menu {
-      @include component-menu;
-    }
-
-    > h1 {
-      margin: 0px;
-      padding: 10px;
-      font-size: 150%;
-      color: #fff;
-    }
-  }
-
-  > .body {
-  }
-}
-
-section.boards {
-  @include component-list-box;
-}
-
-section.notifiers {
-  @include component-list-box;
-}
-
-section.jobs {
-  @include component-list-box;
+  @include component-tab;
 }

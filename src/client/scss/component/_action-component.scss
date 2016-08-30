@@ -1,3 +1,32 @@
+section.actions {
+  @include component-list;
+}
+
 section.action {
   @include component-box;
+}
+
+section.add-box {
+  padding: 10px;
+
+  > .header {
+
+    > h1 {
+      color: $brand-dark;
+      margin: 0px;
+      font-size: 120%;
+      font-weight: bold;
+    }
+  }
+
+  > .body {
+
+
+    line-height: 3;
+
+    > .add {
+      margin: 3px;
+      display: inline;
+    }
+  }
 }

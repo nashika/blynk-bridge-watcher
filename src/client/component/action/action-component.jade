@@ -9,11 +9,12 @@
 
 section(v-if="!add", class!=singularName)
   each action in actions
-    #{action + "-action-component"}(v-if="entity.type == '#{action}'", :entity="entity")
+    #{action + "-action-component"}(v-if="entity.type == '#{action}'", :entity="entity", :parent="parent")
 .add(v-else)
-  section.add
+  button.btn.btn-success(@click="showAddBox = !showAddBox", :class="{active: showAddBox}") #[i.fa.fa-plus] Add action
+  section.add-box(v-show="showAddBox")
     .header
-      h1 #[i.fa.fa-plus] Add action
+      h1 Add Action Menu
     .body
       each action in actions
-        #{action + "-action-component"}(:add="true")
+        #{action + "-action-component"}(:add="true", :parent="parent")

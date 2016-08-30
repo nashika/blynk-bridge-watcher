@@ -1,7 +1,7 @@
-section.board {
-  @include component-box;
+section.boards {
+  @include component-list;
 }
 
-section.bridges {
-  @include component-list-box;
+section.board {
+  @include component-tab;
 }

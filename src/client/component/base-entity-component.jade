@@ -7,7 +7,7 @@ section(v-if="!add", :class="EntityClass.params.tableName")
   .body
     block body
 .add(v-else)
-  button.btn.btn-success.btn-block(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
+  button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
   type="button", @click="showModal = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}
   button.btn.btn-success(v-else,
   type="button", @click="showModal = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}

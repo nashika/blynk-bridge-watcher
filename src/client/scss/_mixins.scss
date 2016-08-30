@@ -1,5 +1,5 @@
 @mixin component-box {
-  margin: 20px 0px;
+  margin: 0px 0px 20px 0px;
   @include border-top-radius(5px);
   @include border-bottom-radius(5px);
   @include box-shadow(0 5px 5px rgba(0, 0, 0, 0.25));
@@ -25,6 +25,31 @@
   }
 }
 
+@mixin component-tab {
+
+  > .header {
+    margin: 10px 0px;
+    @include border-top-radius(5px);
+    @include border-bottom-radius(5px);
+    @include box-shadow(0 5px 5px rgba(0, 0, 0, 0.25));
+    background-color: $brand-dark;
+
+    .menu {
+      @include component-menu;
+    }
+
+    > h1 {
+      margin: 0px;
+      padding: 10px;
+      font-size: 150%;
+      color: #fff;
+    }
+  }
+
+  > .body {
+  }
+}
+
 @mixin component-menu {
   margin: 3px;
   float: right;
@@ -34,24 +59,32 @@
   }
 }
 
-@mixin component-list-box {
+@mixin component-list {
   margin: 20px 0px;
+  @include border-top-radius(5px);
+  @include border-bottom-radius(5px);
+  border: 1px solid $brand-lightest;
 
   > .header {
-    @include border-top-radius(5px);
-    @include border-bottom-radius(5px);
-    background-color: $brand-lightest;
+
+    > .add {
+
+      > button {
+        margin: 3px;
+        float: right;
+      }
+    }
 
     > h1 {
       margin: 0px;
       padding: 5px 10px 5px 10px;
       font-size: 120%;
+      font-weight: bold;
       color: $brand-dark;
     }
-
   }
 
   > .body {
-    padding: 0px 10px;
+    padding: 10px;
   }
 }

@@ -23,9 +23,12 @@ let template = require("./action-component.jade");
 })
 export class ActionComponent extends BaseEntityComponent<BaseActionEntity> {
 
+  showAddBox:boolean;
+
   data(): any {
     return _.assign(super.data(), {
       EntityClass: BaseActionEntity,
+      showAddBox: false,
     });
   }
 

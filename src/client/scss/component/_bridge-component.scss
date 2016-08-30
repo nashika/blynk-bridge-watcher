@@ -1,7 +1,7 @@
-section.bridge {
-  @include component-box;
+section.bridges {
+  @include component-list;
 }
 
-section.actions {
-  @include component-list-box;
+section.bridge {
+  @include component-tab;
 }

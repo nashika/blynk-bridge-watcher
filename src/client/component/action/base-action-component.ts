@@ -14,8 +14,4 @@ export class BaseActionComponent extends BaseEntityComponent<BaseActionEntity> {
     });
   }
 
-  get parentEntityComponent(): BaseEntityComponent<BaseEntity> {
-    return this.$parent.$parent;
-  }
-
 }

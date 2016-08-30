@@ -7,12 +7,24 @@ mixin dropdown()
 mixin children(componentName, singularName, pluralName)
   section(class!=pluralName)
     .header
-      h1 List of #{pluralName}
+      #{componentName}(:add="true", :parent="this")
+      h1 {{lodash.startCase('#{pluralName}')}}
     .body
-      #{componentName}(v-for="#{singularName} in #{pluralName}", :entity="#{singularName}")
+      #{componentName}(v-for="#{singularName} in #{pluralName}", :entity="#{singularName}", :parent="this")
       .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
       .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
-      #{componentName}(:add="true")
+
+mixin children-tab(componentName, singularName, pluralName)
+  section(class!=pluralName)
+    .header
+      #{componentName}(:add="true", :parent="this")
+      h1 {{lodash.startCase('#{pluralName}')}}
+    .body
+      tabs(v-if="#{pluralName}")
+        tab(v-for="#{singularName} in #{pluralName}", :header="#{singularName}.name")
+          #{componentName}(:entity="#{singularName}", :parent="this")
+      .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
+      .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
 
 mixin modal()
   modal(title="Edit", :show.sync="showModal", effect="fade")

@@ -1,5 +1,6 @@
 import _ = require("lodash");
 import Component from "vue-class-component";
+var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "./base-component";
 import {serviceRegistry} from "../service/service-registry";
@@ -7,23 +8,26 @@ import {BaseEntity} from "../../common/entity/base-entity";
 
 @Component({
   components: {
-    modal: require("vue-strap").modal,
+    modal: VueStrap.modal,
+    tabs: VueStrap.tabset,
+    tabGroup: VueStrap.tabGroup,
+    tab: VueStrap.tab,
   },
-  props: ["entity", "add"],
+  props: ["entity", "parent", "add"],
   ready: BaseEntityComponent.prototype.onReady,
 })
 export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
 
-  EntityClass:typeof BaseEntity;
-  $parent: BaseEntityComponent<BaseEntity>;
   entity: T;
+  parent: BaseEntityComponent<BaseEntity>;
   add: boolean;
 
+  EntityClass:typeof BaseEntity;
   showModal: boolean;
   editEntity: T;
 
-  get parentEntityComponent():BaseEntityComponent<BaseEntity> {
-    return this.$parent;
+  get this(): BaseEntityComponent<BaseEntity> {
+    return this;
   }
 
   data(): any {
@@ -51,14 +55,14 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   edit() {
     this.showModal = false;
     if (this.add) {
-      this.editEntity._parent = this.parentEntityComponent.entity._id;
+      this.editEntity._parent = this.parent.entity._id;
       serviceRegistry.entity.add(this.editEntity).then(entity => {
         this.editEntity = <T>this.EntityClass.generateDefault();
-        this.parentEntityComponent.reload();
+        this.parent.reload();
       });
     } else {
       serviceRegistry.entity.edit(this.editEntity).then(entity => {
-        this.parentEntityComponent.reload();
+        this.parent.reload();
       });
     }
   }
@@ -66,7 +70,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   remove() {
     if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} name:${this.entity.name}?`)) return;
     serviceRegistry.entity.remove(this.entity).then(entity => {
-      this.parentEntityComponent.reload();
+      this.parent.reload();
     });
   }
 
