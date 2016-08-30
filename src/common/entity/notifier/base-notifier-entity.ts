@@ -1,8 +1,9 @@
 import _ = require("lodash");
 
-import {BaseEntity, IEntityParams, IEntityFieldParams} from "../base-entity";
+import {IEntityParams, IEntityFieldParams} from "../base-entity";
+import {BaseSwitchEntity} from "../base-switch-entity";
 
-export class BaseNotifierEntity extends BaseEntity {
+export class BaseNotifierEntity extends BaseSwitchEntity {
 
   static defaultName = "NT01";
 
@@ -11,16 +12,21 @@ export class BaseNotifierEntity extends BaseEntity {
     entityName: "notifier",
     icon: "bell",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
+    fields: _.concat<IEntityFieldParams>(BaseSwitchEntity.params.fields, [
       {
-        name: "type",
-        type: "text",
-        required: true,
-        disabled: true,
+        name: "firstDelay",
+        type: "number",
+        default: 3000,
+      },
+      {
+        name: "nextDelay",
+        type: "number",
+        default: 10000,
       },
     ]),
   };
 
-  type: string;
+  firstDelay: number;
+  nextDelay: number;
 
 }

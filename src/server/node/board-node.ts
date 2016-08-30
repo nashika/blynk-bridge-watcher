@@ -1,6 +1,7 @@
-import {BoardEntity} from "../../common/entity/board-entity";
+import _ = require("lodash");
 var Blynk = require("blynk-library");
 
+import {BoardEntity} from "../../common/entity/board-entity";
 import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {BridgeNode} from "./bridge/bridge-node";
@@ -16,18 +17,16 @@ export class BoardNode extends BaseNode<BoardEntity> {
 
   constructor(parent:ServerNode, entity:BoardEntity) {
     super(parent, entity);
-    let token:string = this._checkConfig(entity, "token", "string");
-    let addr:string = this._checkConfig(entity, "addr", "string", "");
-    let port:number = this._checkConfig(entity, "port", "number", 8442);
+    _.defaults(entity, {addr: "", port: 8442});
     this.log("debug", `Auth dummy blynk board was started.`);
     let options = {
       connector: new Blynk.TcpClient({
-        addr: addr,
-        port: port,
+        addr: entity.addr,
+        port: entity.port,
       }),
       //certs_path : './node_modules/blynk-library/certs/',
     };
-    this.blynk = new Blynk.Blynk(token, options);
+    this.blynk = new Blynk.Blynk(entity.token, options);
 
     this.log("debug", `Construct Input Virtual Pin 0 was started.`);
     this._inputVPin = new this.blynk.VirtualPin(0);

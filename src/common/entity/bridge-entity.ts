@@ -26,11 +26,6 @@ export class BridgeEntity extends BaseEntity {
         default: 60000,
       },
       {
-        name: "pingTimeout",
-        type: "number",
-        default: 10000,
-      },
-      {
         name: "pingLimit",
         type: "number",
         default: 3,
@@ -40,7 +35,6 @@ export class BridgeEntity extends BaseEntity {
 
   token: string;
   pingInterval: number;
-  pingTimeout: number;
   pingLimit: number;
 
 }

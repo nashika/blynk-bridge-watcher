@@ -1,22 +1,20 @@
 import util = require("util");
 
+import _ = require("lodash");
+
 import {ActionNode} from "./action-node";
 import {BridgeNode} from "../bridge/bridge-node";
-import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {LogActionEntity} from "../../../common/entity/action/log-action-entity";
 
-export class LogActionNode extends ActionNode {
+export class LogActionNode extends ActionNode<LogActionEntity> {
 
-  protected _level:string;
-  protected _message:string;
-
-  constructor(parent:BridgeNode, entity:BaseActionEntity) {
+  constructor(parent:BridgeNode, entity:LogActionEntity) {
     super(parent, entity);
-    this._level = this._checkConfig(entity, "level", ["in", "fatal", "error", "warn", "info", "debug", "trace"], "info");
-    this._message = this._checkConfig(entity, "message", "string");
+    _.defaults(entity, {level: "info"});
   }
 
   run = (bridge:BridgeNode, ...args:string[]) => {
-    bridge.log(this._level, util.format(this._message, ...args));
+    bridge.log(this.entity.level, util.format(this.entity.message, ...args));
   };
 
 }

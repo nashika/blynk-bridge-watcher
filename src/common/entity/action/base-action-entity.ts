@@ -1,8 +1,9 @@
 import _ = require("lodash");
 
-import {BaseEntity, IEntityParams, IEntityFieldParams} from "../base-entity";
+import {IEntityParams, IEntityFieldParams} from "../base-entity";
+import {BaseSwitchEntity} from "../base-switch-entity";
 
-export class BaseActionEntity extends BaseEntity {
+export class BaseActionEntity extends BaseSwitchEntity {
 
   static defaultName = "AC01";
 
@@ -11,16 +12,8 @@ export class BaseActionEntity extends BaseEntity {
     entityName: "action",
     icon: "cog",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
-      {
-        name: "type",
-        type: "text",
-        required: true,
-        disabled: true,
-      },
+    fields: _.concat<IEntityFieldParams>(BaseSwitchEntity.params.fields, [
     ]),
   };
-
-  type:string;
 
 }

@@ -22,4 +22,6 @@ export class PushbulletNotifierEntity extends BaseNotifierEntity {
     ]),
   };
 
+  apiKey: string;
+
 }

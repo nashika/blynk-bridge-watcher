@@ -1,3 +1,5 @@
+import _ = require("lodash");
+
 import {TransceiverBridgeNode} from "./transceiver-bridge-node";
 import {BoardNode} from "../board-node";
 import {BridgeEntity} from "../../../common/entity/bridge-entity";
@@ -5,23 +7,20 @@ import {BridgeEntity} from "../../../common/entity/bridge-entity";
 export class PingBridgeNode extends TransceiverBridgeNode {
 
   protected _pinging:boolean = false;
-  protected _pingIntervalMs:number = 60000;
-  protected _pingFailureLimit:number = 3;
   protected _pingFailureCount:number = 0;
   protected _pingIntervalId:any = 0;
 
   constructor(parent:BoardNode, entity:BridgeEntity) {
     super(parent, entity);
-    this._pingIntervalMs = this._checkConfig(entity, "ping.interval", "number", this._pingIntervalMs);
-    this._pingFailureLimit = this._checkConfig(entity, "ping.failureLimit", "number", this._pingFailureLimit);
+    _.defaults(entity, {pingInterval: 60000, pingLimit: 3});
     this.on("$ping", this._onPing);
   }
 
   connect() {
     super.connect();
-    this.log("info", `Ping setting, interval=${this._pingIntervalMs}ms failureLimit=${this._pingFailureLimit}`);
+    this.log("info", `Ping setting, interval=${this.entity.pingInterval}ms failureLimit=${this.entity.pingLimit}`);
     setTimeout(this._ping, 1000);
-    this._pingIntervalId = setInterval(this._ping, this._pingIntervalMs);
+    this._pingIntervalId = setInterval(this._ping, this.entity.pingInterval);
   }
 
   _ping = ():void => {
@@ -41,9 +40,10 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   _pingTimeout = ():void => {
     if (this._pinging) {
       this._pingFailureCount++;
-      this.log("error", `Ping was no response, failure count ${this._pingFailureCount} / ${this._pingFailureLimit}.`);
+      if (this.status != this.STATUS_TYPES["error"])
+        this.log("error", `Ping was no response, failure count ${this._pingFailureCount} / ${this.entity.pingLimit}.`);
       this._pinging = false;
-      if (this._pingFailureCount >= this._pingFailureLimit) {
+      if (this._pingFailureCount >= this.entity.pingLimit) {
         this.log("error", `Ping failed ${this._pingFailureCount} times, the bridge will stop.`);
         this.status = this.STATUS_TYPES["error"];
       }

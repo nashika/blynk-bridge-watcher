@@ -61,6 +61,7 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
   stop():Promise<void> {
     logger.info("Server node destruct started.");
     delete this.serverNode;
+    logger.info("Server node destruct finished.");
     return Promise.resolve();
   }
 

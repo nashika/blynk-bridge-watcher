@@ -9,8 +9,6 @@ import log4js = require("log4js");
 import {routes} from './routes/index';
 
 import "./log4js";
-import {ServerNode} from "./node/server-node";
-import {nodeRegistry} from "./node/node-registry";
 let logger = log4js.getLogger("system");
 
 logger.info("Web server initialize started.");

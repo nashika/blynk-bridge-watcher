@@ -38,4 +38,8 @@ export class ReadActionEntity extends BaseActionEntity {
     ]),
   };
 
+  pinType: string;
+  pin: number;
+  next: string;
+
 }

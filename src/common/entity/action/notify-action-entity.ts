@@ -27,4 +27,7 @@ export class NotifyActionEntity extends BaseActionEntity {
     ]),
   };
 
+  notifier: string;
+  message: string;
+
 }

@@ -5,20 +5,16 @@ import {ServerNode} from "../server-node";
 import {NotifyActionNode} from "../action/notify-action-node";
 import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
 
-export abstract class NotifierNode extends BaseNode<BaseNotifierEntity> {
+export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNode<T> {
 
   static EntityClass = BaseNotifierEntity;
 
   public parent:ServerNode;
-  protected _firstDelay:number = 3000;
-  protected _nextDelay:number = 10000;
   private _waiting:boolean = false;
   private _messages:string[] = null;
 
-  constructor(server:ServerNode, entity:BaseNotifierEntity) {
+  constructor(server:ServerNode, entity:T) {
     super(server, entity);
-    this._firstDelay = this._checkConfig(entity, "firstDelay", "number", this._firstDelay);
-    this._nextDelay = this._checkConfig(entity, "nextDelay", "number", this._nextDelay);
     this._messages = [];
     this.on("notify", this._onNotify);
     this.on("send", this._onSend);
@@ -29,7 +25,7 @@ export abstract class NotifierNode extends BaseNode<BaseNotifierEntity> {
     this._messages.push(message);
     if (!this._waiting) {
       this._waiting = true;
-      setTimeout(this._sendFirst, this._firstDelay);
+      setTimeout(this._sendFirst, this.entity.firstDelay);
     }
   };
 
@@ -42,7 +38,7 @@ export abstract class NotifierNode extends BaseNode<BaseNotifierEntity> {
   protected _sendFirst = ():void => {
     this.emit("send", this._messages);
     this._messages = [];
-    setTimeout(this._sendNext, this._nextDelay);
+    setTimeout(this._sendNext, this.entity.nextDelay);
   };
 
   private _sendNext = ():void => {
@@ -51,12 +47,12 @@ export abstract class NotifierNode extends BaseNode<BaseNotifierEntity> {
     else {
       this.emit("send", this._messages);
       this._messages = [];
-      setTimeout(this._sendNext, this._nextDelay);
+      setTimeout(this._sendNext, this.entity.nextDelay);
     }
   };
 
   protected _makeMessage(action:NotifyActionNode, ...args:string[]):string {
-    let message = action.message || "%s";
+    let message = action.entity.message || "%s";
     message = action.allKeyLabel() + " " + util.format(message, ...args);
     return message;
   }

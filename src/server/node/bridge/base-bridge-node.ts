@@ -3,6 +3,7 @@ import {ActionGeneratorNode} from "../action/action-generator-node";
 import {BoardNode} from "../board-node";
 import {ActionNode} from "../action/action-node";
 import {BridgeEntity} from "../../../common/entity/bridge-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 
 export type WidgetBridge = any;
 
@@ -27,28 +28,26 @@ export class BaseBridgeNode extends BaseNode<BridgeEntity> {
 
   parent:BoardNode;
   status:{label:string} = this.STATUS_TYPES["constructing"];
-  actions:{[name:string]:ActionNode};
-  protected _token:string;
+  actions:{[name:string]:ActionNode<BaseActionEntity>};
   protected _widgetBridge:WidgetBridge;
 
   constructor(parent:BoardNode, entity:BridgeEntity) {
     super(parent, entity);
     this.log("info", `Connect bridge was started.`);
-    this._token = this._checkConfig(entity, "token", "string");
     this._widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(parent.bridges).length + 1);
     this.initializeChildrenWithGenerator("actions", ActionGeneratorNode);
     for (let actionName in this.actions) {
-      let action:ActionNode = this.actions[actionName];
+      let action:ActionNode<BaseActionEntity> = this.actions[actionName];
       this.on(actionName, action.run);
-      for (let alias of action.aliases)
-        this.on(alias, action.run);
+      /*for (let alias of action.entity.aliases)
+        this.on(alias, action.run);*/
     }
   }
 
   connect() {
     this.log("info", `Connection started.`);
     this.status = this.STATUS_TYPES["connecting"];
-    this._widgetBridge.setAuthToken(this._token);
+    this._widgetBridge.setAuthToken(this.entity.token);
   }
 
   log(level:string, message:string, ...args:string[]) {

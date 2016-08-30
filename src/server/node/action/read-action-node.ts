@@ -1,20 +1,18 @@
-import {PinActionNode} from "./pin-action-node";
 import {BridgeNode} from "../bridge/bridge-node";
-import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {ReadActionEntity} from "../../../common/entity/action/read-action-entity";
+import {ActionNode} from "./action-node";
 
-export class ReadActionNode extends PinActionNode {
+export class ReadActionNode extends ActionNode<ReadActionEntity> {
 
-  protected _next:string;
-
-  constructor(parent:BridgeNode, entity:BaseActionEntity) {
+  constructor(parent:BridgeNode, entity:ReadActionEntity) {
     super(parent, entity);
-    this._next = this._addSubAction(parent, entity, "next");
+    entity.next = this._addSubAction(parent, entity, "next");
   }
 
   run = (bridge:BridgeNode, ...args:string[]) => {
-    this.log("debug", `Read action. type=${this._pinType}, pin=${this._pin}`);
+    this.log("debug", `Read action. type=${this.entity.pinType}, pin=${this.entity.pin}`);
     let command:string;
-    switch (this._pinType) {
+    switch (this.entity.pinType) {
       case "digital":
         command = "dr";
         break;
@@ -27,9 +25,9 @@ export class ReadActionNode extends PinActionNode {
       default:
         throw new Error();
     }
-    bridge.send(command, [this._pin], (...args:string[]) => {
-      if (this._next)
-        bridge.emit(this._next, bridge, ...args);
+    bridge.send(command, [this.entity.pin], (...args:string[]) => {
+      if (this.entity.next)
+        bridge.emit(this.entity.next, bridge, ...args);
     }, () => {
     });
   };

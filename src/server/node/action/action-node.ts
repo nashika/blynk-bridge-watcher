@@ -1,28 +1,29 @@
+import _ = require("lodash");
+
 import {BaseNode} from "../base-node";
 import {BridgeNode} from "../bridge/bridge-node";
 import {ActionGeneratorNode} from "./action-generator-node";
 import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 import {BaseEntity} from "../../../common/entity/base-entity";
 
-export class ActionNode extends BaseNode<BaseActionEntity> {
+export class ActionNode<T extends BaseActionEntity> extends BaseNode<T> {
 
   static EntityClass = BaseActionEntity;
 
   parent:BridgeNode;
-  aliases:string[];
 
-  constructor(parent:BridgeNode, entity:BaseActionEntity) {
+  constructor(parent:BridgeNode, entity:T) {
     super(parent, entity);
-    this.aliases = this._checkConfig(entity, "aliases", "array", []);
+    _.defaults(entity, {aliases: []});
   }
 
   run = (caller:BaseNode<BaseEntity>, ...args:string[]) => {
     this.log("error", `Action.run is abstract function`);
   };
 
-  protected _addSubAction = (parent:BridgeNode, config:Object, key:string) => {
-    let subActionConfig = this._checkConfig(config, key, ["string", "object"], "");
-    if (subActionConfig == "" || typeof subActionConfig == "string")
+  protected _addSubAction = (parent:BridgeNode, entity:BaseActionEntity, key:string) => {
+    let subActionConfig:any = _.get(entity, key);
+    if (!subActionConfig || typeof subActionConfig == "string")
       return subActionConfig;
     else {
       let name = this.name + "$" + key;

@@ -7,6 +7,7 @@ import {GeneratorNode} from "./generator-node";
 import {tableRegistry} from "../table/table-registry";
 import {BaseTable} from "../table/base-table";
 import {BaseEntity} from "../../common/entity/base-entity";
+import {BaseSwitchEntity} from "../../common/entity/base-switch-entity";
 
 export class BaseNode<T extends BaseEntity> extends EventEmitter {
 
@@ -18,8 +19,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
 
   constructor(parent:BaseNode<BaseEntity> = null, entity:T = null) {
     super();
-    this.parent = parent;
-    this.entity = entity;
+    this.name = entity.name;
     this.log("trace", `Constructing ${(<any>this.constructor).name} object.`);
   }
 
@@ -58,49 +58,15 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
       return `[${args.join('->')}]`;
   }
 
-  protected _checkConfig(config:Object, key:string, types:string|string[], defaultValue:any = undefined):any {
-    if ((typeof config != "object") || Array.isArray(config)) {
-      this.log("fatal", "Check config. 'config' is not object.");
-      process.exit(1);
-    }
-    let target = _.get(config, key);
-    if (typeof target == "undefined") {
-      if (defaultValue !== undefined)
-        return defaultValue;
-      else {
-        this.log("fatal", `Check config. 'config.${key}' is undefined.`);
-        process.exit(1);
-      }
-    }
-    let arrTypes = _.castArray(types);
-    if (arrTypes[0] == "in") {
-      arrTypes.shift();
-      for (let type of arrTypes) {
-        if (target == type) return target;
-      }
-      this.log("fatal", `Check config. 'config.${key}' value=${target} is unexpected, expects ${JSON.stringify(arrTypes)}.`);
-    } else {
-      for (let type of arrTypes) {
-        if (type == "array") {
-          if (Array.isArray(target)) return target;
-        } else {
-          if (typeof target == type) return target;
-        }
-      }
-      this.log("fatal", `Check config. 'config.${key}' type=${typeof target} is unexpected, expects ${JSON.stringify(arrTypes)}.`);
-    }
-    process.exit(1);
-  }
-
   protected initializeChildren<ChildT extends BaseEntity>(key:string, ChildClass:typeof BaseNode):Promise<void> {
     return this._initializeChildrenCommon<ChildT>(key, ChildClass, childEntity => {
       return new ChildClass(this, childEntity);
     });
   }
 
-  protected initializeChildrenWithGenerator<ChildT extends BaseEntity>(key:string, ChildGenerator:typeof GeneratorNode):Promise<void> {
+  protected initializeChildrenWithGenerator<ChildT extends BaseSwitchEntity>(key:string, ChildGenerator:typeof GeneratorNode):Promise<void> {
     let generator = new ChildGenerator(this);
-    return this._initializeChildrenCommon<ChildT>(key, ChildGenerator, childEntity => {
+    return this._initializeChildrenCommon<ChildT>(key, ChildGenerator, (childEntity:BaseSwitchEntity) => {
       return generator.generate(this, childEntity);
     });
   }

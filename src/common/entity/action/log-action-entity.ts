@@ -8,7 +8,7 @@ export class LogActionEntity extends BaseActionEntity {
   static defaultName = "ACLG01";
   static defaultType = "log";
 
-  static params:IEntityParams = {
+  static params: IEntityParams = {
     tableName: "action",
     entityName: "logAction",
     icon: "terminal",
@@ -35,5 +35,8 @@ export class LogActionEntity extends BaseActionEntity {
       },
     ]),
   };
+
+  level: string;
+  message: string;
 
 }

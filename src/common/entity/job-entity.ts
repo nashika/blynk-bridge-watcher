@@ -21,7 +21,7 @@ export class JobEntity extends BaseEntity {
       {
         name: "board",
         type: "text",
-        required:true,
+        required: true,
       },
       {
         name: "bridge",
@@ -35,5 +35,10 @@ export class JobEntity extends BaseEntity {
       },
     ]),
   };
+
+  cronTime: string;
+  board: string;
+  bridge: string;
+  action: string;
 
 }

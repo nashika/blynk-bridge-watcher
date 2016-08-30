@@ -1,9 +1,7 @@
 import {NotifierNode} from "./notifier-node";
+import {LogNotifierEntity} from "../../../common/entity/notifier/log-notifier-entity";
 
-export class LogNotifierNode extends NotifierNode {
-
-  protected _firstDelay:number = 0;
-  protected _nextDelay:number = 0;
+export class LogNotifierNode extends NotifierNode<LogNotifierEntity> {
 
   protected send(messages:string[]) {
     for (let message of messages)

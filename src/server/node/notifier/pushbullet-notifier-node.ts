@@ -6,14 +6,13 @@ import {PushbulletNotifierEntity} from "../../../common/entity/notifier/pushbull
 
 type Pushbullet = any;
 
-export class PushbulletNotifierNode extends NotifierNode {
+export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierEntity> {
 
   protected _pushbullet:Pushbullet;
 
   constructor(parent:ServerNode, entity:PushbulletNotifierEntity) {
     super(parent, entity);
-    let apiKey:string = this._checkConfig(entity, "apiKey", "string");
-    this._pushbullet = new Pushbullet(apiKey);
+    this._pushbullet = new Pushbullet(entity.apiKey);
     this._pushbullet.me((err:any, response:any) => {
       if (err) {
         this.log("fatal", `Pushbullet auth failed.`);

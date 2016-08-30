@@ -38,4 +38,8 @@ export class WriteActionEntity extends BaseActionEntity {
     ]),
   };
 
+  pinType: string;
+  pin: number;
+  value: number;
+
 }

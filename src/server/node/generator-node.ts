@@ -1,7 +1,8 @@
 import {BaseNode} from  "./base-node";
 import {BaseEntity} from "../../common/entity/base-entity";
+import {BaseSwitchEntity} from "../../common/entity/base-switch-entity";
 
-export class GeneratorNode<T extends BaseEntity> extends BaseNode<T> {
+export class GeneratorNode<T extends BaseSwitchEntity> extends BaseNode<T> {
 
   TYPE_TO_CLASS:{[type:string]:any} = {};
 
@@ -9,12 +10,11 @@ export class GeneratorNode<T extends BaseEntity> extends BaseNode<T> {
     super(parent, <any>{_id: null, _parent:parent.entity._id, name: "generator"});
   }
 
-  generate(parent:BaseNode<BaseEntity>, config:Object) {
-    let type = this._checkConfig(config, "type", "string");
-    if (this.TYPE_TO_CLASS[type])
-      return new this.TYPE_TO_CLASS[type](parent, config);
+  generate(parent:BaseNode<BaseEntity>, entity:BaseSwitchEntity) {
+    if (this.TYPE_TO_CLASS[entity.type])
+      return new this.TYPE_TO_CLASS[entity.type](parent, entity);
     else {
-      this.log("fatal", `Generator type='${type}' is not defined.`);
+      this.log("fatal", `Generator type='${entity.type}' is not defined.`);
       process.exit(1);
     }
   }
