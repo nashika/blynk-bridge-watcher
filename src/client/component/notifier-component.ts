@@ -9,17 +9,11 @@ let template = require("./notifier-component.jade");
 
 @Component({
   template: template,
-  components: {
-    dropdown: require("vue-strap").dropdown,
-    modal: require("vue-strap").modal,
-  },
-  props: ["entity", "add"],
-  ready: NotifierComponent.prototype.onReady,
 })
 export class NotifierComponent extends BaseEntityComponent<NotifierEntity> {
 
   data(): any {
-    return _.merge(super.data(), {
+    return _.assign(super.data(), {
       EntityClass: NotifierEntity,
     });
   }

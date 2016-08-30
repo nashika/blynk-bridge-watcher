@@ -1,9 +1,17 @@
 import _ = require("lodash");
+import Component from "vue-class-component";
 
 import {BaseComponent} from "./base-component";
 import {serviceRegistry} from "../service/service-registry";
 import {BaseEntity} from "../../common/entity/base-entity";
 
+@Component({
+  components: {
+    modal: require("vue-strap").modal,
+  },
+  props: ["entity", "add"],
+  ready: BaseEntityComponent.prototype.onReady,
+})
 export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
 
   EntityClass:typeof BaseEntity;
@@ -19,7 +27,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   data(): any {
-    return _.merge(super.data(), {
+    return _.assign(super.data(), {
       showModal: false,
       editEntity: null,
     });

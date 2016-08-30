@@ -15,14 +15,10 @@ let template = require("./server-component.jade");
 @Component({
   template: template,
   components: {
-    dropdown: require("vue-strap").dropdown,
-    modal: require("vue-strap").modal,
     "board-component": BoardComponent,
     "notifier-component": NotifierComponent,
     "job-component": JobComponent,
   },
-  props: ["entity"],
-  ready: ServerComponent.prototype.onReady,
 })
 export class ServerComponent extends BaseEntityComponent<ServerEntity> {
 
@@ -31,7 +27,7 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
   jobs: JobEntity[];
 
   data(): any {
-    return _.merge(super.data(), {
+    return _.assign(super.data(), {
       EntityClass: ServerEntity,
       boards: null,
       notifiers: null,

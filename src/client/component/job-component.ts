@@ -9,17 +9,11 @@ let template = require("./job-component.jade");
 
 @Component({
   template: template,
-  components: {
-    dropdown: require("vue-strap").dropdown,
-    modal: require("vue-strap").modal,
-  },
-  props: ["entity", "add"],
-  ready: JobComponent.prototype.onReady,
 })
 export class JobComponent extends BaseEntityComponent<JobEntity> {
 
   data(): any {
-    return _.merge(super.data(), {
+    return _.assign(super.data(), {
       EntityClass: JobEntity,
     });
   }
