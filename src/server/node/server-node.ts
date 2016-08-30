@@ -18,13 +18,6 @@ export class ServerNode extends BaseNode<ServerEntity> {
   initialize():Promise<void> {
     return Promise.resolve().then(() => {
       return tableRegistry.server.findOne();
-    }).then(serverEntity => {
-      if (serverEntity) {
-        return serverEntity;
-      } else {
-        let entity = ServerEntity.generateDefault();
-        return tableRegistry.server.insert(entity);
-      }
     }).then(entity => {
       this.parent = null;
       this.entity = entity;

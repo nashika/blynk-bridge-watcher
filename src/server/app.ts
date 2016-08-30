@@ -62,10 +62,3 @@ app.use((err:any, req:Request, res:Response, next:NextFunction) => {
 });
 
 logger.info("Web server initialize finished.");
-
-logger.info("Server node initialize started.");
-nodeRegistry.server.initialize().then(() => {
-  logger.info("Server node initialize finished.");
-}).catch(err => {
-  logger.fatal(err);
-});

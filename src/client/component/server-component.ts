@@ -20,6 +20,7 @@ let template = require("./server-component.jade");
     "notifier-component": NotifierComponent,
     "job-component": JobComponent,
   },
+  ready: ServerComponent.prototype.onReady,
 })
 export class ServerComponent extends BaseEntityComponent<ServerEntity> {
 
@@ -37,6 +38,12 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
       jobs: null,
       isStarted: false,
       isLoading: false,
+    });
+  }
+
+  onReady() {
+    serviceRegistry.server.status().then(status => {
+      this.isStarted = status;
     });
   }
 

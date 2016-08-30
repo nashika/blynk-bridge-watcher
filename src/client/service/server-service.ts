@@ -5,16 +5,23 @@ import _ = require("lodash");
 
 export class ServerService extends BaseService {
 
+  status(): Promise<boolean> {
+    let url: string = `/server/status`;
+    return request.get(url).then(status => {
+      return status.body;
+    });
+  }
+
   start(): Promise<void> {
     let url: string = `/server/start`;
-    return request.post(url).then(() => {
+    return request.get(url).then(() => {
       return;
     });
   }
 
   stop(): Promise<void> {
     let url: string = `/server/stop`;
-    return request.post(url).then(() => {
+    return request.get(url).then(() => {
       return;
     });
   }
