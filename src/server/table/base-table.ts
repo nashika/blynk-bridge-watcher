@@ -29,7 +29,7 @@ export class BaseTable<T extends BaseEntity> {
   find(query: any = {}): Promise<T[]> {
     logger.trace(`Find ${this.Class.EntityClass.params.tableName} table, query="${JSON.stringify(query)}".`);
     return new Promise<T[]>((resolve, reject) => {
-      this.db.find<T>(query, (err, docs) => {
+      this.db.find<T>(query).sort({_orderNo: 1}).exec((err, docs) => {
         if (err) return reject(err);
         let entities: T[] = docs.map(doc => <T>new this.Class.EntityClass(doc));
         resolve(entities);

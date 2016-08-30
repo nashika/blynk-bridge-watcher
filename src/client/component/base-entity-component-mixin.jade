@@ -1,5 +1,8 @@
 mixin dropdown()
   .menu
+    if !disableDelete
+      button.btn.btn-info.btn-sm(type="button", @click="move(false)", :class="{disabled: isFirst}") #[i.fa.fa-arrow-left]
+      button.btn.btn-info.btn-sm(type="button", @click="move(true)", :class="{disabled: isLast}") #[i.fa.fa-arrow-right]
     button.btn.btn-warning.btn-sm(type="button", @click="showModal = true") #[i.fa.fa-pencil]
     if !disableDelete
       button.btn.btn-danger.btn-sm(type="button", @click="remove()") #[i.fa.fa-trash-o]
@@ -7,22 +10,22 @@ mixin dropdown()
 mixin children(componentName, singularName, pluralName)
   section(class!=pluralName)
     .header
-      #{componentName}(:add="true", :parent="this")
+      #{componentName}(:add="true", :brother-entities="#{pluralName}", :parent="this")
       h1 {{lodash.startCase('#{pluralName}')}}
     .body
-      #{componentName}(v-for="#{singularName} in #{pluralName}", :entity="#{singularName}", :parent="this")
+      #{componentName}(v-for="#{singularName} in #{pluralName}", :entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
       .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
       .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
 
 mixin children-tab(componentName, singularName, pluralName)
   section(class!=pluralName)
     .header
-      #{componentName}(:add="true", :parent="this")
+      #{componentName}(:add="true", :brother-entities="#{pluralName}", :parent="this")
       h1 {{lodash.startCase('#{pluralName}')}}
     .body
       tabs(v-if="#{pluralName}")
         tab(v-for="#{singularName} in #{pluralName}", :header="#{singularName}.name")
-          #{componentName}(:entity="#{singularName}", :parent="this")
+          #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
       .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
       .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
 

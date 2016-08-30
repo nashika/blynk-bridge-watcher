@@ -1,5 +1,7 @@
 include ./base-entity-component-mixin.jade
 
+block variables
+
 section(v-if="!add", :class="EntityClass.params.tableName")
   .header
     +dropdown()

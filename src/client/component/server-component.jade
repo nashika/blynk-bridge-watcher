@@ -1,5 +1,9 @@
 extends ./base-entity-component.jade
 
+block variables
+  -
+    var disableDelete = true;
+
 block body
   +children-tab("board-component", "board", "boards")
   +children("notifier-component", "notifier", "notifiers")

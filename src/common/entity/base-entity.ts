@@ -41,6 +41,7 @@ export class BaseEntity {
 
   _id: string;
   _parent: string;
+  _orderNo: number;
   name: string;
 
   constructor(data: any = {}) {
