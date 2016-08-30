@@ -2,7 +2,6 @@
   margin: 0px 0px 20px 0px;
   @include border-top-radius(5px);
   @include border-bottom-radius(5px);
-  @include box-shadow(0 5px 5px rgba(0, 0, 0, 0.25));
   border: 1px solid $brand-dark;
 
   > .header {
@@ -29,9 +28,8 @@
 
   > .header {
     margin: 10px 0px;
-    @include border-top-radius(5px);
-    @include border-bottom-radius(5px);
-    @include box-shadow(0 5px 5px rgba(0, 0, 0, 0.25));
+    @include border-top-radius(10px);
+    @include border-bottom-radius(10px);
     background-color: $brand-dark;
 
     .menu {
@@ -86,5 +84,20 @@
 
   > .body {
     padding: 10px;
+  }
+}
+
+@mixin component-list-box {
+  @include component-list;
+
+  > .body {
+    @include make-row;
+
+    > section {
+      @include make-xs-column(12);
+      @include make-sm-column(6);
+      @include make-md-column(4);
+      @include make-lg-column(3);
+    }
   }
 }

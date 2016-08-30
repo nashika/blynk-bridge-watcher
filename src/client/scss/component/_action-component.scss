@@ -1,5 +1,5 @@
 section.actions {
-  @include component-list;
+  @include component-list-box;
 }
 
 section.action {
@@ -20,8 +20,6 @@ section.add-box {
   }
 
   > .body {
-
-
     line-height: 3;
 
     > .add {
