@@ -86,18 +86,3 @@
     padding: 10px;
   }
 }
-
-@mixin component-list-box {
-  @include component-list;
-
-  > .body {
-    @include make-row;
-
-    > section {
-      @include make-xs-column(12);
-      @include make-sm-column(6);
-      @include make-md-column(4);
-      @include make-lg-column(3);
-    }
-  }
-}

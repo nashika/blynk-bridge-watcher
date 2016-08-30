@@ -1,20 +1,13 @@
--
-  var actions = [
-    "if",
-    "log",
-    "notify",
-    "read",
-    "write",
-  ];
+extends ../base-switch-entity-component.jade
 
-section(v-if="!add", class!=singularName)
-  each action in actions
-    #{action + "-action-component"}(v-if="entity.type == '#{action}'", :entity="entity", :brother-entities="brotherEntities", :parent="parent")
-.add(v-else)
-  button.btn.btn-success(@click="showAddBox = !showAddBox", :class="{active: showAddBox}") #[i.fa.fa-plus] Add action
-  section.add-box(v-show="showAddBox")
-    .header
-      h1 Add Action Menu
-    .body
-      each action in actions
-        #{action + "-action-component"}(:add="true", :brother-entities="brotherEntities", :parent="parent")
+block variables
+  -
+    var singularName = "action";
+    var pluralName = "actions";
+    var children = [
+      "if",
+      "log",
+      "notify",
+      "read",
+      "write",
+    ];

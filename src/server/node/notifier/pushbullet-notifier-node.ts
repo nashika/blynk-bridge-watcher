@@ -1,8 +1,8 @@
-import {NotifierEntity} from "../../../common/entity/notifier-entity";
 var Pushbullet = require("pushbullet");
 
 import {NotifierNode} from "./notifier-node";
 import {ServerNode} from "../server-node";
+import {PushbulletNotifierEntity} from "../../../common/entity/notifier/pushbullet-notifier-entity";
 
 type Pushbullet = any;
 
@@ -10,7 +10,7 @@ export class PushbulletNotifierNode extends NotifierNode {
 
   protected _pushbullet:Pushbullet;
 
-  constructor(parent:ServerNode, entity:NotifierEntity) {
+  constructor(parent:ServerNode, entity:PushbulletNotifierEntity) {
     super(parent, entity);
     let apiKey:string = this._checkConfig(entity, "apiKey", "string");
     this._pushbullet = new Pushbullet(apiKey);

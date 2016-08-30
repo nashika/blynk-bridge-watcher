@@ -7,16 +7,6 @@ mixin dropdown()
     if !disableDelete
       button.btn.btn-danger.btn-sm(type="button", @click="remove()") #[i.fa.fa-trash-o]
 
-mixin children(componentName, singularName, pluralName)
-  section(class!=pluralName)
-    .header
-      #{componentName}(:add="true", :brother-entities="#{pluralName}", :parent="this")
-      h1 {{lodash.startCase('#{pluralName}')}}
-    .body
-      #{componentName}(v-for="#{singularName} in #{pluralName}", :entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
-      .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
-      .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
-
 mixin children-tab(componentName, singularName, pluralName)
   section(class!=pluralName)
     .header
@@ -25,6 +15,18 @@ mixin children-tab(componentName, singularName, pluralName)
     .body
       tabs(v-if="#{pluralName}")
         tab(v-for="#{singularName} in #{pluralName}", :header="#{singularName}.name")
+          #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
+      .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
+      .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
+
+mixin children-box(componentName, singularName, pluralName)
+  section(class!=pluralName)
+    .header
+      #{componentName}(:add="true", :brother-entities="#{pluralName}", :parent="this")
+      h1 {{lodash.startCase('#{pluralName}')}}
+    .body
+      .row
+        .col-sm-6.col-md-4.col-lg-3(v-for="#{singularName} in #{pluralName}")
           #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
       .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
       .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}

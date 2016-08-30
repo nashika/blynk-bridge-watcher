@@ -3,11 +3,11 @@ import util = require("util");
 import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
 import {NotifyActionNode} from "../action/notify-action-node";
-import {NotifierEntity} from "../../../common/entity/notifier-entity";
+import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
 
-export abstract class NotifierNode extends BaseNode<NotifierEntity> {
+export abstract class NotifierNode extends BaseNode<BaseNotifierEntity> {
 
-  static EntityClass = NotifierEntity;
+  static EntityClass = BaseNotifierEntity;
 
   public parent:ServerNode;
   protected _firstDelay:number = 3000;
@@ -15,7 +15,7 @@ export abstract class NotifierNode extends BaseNode<NotifierEntity> {
   private _waiting:boolean = false;
   private _messages:string[] = null;
 
-  constructor(server:ServerNode, entity:NotifierEntity) {
+  constructor(server:ServerNode, entity:BaseNotifierEntity) {
     super(server, entity);
     this._firstDelay = this._checkConfig(entity, "firstDelay", "number", this._firstDelay);
     this._nextDelay = this._checkConfig(entity, "nextDelay", "number", this._nextDelay);

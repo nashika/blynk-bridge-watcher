@@ -1,8 +1,8 @@
 import _ = require("lodash");
 
-import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
+import {BaseEntity, IEntityParams, IEntityFieldParams} from "../base-entity";
 
-export class NotifierEntity extends BaseEntity {
+export class BaseNotifierEntity extends BaseEntity {
 
   static defaultName = "NT01";
 
@@ -20,5 +20,7 @@ export class NotifierEntity extends BaseEntity {
       },
     ]),
   };
+
+  type: string;
 
 }

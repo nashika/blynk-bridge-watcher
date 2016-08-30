@@ -1,8 +1,8 @@
 import {BaseTable} from "./base-table";
-import {NotifierEntity} from "../../common/entity/notifier-entity";
+import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
 
-export class NotifierTable extends BaseTable<NotifierEntity> {
+export class NotifierTable extends BaseTable<BaseNotifierEntity> {
 
-  static EntityClass = NotifierEntity;
+  static EntityClass = BaseNotifierEntity;
 
 }

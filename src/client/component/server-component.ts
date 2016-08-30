@@ -4,11 +4,11 @@ import _ = require("lodash");
 import {BoardComponent} from "./board-component";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {BoardEntity} from "../../common/entity/board-entity";
-import {NotifierEntity} from "../../common/entity/notifier-entity";
 import {JobEntity} from "../../common/entity/job-entity";
 import {BaseEntityComponent} from "./base-entity-component";
-import {NotifierComponent} from "./notifier-component";
+import {NotifierComponent} from "./notifier/notifier-component";
 import {JobComponent} from "./job-component";
+import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
 
 let template = require("./server-component.jade");
 
@@ -23,7 +23,7 @@ let template = require("./server-component.jade");
 export class ServerComponent extends BaseEntityComponent<ServerEntity> {
 
   boards: BoardEntity[];
-  notifiers: NotifierEntity[];
+  notifiers: BaseNotifierEntity[];
   jobs: JobEntity[];
 
   data(): any {

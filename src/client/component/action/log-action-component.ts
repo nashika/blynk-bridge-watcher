@@ -9,7 +9,7 @@ let template = require("./log-action-component.jade");
 @Component({
   template: template,
 })
-export class LogActionComponent extends BaseActionComponent {
+export class LogActionComponent extends BaseActionComponent<LogActionEntity> {
 
   data(): any {
     return _.assign(super.data(), {

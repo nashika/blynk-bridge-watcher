@@ -9,7 +9,7 @@ let template = require("./notify-action-component.jade");
 @Component({
   template: template,
 })
-export class NotifyActionComponent extends BaseActionComponent {
+export class NotifyActionComponent extends BaseActionComponent<NotifyActionEntity> {
 
   data(): any {
     return _.assign(super.data(), {

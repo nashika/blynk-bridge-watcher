@@ -9,7 +9,7 @@ let template = require("./read-action-component.jade");
 @Component({
   template: template,
 })
-export class ReadActionComponent extends BaseActionComponent {
+export class ReadActionComponent extends BaseActionComponent<ReadActionEntity> {
 
   data(): any {
     return _.assign(super.data(), {

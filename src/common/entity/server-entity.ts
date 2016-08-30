@@ -2,8 +2,8 @@ import _ = require("lodash");
 
 import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
 import {BoardEntity} from "./board-entity";
-import {NotifierEntity} from "./notifier-entity";
 import {JobEntity} from "./job-entity";
+import {BaseNotifierEntity} from "./notifier/base-notifier-entity";
 
 export class ServerEntity extends BaseEntity {
 
@@ -15,7 +15,7 @@ export class ServerEntity extends BaseEntity {
     icon: "globe",
     children: {
       boards: BoardEntity,
-      notifiers: NotifierEntity,
+      notifiers: BaseNotifierEntity,
       jobs: JobEntity,
     },
     fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [

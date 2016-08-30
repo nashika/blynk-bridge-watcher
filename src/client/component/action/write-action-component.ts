@@ -9,7 +9,7 @@ let template = require("./write-action-component.jade");
 @Component({
   template: template,
 })
-export class WriteActionComponent extends BaseActionComponent {
+export class WriteActionComponent extends BaseActionComponent<WriteActionEntity> {
 
   data(): any {
     return _.assign(super.data(), {

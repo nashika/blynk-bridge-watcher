@@ -9,7 +9,7 @@ let template = require("./if-action-component.jade");
 @Component({
   template: template,
 })
-export class IfActionComponent extends BaseActionComponent {
+export class IfActionComponent extends BaseActionComponent<IfActionEntity> {
 
   data(): any {
     return _.assign(super.data(), {

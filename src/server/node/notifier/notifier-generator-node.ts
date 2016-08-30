@@ -1,11 +1,11 @@
 import {GeneratorNode} from "../generator-node";
 import {LogNotifierNode} from "./log-notifier-node";
 import {PushbulletNotifierNode} from "./pushbullet-notifier-node";
-import {NotifierEntity} from "../../../common/entity/notifier-entity";
+import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
 
-export class NotifierGeneratorNode extends GeneratorNode<NotifierEntity> {
+export class NotifierGeneratorNode extends GeneratorNode<BaseNotifierEntity> {
 
-  static EntityClass = NotifierEntity;
+  static EntityClass = BaseNotifierEntity;
 
   TYPE_TO_CLASS = {
     log: LogNotifierNode,
