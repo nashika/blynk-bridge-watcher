@@ -80,3 +80,12 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+import socketIo = require("socket.io");
+let io = socketIo.listen(server);
+io.sockets.on("connection", socket => {
+  socket.on("client_to_server", (data:any) => {
+    io.sockets.emit("server_to_client", `response data=${data}`);
+  });
+});
