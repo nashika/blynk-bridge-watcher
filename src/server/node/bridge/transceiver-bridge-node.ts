@@ -63,7 +63,8 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
   protected _sendFailureCallback = (requestId:string, failureCallback:()=>void, output:string) => {
     if (!this._sendCallbacks[requestId])
       return;
-    this.log("warn", `Request key='${requestId}' output='${output}' was timeout.`);
+    if (this.status != this.STATUS_TYPES["error"])
+      this.log("warn", `Request key='${requestId}' output='${output}' was timeout.`);
     delete this._sendCallbacks[requestId];
     failureCallback();
   };

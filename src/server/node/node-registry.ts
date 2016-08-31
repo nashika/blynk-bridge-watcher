@@ -1,3 +1,5 @@
+import _ = require("lodash");
+
 import {LazyClassRegistry, ILazyClassRegistryFiles} from "../../common/util/lazy-class-registry";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {BaseNode} from "./base-node";
@@ -6,6 +8,7 @@ export class NodeRegistry extends LazyClassRegistry<BaseNode<BaseEntity>> {
 
   protected files:ILazyClassRegistryFiles = {
     board: {path: "./board-node", name: "BoardNode"},
+    bridge: {path: "./bridge/bridge-node", name: "BridgeNode"},
     job: {path: "./job-node", name: "JobNode"},
     server: {path: "./server-node", name: "ServerNode"},
     ifAction: {path: "./action/if-action-node", name: "IfActionNode"},
@@ -23,6 +26,17 @@ export class NodeRegistry extends LazyClassRegistry<BaseNode<BaseEntity>> {
 
   require(path: string): any {
     return require(path);
+  }
+
+  generate(tableName:string, data: BaseEntity, parent: BaseNode<BaseEntity>): Promise<BaseNode<BaseEntity>> {
+    let key:string;
+    if (_.get(data, "type")) {
+      key = _.camelCase(_.get(data, "type") + "_" + tableName);
+    } else {
+      key = _.camelCase(tableName);
+    }
+    let NodeClass = this.getClass(key);
+    return NodeClass.generate(parent, data);
   }
 
 }

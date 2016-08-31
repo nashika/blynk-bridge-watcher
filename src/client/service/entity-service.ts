@@ -1,8 +1,9 @@
 import request = require("superagent");
+import _ = require("lodash");
 
 import {BaseService} from "./base-service";
 import {BaseEntity} from "../../common/entity/base-entity";
-import _ = require("lodash");
+import {entityRegistry} from "../../common/entity/entity-registry";
 
 export class EntityService extends BaseService {
 
@@ -15,7 +16,7 @@ export class EntityService extends BaseService {
     }
     return request.get(url).then(res => {
       if (!_.isObject(res.body)) throw new Error(`getOne expects one entity object.`);
-      return <T>new EntityClass(res.body);
+      return <T>entityRegistry.generate(EntityClass.params.tableName, res.body);
     });
   }
 
@@ -27,21 +28,21 @@ export class EntityService extends BaseService {
     let url: string = `/${EntityClass.params.tableName}`;
     return request.post(url).send(query).then(res => {
       if (!_.isArray(res.body)) throw new Error(`getAll expects entity array.`);
-      return _.map(res.body, data => <T>new EntityClass(data));
+      return _.map(res.body, data => <T>entityRegistry.generate(EntityClass.params.tableName, data));
     });
   }
 
   add<T extends BaseEntity>(entity:T): Promise<T> {
     let url: string = `/${entity.Class.params.tableName}/add`;
     return request.post(url).send(entity).then(res => {
-      return <T>new entity.Class(res.body);
+      return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
     });
   }
 
   edit<T extends BaseEntity>(entity:T): Promise<T> {
     let url: string = `/${entity.Class.params.tableName}/edit`;
     return request.post(url).send(entity).then(res => {
-      return <T>new entity.Class(res.body);
+      return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
     });
   }
 

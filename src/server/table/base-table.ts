@@ -6,6 +6,7 @@ import {getLogger} from "log4js";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
 import {tableRegistry} from "./table-registry";
+import {entityRegistry} from "../../common/entity/entity-registry";
 
 let logger = getLogger("system");
 
@@ -31,7 +32,7 @@ export class BaseTable<T extends BaseEntity> {
     return new Promise<T[]>((resolve, reject) => {
       this.db.find<T>(query).sort({_orderNo: 1}).exec((err, docs) => {
         if (err) return reject(err);
-        let entities: T[] = docs.map(doc => <T>new this.Class.EntityClass(doc));
+        let entities: T[] = docs.map(doc => <T>entityRegistry.generate(this.Class.EntityClass.params.tableName, doc));
         resolve(entities);
       });
     });
@@ -43,13 +44,13 @@ export class BaseTable<T extends BaseEntity> {
       if (id) {
         this.db.findOne<T>({_id: id}, (err, doc) => {
           if (err) return reject(err);
-          let entity: T = <T>new this.Class.EntityClass(doc);
+          let entity: T = <T>entityRegistry.generate(this.Class.EntityClass.params.tableName, doc);
           resolve(entity);
         });
       } else {
         this.db.find<T>({}).limit(1).exec((err, docs) => {
           if (err) return reject(err);
-          let entity: T = docs[0] ? <T>new this.Class.EntityClass(docs[0]) : null;
+          let entity: T = docs[0] ? <T>entityRegistry.generate(this.Class.EntityClass.params.tableName, docs[0]) : null;
           resolve(entity);
         });
       }
@@ -61,7 +62,7 @@ export class BaseTable<T extends BaseEntity> {
     return new Promise((resolve, reject) => {
       this.db.insert(entity, (err, newDoc) => {
         if (err) return reject(err);
-        let entity: T = <T>new this.Class.EntityClass(newDoc);
+        let entity: T = <T>entityRegistry.generate(this.Class.EntityClass.params.tableName, newDoc);
         resolve(entity);
       });
     });

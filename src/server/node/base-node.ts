@@ -76,7 +76,6 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   protected initializeChildren<ChildT extends BaseEntity>():Promise<void> {
     return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass:typeof BaseEntity) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
-      let ChildNodeClass = nodeRegistry.getClass(ChildEntityClass.params.entityName);
       let key = pluralize.plural(ChildEntityClass.params.tableName);
       let childNodes:BaseNode<BaseEntity>[] = [];
       _.set(this, key, childNodes);
@@ -85,7 +84,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
       }).then(entities => {
         return MyPromise.eachPromiseSeries(entities, (entity:BaseEntity) => {
           return Promise.resolve().then(() => {
-            return ChildNodeClass.generate(this, entity);
+            return nodeRegistry.generate(ChildEntityClass.params.tableName, entity, this);
           }).then(node => {
             childNodes.push(node);
             return;
@@ -96,9 +95,6 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
         return;
       });
     });
-    /*return this._initializeChildrenCommon<ChildT>(key, ChildClass, childEntity => {
-      return new ChildClass(this, childEntity);
-    });*/
   }
 
   protected _keyLabel():string {

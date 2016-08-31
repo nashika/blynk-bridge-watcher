@@ -5,6 +5,7 @@ import log4js = require("log4js");
 import {tableRegistry} from "../table/table-registry";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {BaseTable} from "../table/base-table";
+import {entityRegistry} from "../../common/entity/entity-registry";
 
 let logger = log4js.getLogger("system");
 
@@ -71,21 +72,21 @@ export abstract class BaseRoute<T extends BaseEntity> {
   }
 
   add(req: Request, res: Response) {
-    let entity = new this.Class.EntityClass(req.body);
+    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
     this.table.insert(entity).then(newEntity => {
       res.json(newEntity);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   edit(req: Request, res: Response) {
-    let entity = new this.Class.EntityClass(req.body);
+    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
     this.table.update(entity).then(updatedEntity => {
       res.json(updatedEntity);
     });
   }
 
   remove(req: Request, res: Response) {
-    let entity = new this.Class.EntityClass(req.body);
+    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
     this.table.remove(entity).then(() => {
       res.json(true);
     });

@@ -42,12 +42,13 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   _pingTimeout = ():void => {
     if (this._pinging) {
       this._pingFailureCount++;
-      if (this.status != this.STATUS_TYPES["error"])
-        this.log("error", `Ping was no response, failure count ${this._pingFailureCount} / ${this.entity.pingLimit}.`);
       this._pinging = false;
-      if (this._pingFailureCount >= this.entity.pingLimit) {
-        this.log("error", `Ping failed ${this._pingFailureCount} times, the bridge will stop.`);
-        this.status = this.STATUS_TYPES["error"];
+      if (this.status != this.STATUS_TYPES["error"]) {
+        this.log("error", `Ping was no response, failure count ${this._pingFailureCount} / ${this.entity.pingLimit}.`);
+        if (this._pingFailureCount >= this.entity.pingLimit) {
+          this.log("error", `Ping failed ${this._pingFailureCount} times, the bridge will stop.`);
+          this.status = this.STATUS_TYPES["error"];
+        }
       }
     }
   };
