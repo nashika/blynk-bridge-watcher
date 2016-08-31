@@ -10,10 +10,12 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   protected _pingFailureCount:number = 0;
   protected _pingIntervalId:any = 0;
 
-  constructor(parent:BoardNode, entity:BridgeEntity) {
-    super(parent, entity);
-    _.defaults(entity, {pingInterval: 60000, pingLimit: 3});
-    this.on("$ping", this._onPing);
+  initialize():Promise<void> {
+    return super.initialize().then(() => {
+      _.defaults(this.entity, {pingInterval: 60000, pingLimit: 3});
+      this.on("$ping", this._onPing);
+      return;
+    });
   }
 
   connect() {

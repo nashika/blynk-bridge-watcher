@@ -1,4 +1,4 @@
-import {ClassRegistry} from "../../common/util/class-registry";
+import {SingletonRegistry} from "../../common/util/singleton-registry";
 import {BaseTable} from "./base-table";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {ActionTable} from "./action-table";
@@ -8,7 +8,7 @@ import {JobTable} from "./job-table";
 import {NotifierTable} from "./notifier-table";
 import {ServerTable} from "./server-table";
 
-export class TableRegistry extends ClassRegistry<BaseTable<BaseEntity>> {
+export class TableRegistry extends SingletonRegistry<BaseTable<BaseEntity>> {
 
   Classes:{[key:string]:typeof BaseTable} = {
     action: ActionTable,

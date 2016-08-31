@@ -1,5 +1,4 @@
 import {BaseNode} from "../base-node";
-import {ActionGeneratorNode} from "../action/action-generator-node";
 import {BoardNode} from "../board-node";
 import {ActionNode} from "../action/action-node";
 import {BridgeEntity} from "../../../common/entity/bridge-entity";
@@ -31,17 +30,20 @@ export class BaseBridgeNode extends BaseNode<BridgeEntity> {
   actions:{[name:string]:ActionNode<BaseActionEntity>};
   protected _widgetBridge:WidgetBridge;
 
-  constructor(parent:BoardNode, entity:BridgeEntity) {
-    super(parent, entity);
-    this.log("info", `Connect bridge was started.`);
-    this._widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(parent.bridges).length + 1);
-    this.initializeChildrenWithGenerator("actions", ActionGeneratorNode);
-    for (let actionName in this.actions) {
-      let action:ActionNode<BaseActionEntity> = this.actions[actionName];
-      this.on(actionName, action.run);
-      /*for (let alias of action.entity.aliases)
-        this.on(alias, action.run);*/
-    }
+  initialize():Promise<void> {
+    return super.initialize().then(() => {
+      this.log("info", `Connect bridge was started.`);
+      this._widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(this.parent.bridges).length + 1);
+      return this.initializeChildren();
+    }).then(() => {
+      for (let actionName in this.actions) {
+        let action: ActionNode<BaseActionEntity> = this.actions[actionName];
+        this.on(actionName, action.run);
+        /*for (let alias of action.entity.aliases)
+         this.on(alias, action.run);*/
+      }
+      return;
+    });
   }
 
   connect() {

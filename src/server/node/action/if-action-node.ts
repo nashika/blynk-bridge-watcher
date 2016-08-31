@@ -4,13 +4,7 @@ import {IfActionEntity} from "../../../common/entity/action/if-action-entity";
 
 export class IfActionNode extends ActionNode<IfActionEntity> {
 
-  constructor(parent:BridgeNode, entity:IfActionEntity) {
-    super(parent, entity);
-    entity.then = this._addSubAction(parent, entity, "then");
-    entity.else = this._addSubAction(parent, entity, "else");
-  }
-
-  run = (bridge:BridgeNode, ...args:string[]) => {
+  run = (bridge: BridgeNode, ...args: string[]) => {
     if (args.length < 1)
       return this.log("warn", `If action called no argument.`);
     let arg = parseInt(args[0]);

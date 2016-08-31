@@ -8,9 +8,11 @@ import {LogActionEntity} from "../../../common/entity/action/log-action-entity";
 
 export class LogActionNode extends ActionNode<LogActionEntity> {
 
-  constructor(parent:BridgeNode, entity:LogActionEntity) {
-    super(parent, entity);
-    _.defaults(entity, {level: "info"});
+  initialize():Promise<void> {
+    return super.initialize().then(() => {
+      _.defaults(this.entity, {level: "info"});
+      return;
+    });
   }
 
   run = (bridge:BridgeNode, ...args:string[]) => {

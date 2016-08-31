@@ -2,12 +2,13 @@ import {EventEmitter} from "events";
 
 import _ = require("lodash");
 import log4js = require("log4js");
+import pluralize = require("pluralize");
 
-import {GeneratorNode} from "./generator-node";
 import {tableRegistry} from "../table/table-registry";
 import {BaseTable} from "../table/base-table";
 import {BaseEntity} from "../../common/entity/base-entity";
-import {BaseSwitchEntity} from "../../common/entity/base-switch-entity";
+import {MyPromise} from "../../common/util/my-promise";
+import {nodeRegistry} from "./node-registry";
 
 export class BaseNode<T extends BaseEntity> extends EventEmitter {
 
@@ -17,18 +18,32 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   entity:T;
   name:string = "";
 
-  constructor(parent:BaseNode<BaseEntity> = null, entity:T = null) {
-    super();
-    this.name = entity.name;
-    this.log("trace", `Constructing ${(<any>this.constructor).name} object.`);
-  }
-
   get Class():typeof BaseNode {
     return <typeof BaseNode>this.constructor;
   }
 
   static table():BaseTable<BaseEntity> {
     return tableRegistry.getInstance(this.EntityClass.params.tableName);
+  }
+
+  static generate(parent:BaseNode<BaseEntity>, entity:BaseEntity):Promise<BaseNode<BaseEntity>> {
+    let result:BaseNode<BaseEntity> = new this();
+    result.name = entity.name;
+    result.entity = entity;
+    result.parent = parent;
+    result.log("trace", `Generate ${(<any>this.constructor).name} object was started.`);
+    return Promise.resolve().then(() => {
+      return result.initialize();
+    }).then(() => {
+      result.log("trace", `Generate ${(<any>this.constructor).name} object was finished.`);
+      return result.initializeChildren();
+    }).then(() => {
+      return result;
+    });
+  }
+
+  protected initialize():Promise<void> {
+    return Promise.resolve();
   }
 
   log(level:string, message:string, ...args:any[]) {
@@ -58,28 +73,32 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
       return `[${args.join('->')}]`;
   }
 
-  protected initializeChildren<ChildT extends BaseEntity>(key:string, ChildClass:typeof BaseNode):Promise<void> {
-    return this._initializeChildrenCommon<ChildT>(key, ChildClass, childEntity => {
+  protected initializeChildren<ChildT extends BaseEntity>():Promise<void> {
+    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass:typeof BaseEntity) => {
+      this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
+      let ChildNodeClass = nodeRegistry.getClass(ChildEntityClass.params.entityName);
+      let key = pluralize.plural(ChildEntityClass.params.tableName);
+      let childNodes:BaseNode<BaseEntity>[] = [];
+      _.set(this, key, childNodes);
+      return Promise.resolve().then(() => {
+        return tableRegistry.getInstance(ChildEntityClass.params.tableName).find({_parent: this.entity._id});
+      }).then(entities => {
+        return MyPromise.eachPromiseSeries(entities, (entity:BaseEntity) => {
+          return Promise.resolve().then(() => {
+            return ChildNodeClass.generate(this, entity);
+          }).then(node => {
+            childNodes.push(node);
+            return;
+          });
+        });
+      }).then(() => {
+        this.log("debug", `Construct child '${key}' objects was finished.`);
+        return;
+      });
+    });
+    /*return this._initializeChildrenCommon<ChildT>(key, ChildClass, childEntity => {
       return new ChildClass(this, childEntity);
-    });
-  }
-
-  protected initializeChildrenWithGenerator<ChildT extends BaseSwitchEntity>(key:string, ChildGenerator:typeof GeneratorNode):Promise<void> {
-    let generator = new ChildGenerator(this);
-    return this._initializeChildrenCommon<ChildT>(key, ChildGenerator, (childEntity:BaseSwitchEntity) => {
-      return generator.generate(this, childEntity);
-    });
-  }
-
-  private _initializeChildrenCommon<ChildT extends BaseEntity>(key:string, ChildClass:typeof BaseNode, genFunc:(entity:ChildT)=>BaseNode<ChildT>):Promise<void> {
-    this.log("debug", `Construct child '${key}' objects was started.`);
-    _.set(this, key, {});
-    return (<BaseTable<ChildT>>ChildClass.table()).find({_id: this.entity._id}).then(entities => {
-      for (let entity of entities) {
-        _.set(_.get(this, key), entity.name, genFunc(entity));
-      }
-      this.log("debug", `Construct child '${key}' objects was finished.`);
-    });
+    });*/
   }
 
   protected _keyLabel():string {

@@ -1,7 +1,6 @@
 import {BaseNode} from "./base-node";
 import {BoardNode} from "./board-node";
 import {NotifierNode} from "./notifier/notifier-node";
-import {NotifierGeneratorNode} from "./notifier/notifier-generator-node";
 import {JobNode} from "./job-node";
 import {tableRegistry} from "../table/table-registry";
 import {ServerEntity} from "../../common/entity/server-entity";
@@ -15,7 +14,7 @@ export class ServerNode extends BaseNode<ServerEntity> {
   notifiers:{[name:string]:NotifierNode<BaseNotifierEntity>};
   jobs:{[name:string]:JobNode};
 
-  static generate():Promise<ServerNode> {
+  static start():Promise<ServerNode> {
     return Promise.resolve().then(() => {
       return tableRegistry.server.findOne();
     }).then(serverEntity => {
@@ -26,20 +25,9 @@ export class ServerNode extends BaseNode<ServerEntity> {
         return tableRegistry.server.insert(entity);
       }
     }).then(entity => {
-      let node = new ServerNode(null, entity);
-      return node.initialize();
-    });
-  }
-
-  initialize():Promise<ServerNode> {
-    return Promise.resolve().then(() => {
-      return this.initializeChildren("boards", BoardNode);
-    }).then(() => {
-      return this.initializeChildrenWithGenerator("notifiers", NotifierGeneratorNode);
-    }).then(() => {
-      return this.initializeChildren("jobs", JobNode);
-    }).then(() => {
-      return this;
+      return this.generate(null, entity);
+    }).then(node => {
+      return node;
     });
   }
 

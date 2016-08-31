@@ -10,16 +10,17 @@ export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierEntit
 
   protected _pushbullet:Pushbullet;
 
-  constructor(parent:ServerNode, entity:PushbulletNotifierEntity) {
-    super(parent, entity);
-    this._pushbullet = new Pushbullet(entity.apiKey);
-    this._pushbullet.me((err:any, response:any) => {
-      if (err) {
-        this.log("fatal", `Pushbullet auth failed.`);
-        process.exit(1);
-      } else {
-        this.log("info", `Pushbullet auth succeed. response=${JSON.stringify(response)}`);
-      }
+  initialize():Promise<void> {
+    return super.initialize().then(() => {
+      this._pushbullet = new Pushbullet(this.entity.apiKey);
+      this._pushbullet.me((err: any, response: any) => {
+        if (err) {
+          this.log("fatal", `Pushbullet auth failed.`);
+          process.exit(1);
+        } else {
+          this.log("info", `Pushbullet auth succeed. response=${JSON.stringify(response)}`);
+        }
+      });
     });
   }
 

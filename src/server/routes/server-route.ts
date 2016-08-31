@@ -48,7 +48,7 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
 
   start():Promise<void> {
     logger.info("Server node initialize started.");
-    return ServerNode.generate().then(serverNode => {
+    return ServerNode.start().then(serverNode => {
       this.serverNode = serverNode;
       logger.info("Server node initialize finished.");
       return;

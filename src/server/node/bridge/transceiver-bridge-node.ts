@@ -9,9 +9,11 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
 
   protected _sendCallbacks:{[key:string]:(...args:string[]) => void};
 
-  constructor(parent:BoardNode, entity:BridgeEntity) {
-    super(parent, entity);
-    this._sendCallbacks = {};
+  initialize():Promise<void> {
+    return super.initialize().then(() => {
+      this._sendCallbacks = {};
+      return;
+    });
   }
 
   send = (command:string, params:any[], callback:(...args:string[])=>void, failureCallback:()=>void):void => {

@@ -16,29 +16,30 @@ export class JobNode extends BaseNode<JobEntity> {
   protected _bridge:BridgeNode;
   protected _cronJob:CronJob;
 
-  constructor(server:ServerNode, entity:JobEntity) {
-    super(server, entity);
-    _.defaults(entity, {});
-    let board:BoardNode;
-    if (!(board = this.parent.boards[entity.board])) {
-      this.log("fatal", `Board '${entity.board}' was not found.`);
-      process.exit(1);
-    }
-    if (!(this._bridge = board.bridges[entity.bridge])) {
-      this.log("fatal", `Board '${entity.board}' -> Bridge '${entity.bridge}' was not found.`);
-      process.exit(1);
-    }
-    if (!this._bridge.actions[entity.action]) {
-      this.log("fatal", `Board '${entity.board}' -> Bridge '${entity.bridge}' -> Action '${entity.action}' was not found.`);
-      process.exit(1);
-    }
-    try {
-      this._cronJob = new CronJob(entity.cronTime, this._run);
-    } catch (e) {
-      this.log("fatal", `cronTime '${entity.cronTime}' is invalid format.`);
-      process.exit(1);
-    }
-    this._cronJob.start();
+  initialize():Promise<void> {
+    return super.initialize().then(() => {
+      _.defaults(this.entity, {});
+      let board: BoardNode;
+      if (!(board = this.parent.boards[this.entity.board])) {
+        this.log("fatal", `Board '${this.entity.board}' was not found.`);
+        process.exit(1);
+      }
+      if (!(this._bridge = board.bridges[this.entity.bridge])) {
+        this.log("fatal", `Board '${this.entity.board}' -> Bridge '${this.entity.bridge}' was not found.`);
+        process.exit(1);
+      }
+      if (!this._bridge.actions[this.entity.action]) {
+        this.log("fatal", `Board '${this.entity.board}' -> Bridge '${this.entity.bridge}' -> Action '${this.entity.action}' was not found.`);
+        process.exit(1);
+      }
+      try {
+        this._cronJob = new CronJob(this.entity.cronTime, this._run);
+      } catch (e) {
+        this.log("fatal", `cronTime '${this.entity.cronTime}' is invalid format.`);
+        process.exit(1);
+      }
+      this._cronJob.start();
+    });
   }
 
   protected _run = ():void => {
