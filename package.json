@@ -30,6 +30,7 @@
     "lodash": "^4.15.0",
     "log4js": "0.6.38",
     "nedb": "^1.8.0",
+    "pluralize": "^3.0.0",
     "pushbullet": "1.4.3",
     "source-map-support": "0.4.2"
   },

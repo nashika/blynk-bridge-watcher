@@ -15,7 +15,7 @@ export class ServerNode extends BaseNode<ServerEntity> {
   notifiers:{[name:string]:NotifierNode<BaseNotifierEntity>};
   jobs:{[name:string]:JobNode};
 
-  initialize():Promise<void> {
+  static generate():Promise<ServerNode> {
     return Promise.resolve().then(() => {
       return tableRegistry.server.findOne();
     }).then(serverEntity => {
@@ -26,15 +26,20 @@ export class ServerNode extends BaseNode<ServerEntity> {
         return tableRegistry.server.insert(entity);
       }
     }).then(entity => {
-      this.parent = null;
-      this.entity = entity;
-      return;
-    }).then(() => {
+      let node = new ServerNode(null, entity);
+      return node.initialize();
+    });
+  }
+
+  initialize():Promise<ServerNode> {
+    return Promise.resolve().then(() => {
       return this.initializeChildren("boards", BoardNode);
     }).then(() => {
       return this.initializeChildrenWithGenerator("notifiers", NotifierGeneratorNode);
     }).then(() => {
       return this.initializeChildren("jobs", JobNode);
+    }).then(() => {
+      return this;
     });
   }
 
