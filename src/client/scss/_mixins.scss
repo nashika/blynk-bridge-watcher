@@ -6,9 +6,10 @@
 
   > .header {
     background-color: $brand-dark;
+    @include clearfix;
 
     .menu {
-      @include component-menu
+      @include component-menu;
     }
 
     > h1 {
@@ -31,6 +32,7 @@
     @include border-top-radius(10px);
     @include border-bottom-radius(10px);
     background-color: $brand-dark;
+    @include clearfix;
 
     .menu {
       @include component-menu;
@@ -51,6 +53,9 @@
 @mixin component-menu {
   margin: 3px;
   float: right;
+  text-align: right;
+  line-height: 2.5;
+  max-width: 50%;
 
   > button {
     margin: 0px 3px;
