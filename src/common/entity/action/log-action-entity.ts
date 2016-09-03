@@ -1,21 +1,23 @@
 import _ = require("lodash");
 
 import {BaseActionEntity} from "./base-action-entity";
-import {IEntityFieldParams, IEntityParams} from "../base-entity";
+import {IEntityParams} from "../base-entity";
 
 export class LogActionEntity extends BaseActionEntity {
-
-  static defaultName = "ACLG01";
-  static defaultType = "log";
 
   static params: IEntityParams = {
     tableName: "action",
     entityName: "logAction",
     icon: "terminal",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
-      {
-        name: "level",
+    fields: _.merge({}, BaseActionEntity.params.fields, {
+      name: {
+        default: "ACLG01",
+      },
+      type: {
+        default: "log",
+      },
+      level: {
         type: "select",
         options: {
           fatal: "fatal",
@@ -28,12 +30,11 @@ export class LogActionEntity extends BaseActionEntity {
         default: "info",
         required: true,
       },
-      {
-        name: "message",
+      message: {
         type: "text",
         required: true,
       },
-    ]),
+    }),
   };
 
   level: string;

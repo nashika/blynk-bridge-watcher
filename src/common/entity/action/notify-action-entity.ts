@@ -1,30 +1,31 @@
 import _ = require("lodash");
 
 import {BaseActionEntity} from "./base-action-entity";
-import {IEntityFieldParams, IEntityParams} from "../base-entity";
+import {IEntityParams} from "../base-entity";
 
 export class NotifyActionEntity extends BaseActionEntity {
-
-  static defaultName = "ACNT01";
-  static defaultType = "notify";
 
   static params: IEntityParams = {
     tableName: "action",
     entityName: "notifyAction",
     icon: "bell",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
-      {
-        name: "notifier",
+    fields: _.merge({}, BaseActionEntity.params.fields, {
+      name: {
+        default: "ACNT01",
+      },
+      type: {
+        default: "notify",
+      },
+      notifier: {
         type: "text",
         required: true,
       },
-      {
-        name: "message",
+      message: {
         type: "text",
         required: true,
       },
-    ]),
+    }),
   };
 
   notifier: string;

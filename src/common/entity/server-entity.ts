@@ -1,13 +1,11 @@
 import _ = require("lodash");
 
-import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
+import {BaseEntity, IEntityParams} from "./base-entity";
 import {BoardEntity} from "./board-entity";
 import {JobEntity} from "./job-entity";
 import {BaseNotifierEntity} from "./notifier/base-notifier-entity";
 
 export class ServerEntity extends BaseEntity {
-
-  static defaultName = "SV01";
 
   static params:IEntityParams = {
     tableName: "server",
@@ -18,8 +16,11 @@ export class ServerEntity extends BaseEntity {
       notifiers: BaseNotifierEntity,
       jobs: JobEntity,
     },
-    fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
-    ]),
+    fields: _.merge({}, BaseEntity.params.fields, {
+      name: {
+        default: "SV01",
+      },
+    }),
   };
 
 }

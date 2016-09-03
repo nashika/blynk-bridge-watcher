@@ -1,3 +1,5 @@
+import _ = require("lodash");
+
 import {ClassRegistry} from "../util/class-registry";
 import {BaseEntity} from "./base-entity";
 import {IfActionEntity} from "./action/if-action-entity";
@@ -11,7 +13,6 @@ import {JobEntity} from "./job-entity";
 import {LogNotifierEntity} from "./notifier/log-notifier-entity";
 import {ServerEntity} from "./server-entity";
 import {PushbulletNotifierEntity} from "./notifier/pushbullet-notifier-entity";
-import _ = require("lodash");
 
 export class EntityRegistry extends ClassRegistry<BaseEntity> {
 

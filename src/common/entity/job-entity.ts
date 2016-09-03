@@ -4,36 +4,33 @@ import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
 
 export class JobEntity extends BaseEntity {
 
-  static defaultName = "JB01";
-
   static params: IEntityParams = {
     tableName: "job",
     entityName: "job",
     icon: "clock-o",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseEntity.params.fields, [
-      {
-        name: "cronTime",
+    fields: _.merge({}, BaseEntity.params.fields, {
+      name: {
+        default: "JB01",
+      },
+      cronTime: {
         type: "text",
         default: "0 0 0 * * *",
         required: true,
       },
-      {
-        name: "board",
+      board: {
         type: "text",
         required: true,
       },
-      {
-        name: "bridge",
+      bridge: {
         type: "text",
         required: true,
       },
-      {
-        name: "action",
+      action: {
         type: "text",
         required: true,
       },
-    ]),
+    }),
   };
 
   cronTime: string;

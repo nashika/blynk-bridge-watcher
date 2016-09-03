@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="src Files" pattern="file[blynk-controller]:src//*" />
+</component>

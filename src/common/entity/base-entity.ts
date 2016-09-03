@@ -5,13 +5,13 @@ export interface IEntityParams {
   entityName: string;
   icon: string;
   children: {[key: string]: typeof BaseEntity};
-  fields: IEntityFieldParams[];
+  fields: {[name: string]: IEntityFieldParams};
 }
 
 export interface IEntityFieldParams {
-  name: string;
   type: string;
   default?: any;
+  hidden?: boolean;
   required?: boolean;
   disabled?: boolean;
   options?: {[key: string]: string};
@@ -19,24 +19,32 @@ export interface IEntityFieldParams {
 
 export class BaseEntity {
 
-  static defaultName: string;
-  static defaultType: string;
-
   static params: IEntityParams = {
     tableName: "",
     entityName: "",
     icon: "times",
     children: {},
-    fields: [
-      {
-        name: "name",
+    fields: {
+      _id: {
+        type: "text",
+        hidden: true,
+      },
+      _parent: {
+        type: "text",
+        hidden: true,
+      },
+      _orderNo: {
+        type: "number",
+        hidden: true,
+      },
+      name: {
+        type: "text",
+        required: true,
+      },
+      label: {
         type: "text",
       },
-      {
-        name: "label",
-        type: "text",
-      },
-    ],
+    },
   };
 
   _id: string;
@@ -55,13 +63,11 @@ export class BaseEntity {
   }
 
   static generateDefault(): BaseEntity {
-    let result:BaseEntity = new this();
-    for (let field of this.params.fields) {
+    let result: BaseEntity = new this();
+    _.forEach(this.params.fields, (field: IEntityFieldParams, name: string) => {
       if (!_.isUndefined(field.default) && field.required)
-        _.set(result, field.name, field.default);
-    }
-    if (this.defaultName) result.name = this.defaultName;
-    if (this.defaultType) _.set(result, "type", this.defaultType);
+        _.set(result, name, field.default);
+    });
     return result;
   }
 

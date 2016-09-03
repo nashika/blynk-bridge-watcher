@@ -1,21 +1,23 @@
 import _ = require("lodash");
 
 import {BaseActionEntity} from "./base-action-entity";
-import {IEntityFieldParams, IEntityParams} from "../base-entity";
+import {IEntityParams} from "../base-entity";
 
 export class WriteActionEntity extends BaseActionEntity {
-
-  static defaultName = "ACWR01";
-  static defaultType = "write";
 
   static params: IEntityParams = {
     tableName: "board",
     entityName: "writeAction",
     icon: "pencil-square-o",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
-      {
-        name: "pinType",
+    fields: _.merge({}, BaseActionEntity.params.fields, {
+      name: {
+        default: "ACWR01",
+      },
+      type: {
+        default: "write",
+      },
+      pinType: {
         type: "select",
         options: {
           digital: "digital",
@@ -25,17 +27,15 @@ export class WriteActionEntity extends BaseActionEntity {
         default: "digital",
         required: true,
       },
-      {
-        name: "pin",
+      pin: {
         type: "number",
         required: true,
       },
-      {
-        name: "value",
+      value: {
         type: "number",
         required: true,
       },
-    ]),
+    }),
   };
 
   pinType: string;

@@ -1,21 +1,23 @@
 import _ = require("lodash");
 
 import {BaseActionEntity} from "./base-action-entity";
-import {IEntityParams, IEntityFieldParams} from "../base-entity";
+import {IEntityParams} from "../base-entity";
 
 export class IfActionEntity extends BaseActionEntity {
-
-  static defaultName = "ACIF01";
-  static defaultType = "if";
 
   static params:IEntityParams = {
     tableName: "action",
     entityName: "ifAction",
     icon: "code-fork",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
-      {
-        name: "operator",
+    fields: _.merge({}, BaseActionEntity.params.fields, {
+      name: {
+        default: "ACIF01",
+      },
+      type: {
+        default: "if",
+      },
+      operator: {
         type: "select",
         options: {
           $eq: "=",
@@ -28,20 +30,17 @@ export class IfActionEntity extends BaseActionEntity {
         default: "$eq",
         required: true,
       },
-      {
-        name: "value",
+      value: {
         type: "number",
         required: true,
       },
-      {
-        name: "then",
+      then: {
         type: "text",
       },
-      {
-        name: "else",
+      else: {
         type: "text",
       },
-    ]),
+    }),
   };
 
   operator:string;

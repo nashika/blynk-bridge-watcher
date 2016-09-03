@@ -1,21 +1,23 @@
 import _ = require("lodash");
 
 import {BaseActionEntity} from "./base-action-entity";
-import {IEntityFieldParams, IEntityParams} from "../base-entity";
+import {IEntityParams} from "../base-entity";
 
 export class ReadActionEntity extends BaseActionEntity {
-
-  static defaultName = "ACRD01";
-  static defaultType = "read";
 
   static params: IEntityParams = {
     tableName: "action",
     entityName: "readAction",
     icon: "eye",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseActionEntity.params.fields, [
-      {
-        name: "pinType",
+    fields: _.merge({}, BaseActionEntity.params.fields, {
+      name: {
+        default: "ACRD01",
+      },
+      type: {
+        default: "read",
+      },
+      pinType: {
         type: "select",
         options: {
           digital: "digital",
@@ -25,17 +27,15 @@ export class ReadActionEntity extends BaseActionEntity {
         default: "digital",
         required: true,
       },
-      {
-        name: "pin",
+      pin: {
         type: "number",
         required: true,
       },
-      {
-        name: "next",
+      next: {
         type: "text",
         required: true,
       },
-    ]),
+    }),
   };
 
   pinType: string;

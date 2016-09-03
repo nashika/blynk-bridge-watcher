@@ -2,7 +2,7 @@ import request = require("superagent");
 import _ = require("lodash");
 
 import {BaseService} from "./base-service";
-import {BaseEntity} from "../../common/entity/base-entity";
+import {BaseEntity, IEntityFieldParams} from "../../common/entity/base-entity";
 import {entityRegistry} from "../../common/entity/entity-registry";
 
 export class EntityService extends BaseService {
@@ -33,6 +33,7 @@ export class EntityService extends BaseService {
   }
 
   add<T extends BaseEntity>(entity:T): Promise<T> {
+    entity = this.cleanEntity(entity);
     let url: string = `/${entity.Class.params.tableName}/add`;
     return request.post(url).send(entity).then(res => {
       return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
@@ -44,6 +45,16 @@ export class EntityService extends BaseService {
     return request.post(url).send(entity).then(res => {
       return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
     });
+  }
+
+  private cleanEntity<T extends BaseEntity>(entity:T): T {
+    return entity;
+    /*_.forEach(entity.Class.params.fields, (field:IEntityFieldParams) => {
+      switch (field.type) {
+        case: "text":
+          entity.
+      }
+    });*/
   }
 
   remove<T extends BaseEntity>(entity:T): Promise<void> {

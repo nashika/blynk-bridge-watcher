@@ -1,25 +1,27 @@
 import _ = require("lodash");
 
-import {IEntityFieldParams, IEntityParams} from "../base-entity";
+import {IEntityParams} from "../base-entity";
 import {BaseNotifierEntity} from "./base-notifier-entity";
 
 export class PushbulletNotifierEntity extends BaseNotifierEntity {
-
-  static defaultName = "NTPB01";
-  static defaultType = "pushbullet";
 
   static params: IEntityParams = {
     tableName: "notifier",
     entityName: "pushbulletNotifier",
     icon: "bullhorn",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseNotifierEntity.params.fields, [
-      {
-        name: "apiKey",
+    fields: _.merge({}, BaseNotifierEntity.params.fields, {
+      name: {
+        default: "NTPB01",
+      },
+      type: {
+        default: "pushbullet",
+      },
+      apiKey: {
         type: "text",
         required: true,
       },
-    ]),
+    }),
   };
 
   apiKey: string;

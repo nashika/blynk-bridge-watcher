@@ -38,12 +38,13 @@ mixin modal()
   modal(title="Edit", :show.sync="showModal", effect="fade")
     .modal-body(slot="modal-body")
       form(v-if="editEntity", @submit.prevent="edit()")
-        .form-group(v-for="field in EntityClass.params.fields")
-          label {{lodash.startCase(field.name)}}
-          input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
-          input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[field.name]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
-          select.form-control(v-if="field.type == 'select'", v-model="editEntity[field.name]", :disabled="field.disabled")
-            option(v-for="value in field.options", :value="$key") {{value}}
+        .form-group(v-for="(fieldName, field) in EntityClass.params.fields")
+          div(v-if="!field.hidden")
+            label {{lodash.startCase(fieldName)}}
+            input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
+            input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
+            select.form-control(v-if="field.type == 'select'", v-model="editEntity[fieldName]", :disabled="field.disabled")
+              option(v-for="(key, value) in field.options", :value="key") {{value}}
         button.btn.btn-primary.btn-block(type="submit") Submit
     .modal-footer(slot="modal-footer")
       button.btn.btn-default(type="button", @click="showModal = false") Close

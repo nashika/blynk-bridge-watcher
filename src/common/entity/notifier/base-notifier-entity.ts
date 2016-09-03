@@ -5,25 +5,24 @@ import {BaseSwitchEntity} from "../base-switch-entity";
 
 export class BaseNotifierEntity extends BaseSwitchEntity {
 
-  static defaultName = "NT01";
-
   static params: IEntityParams = {
     tableName: "notifier",
     entityName: "notifier",
     icon: "bell",
     children: {},
-    fields: _.concat<IEntityFieldParams>(BaseSwitchEntity.params.fields, [
-      {
-        name: "firstDelay",
+    fields: _.merge({}, BaseSwitchEntity.params.fields, {
+      name: {
+        default: "NT01",
+      },
+      firstDelay: {
         type: "number",
         default: 3000,
       },
-      {
-        name: "nextDelay",
+      nextDelay: {
         type: "number",
         default: 10000,
       },
-    ]),
+    }),
   };
 
   firstDelay: number;
