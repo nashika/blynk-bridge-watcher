@@ -1,36 +1,39 @@
 import {EventEmitter} from "events";
+import util = require("util");
 
 import _ = require("lodash");
 import log4js = require("log4js");
 import pluralize = require("pluralize");
+import Socket = SocketIO.Socket;
 
 import {tableRegistry} from "../table/table-registry";
 import {BaseTable} from "../table/base-table";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
 import {nodeRegistry} from "./node-registry";
+import {socketIoServer} from "../socket-io";
 
 export class BaseNode<T extends BaseEntity> extends EventEmitter {
 
-  static EntityClass:typeof BaseEntity;
+  static EntityClass: typeof BaseEntity;
 
-  parent:BaseNode<BaseEntity>;
-  entity:T;
-  name:string = "";
+  parent: BaseNode<BaseEntity>;
+  entity: T;
+  name: string = "";
 
-  get Class():typeof BaseNode {
+  get Class(): typeof BaseNode {
     return <typeof BaseNode>this.constructor;
   }
 
-  static table():BaseTable<BaseEntity> {
+  static table(): BaseTable<BaseEntity> {
     return tableRegistry.getInstance(this.EntityClass.params.tableName);
   }
 
-  static generate(parent:BaseNode<BaseEntity>, entity:BaseEntity):Promise<BaseNode<BaseEntity>> {
-    let result:BaseNode<BaseEntity> = new this();
-    result.name = entity.name;
+  static generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
+    let result: BaseNode<BaseEntity> = new this();
     result.entity = entity;
     result.parent = parent;
+    result.name = entity.name;
     result.log("trace", `Generate ${(<any>this.constructor).name} object was started.`);
     return Promise.resolve().then(() => {
       return result.initialize();
@@ -38,18 +41,60 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
       result.log("trace", `Generate ${(<any>this.constructor).name} object was finished.`);
       return result.initializeChildren();
     }).then(() => {
+      socketIoServer.status(result.entity._id, true);
       return result;
     });
   }
 
-  protected initialize():Promise<void> {
+  protected initialize(): Promise<void> {
     return Promise.resolve();
   }
 
-  log(level:string, message:string, ...args:any[]) {
+  protected initializeChildren<ChildT extends BaseEntity>(): Promise<void> {
+    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
+      this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
+      let key = pluralize.plural(ChildEntityClass.params.tableName);
+      let childNodes: BaseNode<BaseEntity>[] = [];
+      _.set(this, key, childNodes);
+      return Promise.resolve().then(() => {
+        return tableRegistry.getInstance(ChildEntityClass.params.tableName).find({_parent: this.entity._id});
+      }).then(entities => {
+        return MyPromise.eachPromiseSeries(entities, (entity: BaseEntity) => {
+          return Promise.resolve().then(() => {
+            return nodeRegistry.generate(ChildEntityClass.params.tableName, entity, this);
+          }).then(node => {
+            childNodes.push(node);
+            return;
+          });
+        });
+      }).then(() => {
+        this.log("debug", `Construct child '${key}' objects was finished.`);
+        return;
+      });
+    });
+  }
+
+  finalize(): Promise<void> {
+    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
+      this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
+      let key = pluralize.plural(ChildEntityClass.params.tableName);
+      let childNodes: BaseNode<BaseEntity>[] = _.get(this, key, []);
+      return MyPromise.eachPromiseSeries(childNodes, (childNode: BaseNode<BaseEntity>) => {
+        return childNode.finalize();
+      }).then(() => {
+        _.set(this, key, []);
+      });
+    }).then(() => {
+      socketIoServer.status(this.entity._id, false);
+    });
+  }
+
+  log(level: string, message: string, ...args: any[]) {
     let logger = log4js.getLogger("system");
     if (this.parent)
       message = `${this.allKeyLabel()} ${message}`;
+    message = util.format(message, ...args);
+    socketIoServer.log(this.entity._id, level, message);
     switch (level) {
       case "trace":
         return logger.trace(message, ...args);
@@ -66,38 +111,14 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
     }
   }
 
-  public allKeyLabel(...args:string[]):string {
+  public allKeyLabel(...args: string[]): string {
     if (this.parent)
       return this.parent.allKeyLabel(this._keyLabel(), ...args);
     else
       return `[${args.join('->')}]`;
   }
 
-  protected initializeChildren<ChildT extends BaseEntity>():Promise<void> {
-    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass:typeof BaseEntity) => {
-      this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
-      let key = pluralize.plural(ChildEntityClass.params.tableName);
-      let childNodes:BaseNode<BaseEntity>[] = [];
-      _.set(this, key, childNodes);
-      return Promise.resolve().then(() => {
-        return tableRegistry.getInstance(ChildEntityClass.params.tableName).find({_parent: this.entity._id});
-      }).then(entities => {
-        return MyPromise.eachPromiseSeries(entities, (entity:BaseEntity) => {
-          return Promise.resolve().then(() => {
-            return nodeRegistry.generate(ChildEntityClass.params.tableName, entity, this);
-          }).then(node => {
-            childNodes.push(node);
-            return;
-          });
-        });
-      }).then(() => {
-        this.log("debug", `Construct child '${key}' objects was finished.`);
-        return;
-      });
-    });
-  }
-
-  protected _keyLabel():string {
+  protected _keyLabel(): string {
     return `${this.name}(${(<any>this.constructor).name})`;
   }
 

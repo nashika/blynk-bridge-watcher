@@ -4,7 +4,7 @@ var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "./base-component";
 import {serviceRegistry} from "../service/service-registry";
-import {BaseEntity} from "../../common/entity/base-entity";
+import {BaseEntity, IEntityFieldParams} from "../../common/entity/base-entity";
 
 @Component({
   components: {
@@ -26,6 +26,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   EntityClass: typeof BaseEntity;
   showModal: boolean;
   editEntity: T;
+  status: boolean;
 
   get this(): BaseEntityComponent<BaseEntity> {
     return this;
@@ -35,17 +36,24 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
     return _.assign(super.data(), {
       showModal: false,
       editEntity: null,
+      status: false,
     });
   }
 
   onReady() {
     if (this.add) this.editEntity = <T>this.EntityClass.generateDefault();
     else this.editEntity = _.cloneDeep(this.entity);
-    if (!this.add) this.reload();
+    if (!this.add) {
+      serviceRegistry.socketIo.registerComponent(this);
+      this.reload();
+    }
   }
 
   reload() {
     _.forIn(this.EntityClass.params.children, (EntityClass: typeof BaseEntity, key: string) => {
+      _.forEach(_.get(this, key), (entity: BaseEntity) => {
+        serviceRegistry.socketIo.unregisterComponent(entity._id);
+      });
       _.set(this, key, null);
       serviceRegistry.entity.getChildren(EntityClass, this.entity._id).then(entities => {
         _.set(this, key, entities);
@@ -55,6 +63,9 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
 
   edit() {
     this.showModal = false;
+    _.forEach(this.EntityClass.params.fields, (field:IEntityFieldParams) => {
+      field.type
+    });
     if (this.add) {
       this.editEntity._parent = this.parent.entity._id;
       this.editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
@@ -77,7 +88,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   move(directionUp: boolean) {
-    let entity1:T, entity2:T;
+    let entity1: T, entity2: T;
     let index = this.brotherEntities.findIndex(entity => this.entity == entity);
     if (directionUp) {
       if (this.isLast) return;
@@ -100,13 +111,13 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
-  get isFirst():boolean {
+  get isFirst(): boolean {
     if (!this.brotherEntities) return false;
     let index = this.brotherEntities.findIndex(entity => this.entity == entity);
     return index == 0;
   }
 
-  get isLast():boolean {
+  get isLast(): boolean {
     if (!this.brotherEntities) return false;
     let index = this.brotherEntities.findIndex(entity => this.entity == entity);
     return index == this.brotherEntities.length - 1;

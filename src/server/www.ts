@@ -1,3 +1,4 @@
+import {socketIoServer} from "./socket-io";
 require("source-map-support").install();
 
 /**
@@ -82,10 +83,6 @@ function onListening() {
 }
 
 
-import socketIo = require("socket.io");
-let io = socketIo.listen(server);
-io.sockets.on("connection", socket => {
-  socket.on("client_to_server", (data:any) => {
-    io.sockets.emit("server_to_client", `response data=${data}`);
-  });
-});
+
+// initialize socket.io
+socketIoServer.initialize(server);

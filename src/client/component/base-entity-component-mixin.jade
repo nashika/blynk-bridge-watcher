@@ -3,11 +3,12 @@ mixin dropdown()
     if !disableDelete
       button.btn.btn-info.btn-sm(type="button", @click="move(false)", :class="{disabled: isFirst}", :disabled="isFirst") #[i.fa.fa-arrow-left]
       button.btn.btn-info.btn-sm(type="button", @click="move(true)", :class="{disabled: isLast}", :disabled="isLast") #[i.fa.fa-arrow-right]
-    button.btn.btn-warning.btn-sm(type="button", @click="showModal = true") #[i.fa.fa-pencil]
+    button.btn.btn-warning.btn-sm(type="button", :class="{disabled: status}", @click="showModal = true") #[i.fa.fa-pencil]
     if !disableDelete
       button.btn.btn-danger.btn-sm(type="button", @click="remove()") #[i.fa.fa-trash-o]
     if disableDelete
       button.btn.btn-sm(type="button", @click="isStarted ? stop() : start()", :class="{'btn-info': isStarted, 'btn-danger': !isStarted, disabled: isLoading}", :disabled="isLoading") #[i.fa.fa-power-off]
+
 
 mixin children-tab(componentName, singularName, pluralName)
   section(class!=pluralName)
