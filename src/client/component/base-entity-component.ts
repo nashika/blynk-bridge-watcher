@@ -5,6 +5,7 @@ var VueStrap = require("vue-strap");
 import {BaseComponent} from "./base-component";
 import {serviceRegistry} from "../service/service-registry";
 import {BaseEntity, IEntityFieldParams} from "../../common/entity/base-entity";
+import {TSocketIoStatus} from "../../common/util/socket-io-util";
 
 @Component({
   components: {
@@ -26,7 +27,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   EntityClass: typeof BaseEntity;
   showModal: boolean;
   editEntity: T;
-  status: boolean;
+  status: TSocketIoStatus;
 
   get this(): BaseEntityComponent<BaseEntity> {
     return this;
@@ -36,7 +37,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
     return _.assign(super.data(), {
       showModal: false,
       editEntity: null,
-      status: false,
+      status: "connecting",
     });
   }
 
@@ -45,6 +46,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
     else this.editEntity = _.cloneDeep(this.entity);
     if (!this.add) {
       serviceRegistry.socketIo.registerComponent(this);
+      this.status = serviceRegistry.socketIo.getStatus(this.entity._id);
       this.reload();
     }
   }

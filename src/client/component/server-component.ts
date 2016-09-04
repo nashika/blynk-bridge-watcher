@@ -20,15 +20,12 @@ let template = require("./server-component.jade");
     "notifier-component": NotifierComponent,
     "job-component": JobComponent,
   },
-  ready: ServerComponent.prototype.onReady,
 })
 export class ServerComponent extends BaseEntityComponent<ServerEntity> {
 
   boards: BoardEntity[];
   notifiers: BaseNotifierEntity[];
   jobs: JobEntity[];
-  isStarted: boolean;
-  isLoading: boolean;
 
   data(): any {
     return _.assign(super.data(), {
@@ -36,32 +33,16 @@ export class ServerComponent extends BaseEntityComponent<ServerEntity> {
       boards: null,
       notifiers: null,
       jobs: null,
-      isStarted: false,
-      isLoading: false,
-    });
-  }
-
-  onReady() {
-    serviceRegistry.server.status().then(status => {
-      this.isStarted = status;
     });
   }
 
   start() {
-    this.isStarted = true;
-    this.isLoading = true;
     serviceRegistry.server.start().then(() => {
-      this.isLoading = false;
-      alert("server started");
     });
   }
 
   stop() {
-    this.isStarted = false;
-    this.isLoading = true;
     serviceRegistry.server.stop().then(() => {
-      this.isLoading = false;
-      alert("server stopped");
     });
   }
 

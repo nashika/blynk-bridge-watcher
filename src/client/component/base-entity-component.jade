@@ -6,9 +6,6 @@ section(v-if="!add", :class="EntityClass.params.tableName")
   .header
     +dropdown()
     h1
-      i.fa.fa-cog.fa-spin(v-if="status")
-      i.fa.fa-cog(v-if="!status")
-      | &nbsp;
       i.fa(:class="'fa-' + EntityClass.params.icon")
       | &nbsp;{{lodash.startCase(EntityClass.params.entityName)}}: {{entity.name}}
   .body

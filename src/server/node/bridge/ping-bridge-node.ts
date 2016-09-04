@@ -18,6 +18,7 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     super.connect();
     this.log("info", `Ping setting, interval=${this.entity.pingInterval}ms failureLimit=${this.entity.pingLimit}`);
     setTimeout(this.ping, 1000);
+    if (this.pingIntervalId) clearInterval(this.pingIntervalId);
     this.pingIntervalId = setInterval(this.ping, this.entity.pingInterval);
   }
 

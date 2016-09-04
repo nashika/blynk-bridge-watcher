@@ -35,12 +35,12 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
     result.parent = parent;
     result.name = entity.name;
     result.log("trace", `Generate ${this.name} object was started.`);
+    socketIoServer.status(result.entity._id, "processing");
     return Promise.resolve().then(() => {
       return result.initialize();
     }).then(() => {
       result.log("trace", `Generate ${this.name} object was finished.`);
-    }).then(() => {
-      socketIoServer.status(result.entity._id, true);
+      socketIoServer.status(result.entity._id, "ready");
       return result;
     });
   }
@@ -70,6 +70,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   }
 
   finalize(): Promise<void> {
+    socketIoServer.status(this.entity._id, "processing");
     return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let key = pluralize.plural(ChildEntityClass.params.tableName);
@@ -80,7 +81,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
         _.set(this, key, []);
       });
     }).then(() => {
-      socketIoServer.status(this.entity._id, false);
+      socketIoServer.status(this.entity._id, "stop");
     });
   }
 

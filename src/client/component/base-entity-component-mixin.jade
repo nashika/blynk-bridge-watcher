@@ -1,38 +1,34 @@
 mixin dropdown()
   .menu
-    if !disableDelete
-      button.btn.btn-info.btn-sm(type="button", @click="move(false)", :class="{disabled: isFirst || status}", :disabled="isFirst || status") #[i.fa.fa-arrow-left]
-      button.btn.btn-info.btn-sm(type="button", @click="move(true)", :class="{disabled: isLast || status}", :disabled="isLast || status") #[i.fa.fa-arrow-right]
-    button.btn.btn-warning.btn-sm(type="button", @click="showModal = true", :class="{disabled: status}", :disabled="status") #[i.fa.fa-pencil]
-    if !disableDelete
-      button.btn.btn-danger.btn-sm(type="button", @click="remove()", :class="{disabled: status}", :disabled="status") #[i.fa.fa-trash-o]
-    if disableDelete
-      button.btn.btn-sm(type="button", @click="isStarted ? stop() : start()", :class="{'btn-info': isStarted, 'btn-danger': !isStarted, disabled: isLoading}", :disabled="isLoading") #[i.fa.fa-power-off]
+    if !isServer
+      button.btn.btn-info.btn-sm(v-if="!isFirst && status == 'stop'", type="button", @click="move(false)") #[i.fa.fa-arrow-left]
+      button.btn.btn-info.btn-sm(v-if="!isLast && status == 'stop'", type="button", @click="move(true)") #[i.fa.fa-arrow-right]
+    button.btn.btn-warning.btn-sm(v-if="status == 'stop'", type="button", @click="showModal = true") #[i.fa.fa-pencil]
+    if !isServer
+      button.btn.btn-danger.btn-sm(v-if="status == 'stop'", type="button", @click="remove()") #[i.fa.fa-trash-o]
+    button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
+    button.btn.btn-danger.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
+    button.btn.btn-warning.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
+    button.btn.btn-warning.btn-sm(v-if="status == 'processing'", type="button") #[i.fa.fa-refresh.fa-spin]
 
-
-mixin children-tab(componentName, singularName, pluralName)
+mixin children(componentName, singularName, pluralName, mode)
   section(class!=pluralName)
     .header
-      #{componentName}(:add="true", :brother-entities="#{pluralName}", :parent="this")
+      #{componentName}(v-if="status == 'stop'", :add="true", :brother-entities="#{pluralName}", :parent="this")
       h1 {{lodash.startCase('#{pluralName}')}}
     .body
-      tabs(v-if="#{pluralName}")
-        tab(v-for="#{singularName} in #{pluralName}", :header="#{singularName}.name")
-          #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
-      .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
-      .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
-
-mixin children-box(componentName, singularName, pluralName)
-  section(class!=pluralName)
-    .header
-      #{componentName}(:add="true", :brother-entities="#{pluralName}", :parent="this")
-      h1 {{lodash.startCase('#{pluralName}')}}
-    .body
-      .row
-        .col-sm-6.col-md-4.col-lg-3(v-for="#{singularName} in #{pluralName}")
-          #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
-      .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
-      .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
+      if mode == "tab"
+        tabs(v-if="#{pluralName}")
+          tab(v-for="#{singularName} in #{pluralName}", :header="#{singularName}.name")
+            #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
+        .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
+        .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
+      if mode == "box"
+        .row
+          .col-sm-6.col-md-4.col-lg-3(v-for="#{singularName} in #{pluralName}")
+            #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
+        .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
+        .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
 
 mixin modal()
   modal(title="Edit", :show.sync="showModal", effect="fade")

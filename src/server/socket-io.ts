@@ -3,7 +3,7 @@ import {Server as HttpServer} from "http";
 import Server = SocketIO.Server;
 import Socket = SocketIO.Socket;
 
-import {ISocketIoLogData, ISocketIoStatusData} from "../common/util/socket-io-util";
+import {ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus} from "../common/util/socket-io-util";
 
 export class SocketIoServer {
 
@@ -35,7 +35,7 @@ export class SocketIoServer {
     this.io.sockets.emit("log", data);
   }
 
-  status(_id: string, status: boolean) {
+  status(_id: string, status: TSocketIoStatus) {
     let data: ISocketIoStatusData = {_id: _id, status: status};
     this.statuses[_id] = data;
     this.io.sockets.emit("status", data);

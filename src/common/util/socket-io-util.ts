@@ -14,6 +14,8 @@ export interface ISocketIoLogData extends ISocketIoData {
   message: string;
 }
 
+export type TSocketIoStatus = "connecting" | "processing" | "ready" | "stop" | "error";
+
 export interface ISocketIoStatusData extends ISocketIoData {
-  status: boolean;
+  status: TSocketIoStatus;
 }

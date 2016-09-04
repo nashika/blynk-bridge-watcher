@@ -2,9 +2,9 @@ extends ./base-entity-component.jade
 
 block variables
   -
-    var disableDelete = true;
+    var isServer = true;
 
 block body
-  +children-tab("board-component", "board", "boards")
-  +children-box("notifier-component", "notifier", "notifiers")
-  +children-box("job-component", "job", "jobs")
+  +children("board-component", "board", "boards", "tab")
+  +children("notifier-component", "notifier", "notifiers", "box")
+  +children("job-component", "job", "jobs", "box")
