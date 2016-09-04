@@ -43,22 +43,25 @@ export class BoardNode extends BaseNode<BoardEntity> {
     });
   }
 
-  _onConnect = (): void => {
+  private _onConnect = (): void => {
     this.log("debug", `Auth dummy blynk board was finished.`);
     this.log("info", `Board ${this.name} was connected.`);
     for (let bridgeName in this.bridges)
       this.bridges[bridgeName].connect();
+    this.status = "ready";
   };
 
-  _onDisconnect = (): void => {
+  private _onDisconnect = (): void => {
+    this.status = "processing";
     this.log("info", `Board ${this.name} was disconnected.`);
   };
 
-  _onError = (e: any): void => {
+  private _onError = (e: any): void => {
+    this.status = "error";
     this.log("error", `Board ${this.name} was error. error="${e}"`);
   };
 
-  _onInputVPin = (param: string[]): void => {
+  private _onInputVPin = (param: string[]): void => {
     let params = param[0].split(",");
     if (params.length < 2) {
       this.log("error", `Input data '${param}' is invalid format.`);
@@ -68,13 +71,18 @@ export class BoardNode extends BaseNode<BoardEntity> {
     let eventName: string = params[1];
     let eventArgs: string[] = params.splice(2);
     this.log("trace", `Receive input data, bridge='${bridgeName}' event='${eventName}' args=${JSON.stringify(eventArgs)}`);
-    if (!this.bridges[bridgeName])
+    let bridge = this.searchBridgeFromName(bridgeName);
+    if (!bridge)
       return this.log("warn", `Bridge '${bridgeName}' was not found.`);
     if (eventName == "$r")
-      return this.bridges[bridgeName].sendCallback(...eventArgs);
-    if (this.bridges[bridgeName].listeners(eventName).length == 0)
+      return bridge.sendCallback(...eventArgs);
+    if (bridge.listeners(eventName).length == 0)
       return this.log("warn", `Bridge '${bridgeName}' not have '${eventName}' event.`);
-    this.bridges[bridgeName].emit(eventName, this.bridges[bridgeName], ...eventArgs);
+    bridge.emit(eventName, bridge, ...eventArgs);
   };
+
+  private searchBridgeFromName(name: string): BridgeNode {
+    return _.find(this.bridges, {"name" : name});
+  }
 
 }

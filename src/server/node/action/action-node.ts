@@ -13,7 +13,9 @@ export abstract class ActionNode<T extends BaseActionEntity> extends BaseNode<T>
 
   initialize(): Promise<void> {
     _.defaults(this.entity, {aliases: []});
-    return super.initialize();
+    return super.initialize().then(() => {
+      this.status = "ready";
+    });
   }
 
   run = (caller: BaseNode<BaseEntity>, ...args: string[]) => {

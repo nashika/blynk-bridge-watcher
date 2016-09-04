@@ -8,8 +8,9 @@ mixin dropdown()
       button.btn.btn-danger.btn-sm(v-if="status == 'stop'", type="button", @click="remove()") #[i.fa.fa-trash-o]
     button.btn.btn-default.btn-sm(type="button", @click="showLogModal = true") #[i.fa.fa-list] {{logs.length}}
     button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
-    button.btn.btn-danger.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
-    button.btn.btn-warning.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
+    button.btn.btn-default.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
+    button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]
+    button.btn.btn-default.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
     button.btn.btn-warning.btn-sm(v-if="status == 'processing'", type="button") #[i.fa.fa-refresh.fa-spin]
 
 mixin children(componentName, singularName, pluralName, mode)

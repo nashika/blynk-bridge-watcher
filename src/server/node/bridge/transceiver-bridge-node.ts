@@ -13,8 +13,8 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
   }
 
   send = (command: string, params: any[], callback: (...args: string[])=>void, failureCallback: ()=>void): void => {
-    if (command != "pi" && this.status != this.STATUS_TYPES["ready"])
-      return this.log("warn", `Send command='${command}' params=${JSON.stringify(params)} can not run. Bridge status='${this.status.label}' is not ready.`);
+    if (command != "pi" && this.status != "ready")
+      return this.log("warn", `Send command='${command}' params=${JSON.stringify(params)} can not run. Bridge status='${this.status}' is not ready.`);
     let pin = params[0] || 0;
     let param = params[1] || "";
     let requestId: string;
@@ -25,7 +25,7 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
     let output: string = `${requestId},${command},${pin},${param}`;
     setTimeout(this._sendFailureCallback, this.SEND_TIMEOUT, requestId, failureCallback, output);
     this.log("trace", `Send data='${output}'`);
-    this._widgetBridge.virtualWrite(0, output);
+    this.widgetBridge.virtualWrite(0, output);
   };
 
   sendCallback = (...args: string[]): void => {
@@ -39,17 +39,17 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
   };
 
   write = (type: string, pin: number, value: number) => {
-    if (this.status != this.STATUS_TYPES["ready"])
+    if (this.status != "ready")
       return;
     switch (type) {
       case "digital":
-        this._widgetBridge.digitalWrite(pin, value);
+        this.widgetBridge.digitalWrite(pin, value);
         break;
       case "analog":
-        this._widgetBridge.analogWrite(pin, value);
+        this.widgetBridge.analogWrite(pin, value);
         break;
       case "virtual":
-        this._widgetBridge.virtualWrite(pin, value);
+        this.widgetBridge.virtualWrite(pin, value);
         break;
       default:
         throw new Error();
@@ -59,7 +59,7 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
   protected _sendFailureCallback = (requestId: string, failureCallback: ()=>void, output: string) => {
     if (!this.sendCallbacks[requestId])
       return;
-    if (this.status != this.STATUS_TYPES["error"])
+    if (this.status != "error")
       this.log("warn", `Request key='${requestId}' output='${output}' was timeout.`);
     delete this.sendCallbacks[requestId];
     failureCallback();

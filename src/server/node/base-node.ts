@@ -12,7 +12,7 @@ import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
 import {nodeRegistry} from "./node-registry";
 import {socketIoServer} from "../socket-io";
-import {TSocketIoLogLevel} from "../../common/util/socket-io-util";
+import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
 
 export class BaseNode<T extends BaseEntity> extends EventEmitter {
 
@@ -21,10 +21,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   parent: BaseNode<BaseEntity>;
   entity: T;
   name: string = "";
-
-  get Class(): typeof BaseNode {
-    return <typeof BaseNode>this.constructor;
-  }
+  _status: TSocketIoStatus;
 
   static table(): BaseTable<BaseEntity> {
     return tableRegistry.getInstance(this.EntityClass.params.tableName);
@@ -36,14 +33,26 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
     result.parent = parent;
     result.name = entity.name;
     result.log("trace", `Generate ${this.name} object was started.`);
-    socketIoServer.status(result.entity._id, "processing");
+    result.status = "processing";
     return Promise.resolve().then(() => {
       return result.initialize();
     }).then(() => {
       result.log("trace", `Generate ${this.name} object was finished.`);
-      socketIoServer.status(result.entity._id, "ready");
       return result;
     });
+  }
+
+  get Class(): typeof BaseNode {
+    return <typeof BaseNode>this.constructor;
+  }
+
+  get status(): TSocketIoStatus {
+    return this._status;
+  }
+
+  set status(value: TSocketIoStatus) {
+    this._status = value;
+    socketIoServer.status(this.entity._id, value);
   }
 
   protected initialize(): Promise<void> {
@@ -71,7 +80,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   }
 
   finalize(): Promise<void> {
-    socketIoServer.status(this.entity._id, "processing");
+    this.status = "processing";
     return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let key = pluralize.plural(ChildEntityClass.params.tableName);
@@ -82,7 +91,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
         _.set(this, key, []);
       });
     }).then(() => {
-      socketIoServer.status(this.entity._id, "stop");
+      this.status = "stop";
     });
   }
 

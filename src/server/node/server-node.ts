@@ -14,6 +14,12 @@ export class ServerNode extends BaseNode<ServerEntity> {
   notifiers: {[name: string]: NotifierNode<BaseNotifierEntity>};
   jobs: {[name: string]: JobNode};
 
+  initialize(): Promise<void> {
+    return super.initialize().then(() => {
+      this.status = "ready";
+    });
+  }
+
   static start(): Promise<ServerNode> {
     return Promise.resolve().then(() => {
       return tableRegistry.server.findOne();

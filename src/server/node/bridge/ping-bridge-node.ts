@@ -37,7 +37,7 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   private pingCallback = () => {
     this.log("debug", `Pong from bridge.`);
     this.pinging = false;
-    this.status = this.STATUS_TYPES["ready"];
+    this.status = "ready";
     this.pingFailureCount = 0;
   };
 
@@ -45,11 +45,11 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     if (this.pinging) {
       this.pingFailureCount++;
       this.pinging = false;
-      if (this.status != this.STATUS_TYPES["error"]) {
+      if (this.status != "error") {
         this.log("error", `Ping was no response, failure count ${this.pingFailureCount} / ${this.entity.pingLimit}.`);
         if (this.pingFailureCount >= this.entity.pingLimit) {
           this.log("error", `Ping failed ${this.pingFailureCount} times, the bridge will stop.`);
-          this.status = this.STATUS_TYPES["error"];
+          this.status = "error";
         }
       }
     }

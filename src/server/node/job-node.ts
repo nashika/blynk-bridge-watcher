@@ -43,8 +43,8 @@ export class JobNode extends BaseNode<JobEntity> {
   }
 
   protected _run = () => {
-    if (this.bridge.status != this.bridge.STATUS_TYPES["ready"]) {
-      this.bridge.log("warn", `Job '${this.name}' can not run. Bridge '${this.bridge.name}' status='${this.bridge.status.label}' is not ready.`);
+    if (this.bridge.status != "ready") {
+      this.bridge.log("warn", `Job '${this.name}' can not run. Bridge '${this.bridge.name}' status='${this.bridge.status}' is not ready.`);
       return;
     }
     this.log("debug", `Job '${this.name}' was kicked.`);
