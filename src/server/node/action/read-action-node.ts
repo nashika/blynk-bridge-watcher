@@ -4,7 +4,7 @@ import {ActionNode} from "./action-node";
 
 export class ReadActionNode extends ActionNode<ReadActionEntity> {
 
-  run = (bridge: BridgeNode, ...args: string[]) => {
+  run = (...args: string[]) => {
     this.log("debug", `Read action. type=${this.entity.pinType}, pin=${this.entity.pin}`);
     let command: string;
     switch (this.entity.pinType) {
@@ -20,9 +20,9 @@ export class ReadActionNode extends ActionNode<ReadActionEntity> {
       default:
         throw new Error();
     }
-    bridge.send(command, [this.entity.pin], (...args: string[]) => {
+    this.parent.send(command, [this.entity.pin], (...args: string[]) => {
       if (this.entity.next)
-        bridge.emit(this.entity.next, bridge, ...args);
+        this.parent.emit(this.entity.next, ...args);
     }, () => {
     });
   };

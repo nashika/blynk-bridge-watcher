@@ -2,7 +2,10 @@ import socketIo = require("socket.io-client");
 import {BaseService} from "./base-service";
 import Socket = SocketIOClient.Socket;
 
-import {ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus} from "../../common/util/socket-io-util";
+import {
+  ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
+  ISocketIoSendData
+} from "../../common/util/socket-io-util";
 import {BaseEntityComponent} from "../component/base-entity-component";
 import {BaseEntity} from "../../common/entity/base-entity";
 
@@ -63,6 +66,11 @@ export class SocketIoService extends BaseService {
 
   getStatus(_id: string): TSocketIoStatus {
     return this.statuses[_id] ? this.statuses[_id].status : "connecting";
+  }
+
+  send(_id: string, event: string, ...args: any[]) {
+    let sendData: ISocketIoSendData = {_id: _id, event: event, args: args};
+    this.socket.emit("send", sendData);
   }
 
 }

@@ -56,6 +56,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   }
 
   protected initialize(): Promise<void> {
+    socketIoServer.registerNode(this);
     return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let key = pluralize.plural(ChildEntityClass.params.tableName);
@@ -69,18 +70,17 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
             return nodeRegistry.generate(ChildEntityClass.params.tableName, entity, this);
           }).then(node => {
             childNodes.push(node);
-            return;
           });
         });
       }).then(() => {
         this.log("debug", `Construct child '${key}' objects was finished.`);
-        return;
       });
     });
   }
 
   finalize(): Promise<void> {
     this.status = "processing";
+    socketIoServer.unregisterNode(this.entity._id);
     return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let key = pluralize.plural(ChildEntityClass.params.tableName);

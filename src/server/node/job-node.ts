@@ -48,7 +48,7 @@ export class JobNode extends BaseNode<JobEntity> {
       return;
     }
     this.log("debug", `Job '${this.name}' was kicked.`);
-    this.bridge.emit(this.entity.action, this.bridge);
+    this.bridge.emit(this.entity.action);
   };
 
 }

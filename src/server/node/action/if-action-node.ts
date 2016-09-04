@@ -4,7 +4,7 @@ import {IfActionEntity} from "../../../common/entity/action/if-action-entity";
 
 export class IfActionNode extends ActionNode<IfActionEntity> {
 
-  run = (bridge: BridgeNode, ...args: string[]) => {
+  run = (...args: string[]) => {
     if (args.length < 1)
       return this.log("warn", `If action called no argument.`);
     let arg = parseInt(args[0]);
@@ -37,9 +37,9 @@ export class IfActionNode extends ActionNode<IfActionEntity> {
     }
     this.log("debug", `If action. '(${arg} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
     if (result && this.entity.then)
-      bridge.emit(this.entity.then, bridge, ...args);
+      this.parent.emit(this.entity.then, ...args);
     else if (!result && this.entity.else)
-      bridge.emit(this.entity.else, bridge, ...args);
+      this.parent.emit(this.entity.else, ...args);
   };
 
 }

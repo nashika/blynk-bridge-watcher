@@ -78,7 +78,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
       return bridge.sendCallback(...eventArgs);
     if (bridge.listeners(eventName).length == 0)
       return this.log("warn", `Bridge '${bridgeName}' not have '${eventName}' event.`);
-    bridge.emit(eventName, bridge, ...eventArgs);
+    bridge.emit(eventName, ...eventArgs);
   };
 
   private searchBridgeFromName(name: string): BridgeNode {

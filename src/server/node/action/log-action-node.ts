@@ -13,8 +13,8 @@ export class LogActionNode extends ActionNode<LogActionEntity> {
     return super.initialize();
   }
 
-  run = (bridge: BridgeNode, ...args: string[]) => {
-    bridge.log(this.entity.level, util.format(this.entity.message, ...args));
+  run = (...args: string[]) => {
+    this.parent.log(this.entity.level, util.format(this.entity.message, ...args));
   };
 
 }

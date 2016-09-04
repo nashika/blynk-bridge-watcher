@@ -22,3 +22,8 @@ export type TSocketIoStatus = "connecting" | "processing" | "ready" | "stop" | "
 export interface ISocketIoStatusData extends ISocketIoData {
   status: TSocketIoStatus;
 }
+
+export interface ISocketIoSendData extends ISocketIoData {
+  event: string;
+  args: any[];
+}

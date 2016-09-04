@@ -63,7 +63,7 @@
 }
 
 @mixin component-list {
-  margin: 20px 0px;
+  margin: 10px 0px;
   @include border-top-radius(5px);
   @include border-bottom-radius(5px);
   border: 1px solid $brand-lightest;

@@ -4,8 +4,8 @@ import {NotifyActionEntity} from "../../../common/entity/action/notify-action-en
 
 export class NotifyActionNode extends ActionNode<NotifyActionEntity> {
 
-  run = (bridge:BridgeNode, ...args:string[]) => {
-    bridge.parent.parent.notifiers[this.entity.notifier].emit("notify", this, ...args);
+  run = (...args:string[]) => {
+    this.parent.parent.parent.notifiers[this.entity.notifier].emit("notify", ...args);
   };
 
 }

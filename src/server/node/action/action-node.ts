@@ -13,6 +13,7 @@ export abstract class ActionNode<T extends BaseActionEntity> extends BaseNode<T>
 
   initialize(): Promise<void> {
     _.defaults(this.entity, {aliases: []});
+    this.on("run", this.run);
     return super.initialize();
   }
 
@@ -24,7 +25,7 @@ export abstract class ActionNode<T extends BaseActionEntity> extends BaseNode<T>
     this.status = "error";
   }
 
-  run = (caller: BaseNode<BaseEntity>, ...args: string[]) => {
+  run = (...args: string[]) => {
     this.log("error", `Action.run is abstract function`);
   };
 
