@@ -71,7 +71,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
     let eventName: string = params[1];
     let eventArgs: string[] = params.splice(2);
     this.log("trace", `Receive input data, bridge='${bridgeName}' event='${eventName}' args=${JSON.stringify(eventArgs)}`);
-    let bridge = this.searchBridgeFromName(bridgeName);
+    let bridge = this.bridges[bridgeName];
     if (!bridge)
       return this.log("warn", `Bridge '${bridgeName}' was not found.`);
     if (eventName == "$r")
@@ -80,9 +80,5 @@ export class BoardNode extends BaseNode<BoardEntity> {
       return this.log("warn", `Bridge '${bridgeName}' not have '${eventName}' event.`);
     bridge.emit(eventName, ...eventArgs);
   };
-
-  private searchBridgeFromName(name: string): BridgeNode {
-    return _.find(this.bridges, {"name" : name});
-  }
 
 }
