@@ -35,15 +35,15 @@ export class BoardNode extends BaseNode<BoardEntity> {
     this.inputVPin = new this.blynk.VirtualPin(0);
     this.log("debug", `Construct Input Virtual Pin 0 was finished.`);
     return super.initialize().then(() => {
-      this.inputVPin.on("write", this._onInputVPin);
-      this.blynk.on("connect", this._onConnect);
-      this.blynk.on("disconnect", this._onDisconnect);
-      this.blynk.on("error", this._onError);
+      this.inputVPin.on("write", this.onInputVPin);
+      this.blynk.on("connect", this.onConnect);
+      this.blynk.on("disconnect", this.onDisconnect);
+      this.blynk.on("error", this.onError);
       return;
     });
   }
 
-  private _onConnect = (): void => {
+  private onConnect = (): void => {
     this.log("debug", `Auth dummy blynk board was finished.`);
     this.log("info", `Board ${this.name} was connected.`);
     for (let bridgeName in this.bridges)
@@ -51,17 +51,17 @@ export class BoardNode extends BaseNode<BoardEntity> {
     this.status = "ready";
   };
 
-  private _onDisconnect = (): void => {
+  private onDisconnect = (): void => {
     this.status = "processing";
     this.log("info", `Board ${this.name} was disconnected.`);
   };
 
-  private _onError = (e: any): void => {
+  private onError = (e: any): void => {
     this.status = "error";
     this.log("error", `Board ${this.name} was error. error="${e}"`);
   };
 
-  private _onInputVPin = (param: string[]): void => {
+  private onInputVPin = (param: string[]): void => {
     let params = param[0].split(",");
     if (params.length < 2) {
       this.log("error", `Input data '${param}' is invalid format.`);
