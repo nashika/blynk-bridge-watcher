@@ -6,7 +6,7 @@ import {IEntityParams} from "../base-entity";
 export class WriteActionEntity extends BaseActionEntity {
 
   static params: IEntityParams = {
-    tableName: "board",
+    tableName: "action",
     entityName: "writeAction",
     icon: "pencil-square-o",
     children: {},
