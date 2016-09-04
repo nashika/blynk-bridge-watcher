@@ -65,9 +65,6 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
 
   edit() {
     this.showModal = false;
-    _.forEach(this.EntityClass.params.fields, (field:IEntityFieldParams) => {
-      field.type
-    });
     if (this.add) {
       this.editEntity._parent = this.parent.entity._id;
       this.editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;

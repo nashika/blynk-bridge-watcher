@@ -27,7 +27,6 @@ export class AppComponent extends BaseComponent {
   onReady() {
     serviceRegistry.entity.getOne(ServerEntity).then(entity => {
       this.server = entity;
-      setTimeout(() => serviceRegistry.socketIo.initialize(), 3000);
     });
   }
 

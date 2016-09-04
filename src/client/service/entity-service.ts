@@ -20,11 +20,11 @@ export class EntityService extends BaseService {
     });
   }
 
-  getChildren<T extends BaseEntity>(EntityClass: typeof BaseEntity, parent:string): Promise<T[]> {
+  getChildren<T extends BaseEntity>(EntityClass: typeof BaseEntity, parent: string): Promise<T[]> {
     return this.getAll(EntityClass, {_parent: parent});
   }
 
-  getAll<T extends BaseEntity>(EntityClass: typeof BaseEntity, query:any): Promise<T[]> {
+  getAll<T extends BaseEntity>(EntityClass: typeof BaseEntity, query: any): Promise<T[]> {
     let url: string = `/${EntityClass.params.tableName}`;
     return request.post(url).send(query).then(res => {
       if (!_.isArray(res.body)) throw new Error(`getAll expects entity array.`);
@@ -32,21 +32,43 @@ export class EntityService extends BaseService {
     });
   }
 
-  add<T extends BaseEntity>(entity:T): Promise<T> {
+  add<T extends BaseEntity>(entity: T): Promise<T> {
+    this.cleanEntity(entity);
     let url: string = `/${entity.Class.params.tableName}/add`;
     return request.post(url).send(entity).then(res => {
       return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
     });
   }
 
-  edit<T extends BaseEntity>(entity:T): Promise<T> {
+  edit<T extends BaseEntity>(entity: T): Promise<T> {
+    this.cleanEntity(entity);
     let url: string = `/${entity.Class.params.tableName}/edit`;
     return request.post(url).send(entity).then(res => {
       return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
     });
   }
 
-  remove<T extends BaseEntity>(entity:T): Promise<void> {
+  private cleanEntity<T extends BaseEntity>(entity: T) {
+    for (let key in entity) {
+      let value = _.get(entity, key);
+      let field = entity.Class.params.fields[key];
+      if (field) {
+        switch (field.type) {
+          case "text":
+            if (!value) _.unset(entity, key);
+            break;
+          case "number":
+            if (value === "") _.unset(entity, key);
+            break;
+        }
+      } else {
+        _.unset(entity, key);
+      }
+    }
+    return entity;
+  }
+
+  remove<T extends BaseEntity>(entity: T): Promise<void> {
     let url: string = `/${entity.Class.params.tableName}/remove`;
     return request.post(url).send(entity).then(res => {
       return;
