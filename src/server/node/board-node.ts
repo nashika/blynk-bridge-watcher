@@ -13,30 +13,29 @@ export class BoardNode extends BaseNode<BoardEntity> {
   parent: ServerNode;
   blynk: any;
   bridges: {[name: string]: BridgeNode};
-  _inputVPin: any;
+  private inputVPin: any;
 
   initialize(): Promise<void> {
+    _.defaults(this.entity, {addr: "", port: 8442});
+    this.log("debug", `Auth dummy blynk board was started.`);
+    let options = {
+      connector: new Blynk.TcpClient({
+        addr: this.entity.addr,
+        port: this.entity.port,
+      }),
+      //certs_path : './node_modules/blynk-library/certs/',
+    };
+    try {
+      this.blynk = new Blynk.Blynk(this.entity.token, options);
+    } catch (e) {
+      this.log("error", e);
+    }
+
+    this.log("debug", `Construct Input Virtual Pin 0 was started.`);
+    this.inputVPin = new this.blynk.VirtualPin(0);
+    this.log("debug", `Construct Input Virtual Pin 0 was finished.`);
     return super.initialize().then(() => {
-      _.defaults(this.entity, {addr: "", port: 8442});
-      this.log("debug", `Auth dummy blynk board was started.`);
-      let options = {
-        connector: new Blynk.TcpClient({
-          addr: this.entity.addr,
-          port: this.entity.port,
-        }),
-        //certs_path : './node_modules/blynk-library/certs/',
-      };
-      try {
-        this.blynk = new Blynk.Blynk(this.entity.token, options);
-      } catch (e) {
-        this.log("error", e);
-      }
-
-      this.log("debug", `Construct Input Virtual Pin 0 was started.`);
-      this._inputVPin = new this.blynk.VirtualPin(0);
-      this.log("debug", `Construct Input Virtual Pin 0 was finished.`);
-
-      this._inputVPin.on("write", this._onInputVPin);
+      this.inputVPin.on("write", this._onInputVPin);
       this.blynk.on("connect", this._onConnect);
       this.blynk.on("disconnect", this._onDisconnect);
       this.blynk.on("error", this._onError);

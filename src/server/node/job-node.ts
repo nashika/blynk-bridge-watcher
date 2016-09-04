@@ -13,8 +13,8 @@ export class JobNode extends BaseNode<JobEntity> {
 
   parent:ServerNode;
 
-  protected _bridge:BridgeNode;
-  protected _cronJob:CronJob;
+  private bridge:BridgeNode;
+  private cronJob:CronJob;
 
   initialize():Promise<void> {
     return super.initialize().then(() => {
@@ -24,31 +24,31 @@ export class JobNode extends BaseNode<JobEntity> {
         this.log("fatal", `Board '${this.entity.board}' was not found.`);
         process.exit(1);
       }
-      if (!(this._bridge = board.bridges[this.entity.bridge])) {
+      if (!(this.bridge = board.bridges[this.entity.bridge])) {
         this.log("fatal", `Board '${this.entity.board}' -> Bridge '${this.entity.bridge}' was not found.`);
         process.exit(1);
       }
-      if (!this._bridge.actions[this.entity.action]) {
+      if (!this.bridge.actions[this.entity.action]) {
         this.log("fatal", `Board '${this.entity.board}' -> Bridge '${this.entity.bridge}' -> Action '${this.entity.action}' was not found.`);
         process.exit(1);
       }
       try {
-        this._cronJob = new CronJob(this.entity.cronTime, this._run);
+        this.cronJob = new CronJob(this.entity.cronTime, this._run);
       } catch (e) {
         this.log("fatal", `cronTime '${this.entity.cronTime}' is invalid format.`);
         process.exit(1);
       }
-      this._cronJob.start();
+      this.cronJob.start();
     });
   }
 
   protected _run = ():void => {
-    if (this._bridge.status != this._bridge.STATUS_TYPES["ready"]) {
-      this._bridge.log("warn", `Job '${this.name}' can not run. Bridge '${this._bridge.name}' status='${this._bridge.status.label}' is not ready.`);
+    if (this.bridge.status != this.bridge.STATUS_TYPES["ready"]) {
+      this.bridge.log("warn", `Job '${this.name}' can not run. Bridge '${this.bridge.name}' status='${this.bridge.status.label}' is not ready.`);
       return;
     }
     this.log("debug", `Job '${this.name}' was kicked.`);
-    this._bridge.emit(this.entity.action, this._bridge);
+    this.bridge.emit(this.entity.action, this.bridge);
   };
 
 }

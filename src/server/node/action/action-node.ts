@@ -12,10 +12,8 @@ export abstract class ActionNode<T extends BaseActionEntity> extends BaseNode<T>
   parent: BridgeNode;
 
   initialize(): Promise<void> {
-    return super.initialize().then(() => {
-      _.defaults(this.entity, {aliases: []});
-      return;
-    });
+    _.defaults(this.entity, {aliases: []});
+    return super.initialize();
   }
 
   run = (caller: BaseNode<BaseEntity>, ...args: string[]) => {

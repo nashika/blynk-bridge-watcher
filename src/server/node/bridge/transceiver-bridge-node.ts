@@ -1,19 +1,15 @@
 import {BaseBridgeNode} from "./base-bridge-node";
 import {uid} from "../../../common/util/uid";
-import {BoardNode} from "../board-node";
-import {BridgeEntity} from "../../../common/entity/bridge-entity";
 
 export class TransceiverBridgeNode extends BaseBridgeNode {
 
   SEND_TIMEOUT:number = 10000;
 
-  protected _sendCallbacks:{[key:string]:(...args:string[]) => void};
+  private sendCallbacks:{[key:string]:(...args:string[]) => void};
 
   initialize():Promise<void> {
-    return super.initialize().then(() => {
-      this._sendCallbacks = {};
-      return;
-    });
+    this.sendCallbacks = {};
+    return super.initialize();
   }
 
   send = (command:string, params:any[], callback:(...args:string[])=>void, failureCallback:()=>void):void => {
@@ -24,8 +20,8 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
     let requestId:string;
     do
       requestId = uid(3);
-    while (this._sendCallbacks[requestId]);
-    this._sendCallbacks[requestId] = callback;
+    while (this.sendCallbacks[requestId]);
+    this.sendCallbacks[requestId] = callback;
     let output:string = `${requestId},${command},${pin},${param}`;
     setTimeout(this._sendFailureCallback, this.SEND_TIMEOUT, requestId, failureCallback, output);
     this.log("trace", `Send data='${output}'`);
@@ -36,10 +32,10 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
     let requestId:string = args[0];
     let restArgs:string[] = args.slice(1);
     let callback:(...args:string[]) => void;
-    if (!(callback = this._sendCallbacks[requestId]))
+    if (!(callback = this.sendCallbacks[requestId]))
       return this.log("warn", `Request callback key='${requestId}' not found.`);
     callback(...restArgs);
-    delete this._sendCallbacks[requestId];
+    delete this.sendCallbacks[requestId];
   };
 
   write = (type:string, pin:number, value:number) => {
@@ -61,11 +57,11 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
   };
 
   protected _sendFailureCallback = (requestId:string, failureCallback:()=>void, output:string) => {
-    if (!this._sendCallbacks[requestId])
+    if (!this.sendCallbacks[requestId])
       return;
     if (this.status != this.STATUS_TYPES["error"])
       this.log("warn", `Request key='${requestId}' output='${output}' was timeout.`);
-    delete this._sendCallbacks[requestId];
+    delete this.sendCallbacks[requestId];
     failureCallback();
   };
 

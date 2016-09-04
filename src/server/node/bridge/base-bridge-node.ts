@@ -31,11 +31,9 @@ export class BaseBridgeNode extends BaseNode<BridgeEntity> {
   protected _widgetBridge:WidgetBridge;
 
   initialize():Promise<void> {
+    this.log("info", `Connect bridge was started.`);
+    this._widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(this.parent.bridges).length + 1);
     return super.initialize().then(() => {
-      this.log("info", `Connect bridge was started.`);
-      this._widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(this.parent.bridges).length + 1);
-      return this.initializeChildren();
-    }).then(() => {
       for (let actionName in this.actions) {
         let action: ActionNode<BaseActionEntity> = this.actions[actionName];
         this.on(actionName, action.run);

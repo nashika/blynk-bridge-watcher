@@ -14,11 +14,10 @@ export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNod
   private _messages:string[] = null;
 
   initialize():Promise<void> {
-    return super.initialize().then(() => {
-      this._messages = [];
-      this.on("notify", this._onNotify);
-      this.on("send", this._onSend);
-    });
+    this._messages = [];
+    this.on("notify", this._onNotify);
+    this.on("send", this._onSend);
+    return super.initialize();
   }
 
   protected _onNotify = (action:NotifyActionNode, ...args:string[]) => {

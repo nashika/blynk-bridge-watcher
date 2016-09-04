@@ -34,12 +34,11 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
     result.entity = entity;
     result.parent = parent;
     result.name = entity.name;
-    result.log("trace", `Generate ${(<any>this.constructor).name} object was started.`);
+    result.log("trace", `Generate ${this.name} object was started.`);
     return Promise.resolve().then(() => {
       return result.initialize();
     }).then(() => {
-      result.log("trace", `Generate ${(<any>this.constructor).name} object was finished.`);
-      return result.initializeChildren();
+      result.log("trace", `Generate ${this.name} object was finished.`);
     }).then(() => {
       socketIoServer.status(result.entity._id, true);
       return result;
@@ -47,10 +46,6 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   }
 
   protected initialize(): Promise<void> {
-    return Promise.resolve();
-  }
-
-  protected initializeChildren<ChildT extends BaseEntity>(): Promise<void> {
     return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let key = pluralize.plural(ChildEntityClass.params.tableName);
