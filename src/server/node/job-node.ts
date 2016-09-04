@@ -11,12 +11,12 @@ export class JobNode extends BaseNode<JobEntity> {
 
   static EntityClass = JobEntity;
 
-  parent:ServerNode;
+  parent: ServerNode;
 
-  private bridge:BridgeNode;
-  private cronJob:CronJob;
+  private bridge: BridgeNode;
+  private cronJob: CronJob;
 
-  initialize():Promise<void> {
+  initialize(): Promise<void> {
     return super.initialize().then(() => {
       _.defaults(this.entity, {});
       let board: BoardNode;
@@ -42,7 +42,7 @@ export class JobNode extends BaseNode<JobEntity> {
     });
   }
 
-  protected _run = ():void => {
+  protected _run = () => {
     if (this.bridge.status != this.bridge.STATUS_TYPES["ready"]) {
       this.bridge.log("warn", `Job '${this.name}' can not run. Bridge '${this.bridge.name}' status='${this.bridge.status.label}' is not ready.`);
       return;

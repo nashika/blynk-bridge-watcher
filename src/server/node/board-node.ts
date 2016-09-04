@@ -54,7 +54,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
     this.log("info", `Board ${this.name} was disconnected.`);
   };
 
-  _onError = (e:any): void => {
+  _onError = (e: any): void => {
     this.log("error", `Board ${this.name} was error. error="${e}"`);
   };
 

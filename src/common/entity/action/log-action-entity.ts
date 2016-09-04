@@ -2,6 +2,7 @@ import _ = require("lodash");
 
 import {BaseActionEntity} from "./base-action-entity";
 import {IEntityParams} from "../base-entity";
+import {TSocketIoLogLevel} from "../../util/socket-io-util";
 
 export class LogActionEntity extends BaseActionEntity {
 
@@ -37,7 +38,7 @@ export class LogActionEntity extends BaseActionEntity {
     }),
   };
 
-  level: string;
+  level: TSocketIoLogLevel;
   message: string;
 
 }

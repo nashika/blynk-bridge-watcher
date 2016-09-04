@@ -5,7 +5,7 @@ var VueStrap = require("vue-strap");
 import {BaseComponent} from "./base-component";
 import {serviceRegistry} from "../service/service-registry";
 import {BaseEntity, IEntityFieldParams} from "../../common/entity/base-entity";
-import {TSocketIoStatus} from "../../common/util/socket-io-util";
+import {TSocketIoStatus, TSocketIoLogLevel, ISocketIoLogData} from "../../common/util/socket-io-util";
 
 @Component({
   components: {
@@ -25,9 +25,11 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   add: boolean;
 
   EntityClass: typeof BaseEntity;
-  showModal: boolean;
+  showEditModal: boolean;
+  showLogModal: boolean;
   editEntity: T;
   status: TSocketIoStatus;
+  logs: ISocketIoLogData[];
 
   get this(): BaseEntityComponent<BaseEntity> {
     return this;
@@ -35,9 +37,11 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
 
   data(): any {
     return _.assign(super.data(), {
-      showModal: false,
+      showEditModal: false,
+      showLogModal: false,
       editEntity: null,
       status: "connecting",
+      logs: [],
     });
   }
 
@@ -64,7 +68,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   edit() {
-    this.showModal = false;
+    this.showEditModal = false;
     if (this.add) {
       this.editEntity._parent = this.parent.entity._id;
       this.editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
@@ -108,6 +112,14 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
     }).then(entity => {
       this.parent.reload();
     });
+  }
+
+  log(data: ISocketIoLogData) {
+    this.logs.push(data);
+  }
+
+  clearLog() {
+    this.logs = [];
   }
 
   get isFirst(): boolean {

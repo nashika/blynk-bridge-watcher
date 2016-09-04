@@ -3,9 +3,10 @@ mixin dropdown()
     if !isServer
       button.btn.btn-info.btn-sm(v-if="!isFirst && status == 'stop'", type="button", @click="move(false)") #[i.fa.fa-arrow-left]
       button.btn.btn-info.btn-sm(v-if="!isLast && status == 'stop'", type="button", @click="move(true)") #[i.fa.fa-arrow-right]
-    button.btn.btn-warning.btn-sm(v-if="status == 'stop'", type="button", @click="showModal = true") #[i.fa.fa-pencil]
+    button.btn.btn-warning.btn-sm(v-if="status == 'stop'", type="button", @click="showEditModal = true") #[i.fa.fa-pencil]
     if !isServer
       button.btn.btn-danger.btn-sm(v-if="status == 'stop'", type="button", @click="remove()") #[i.fa.fa-trash-o]
+    button.btn.btn-default.btn-sm(type="button", @click="showLogModal = true") #[i.fa.fa-list] {{logs.length}}
     button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
     button.btn.btn-danger.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
     button.btn.btn-warning.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
@@ -30,8 +31,8 @@ mixin children(componentName, singularName, pluralName, mode)
         .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
         .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
 
-mixin modal()
-  modal(title="Edit", :show.sync="showModal", effect="fade")
+mixin edit-modal()
+  modal(title="Edit", :show.sync="showEditModal", effect="fade")
     .modal-body(slot="modal-body")
       form(v-if="editEntity", @submit.prevent="edit()")
         .form-group(v-for="(fieldName, field) in EntityClass.params.fields")
@@ -43,4 +44,20 @@ mixin modal()
               option(v-for="(key, value) in field.options", :value="key") {{value}}
         button.btn.btn-primary.btn-block(type="submit") Submit
     .modal-footer(slot="modal-footer")
-      button.btn.btn-default(type="button", @click="showModal = false") Close
+      button.btn.btn-default(type="button", @click="showEditModal = false") Close
+
+mixin log-modal()
+  modal(title="Log", :show.sync="showLogModal", effect="fade")
+    .modal-body(slot="modal-body")
+      form(v-if="editEntity", @submit.prevent="edit()")
+        table.table.table-bordered.table-striped.table-condensed
+          tr
+            th Timestamp
+            th Level
+            th Message
+          tr(v-for="log in logs", :class="{danger: log.level == 'fatal' || log.level == 'error', warning: log.level == 'warn'}")
+            td {{log.timestamp}}
+            td {{log.level}}
+            td {{log.message}}
+    .modal-footer(slot="modal-footer")
+      button.btn.btn-default(type="button", @click="showLogModal = false") Close

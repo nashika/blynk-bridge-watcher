@@ -3,7 +3,7 @@ import {Server as HttpServer} from "http";
 import Server = SocketIO.Server;
 import Socket = SocketIO.Socket;
 
-import {ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus} from "../common/util/socket-io-util";
+import {ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus, TSocketIoLogLevel} from "../common/util/socket-io-util";
 
 export class SocketIoServer {
 
@@ -29,8 +29,8 @@ export class SocketIoServer {
     });
   }
 
-  log(_id: string, level: string, message: string) {
-    let data: ISocketIoLogData = {_id: _id, level: level, message: message};
+  log(_id: string, level: TSocketIoLogLevel, message: string) {
+    let data: ISocketIoLogData = {_id: _id, level: level, message: message, timestamp: (new Date()).toISOString()};
     this.logs.push(data);
     this.io.sockets.emit("log", data);
   }

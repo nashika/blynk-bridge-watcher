@@ -22,24 +22,31 @@ export class SocketIoService extends BaseService {
 
   initialize() {
     this.socket = socketIo.connect();
+    this.socket.on("connect", this.onConnect);
     this.socket.on("disconnect", this.onDisconnect);
     this.socket.on("log", this.onLog);
     this.socket.on("status", this.onStatus);
   }
 
-  protected onDisconnect = () => {
-    for (let _id in this.components) {
-      this.components[_id].status = "connecting";
-      this.statuses[_id].status = "connecting";
-    }
+  private onConnect = () => {
   };
 
-  protected onLog = (data: ISocketIoLogData) => {
+  private onDisconnect = () => {
+    for (let _id in this.components) {
+      this.components[_id].status = "connecting";
+      this.components[_id].clearLog();
+      this.statuses[_id].status = "connecting";
+    }
+    this.logs = [];
+  };
+
+  private onLog = (data: ISocketIoLogData) => {
     this.logs.push(data);
+    if (this.components[data._id]) this.components[data._id].log(data);
     console.log(`${data._id} [${data.level}] ${data.message}`);
   };
 
-  protected onStatus = (data: ISocketIoStatusData) => {
+  private onStatus = (data: ISocketIoStatusData) => {
     if (this.components[data._id])
       this.components[data._id].status = data.status;
     this.statuses[data._id] = data;

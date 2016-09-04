@@ -3,6 +3,7 @@ import {BoardNode} from "../board-node";
 import {ActionNode} from "../action/action-node";
 import {BridgeEntity} from "../../../common/entity/bridge-entity";
 import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {TSocketIoLogLevel} from "../../../common/util/socket-io-util";
 
 export type WidgetBridge = any;
 
@@ -10,7 +11,7 @@ export class BaseBridgeNode extends BaseNode<BridgeEntity> {
 
   static EntityClass = BridgeEntity;
 
-  STATUS_TYPES:{[status:string]:{label:string}} = {
+  STATUS_TYPES: {[status: string]: {label: string}} = {
     constructing: {
       label: "Constructing",
     },
@@ -25,12 +26,12 @@ export class BaseBridgeNode extends BaseNode<BridgeEntity> {
     },
   };
 
-  parent:BoardNode;
-  status:{label:string} = this.STATUS_TYPES["constructing"];
-  actions:{[name:string]:ActionNode<BaseActionEntity>};
-  protected _widgetBridge:WidgetBridge;
+  parent: BoardNode;
+  status: {label: string} = this.STATUS_TYPES["constructing"];
+  actions: {[name: string]: ActionNode<BaseActionEntity>};
+  protected _widgetBridge: WidgetBridge;
 
-  initialize():Promise<void> {
+  initialize(): Promise<void> {
     this.log("info", `Connect bridge was started.`);
     this._widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(this.parent.bridges).length + 1);
     return super.initialize().then(() => {
@@ -50,7 +51,7 @@ export class BaseBridgeNode extends BaseNode<BridgeEntity> {
     this._widgetBridge.setAuthToken(this.entity.token);
   }
 
-  log(level:string, message:string, ...args:string[]) {
+  log(level: TSocketIoLogLevel, message: string, ...args: string[]) {
     super.log(level, message, ...args);
     this.emit(`$${level}`, this, `[${level}] ${message}`, ...args);
   }

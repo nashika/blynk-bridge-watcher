@@ -12,6 +12,7 @@ import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
 import {nodeRegistry} from "./node-registry";
 import {socketIoServer} from "../socket-io";
+import {TSocketIoLogLevel} from "../../common/util/socket-io-util";
 
 export class BaseNode<T extends BaseEntity> extends EventEmitter {
 
@@ -85,25 +86,25 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
     });
   }
 
-  log(level: string, message: string, ...args: any[]) {
+  log(level: TSocketIoLogLevel, message: string, ...args: any[]) {
+    message = util.format(message, ...args);
+    socketIoServer.log(this.entity._id, level, message);
     let logger = log4js.getLogger("system");
     if (this.parent)
       message = `${this.allKeyLabel()} ${message}`;
-    message = util.format(message, ...args);
-    socketIoServer.log(this.entity._id, level, message);
     switch (level) {
       case "trace":
-        return logger.trace(message, ...args);
+        return logger.trace(message);
       case "debug":
-        return logger.debug(message, ...args);
+        return logger.debug(message);
       case "info":
-        return logger.info(message, ...args);
+        return logger.info(message);
       case "warn":
-        return logger.warn(message, ...args);
+        return logger.warn(message);
       case "error":
-        return logger.error(message, ...args);
+        return logger.error(message);
       case "fatal":
-        return logger.fatal(message, ...args);
+        return logger.fatal(message);
     }
   }
 

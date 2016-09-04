@@ -8,13 +8,13 @@ import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-ent
 
 export class ServerNode extends BaseNode<ServerEntity> {
 
-  static EntityClass= ServerEntity;
+  static EntityClass = ServerEntity;
 
-  boards:{[name:string]:BoardNode};
-  notifiers:{[name:string]:NotifierNode<BaseNotifierEntity>};
-  jobs:{[name:string]:JobNode};
+  boards: {[name: string]: BoardNode};
+  notifiers: {[name: string]: NotifierNode<BaseNotifierEntity>};
+  jobs: {[name: string]: JobNode};
 
-  static start():Promise<ServerNode> {
+  static start(): Promise<ServerNode> {
     return Promise.resolve().then(() => {
       return tableRegistry.server.findOne();
     }).then(serverEntity => {

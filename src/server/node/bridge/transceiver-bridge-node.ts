@@ -3,42 +3,42 @@ import {uid} from "../../../common/util/uid";
 
 export class TransceiverBridgeNode extends BaseBridgeNode {
 
-  SEND_TIMEOUT:number = 10000;
+  SEND_TIMEOUT: number = 10000;
 
-  private sendCallbacks:{[key:string]:(...args:string[]) => void};
+  private sendCallbacks: {[key: string]: (...args: string[]) => void};
 
-  initialize():Promise<void> {
+  initialize(): Promise<void> {
     this.sendCallbacks = {};
     return super.initialize();
   }
 
-  send = (command:string, params:any[], callback:(...args:string[])=>void, failureCallback:()=>void):void => {
+  send = (command: string, params: any[], callback: (...args: string[])=>void, failureCallback: ()=>void): void => {
     if (command != "pi" && this.status != this.STATUS_TYPES["ready"])
       return this.log("warn", `Send command='${command}' params=${JSON.stringify(params)} can not run. Bridge status='${this.status.label}' is not ready.`);
     let pin = params[0] || 0;
     let param = params[1] || "";
-    let requestId:string;
+    let requestId: string;
     do
       requestId = uid(3);
     while (this.sendCallbacks[requestId]);
     this.sendCallbacks[requestId] = callback;
-    let output:string = `${requestId},${command},${pin},${param}`;
+    let output: string = `${requestId},${command},${pin},${param}`;
     setTimeout(this._sendFailureCallback, this.SEND_TIMEOUT, requestId, failureCallback, output);
     this.log("trace", `Send data='${output}'`);
     this._widgetBridge.virtualWrite(0, output);
   };
 
-  sendCallback = (...args:string[]):void => {
-    let requestId:string = args[0];
-    let restArgs:string[] = args.slice(1);
-    let callback:(...args:string[]) => void;
+  sendCallback = (...args: string[]): void => {
+    let requestId: string = args[0];
+    let restArgs: string[] = args.slice(1);
+    let callback: (...args: string[]) => void;
     if (!(callback = this.sendCallbacks[requestId]))
       return this.log("warn", `Request callback key='${requestId}' not found.`);
     callback(...restArgs);
     delete this.sendCallbacks[requestId];
   };
 
-  write = (type:string, pin:number, value:number) => {
+  write = (type: string, pin: number, value: number) => {
     if (this.status != this.STATUS_TYPES["ready"])
       return;
     switch (type) {
@@ -56,7 +56,7 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
     }
   };
 
-  protected _sendFailureCallback = (requestId:string, failureCallback:()=>void, output:string) => {
+  protected _sendFailureCallback = (requestId: string, failureCallback: ()=>void, output: string) => {
     if (!this.sendCallbacks[requestId])
       return;
     if (this.status != this.STATUS_TYPES["error"])

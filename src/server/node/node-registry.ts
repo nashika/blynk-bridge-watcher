@@ -6,7 +6,7 @@ import {BaseNode} from "./base-node";
 
 export class NodeRegistry extends LazyClassRegistry<BaseNode<BaseEntity>> {
 
-  protected files:ILazyClassRegistryFiles = {
+  protected files: ILazyClassRegistryFiles = {
     board: {path: "./board-node", name: "BoardNode"},
     bridge: {path: "./bridge/bridge-node", name: "BridgeNode"},
     job: {path: "./job-node", name: "JobNode"},
@@ -28,8 +28,8 @@ export class NodeRegistry extends LazyClassRegistry<BaseNode<BaseEntity>> {
     return require(path);
   }
 
-  generate(tableName:string, data: BaseEntity, parent: BaseNode<BaseEntity>): Promise<BaseNode<BaseEntity>> {
-    let key:string;
+  generate(tableName: string, data: BaseEntity, parent: BaseNode<BaseEntity>): Promise<BaseNode<BaseEntity>> {
+    let key: string;
     if (_.get(data, "type")) {
       key = _.camelCase(_.get(data, "type") + "_" + tableName);
     } else {

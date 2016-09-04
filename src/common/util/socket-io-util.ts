@@ -9,9 +9,12 @@ export interface ISocketIoEntityData extends ISocketIoData {
   entity: BaseEntity;
 }
 
+export type TSocketIoLogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";
+
 export interface ISocketIoLogData extends ISocketIoData {
-  level: string;
+  level: TSocketIoLogLevel;
   message: string;
+  timestamp: string;
 }
 
 export type TSocketIoStatus = "connecting" | "processing" | "ready" | "stop" | "error";

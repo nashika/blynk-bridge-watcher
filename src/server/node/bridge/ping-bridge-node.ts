@@ -4,14 +4,19 @@ import {TransceiverBridgeNode} from "./transceiver-bridge-node";
 
 export class PingBridgeNode extends TransceiverBridgeNode {
 
-  private pinging:boolean = false;
-  private pingFailureCount:number = 0;
-  private pingIntervalId:any = 0;
+  private pinging: boolean = false;
+  private pingFailureCount: number = 0;
+  private pingIntervalId: any = 0;
 
-  initialize():Promise<void> {
+  initialize(): Promise<void> {
     _.defaults(this.entity, {pingInterval: 60000, pingLimit: 3});
     this.on("$ping", this.onPing);
     return super.initialize();
+  }
+
+  finalize(): Promise<void> {
+    if (this.pingIntervalId) clearInterval(this.pingIntervalId);
+    return super.finalize();
   }
 
   connect() {
@@ -22,21 +27,21 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     this.pingIntervalId = setInterval(this.ping, this.entity.pingInterval);
   }
 
-  private ping = ():void => {
+  private ping = () => {
     this.log("debug", `Ping to bridge, waiting Pong...`);
     if (!this.pinging)
       this.send("pi", [], this.pingCallback, this.pingTimeout);
     this.pinging = true;
   };
 
-  private pingCallback = ():void => {
+  private pingCallback = () => {
     this.log("debug", `Pong from bridge.`);
     this.pinging = false;
     this.status = this.STATUS_TYPES["ready"];
     this.pingFailureCount = 0;
   };
 
-  private pingTimeout = ():void => {
+  private pingTimeout = () => {
     if (this.pinging) {
       this.pingFailureCount++;
       this.pinging = false;
@@ -50,9 +55,9 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     }
   };
 
-  private onPing = ():void => {
+  private onPing = () => {
     this.log("debug", `Ping from bridge, response Pong.`);
-    this.send("po", [], (...args:any[]) => {
+    this.send("po", [], (...args: any[]) => {
     }, () => {
     });
   };
