@@ -5,7 +5,7 @@ import {BaseNodeComponent} from "../base-node-component";
 import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 
 @Component({})
-export class BaseActionComponent<T extends BaseActionEntity> extends BaseNodeComponent<T> {
+export class BaseActionNodeComponent<T extends BaseActionEntity> extends BaseNodeComponent<T> {
 
   data(): any {
     return _.merge(super.data(), {

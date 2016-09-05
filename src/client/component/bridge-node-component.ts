@@ -4,18 +4,20 @@ import _ = require("lodash");
 import {BridgeEntity} from "../../common/entity/bridge-entity";
 import {BaseNodeComponent} from "./base-node-component";
 import {BaseActionEntity} from "../../common/entity/action/base-action-entity";
-import {ActionComponent} from "./action/action-component";
+import {ActionNodeComponent} from "./action/action-node-component";
+import {BoardNodeComponent} from "./board-node-component";
 
-let template = require("./bridge-component.jade");
+let template = require("./bridge-node-component.jade");
 
 @Component({
   template: template,
   components: {
-    "action-component": ActionComponent,
+    "action-node-component": ActionNodeComponent,
   },
 })
-export class BridgeComponent extends BaseNodeComponent<BridgeEntity> {
+export class BridgeNodeComponent extends BaseNodeComponent<BridgeEntity> {
 
+  parent: BoardNodeComponent;
   actions:BaseActionEntity[];
 
   data(): any {

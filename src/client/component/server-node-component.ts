@@ -1,27 +1,27 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 
-import {BoardComponent} from "./board-component";
+import {BoardNodeComponent} from "./board-node-component";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {BoardEntity} from "../../common/entity/board-entity";
 import {JobEntity} from "../../common/entity/job-entity";
 import {BaseNodeComponent} from "./base-node-component";
-import {NotifierComponent} from "./notifier/notifier-component";
-import {JobComponent} from "./job-component";
+import {NotifierNodeComponent} from "./notifier/notifier-node-component";
+import {JobNodeComponent} from "./job-node-component";
 import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
 import {serviceRegistry} from "../service/service-registry";
 
-let template = require("./server-component.jade");
+let template = require("./server-node-component.jade");
 
 @Component({
   template: template,
   components: {
-    "board-component": BoardComponent,
-    "notifier-component": NotifierComponent,
-    "job-component": JobComponent,
+    "board-node-component": BoardNodeComponent,
+    "notifier-node-component": NotifierNodeComponent,
+    "job-node-component": JobNodeComponent,
   },
 })
-export class ServerComponent extends BaseNodeComponent<ServerEntity> {
+export class ServerNodeComponent extends BaseNodeComponent<ServerEntity> {
 
   boards: BoardEntity[];
   notifiers: BaseNotifierEntity[];
@@ -37,13 +37,11 @@ export class ServerComponent extends BaseNodeComponent<ServerEntity> {
   }
 
   start() {
-    serviceRegistry.server.start().then(() => {
-    });
+    serviceRegistry.server.start();
   }
 
   stop() {
-    serviceRegistry.server.stop().then(() => {
-    });
+    serviceRegistry.server.stop();
   }
 
 }

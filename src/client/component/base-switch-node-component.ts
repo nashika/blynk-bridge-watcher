@@ -8,7 +8,7 @@ import {BaseNodeComponent} from "./base-node-component";
 @Component({
   props: ["entity", "brotherEntities", "parent", "add"],
 })
-export class BaseSwitchComponent<T extends BaseEntity> extends BaseComponent {
+export class BaseSwitchNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   entity: T;
   brotherEntities: T[];

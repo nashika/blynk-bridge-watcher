@@ -1,7 +1,7 @@
 import Component from "vue-class-component";
 
 import {BaseComponent} from "./base-component";
-import {ServerComponent} from "./server-component";
+import {ServerNodeComponent} from "./server-node-component";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {serviceRegistry} from "../service/service-registry";
 
@@ -10,7 +10,7 @@ let template = require("./app-component.jade");
 @Component({
   template: template,
   components: {
-    "server-component": ServerComponent,
+    "server-component": ServerNodeComponent,
   },
   ready: AppComponent.prototype.onReady,
 })
