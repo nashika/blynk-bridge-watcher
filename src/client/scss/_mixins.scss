@@ -9,7 +9,13 @@
     @include clearfix;
 
     .menu {
-      @include component-menu;
+      margin: 3px;
+      text-align: right;
+      line-height: 2.5;
+
+      > button {
+        margin: 0px 3px;
+      }
     }
 
     > h1 {
@@ -35,7 +41,15 @@
     @include clearfix;
 
     .menu {
-      @include component-menu;
+      margin: 3px;
+      float: right;
+      text-align: right;
+      line-height: 2.5;
+      max-width: 50%;
+
+      > button {
+        margin: 0px 3px;
+      }
     }
 
     > h1 {
@@ -47,18 +61,6 @@
   }
 
   > .body {
-  }
-}
-
-@mixin component-menu {
-  margin: 3px;
-  float: right;
-  text-align: right;
-  line-height: 2.5;
-  max-width: 50%;
-
-  > button {
-    margin: 0px 3px;
   }
 }
 
