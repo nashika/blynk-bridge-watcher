@@ -1,0 +1,13 @@
+modal(title="Log", :show.sync="show", effect="fade")
+  .modal-body(slot="modal-body")
+    table.table.table-bordered.table-striped.table-condensed(v-if="show")
+      tr
+        th Timestamp
+        th Level
+        th Message
+      tr(v-for="log in logs", :class="{danger: log.level == 'fatal' || log.level == 'error', warning: log.level == 'warn'}")
+        td {{log.timestamp}}
+        td {{log.level}}
+        td {{log.message}}
+  .modal-footer(slot="modal-footer")
+    button.btn.btn-default(type="button", @click="show = false") Close

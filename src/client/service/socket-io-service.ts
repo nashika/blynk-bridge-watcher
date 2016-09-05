@@ -46,7 +46,7 @@ export class SocketIoService extends BaseService {
 
   private onLog = (data: ISocketIoLogData) => {
     this.logs.push(data);
-    if (this.components[data._id]) this.components[data._id].log(data);
+    if (this.components[data._id]) this.components[data._id].addLog(data);
     console.log(`${data._id} [${data.level}] ${data.message}`);
   };
 

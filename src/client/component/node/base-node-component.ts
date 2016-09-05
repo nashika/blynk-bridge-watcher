@@ -6,6 +6,7 @@ import {BaseComponent} from "../base-component";
 import {serviceRegistry} from "../../service/service-registry";
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {TSocketIoStatus, ISocketIoLogData} from "../../../common/util/socket-io-util";
+import {LogsComponent} from "../element/logs-component";
 
 @Component({
   components: {
@@ -15,6 +16,7 @@ import {TSocketIoStatus, ISocketIoLogData} from "../../../common/util/socket-io-
     tabs: VueStrap.tabset,
     tabGroup: VueStrap.tabGroup,
     tab: VueStrap.tab,
+    "logs-component": LogsComponent,
   },
   props: ["entity", "brotherEntities", "parent", "add"],
   ready: BaseNodeComponent.prototype.onReady,
@@ -28,7 +30,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   EntityClass: typeof BaseEntity;
   showEditModal: boolean;
-  showLogModal: boolean;
+  showLogs: boolean;
   editEntity: T;
   status: TSocketIoStatus;
   logs: ISocketIoLogData[];
@@ -40,7 +42,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   data(): any {
     return _.assign(super.data(), {
       showEditModal: false,
-      showLogModal: false,
+      showLogs: false,
       editEntity: null,
       status: "connecting",
       logs: [],
@@ -117,7 +119,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
-  log(data: ISocketIoLogData) {
+  addLog(data: ISocketIoLogData) {
     this.logs.push(data);
   }
 
