@@ -2,8 +2,8 @@ import Component from "vue-class-component";
 import _ = require("lodash");
 
 import {BaseActionNodeComponent} from "./base-action-node-component";
-import {NotifyActionEntity} from "../../../common/entity/action/notify-action-entity";
-import {serviceRegistry} from "../../service/service-registry";
+import {NotifyActionEntity} from "../../../../common/entity/action/notify-action-entity";
+import {serviceRegistry} from "../../../service/service-registry";
 
 let template = require("./notify-action-node-component.jade");
 

@@ -2,19 +2,19 @@ import Component from "vue-class-component";
 import _ = require("lodash");
 
 import {BaseActionNodeComponent} from "./base-action-node-component";
-import {ReadActionEntity} from "../../../common/entity/action/read-action-entity";
-import {serviceRegistry} from "../../service/service-registry";
+import {WriteActionEntity} from "../../../../common/entity/action/write-action-entity";
+import {serviceRegistry} from "../../../service/service-registry";
 
-let template = require("./read-action-node-component.jade");
+let template = require("./write-action-node-component.jade");
 
 @Component({
   template: template,
 })
-export class ReadActionNodeComponent extends BaseActionNodeComponent<ReadActionEntity> {
+export class WriteActionNodeComponent extends BaseActionNodeComponent<WriteActionEntity> {
 
   data(): any {
     return _.assign(super.data(), {
-      EntityClass: ReadActionEntity,
+      EntityClass: WriteActionEntity,
     });
   }
 

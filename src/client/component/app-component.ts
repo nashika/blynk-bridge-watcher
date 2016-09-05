@@ -1,7 +1,7 @@
 import Component from "vue-class-component";
 
 import {BaseComponent} from "./base-component";
-import {ServerNodeComponent} from "./server-node-component";
+import {ServerNodeComponent} from "./node/server-node-component";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {serviceRegistry} from "../service/service-registry";
 

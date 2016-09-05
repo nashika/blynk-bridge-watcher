@@ -2,10 +2,10 @@ import _ = require("lodash");
 import Component from "vue-class-component";
 var VueStrap = require("vue-strap");
 
-import {BaseComponent} from "./base-component";
-import {serviceRegistry} from "../service/service-registry";
-import {BaseEntity} from "../../common/entity/base-entity";
-import {TSocketIoStatus, ISocketIoLogData} from "../../common/util/socket-io-util";
+import {BaseComponent} from "../base-component";
+import {serviceRegistry} from "../../service/service-registry";
+import {BaseEntity} from "../../../common/entity/base-entity";
+import {TSocketIoStatus, ISocketIoLogData} from "../../../common/util/socket-io-util";
 
 @Component({
   components: {

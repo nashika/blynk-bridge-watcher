@@ -1,8 +1,8 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 
-import {BaseEntity} from "../../common/entity/base-entity";
-import {BaseComponent} from "./base-component";
+import {BaseEntity} from "../../../common/entity/base-entity";
+import {BaseComponent} from "../base-component";
 import {BaseNodeComponent} from "./base-node-component";
 
 @Component({

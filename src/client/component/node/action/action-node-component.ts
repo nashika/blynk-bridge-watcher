@@ -1,7 +1,7 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 
-import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {BaseActionEntity} from "../../../../common/entity/action/base-action-entity";
 import {IfActionNodeComponent} from "./if-action-node-component";
 import {LogActionNodeComponent} from "./log-action-node-component";
 import {NotifyActionNodeComponent} from "./notify-action-node-component";

@@ -1,9 +1,9 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 
-import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {BaseActionEntity} from "../../../../common/entity/action/base-action-entity";
 import {BaseSwitchNodeComponent} from "../base-switch-node-component";
-import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
+import {BaseNotifierEntity} from "../../../../common/entity/notifier/base-notifier-entity";
 import {PushbulletNotifierNodeComponent} from "./pushbullet-notifier-node-component";
 import {LogNotifierNodeComponent} from "./log-notifier-node-component";
 

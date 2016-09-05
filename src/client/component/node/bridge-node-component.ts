@@ -1,9 +1,9 @@
 import Component from "vue-class-component";
 import _ = require("lodash");
 
-import {BridgeEntity} from "../../common/entity/bridge-entity";
+import {BridgeEntity} from "../../../common/entity/bridge-entity";
 import {BaseNodeComponent} from "./base-node-component";
-import {BaseActionEntity} from "../../common/entity/action/base-action-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 import {ActionNodeComponent} from "./action/action-node-component";
 import {BoardNodeComponent} from "./board-node-component";
 

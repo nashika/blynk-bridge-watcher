@@ -2,7 +2,7 @@ import Component from "vue-class-component";
 import _ = require("lodash");
 
 import {BaseNotifierNodeComponent} from "./base-notifier-node-component";
-import {PushbulletNotifierEntity} from "../../../common/entity/notifier/pushbullet-notifier-entity";
+import {PushbulletNotifierEntity} from "../../../../common/entity/notifier/pushbullet-notifier-entity";
 
 let template = require("./pushbullet-notifier-node-component.jade");
 

@@ -2,8 +2,8 @@ import Component from "vue-class-component";
 import _ = require("lodash");
 
 import {BaseActionNodeComponent} from "./base-action-node-component";
-import {IfActionEntity} from "../../../common/entity/action/if-action-entity";
-import {serviceRegistry} from "../../service/service-registry";
+import {IfActionEntity} from "../../../../common/entity/action/if-action-entity";
+import {serviceRegistry} from "../../../service/service-registry";
 
 let template = require("./if-action-node-component.jade");
 
