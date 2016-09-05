@@ -1,24 +1,3 @@
-mixin menu()
-  .menu
-    dropdown(v-if="status == 'stop'")
-      button.btn.btn-default.btn-sm.dropdown-toggle(, slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
-      ul.dropdown-menu(slot="dropdown-menu")
-        li
-          a(@click="showEditModal = true") #[i.fa.fa-pencil] Edit
-        if !isServer
-          li
-            a(@click="remove()") #[i.fa.fa-trash-o] Remove
-          li(v-if="!isFirst")
-            a(@click="move(false)") #[i.fa.fa-arrow-up] Move Up
-          li(v-if="!isLast")
-            a(@click="move(true)") #[i.fa.fa-arrow-down] Move Down
-    button.btn.btn-default.btn-sm(type="button", @click="showLogModal = true") #[i.fa.fa-terminal] {{logs.length}}
-    button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
-    button.btn.btn-default.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
-    button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]
-    button.btn.btn-default.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
-    button.btn.btn-warning.btn-sm(v-if="status == 'processing'", type="button") #[i.fa.fa-refresh.fa-spin]
-
 mixin children(componentName, singularName, pluralName, mode)
   section(class!=pluralName)
     .header
@@ -38,7 +17,35 @@ mixin children(componentName, singularName, pluralName, mode)
         .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
         .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
 
-mixin edit-modal()
+block variables
+
+section(v-if="!add", :class="EntityClass.params.tableName")
+  .header
+    .menu
+      dropdown(v-if="status == 'stop'")
+        button.btn.btn-default.btn-sm.dropdown-toggle(, slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
+        ul.dropdown-menu(slot="dropdown-menu")
+          li
+            a(@click="showEditModal = true") #[i.fa.fa-pencil] Edit
+          if !isServer
+            li
+              a(@click="remove()") #[i.fa.fa-trash-o] Remove
+            li(v-if="!isFirst")
+              a(@click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            li(v-if="!isLast")
+              a(@click="move(true)") #[i.fa.fa-arrow-down] Move Down
+      button.btn.btn-default.btn-sm(type="button", @click="showLogModal = true") #[i.fa.fa-terminal] {{logs.length}}
+      button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
+      button.btn.btn-default.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
+      button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]
+      button.btn.btn-default.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
+      button.btn.btn-warning.btn-sm(v-if="status == 'processing'", type="button") #[i.fa.fa-refresh.fa-spin]
+    tooltip(trigger="hover", placement="bottom", :content="lodash.startCase(EntityClass.params.entityName) + ': ' + entity.name + ' [ID: ' + shortId + ']'")
+      h1
+        i.fa(:class="'fa-' + EntityClass.params.icon")
+        | &nbsp;{{lodash.startCase(EntityClass.params.entityName)}}: {{entity.name}} [ID: {{shortId}}]
+  .body
+    block body
   modal(title="Edit", :show.sync="showEditModal", effect="fade")
     .modal-body(slot="modal-body")
       form(v-if="editEntity", @submit.prevent="edit()")
@@ -52,8 +59,6 @@ mixin edit-modal()
         button.btn.btn-primary.btn-block(type="submit") Submit
     .modal-footer(slot="modal-footer")
       button.btn.btn-default(type="button", @click="showEditModal = false") Close
-
-mixin log-modal()
   modal(title="Log", :show.sync="showLogModal", effect="fade")
     .modal-body(slot="modal-body")
       form(v-if="editEntity", @submit.prevent="edit()")
@@ -68,3 +73,8 @@ mixin log-modal()
             td {{log.message}}
     .modal-footer(slot="modal-footer")
       button.btn.btn-default(type="button", @click="showLogModal = false") Close
+.add(v-else)
+  button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
+  type="button", @click="showEditModal = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}
+  button.btn.btn-success(v-else,
+  type="button", @click="showEditModal = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}

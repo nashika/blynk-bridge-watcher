@@ -6,13 +6,13 @@ import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
   ISocketIoSendData
 } from "../../common/util/socket-io-util";
-import {BaseEntityComponent} from "../component/base-entity-component";
+import {BaseNodeComponent} from "../component/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
 
 export class SocketIoService extends BaseService {
 
   protected socket: Socket;
-  protected components: {[_id: string]: BaseEntityComponent<BaseEntity>};
+  protected components: {[_id: string]: BaseNodeComponent<BaseEntity>};
   protected logs: ISocketIoLogData[];
   protected statuses: {[_id: string]: ISocketIoStatusData};
 
@@ -56,7 +56,7 @@ export class SocketIoService extends BaseService {
     console.log(`${data._id} ${data.status}`);
   };
 
-  registerComponent(component: BaseEntityComponent<BaseEntity>) {
+  registerComponent(component: BaseNodeComponent<BaseEntity>) {
     this.components[component.entity._id] = component;
   }
 

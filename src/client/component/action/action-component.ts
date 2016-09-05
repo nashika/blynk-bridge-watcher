@@ -7,7 +7,7 @@ import {LogActionComponent} from "./log-action-component";
 import {NotifyActionComponent} from "./notify-action-component";
 import {ReadActionComponent} from "./read-action-component";
 import {WriteActionComponent} from "./write-action-component";
-import {BaseSwitchEntityComponent} from "../base-switch-entity-component";
+import {BaseSwitchComponent} from "../base-switch-component";
 
 let template = require("./action-component.jade");
 
@@ -21,7 +21,7 @@ let template = require("./action-component.jade");
     "write-action-component": WriteActionComponent,
   },
 })
-export class ActionComponent extends BaseSwitchEntityComponent<BaseActionEntity> {
+export class ActionComponent extends BaseSwitchComponent<BaseActionEntity> {
 
   data(): any {
     return _.assign(super.data(), {

@@ -1,16 +1,16 @@
 import _ = require("lodash");
 
-import {IEntityParams, IEntityFieldParams} from "../base-entity";
-import {BaseSwitchEntity} from "../base-switch-entity";
+import {IEntityParams} from "../base-entity";
+import {BaseTypedEntity} from "../base-typed-entity";
 
-export class BaseNotifierEntity extends BaseSwitchEntity {
+export class BaseNotifierEntity extends BaseTypedEntity {
 
   static params: IEntityParams = {
     tableName: "notifier",
     entityName: "notifier",
     icon: "bell",
     children: {},
-    fields: _.merge({}, BaseSwitchEntity.params.fields, {
+    fields: _.merge({}, BaseTypedEntity.params.fields, {
       name: {
         default: "NT01",
       },

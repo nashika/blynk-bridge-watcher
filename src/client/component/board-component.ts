@@ -2,7 +2,7 @@ import Component from "vue-class-component";
 import _ = require("lodash");
 
 import {BoardEntity} from "../../common/entity/board-entity";
-import {BaseEntityComponent} from "./base-entity-component";
+import {BaseNodeComponent} from "./base-node-component";
 import {BridgeComponent} from "./bridge-component";
 import {BridgeEntity} from "../../common/entity/bridge-entity";
 
@@ -14,7 +14,7 @@ let template = require("./board-component.jade");
     "bridge-component": BridgeComponent,
   },
 })
-export class BoardComponent extends BaseEntityComponent<BoardEntity> {
+export class BoardComponent extends BaseNodeComponent<BoardEntity> {
 
   bridges: BridgeEntity[];
 

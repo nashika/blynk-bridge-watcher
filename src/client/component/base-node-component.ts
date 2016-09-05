@@ -4,8 +4,8 @@ var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "./base-component";
 import {serviceRegistry} from "../service/service-registry";
-import {BaseEntity, IEntityFieldParams} from "../../common/entity/base-entity";
-import {TSocketIoStatus, TSocketIoLogLevel, ISocketIoLogData} from "../../common/util/socket-io-util";
+import {BaseEntity} from "../../common/entity/base-entity";
+import {TSocketIoStatus, ISocketIoLogData} from "../../common/util/socket-io-util";
 
 @Component({
   components: {
@@ -17,13 +17,13 @@ import {TSocketIoStatus, TSocketIoLogLevel, ISocketIoLogData} from "../../common
     tab: VueStrap.tab,
   },
   props: ["entity", "brotherEntities", "parent", "add"],
-  ready: BaseEntityComponent.prototype.onReady,
+  ready: BaseNodeComponent.prototype.onReady,
 })
-export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
+export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   entity: T;
   brotherEntities: T[];
-  parent: BaseEntityComponent<BaseEntity>;
+  parent: BaseNodeComponent<BaseEntity>;
   add: boolean;
 
   EntityClass: typeof BaseEntity;
@@ -33,7 +33,7 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
   status: TSocketIoStatus;
   logs: ISocketIoLogData[];
 
-  get this(): BaseEntityComponent<BaseEntity> {
+  get this(): BaseNodeComponent<BaseEntity> {
     return this;
   }
 
