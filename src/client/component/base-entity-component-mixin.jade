@@ -1,12 +1,19 @@
-mixin dropdown()
+mixin menu()
   .menu
-    if !isServer
-      button.btn.btn-info.btn-sm(v-if="!isFirst && status == 'stop'", type="button", @click="move(false)") #[i.fa.fa-arrow-left]
-      button.btn.btn-info.btn-sm(v-if="!isLast && status == 'stop'", type="button", @click="move(true)") #[i.fa.fa-arrow-right]
-    button.btn.btn-warning.btn-sm(v-if="status == 'stop'", type="button", @click="showEditModal = true") #[i.fa.fa-pencil]
-    if !isServer
-      button.btn.btn-danger.btn-sm(v-if="status == 'stop'", type="button", @click="remove()") #[i.fa.fa-trash-o]
-    button.btn.btn-default.btn-sm(type="button", @click="showLogModal = true") #[i.fa.fa-list] {{logs.length}}
+    dropdown(v-if="status == 'stop'")
+      button.btn.btn-default.btn-sm.dropdown-toggle(, slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
+      ul.dropdown-menu(slot="dropdown-menu")
+        if !isServer
+          li(v-if="!isFirst")
+            a(@click="move(false)") #[i.fa.fa-arrow-up] Move Up
+          li(v-if="!isLast")
+            a(@click="move(true)") #[i.fa.fa-arrow-down] Move Down
+        li
+          a(@click="showEditModal = true") #[i.fa.fa-pencil] Edit
+        if !isServer
+          li
+            a(@click="remove()") #[i.fa.fa-trash-o] Remove
+    button.btn.btn-default.btn-sm(type="button", @click="showLogModal = true") #[i.fa.fa-terminal] {{logs.length}}
     button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
     button.btn.btn-default.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
     button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]

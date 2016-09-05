@@ -10,6 +10,7 @@ import {TSocketIoStatus, TSocketIoLogLevel, ISocketIoLogData} from "../../common
 @Component({
   components: {
     modal: VueStrap.modal,
+    dropdown: VueStrap.dropdown,
     tabs: VueStrap.tabset,
     tabGroup: VueStrap.tabGroup,
     tab: VueStrap.tab,
