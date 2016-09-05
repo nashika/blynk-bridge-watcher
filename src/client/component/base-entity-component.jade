@@ -5,9 +5,10 @@ block variables
 section(v-if="!add", :class="EntityClass.params.tableName")
   .header
     +menu()
-    h1
-      i.fa(:class="'fa-' + EntityClass.params.icon")
-      | &nbsp;{{lodash.startCase(EntityClass.params.entityName)}}: {{entity.name}}
+    tooltip(trigger="hover", placement="bottom", :content="lodash.startCase(EntityClass.params.entityName) + ': ' + entity.name + ' [ID: ' + shortId + ']'")
+      h1
+        i.fa(:class="'fa-' + EntityClass.params.icon")
+        | &nbsp;{{lodash.startCase(EntityClass.params.entityName)}}: {{entity.name}} [ID: {{shortId}}]
   .body
     block body
 .add(v-else)

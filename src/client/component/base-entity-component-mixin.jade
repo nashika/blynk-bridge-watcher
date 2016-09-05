@@ -32,8 +32,8 @@ mixin children(componentName, singularName, pluralName, mode)
         .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
         .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
       if mode == "box"
-        .row
-          .col-sm-6.col-md-4.col-lg-3(v-for="#{singularName} in #{pluralName}")
+        .boxes
+          .box(v-for="#{singularName} in #{pluralName}")
             #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
         .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
         .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}

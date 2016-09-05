@@ -11,6 +11,7 @@ import {TSocketIoStatus, TSocketIoLogLevel, ISocketIoLogData} from "../../common
   components: {
     modal: VueStrap.modal,
     dropdown: VueStrap.dropdown,
+    tooltip: VueStrap.tooltip,
     tabs: VueStrap.tabset,
     tabGroup: VueStrap.tabGroup,
     tab: VueStrap.tab,
@@ -121,6 +122,10 @@ export class BaseEntityComponent<T extends BaseEntity> extends BaseComponent {
 
   clearLog() {
     this.logs = [];
+  }
+
+  get shortId(): string {
+    return this.entity._id.substr(0, 4);
   }
 
   get isFirst(): boolean {
