@@ -1,6 +1,7 @@
 import socketIo = require("socket.io-client");
 import {BaseService} from "./base-service";
 import Socket = SocketIOClient.Socket;
+import _ = require("lodash");
 
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
@@ -62,6 +63,11 @@ export class SocketIoService extends BaseService {
 
   unregisterComponent(_id: string) {
     delete this.components[_id];
+  }
+
+  getNodeOptions(filter: string): {[_id: string]: string} {
+    let components: {[_id: string]: BaseNodeComponent<BaseEntity>} = _.pickBy<{[_id: string]: BaseNodeComponent<BaseEntity>}, {[_id: string]: BaseNodeComponent<BaseEntity>}>(this.components, component => !filter || filter == component.EntityClass.params.tableName);
+    return _.mapValues(components, (component: BaseNodeComponent<BaseEntity>) => component.title)
   }
 
   getStatus(_id: string): TSocketIoStatus {

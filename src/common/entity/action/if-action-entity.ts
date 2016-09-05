@@ -35,10 +35,14 @@ export class IfActionEntity extends BaseActionEntity {
         required: true,
       },
       then: {
-        type: "text",
+        type: "node",
+        filter: "action",
+        required: false,
       },
       else: {
-        type: "text",
+        type: "node",
+        filter: "action",
+        required: false,
       },
     }),
   };

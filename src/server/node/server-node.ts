@@ -10,9 +10,9 @@ export class ServerNode extends BaseNode<ServerEntity> {
 
   static EntityClass = ServerEntity;
 
-  boards: {[name: string]: BoardNode};
-  notifiers: {[name: string]: NotifierNode<BaseNotifierEntity>};
-  jobs: {[name: string]: JobNode};
+  boards: BoardNode[];
+  notifiers: NotifierNode<BaseNotifierEntity>[];
+  jobs: JobNode[];
 
   initialize(): Promise<void> {
     return super.initialize().then(() => {

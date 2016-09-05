@@ -1,6 +1,6 @@
 import _ = require("lodash");
 
-import {BaseEntity, IEntityParams, IEntityFieldParams} from "./base-entity";
+import {BaseEntity, IEntityParams} from "./base-entity";
 
 export class JobEntity extends BaseEntity {
 
@@ -18,16 +18,9 @@ export class JobEntity extends BaseEntity {
         default: "0 0 0 * * *",
         required: true,
       },
-      board: {
-        type: "text",
-        required: true,
-      },
-      bridge: {
-        type: "text",
-        required: true,
-      },
       action: {
-        type: "text",
+        type: "node",
+        filter: "action",
         required: true,
       },
     }),

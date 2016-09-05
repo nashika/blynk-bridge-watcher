@@ -23,7 +23,7 @@ section(v-if="!add", :class="EntityClass.params.tableName")
   .header
     .menu
       dropdown(v-if="status == 'stop'")
-        button.btn.btn-default.btn-sm.dropdown-toggle(, slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
+        button.btn.btn-default.btn-sm.dropdown-toggle(slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
         ul.dropdown-menu(slot="dropdown-menu")
           li
             a(@click="showEditModal = true") #[i.fa.fa-pencil] Edit
@@ -40,25 +40,12 @@ section(v-if="!add", :class="EntityClass.params.tableName")
       button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]
       button.btn.btn-default.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
       button.btn.btn-warning.btn-sm(v-if="status == 'processing'", type="button") #[i.fa.fa-refresh.fa-spin]
-    tooltip(trigger="hover", placement="bottom", :content="lodash.startCase(EntityClass.params.entityName) + ': ' + entity.name + ' [ID: ' + shortId + ']'")
+    tooltip(placement="bottom", :content="title")
       h1
         i.fa(:class="'fa-' + EntityClass.params.icon")
-        | &nbsp;{{lodash.startCase(EntityClass.params.entityName)}}: {{entity.name}} [ID: {{shortId}}]
+        | &nbsp;{{title}}
   .body
     block body
-  modal(title="Edit", :show.sync="showEditModal", effect="fade")
-    .modal-body(slot="modal-body")
-      form(v-if="editEntity", @submit.prevent="edit()")
-        .form-group(v-for="(fieldName, field) in EntityClass.params.fields")
-          div(v-if="!field.hidden")
-            label {{lodash.startCase(fieldName)}}
-            input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
-            input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
-            select.form-control(v-if="field.type == 'select'", v-model="editEntity[fieldName]", :disabled="field.disabled")
-              option(v-for="(key, value) in field.options", :value="key") {{value}}
-        button.btn.btn-primary.btn-block(type="submit") Submit
-    .modal-footer(slot="modal-footer")
-      button.btn.btn-default(type="button", @click="showEditModal = false") Close
   modal(title="Log", :show.sync="showLogModal", effect="fade")
     .modal-body(slot="modal-body")
       form(v-if="editEntity", @submit.prevent="edit()")
@@ -78,3 +65,19 @@ section(v-if="!add", :class="EntityClass.params.tableName")
   type="button", @click="showEditModal = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}
   button.btn.btn-success(v-else,
   type="button", @click="showEditModal = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}
+modal(title="Edit", :show.sync="showEditModal", effect="fade")
+  .modal-body(slot="modal-body")
+    form(v-if="editEntity && showEditModal", @submit.prevent="edit()")
+      .form-group(v-for="(fieldName, field) in EntityClass.params.fields")
+        div(v-if="!field.hidden")
+          label {{lodash.startCase(fieldName)}}
+          input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
+          input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
+          select.form-control(v-if="field.type == 'select'", v-model="editEntity[fieldName]", :disabled="field.disabled")
+            option(v-for="(key, label) in field.options", :value="key") {{label}}
+          select.form-control(v-if="field.type == 'node'", v-model="editEntity[fieldName]", :disabled="field.disabled")
+            option(v-if="!field.required", :value="undefined") Empty
+            option(v-for="(_id, label) in getNodeOptions(field.filter)", :value="_id") {{label}}
+      button.btn.btn-primary.btn-block(type="submit") Submit
+  .modal-footer(slot="modal-footer")
+    button.btn.btn-default(type="button", @click="showEditModal = false") Close

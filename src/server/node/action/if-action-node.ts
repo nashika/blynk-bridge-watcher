@@ -1,6 +1,7 @@
 import {ActionNode} from "./action-node";
-import {BridgeNode} from "../bridge/bridge-node";
 import {IfActionEntity} from "../../../common/entity/action/if-action-entity";
+import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {socketIoServer} from "../../socket-io";
 
 export class IfActionNode extends ActionNode<IfActionEntity> {
 
@@ -12,34 +13,34 @@ export class IfActionNode extends ActionNode<IfActionEntity> {
       return this.log("warn", `If action called not integer argument. arg='${args[0]}'`);
     let result = false;
     switch (this.entity.operator) {
-      case "=":
-      case "==":
+      case "$eq":
         result = arg == this.entity.value;
         break;
-      case "<":
+      case "$lt":
         result = arg < this.entity.value;
         break;
-      case ">":
+      case "$gt":
         result = arg > this.entity.value;
         break;
-      case "<=":
+      case "$lte":
         result = arg <= this.entity.value;
         break;
-      case ">=":
+      case "$gte":
         result = arg >= this.entity.value;
         break;
-      case "!=":
-      case "<>":
+      case "$ne":
         result = arg != this.entity.value;
         break;
       default:
         return this.log("warn", `Operator '${this.entity.operator}' is invalid.`);
     }
     this.log("debug", `If action. '(${arg} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
+    let action: ActionNode<BaseActionEntity>;
     if (result && this.entity.then)
-      this.parent.emit(this.entity.then, ...args);
+      action = <ActionNode<BaseActionEntity>>socketIoServer.getNode(this.entity.then);
     else if (!result && this.entity.else)
-      this.parent.emit(this.entity.else, ...args);
+      action = <ActionNode<BaseActionEntity>>socketIoServer.getNode(this.entity.else);
+    action.run(...args);
   };
 
 }

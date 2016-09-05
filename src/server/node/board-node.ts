@@ -12,7 +12,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
 
   parent: ServerNode;
   blynk: any;
-  bridges: {[name: string]: BridgeNode};
+  bridges: BridgeNode[];
   private inputVPin: any;
 
   initialize(): Promise<void> {
@@ -67,17 +67,17 @@ export class BoardNode extends BaseNode<BoardEntity> {
       this.log("error", `Input data '${param}' is invalid format.`);
       return;
     }
-    let bridgeName: string = params[0];
+    let bridgeShortId: string = params[0];
     let eventName: string = params[1];
     let eventArgs: string[] = params.splice(2);
-    this.log("trace", `Receive input data, bridge='${bridgeName}' event='${eventName}' args=${JSON.stringify(eventArgs)}`);
-    let bridge = this.bridges[bridgeName];
+    this.log("trace", `Receive input data, bridge='${bridgeShortId}' event='${eventName}' args=${JSON.stringify(eventArgs)}`);
+    let bridge = _.find(this.bridges, (bridge:BridgeNode) => bridge.entity._id.substr(0, 4) == bridgeShortId);
     if (!bridge)
-      return this.log("warn", `Bridge '${bridgeName}' was not found.`);
+      return this.log("warn", `Bridge '${bridgeShortId}' was not found.`);
     if (eventName == "$r")
       return bridge.sendCallback(...eventArgs);
     if (bridge.listeners(eventName).length == 0)
-      return this.log("warn", `Bridge '${bridgeName}' not have '${eventName}' event.`);
+      return this.log("warn", `Bridge '${bridgeShortId}' not have '${eventName}' event.`);
     bridge.emit(eventName, ...eventArgs);
   };
 

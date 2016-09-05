@@ -15,6 +15,7 @@ export interface IEntityFieldParams {
   required?: boolean;
   disabled?: boolean;
   options?: {[key: string]: string};
+  filter?: string;
 }
 
 export class BaseEntity {

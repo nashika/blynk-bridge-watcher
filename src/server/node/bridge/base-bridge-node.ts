@@ -12,7 +12,7 @@ export class BaseBridgeNode extends BaseNode<BridgeEntity> {
   static EntityClass = BridgeEntity;
 
   parent: BoardNode;
-  actions: {[name: string]: ActionNode<BaseActionEntity>};
+  actions: ActionNode<BaseActionEntity>[];
   protected widgetBridge: WidgetBridge;
 
   initialize(): Promise<void> {

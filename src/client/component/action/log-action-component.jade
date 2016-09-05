@@ -1,4 +1,4 @@
 extends ../base-node-component
 
 block body
-  p now construction
+  button.btn.btn-default.btn-block(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Log

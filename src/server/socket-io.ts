@@ -62,6 +62,10 @@ export class SocketIoServer {
     delete this.nodes[_id];
   }
 
+  getNode(_id: string): BaseNode<BaseEntity> {
+    return this.nodes[_id];
+  }
+
 }
 
 export var socketIoServer = new SocketIoServer();

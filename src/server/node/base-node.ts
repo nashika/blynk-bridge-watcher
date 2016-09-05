@@ -3,7 +3,6 @@ import util = require("util");
 
 import _ = require("lodash");
 import log4js = require("log4js");
-import pluralize = require("pluralize");
 import Socket = SocketIO.Socket;
 
 import {tableRegistry} from "../table/table-registry";
@@ -57,10 +56,9 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
 
   protected initialize(): Promise<void> {
     socketIoServer.registerNode(this);
-    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
+    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
-      let key = pluralize.plural(ChildEntityClass.params.tableName);
-      let childNodes: {[name: string]: BaseNode<BaseEntity>} = {};
+      let childNodes: BaseNode<BaseEntity>[] = [];
       _.set(this, key, childNodes);
       return Promise.resolve().then(() => {
         return tableRegistry.getInstance(ChildEntityClass.params.tableName).find({_parent: this.entity._id});
@@ -69,7 +67,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
           return Promise.resolve().then(() => {
             return nodeRegistry.generate(ChildEntityClass.params.tableName, entity, this);
           }).then(node => {
-            childNodes[node.name] = node;
+            childNodes.push(node);
           });
         });
       }).then(() => {
@@ -81,14 +79,13 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   finalize(): Promise<void> {
     this.status = "processing";
     socketIoServer.unregisterNode(this.entity._id);
-    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity) => {
+    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
-      let key = pluralize.plural(ChildEntityClass.params.tableName);
-      let childNodes = _.get<{[name: string]: BaseNode<BaseEntity>}>(this, key, {});
+      let childNodes = _.get<BaseNode<BaseEntity>[]>(this, key, []);
       return MyPromise.eachPromiseSeries(childNodes, (childNode: BaseNode<BaseEntity>) => {
         return childNode.finalize();
       }).then(() => {
-        _.set(this, key, {});
+        _.set(this, key, []);
       });
     }).then(() => {
       this.status = "stop";

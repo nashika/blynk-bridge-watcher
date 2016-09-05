@@ -32,7 +32,8 @@ export class ReadActionEntity extends BaseActionEntity {
         required: true,
       },
       next: {
-        type: "text",
+        type: "node",
+        filter: "action",
         required: true,
       },
     }),

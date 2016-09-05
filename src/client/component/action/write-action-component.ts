@@ -22,4 +22,17 @@ export class WriteActionComponent extends BaseActionComponent<WriteActionEntity>
     serviceRegistry.socketIo.send(this.entity._id, "run");
   }
 
+  get shortPinType(): string {
+    switch (this.entity.pinType) {
+      case "digital":
+        return "D";
+      case "analog":
+        return "A";
+      case "virtual":
+        return "V";
+      default:
+        return "?";
+    }
+  }
+
 }

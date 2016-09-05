@@ -9,52 +9,42 @@ export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNod
 
   static EntityClass = BaseNotifierEntity;
 
-  public parent: ServerNode;
-  private _waiting: boolean = false;
-  private _messages: string[] = null;
+  parent: ServerNode;
+
+  private waiting: boolean = false;
+  private messages: string[] = null;
 
   initialize(): Promise<void> {
-    this._messages = [];
-    this.on("notify", this._onNotify);
-    this.on("send", this._onSend);
+    this.messages = [];
     return super.initialize();
   }
 
-  protected _onNotify = (action: NotifyActionNode, ...args: string[]) => {
-    let message = this._makeMessage(action, ...args);
-    this._messages.push(message);
-    if (!this._waiting) {
-      this._waiting = true;
-      setTimeout(this._sendFirst, this.entity.firstDelay);
+  run(message: string, ...args: string[]) {
+    message = message || "%s";
+    message = util.format(message, ...args);
+    this.messages.push(message);
+    if (!this.waiting) {
+      this.waiting = true;
+      setTimeout(this.sendFirst, this.entity.firstDelay);
     }
-  };
-
-  protected _onSend = (messages: string[]) => {
-    this.send(messages);
-  };
+  }
 
   protected abstract send(messages: string[]): void;
 
-  protected _sendFirst = (): void => {
-    this.emit("send", this._messages);
-    this._messages = [];
-    setTimeout(this._sendNext, this.entity.nextDelay);
+  protected sendFirst = (): void => {
+    this.send(this.messages);
+    this.messages = [];
+    setTimeout(this.sendNext, this.entity.nextDelay);
   };
 
-  private _sendNext = (): void => {
-    if (this._messages.length == 0)
-      this._waiting = false;
+  private sendNext = (): void => {
+    if (this.messages.length == 0)
+      this.waiting = false;
     else {
-      this.emit("send", this._messages);
-      this._messages = [];
-      setTimeout(this._sendNext, this.entity.nextDelay);
+      this.emit("send", this.messages);
+      this.messages = [];
+      setTimeout(this.sendNext, this.entity.nextDelay);
     }
   };
-
-  protected _makeMessage(action: NotifyActionNode, ...args: string[]): string {
-    let message = action.entity.message || "%s";
-    message = action.allKeyLabel() + " " + util.format(message, ...args);
-    return message;
-  }
 
 }

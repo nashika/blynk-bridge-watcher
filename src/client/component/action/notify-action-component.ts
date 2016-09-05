@@ -3,6 +3,7 @@ import _ = require("lodash");
 
 import {BaseActionComponent} from "./base-action-component";
 import {NotifyActionEntity} from "../../../common/entity/action/notify-action-entity";
+import {serviceRegistry} from "../../service/service-registry";
 
 let template = require("./notify-action-component.jade");
 
@@ -15,6 +16,10 @@ export class NotifyActionComponent extends BaseActionComponent<NotifyActionEntit
     return _.assign(super.data(), {
       EntityClass: NotifyActionEntity,
     });
+  }
+
+  run() {
+    serviceRegistry.socketIo.send(this.entity._id, "run");
   }
 
 }

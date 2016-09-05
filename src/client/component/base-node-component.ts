@@ -124,6 +124,14 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     this.logs = [];
   }
 
+  getNodeOptions(filter: string): {[_id: string]: string} {
+    return serviceRegistry.socketIo.getNodeOptions(filter);
+  }
+
+  get title(): string {
+    return `${this.entity.name} [ID: ${this.shortId}] [Type: ${_.startCase(this.EntityClass.params.entityName)}]`;
+  }
+
   get shortId(): string {
     return this.entity._id.substr(0, 4);
   }

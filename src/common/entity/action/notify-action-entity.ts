@@ -18,7 +18,8 @@ export class NotifyActionEntity extends BaseActionEntity {
         default: "notify",
       },
       notifier: {
-        type: "text",
+        type: "node",
+        filter: "notifier",
         required: true,
       },
       message: {
