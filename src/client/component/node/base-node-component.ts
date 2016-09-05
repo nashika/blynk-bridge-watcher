@@ -53,6 +53,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     if (!this.add) {
       serviceRegistry.socketIo.registerComponent(this);
       this.status = serviceRegistry.socketIo.getStatus(this.entity._id);
+      this.logs = serviceRegistry.socketIo.getLogs(this.entity._id);
       this.reload();
     }
   }
