@@ -1,9 +1,5 @@
 extends base-node-component
 
-block variables
-  -
-    var isServer = true;
-
 block body
   +children("board-node-component", "board", "boards", "tab")
   +children("notifier-node-component", "notifier", "notifiers", "box")
