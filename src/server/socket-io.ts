@@ -2,6 +2,7 @@ import socketIo = require("socket.io");
 import {Server as HttpServer} from "http";
 import Server = SocketIO.Server;
 import Socket = SocketIO.Socket;
+import _ = require("lodash");
 
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus, TSocketIoLogLevel,
@@ -39,7 +40,7 @@ export class SocketIoServer {
 
   private onSend = (data: ISocketIoSendData) => {
     let node = this.nodes[data._id];
-    if (node) node.emit(data.event, ...data.args);
+    if (node) node.run(data.event, ...data.args);
   };
 
   log(_id: string, level: TSocketIoLogLevel, message: string) {
@@ -62,8 +63,8 @@ export class SocketIoServer {
     delete this.nodes[_id];
   }
 
-  getNode(_id: string): BaseNode<BaseEntity> {
-    return this.nodes[_id];
+  getNode(id: string): BaseNode<BaseEntity> {
+    return _.find(this.nodes, (node: BaseNode<BaseEntity>, _id:string) => _.startsWith(_id, id));
   }
 
 }

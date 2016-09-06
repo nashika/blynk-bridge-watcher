@@ -10,7 +10,6 @@ export class PingBridgeNode extends TransceiverBridgeNode {
 
   initialize(): Promise<void> {
     _.defaults(this.entity, {pingInterval: 60000, pingLimit: 3});
-    this.on("$ping", this.onPing);
     return super.initialize();
   }
 

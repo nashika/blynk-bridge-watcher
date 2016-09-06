@@ -5,7 +5,7 @@ import {socketIoServer} from "../../socket-io";
 
 export class IfActionNode extends ActionNode<IfActionEntity> {
 
-  run = (...args: string[]) => {
+  run(...args: string[]) {
     if (args.length < 1)
       return this.log("warn", `If action called no argument.`);
     let arg = parseInt(args[0]);

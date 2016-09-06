@@ -41,7 +41,7 @@ export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNod
     if (this.messages.length == 0)
       this.waiting = false;
     else {
-      this.emit("send", this.messages);
+      this.send(this.messages);
       this.messages = [];
       setTimeout(this.sendNext, this.entity.nextDelay);
     }

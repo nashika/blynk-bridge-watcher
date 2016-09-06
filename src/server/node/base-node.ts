@@ -13,7 +13,7 @@ import {nodeRegistry} from "./node-registry";
 import {socketIoServer} from "../socket-io";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
 
-export class BaseNode<T extends BaseEntity> extends EventEmitter {
+export abstract class BaseNode<T extends BaseEntity> {
 
   static EntityClass: typeof BaseEntity;
 
@@ -27,7 +27,7 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
   }
 
   static generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
-    let result: BaseNode<BaseEntity> = new this();
+    let result: BaseNode<BaseEntity> = new (<any>this)();
     result.entity = entity;
     result.parent = parent;
     result.name = entity.name;
@@ -90,6 +90,10 @@ export class BaseNode<T extends BaseEntity> extends EventEmitter {
     }).then(() => {
       this.status = "stop";
     });
+  }
+
+  run(...args: string[]):void {
+    this.log("warn", `run method not implemented.`);
   }
 
   log(level: TSocketIoLogLevel, message: string, ...args: any[]) {

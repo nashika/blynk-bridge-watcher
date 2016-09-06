@@ -13,7 +13,7 @@ export class LogActionNode extends ActionNode<LogActionEntity> {
     return super.initialize();
   }
 
-  run = (...args: string[]) => {
+  run(...args: string[]) {
     this.parent.log(this.entity.level, util.format(this.entity.message, ...args));
   };
 
