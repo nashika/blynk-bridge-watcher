@@ -30,7 +30,7 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   private ping = () => {
     this.log("debug", `Ping to bridge, waiting Pong...`);
     if (!this.pinging)
-      this.send("pi", [], this.pingCallback, this.pingTimeout);
+      this.send("pi", []).then(this.pingCallback).catch(this.pingTimeout);
     this.pinging = true;
   };
 
@@ -62,9 +62,7 @@ export class PingBridgeNode extends TransceiverBridgeNode {
 
   private onPing = () => {
     this.log("debug", `Ping from bridge, response Pong.`);
-    this.send("po", [], (...args: any[]) => {
-    }, () => {
-    });
+    this.send("po", []);
   };
 
 }

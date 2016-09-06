@@ -62,6 +62,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
   };
 
   private onInputVPin = (param: string[]): void => {
+    this.log("trace", `Receive data='${param[0]}'`);
     let params = param[0].split(",");
     if (params.length < 2) {
       this.log("error", `Input data '${param}' is invalid format.`);
