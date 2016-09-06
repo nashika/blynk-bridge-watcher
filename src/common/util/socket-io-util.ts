@@ -24,6 +24,5 @@ export interface ISocketIoStatusData extends ISocketIoData {
 }
 
 export interface ISocketIoSendData extends ISocketIoData {
-  event: string;
   args: any[];
 }

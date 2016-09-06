@@ -78,8 +78,8 @@ export class SocketIoService extends BaseService {
     return this.logs.filter(log => log._id == _id);
   }
 
-  send(_id: string, event: string, ...args: any[]) {
-    let sendData: ISocketIoSendData = {_id: _id, event: event, args: args};
+  send(_id: string, ...args: any[]) {
+    let sendData: ISocketIoSendData = {_id: _id, args: args};
     this.socket.emit("send", sendData);
   }
 

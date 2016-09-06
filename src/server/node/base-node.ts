@@ -92,11 +92,11 @@ export abstract class BaseNode<T extends BaseEntity> {
     });
   }
 
-  run(...args: string[]):void {
+  run(...args: string[]): void {
     this.log("warn", `run method not implemented.`);
   }
 
-  log(level: TSocketIoLogLevel, message: string, ...args: any[]) {
+  log(level: TSocketIoLogLevel, message: string, ...args: any[]): void {
     message = util.format(message, ...args);
     socketIoServer.log(this.entity._id, level, message);
     let logger = log4js.getLogger("system");

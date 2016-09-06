@@ -40,7 +40,7 @@ export class SocketIoServer {
 
   private onSend = (data: ISocketIoSendData) => {
     let node = this.nodes[data._id];
-    if (node) node.run(data.event, ...data.args);
+    if (node) node.run(...data.args);
   };
 
   log(_id: string, level: TSocketIoLogLevel, message: string) {

@@ -19,7 +19,7 @@ export class ReadActionNodeComponent extends BaseActionNodeComponent<ReadActionE
   }
 
   run() {
-    serviceRegistry.socketIo.send(this.entity._id, "run");
+    serviceRegistry.socketIo.send(this.entity._id);
   }
 
   get shortPinType(): string {

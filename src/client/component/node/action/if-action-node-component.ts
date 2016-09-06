@@ -19,7 +19,7 @@ export class IfActionNodeComponent extends BaseActionNodeComponent<IfActionEntit
   }
 
   run(flag: boolean) {
-    serviceRegistry.socketIo.send(this.entity._id, "run", flag);
+    serviceRegistry.socketIo.send(this.entity._id, flag ? "if" : "else");
   }
 
 }
