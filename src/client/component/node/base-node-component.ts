@@ -7,16 +7,17 @@ import {serviceRegistry} from "../../service/service-registry";
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {TSocketIoStatus, ISocketIoLogData} from "../../../common/util/socket-io-util";
 import {LogsComponent} from "../element/logs-component";
+import {EditComponent} from "../element/edit-component";
 
 @Component({
   components: {
-    modal: VueStrap.modal,
     dropdown: VueStrap.dropdown,
     tooltip: VueStrap.tooltip,
     tabs: VueStrap.tabset,
     tabGroup: VueStrap.tabGroup,
     tab: VueStrap.tab,
     "logs-component": LogsComponent,
+    "edit-component": EditComponent,
   },
   props: {
     entity: {
@@ -42,9 +43,8 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   add: boolean;
 
   EntityClass: typeof BaseEntity;
-  showEditModal: boolean;
+  showEdit: boolean;
   showLogs: boolean;
-  editEntity: T;
   status: TSocketIoStatus;
   logs: ISocketIoLogData[];
 
@@ -54,17 +54,14 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   data(): any {
     return _.assign(super.data(), {
-      showEditModal: false,
+      showEdit: false,
       showLogs: false,
-      editEntity: null,
       status: "connecting",
       logs: [],
     });
   }
 
   onReady() {
-    if (this.add) this.editEntity = <T>this.EntityClass.generateDefault();
-    else this.editEntity = _.cloneDeep(this.entity);
     if (!this.add) {
       serviceRegistry.socketIo.registerComponent(this);
       this.status = serviceRegistry.socketIo.getStatus(this.entity._id);
@@ -85,17 +82,16 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
-  edit() {
-    this.showEditModal = false;
+  edit(editEntity: T) {
     if (this.add) {
-      this.editEntity._parent = this.parent.entity._id;
-      this.editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
-      serviceRegistry.entity.add(this.editEntity).then(entity => {
-        this.editEntity = <T>this.EntityClass.generateDefault();
+      editEntity._parent = this.parent.entity._id;
+      editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
+      serviceRegistry.entity.add(editEntity).then(entity => {
+        editEntity = <T>this.EntityClass.generateDefault();
         this.parent.reload();
       });
     } else {
-      serviceRegistry.entity.edit(this.editEntity).then(entity => {
+      serviceRegistry.entity.edit(editEntity).then(entity => {
         this.parent.reload();
       });
     }
@@ -138,10 +134,6 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   clearLog() {
     this.logs = [];
-  }
-
-  getNodeOptions(filter: string): {[_id: string]: string} {
-    return serviceRegistry.socketIo.getNodeOptions(filter);
   }
 
   get title(): string {

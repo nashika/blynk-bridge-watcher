@@ -1,0 +1,16 @@
+modal(title="Edit", :show.sync="show", effect="fade")
+  .modal-body(slot="modal-body")
+    form(v-if="editEntity && show", @submit.prevent="edit()")
+      .form-group(v-for="(fieldName, field) in EntityClass.params.fields")
+        div(v-if="!field.hidden")
+          label {{lodash.startCase(fieldName)}}
+          input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
+          input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
+          select.form-control(v-if="field.type == 'select'", v-model="editEntity[fieldName]", :disabled="field.disabled")
+            option(v-for="(key, label) in field.options", :value="key") {{label}}
+          select.form-control(v-if="field.type == 'node'", v-model="editEntity[fieldName]", :disabled="field.disabled")
+            option(v-if="!field.required", :value="undefined") Empty
+            option(v-for="(_id, label) in getNodeOptions(field.filter)", :value="_id") {{label}}
+      button.btn.btn-primary.btn-block(type="submit") Submit
+  .modal-footer(slot="modal-footer")
+    button.btn.btn-default(type="button", @click="show = false") Close

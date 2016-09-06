@@ -24,7 +24,6 @@ let template = require("./logs-component.jade");
       required: true,
     },
   },
-  ready: LogsComponent.prototype.onReady,
 })
 export class LogsComponent extends BaseComponent {
 
@@ -33,9 +32,6 @@ export class LogsComponent extends BaseComponent {
 
   data(): any {
     return _.assign(super.data(), {});
-  }
-
-  onReady() {
   }
 
 }
