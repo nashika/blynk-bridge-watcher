@@ -5,7 +5,10 @@ var VueStrap = require("vue-strap");
 import {BaseComponent} from "../base-component";
 import {ISocketIoLogData} from "../../../common/util/socket-io-util";
 
+let template = require("./logs-component.jade");
+
 @Component({
+  template: template,
   components: {
     modal: VueStrap.modal,
   },

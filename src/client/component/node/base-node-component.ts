@@ -18,7 +18,20 @@ import {LogsComponent} from "../element/logs-component";
     tab: VueStrap.tab,
     "logs-component": LogsComponent,
   },
-  props: ["entity", "brotherEntities", "parent", "add"],
+  props: {
+    entity: {
+      type: Object,
+    },
+    brotherEntities: {
+      type: Array,
+    },
+    parent: {
+      type: Object,
+    },
+    add: {
+      type: Boolean,
+    }
+  },
   ready: BaseNodeComponent.prototype.onReady,
 })
 export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
