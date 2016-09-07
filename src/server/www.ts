@@ -1,17 +1,24 @@
 import {socketIoServer} from "./socket-io";
 require("source-map-support").install();
 
-/**
- * Module dependencies.
- */
-import {app} from "./app";
-let debug = require('debug')('server:server');
 import http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-let port = normalizePort(process.env.PORT || '3000');
+import commander = require("commander");
+import _ = require("lodash");
+
+let pjson = require("../../package");
+
+commander
+  .version(pjson.version)
+  .option("-p --port <n>", "set HTTP server port number.", parseInt)
+  .parse(process.argv);
+
+let port:number = _.get<number>(commander, "port");
+port = port || 3000;
+
+import {app} from "./app";
+let debug = require('debug')('server:server');
+
 app.set('port', port);
 
 /**
@@ -26,25 +33,6 @@ let server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val:any) {
-  let port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
 
 /**
  * Event listener for HTTP server "error" event.
