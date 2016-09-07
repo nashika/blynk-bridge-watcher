@@ -6,7 +6,7 @@ import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {BridgeNode} from "./bridge/bridge-node";
 import {uid} from "../../common/util/uid";
-import {socketIoServer} from "../socket-io";
+import {serverServiceRegistry} from "../service/server-service-registry";
 
 export class BoardNode extends BaseNode<BoardEntity> {
 
@@ -87,7 +87,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
     } else if (id.length == 4) {
       let args: string[] = params.splice(1);
       this.log("trace", `Receive input data, id='${id}' args=${JSON.stringify(args)}`);
-      let node = socketIoServer.getNode(id);
+      let node = serverServiceRegistry.socketIo.getNode(id);
       if (!node)
         return this.log("warn", `Node id='${id}' was not found.`);
       node.run(...args);

@@ -7,11 +7,11 @@ import _ = require("lodash");
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus, TSocketIoLogLevel,
   ISocketIoSendData, ISocketIoData
-} from "../common/util/socket-io-util";
-import {BaseNode} from "./node/base-node";
-import {BaseEntity} from "../common/entity/base-entity";
+} from "../../common/util/socket-io-util";
+import {BaseNode} from "../node/base-node";
+import {BaseEntity} from "../../common/entity/base-entity";
 
-export class SocketIoServer {
+export class SocketIoServerService {
 
   private io: Server;
   private logs: ISocketIoLogData[];
@@ -77,5 +77,3 @@ export class SocketIoServer {
   }
 
 }
-
-export var socketIoServer = new SocketIoServer();

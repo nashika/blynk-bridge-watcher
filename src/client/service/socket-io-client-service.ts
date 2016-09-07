@@ -10,7 +10,7 @@ import {
 import {BaseNodeComponent} from "../component/node/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
 
-export class SocketIoService extends BaseService {
+export class SocketIoClientService extends BaseService {
 
   protected socket: Socket;
   protected components: {[_id: string]: BaseNodeComponent<BaseEntity>};

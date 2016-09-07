@@ -4,7 +4,6 @@ import log4js = require("log4js");
 
 import {BaseEntity} from "../../common/entity/base-entity";
 import {entityRegistry} from "../../common/entity/entity-registry";
-import {socketIoServer} from "../socket-io";
 import {serverServiceRegistry} from "../service/server-service-registry";
 
 let logger = log4js.getLogger("system");
@@ -70,7 +69,7 @@ export abstract class BaseRoute<T extends BaseEntity> {
   add(req: Request, res: Response) {
     let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
     serverServiceRegistry.table.insert(entity).then(newEntity => {
-      socketIoServer.status(newEntity._id, "stop");
+      serverServiceRegistry.socketIo.status(newEntity._id, "stop");
       res.json(newEntity);
     }).catch(err => this.responseErrorJson(res, err));
   }

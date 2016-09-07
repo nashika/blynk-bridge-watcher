@@ -1,4 +1,4 @@
-import {socketIoServer} from "./socket-io";
+import {serverServiceRegistry} from "./service/server-service-registry";
 require("source-map-support").install();
 
 import http = require('http');
@@ -73,4 +73,4 @@ function onListening() {
 
 
 // initialize socket.io
-socketIoServer.initialize(server);
+serverServiceRegistry.socketIo.initialize(server);
