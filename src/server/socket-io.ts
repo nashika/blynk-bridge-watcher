@@ -72,6 +72,10 @@ export class SocketIoServer {
     return _.find(this.nodes, (node: BaseNode<BaseEntity>, _id: string) => _.startsWith(_id, id));
   }
 
+  getNodes(filter: string): BaseNode<BaseEntity>[] {
+    return _.filter(this.nodes, node => !filter || filter == node.Class.EntityClass.params.tableName);
+  }
+
 }
 
 export var socketIoServer = new SocketIoServer();

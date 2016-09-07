@@ -12,6 +12,8 @@ import {MyPromise} from "../../common/util/my-promise";
 import {nodeRegistry} from "./node-registry";
 import {socketIoServer} from "../socket-io";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
+import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
+import {NotifierNode} from "./notifier/notifier-node";
 
 export abstract class BaseNode<T extends BaseEntity> {
 
@@ -99,6 +101,11 @@ export abstract class BaseNode<T extends BaseEntity> {
   log(level: TSocketIoLogLevel, message: string, ...args: any[]): void {
     message = util.format(message, ...args);
     socketIoServer.log(this.entity._id, level, message);
+    for (let node of socketIoServer.getNodes("notifier")) {
+      let notifierNode = <NotifierNode<BaseNotifierEntity>>node;
+      if (this.logLevelToNumber(level) >= this.logLevelToNumber(notifierNode.entity.level))
+        notifierNode.run(message);
+    }
     let logger = log4js.getLogger("system");
     if (this.parent)
       message = `${this.allKeyLabel()} ${message}`;
@@ -115,6 +122,25 @@ export abstract class BaseNode<T extends BaseEntity> {
         return logger.error(message);
       case "fatal":
         return logger.fatal(message);
+    }
+  }
+
+  private logLevelToNumber(level: TSocketIoLogLevel): number {
+    switch (level) {
+      case "trace":
+        return 1;
+      case "debug":
+        return 2;
+      case "info":
+        return 3;
+      case "warn":
+        return 4;
+      case "error":
+        return 5
+      case "fatal":
+        return 6;
+      case "none":
+        return 7;
     }
   }
 

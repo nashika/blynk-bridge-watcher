@@ -12,6 +12,14 @@ log4js.configure({
       alwaysIncludePattern: true,
     },
     {
+      category: "notifier",
+      type: "dateFile",
+      filename: path.join(__dirname, "../../logs/notifier"),
+      pattern: "-yyyyMMdd.log",
+      backups: 365,
+      alwaysIncludePattern: true,
+    },
+    {
       category: "express",
       type: "dateFile",
       filename: path.join(__dirname, "../../logs/express"),

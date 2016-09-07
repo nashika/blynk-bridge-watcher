@@ -2,7 +2,7 @@ export interface ISocketIoData {
   _id: string;
 }
 
-export type TSocketIoLogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";
+export type TSocketIoLogLevel = "none" | "fatal" | "error" | "warn" | "info" | "debug" | "trace";
 
 export interface ISocketIoLogData extends ISocketIoData {
   level: TSocketIoLogLevel;
