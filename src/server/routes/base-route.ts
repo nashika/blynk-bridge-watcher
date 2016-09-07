@@ -2,11 +2,10 @@ import {Express, Request, Response} from "express";
 import _ = require("lodash");
 import log4js = require("log4js");
 
-import {tableRegistry} from "../table/table-registry";
 import {BaseEntity} from "../../common/entity/base-entity";
-import {BaseTable} from "../table/base-table";
 import {entityRegistry} from "../../common/entity/entity-registry";
 import {socketIoServer} from "../socket-io";
+import {serverServiceRegistry} from "../service/server-service-registry";
 
 let logger = log4js.getLogger("system");
 
@@ -46,10 +45,6 @@ export abstract class BaseRoute<T extends BaseEntity> {
     return <typeof BaseRoute>this.constructor;
   }
 
-  get table():BaseTable<BaseEntity> {
-    return tableRegistry.getInstance(this.Class.EntityClass.params.tableName);
-  }
-
   onIndex = (req: Request, res: Response) => {
     this.index(req, res);
   };
@@ -67,14 +62,14 @@ export abstract class BaseRoute<T extends BaseEntity> {
   };
 
   index(req: Request, res: Response) {
-    this.table.find(req.body).then(entities => {
+    serverServiceRegistry.table.find(this.Class.EntityClass, req.body).then(entities => {
       res.json(entities);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   add(req: Request, res: Response) {
     let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
-    this.table.insert(entity).then(newEntity => {
+    serverServiceRegistry.table.insert(entity).then(newEntity => {
       socketIoServer.status(newEntity._id, "stop");
       res.json(newEntity);
     }).catch(err => this.responseErrorJson(res, err));
@@ -82,14 +77,14 @@ export abstract class BaseRoute<T extends BaseEntity> {
 
   edit(req: Request, res: Response) {
     let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
-    this.table.update(entity).then(updatedEntity => {
+    serverServiceRegistry.table.update(entity).then(updatedEntity => {
       res.json(updatedEntity);
     });
   }
 
   remove(req: Request, res: Response) {
     let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
-    this.table.remove(entity).then(() => {
+    serverServiceRegistry.table.remove(entity).then(() => {
       res.json(true);
     });
   }

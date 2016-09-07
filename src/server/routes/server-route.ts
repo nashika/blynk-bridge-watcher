@@ -2,9 +2,9 @@ import {getLogger} from "log4js";
 
 import {BaseRoute} from "./base-route";
 import {Express, Response, Request} from "express";
-import {tableRegistry} from "../table/table-registry";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {ServerNode} from "../node/server-node";
+import {serverServiceRegistry} from "../service/server-service-registry";
 
 let logger = getLogger("system");
 
@@ -25,7 +25,7 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
   }
 
   index(req: Request, res: Response) {
-    tableRegistry.server.findOne().then(entity => {
+    serverServiceRegistry.table.findOne(ServerEntity).then(entity => {
       res.json(entity);
     }).catch(err => this.responseErrorJson(res, err));
   }

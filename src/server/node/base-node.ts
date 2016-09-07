@@ -5,8 +5,6 @@ import _ = require("lodash");
 import log4js = require("log4js");
 import Socket = SocketIO.Socket;
 
-import {tableRegistry} from "../table/table-registry";
-import {BaseTable} from "../table/base-table";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
 import {nodeRegistry} from "./node-registry";
@@ -14,6 +12,7 @@ import {socketIoServer} from "../socket-io";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
 import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
 import {NotifierNode} from "./notifier/notifier-node";
+import {serverServiceRegistry} from "../service/server-service-registry";
 
 export abstract class BaseNode<T extends BaseEntity> {
 
@@ -23,10 +22,6 @@ export abstract class BaseNode<T extends BaseEntity> {
   entity: T;
   name: string = "";
   _status: TSocketIoStatus;
-
-  static table(): BaseTable<BaseEntity> {
-    return tableRegistry.getInstance(this.EntityClass.params.tableName);
-  }
 
   static generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
     let result: BaseNode<BaseEntity> = new (<any>this)();
@@ -63,7 +58,7 @@ export abstract class BaseNode<T extends BaseEntity> {
       let childNodes: BaseNode<BaseEntity>[] = [];
       _.set(this, key, childNodes);
       return Promise.resolve().then(() => {
-        return tableRegistry.getInstance(ChildEntityClass.params.tableName).find({_parent: this.entity._id});
+        return serverServiceRegistry.table.find(ChildEntityClass, {_parent: this.entity._id});
       }).then(entities => {
         return MyPromise.eachPromiseSeries(entities, (entity: BaseEntity) => {
           return Promise.resolve().then(() => {
