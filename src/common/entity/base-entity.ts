@@ -38,10 +38,6 @@ export class BaseEntity {
         type: "number",
         hidden: true,
       },
-      name: {
-        type: "text",
-        required: true,
-      },
       label: {
         type: "text",
       },
@@ -51,7 +47,7 @@ export class BaseEntity {
   _id: string;
   _parent: string;
   _orderNo: number;
-  name: string;
+  label: string;
 
   constructor(data: any = {}) {
     _.forIn(data, (value, key) => {
@@ -61,6 +57,10 @@ export class BaseEntity {
 
   get Class(): typeof BaseEntity {
     return <typeof BaseEntity>this.constructor;
+  }
+
+  get shortId(): string {
+    return this._id.substr(0, 4);
   }
 
   static generateDefault(): BaseEntity {

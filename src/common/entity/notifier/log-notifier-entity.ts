@@ -11,9 +11,6 @@ export class LogNotifierEntity extends BaseNotifierEntity {
     icon: "terminal",
     children: {},
     fields: _.merge({}, BaseNotifierEntity.params.fields, {
-      name: {
-        default: "NTLG01",
-      },
       type: {
         default: "log",
       },

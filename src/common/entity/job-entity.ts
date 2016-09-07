@@ -10,9 +10,6 @@ export class JobEntity extends BaseEntity {
     icon: "clock-o",
     children: {},
     fields: _.merge({}, BaseEntity.params.fields, {
-      name: {
-        default: "JB01",
-      },
       cronTime: {
         type: "text",
         default: "0 0 0 * * *",

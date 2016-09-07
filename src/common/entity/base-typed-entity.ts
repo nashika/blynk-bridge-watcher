@@ -10,9 +10,6 @@ export class BaseTypedEntity extends BaseEntity {
     icon: "times",
     children: {},
     fields: _.merge({}, BaseEntity.params.fields, {
-      name: {
-        default: "SW01",
-      },
       type: {
         type: "text",
         required: true,

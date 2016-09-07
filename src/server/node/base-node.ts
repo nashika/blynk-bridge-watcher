@@ -18,14 +18,12 @@ export abstract class BaseNode<T extends BaseEntity> {
 
   parent: BaseNode<BaseEntity>;
   entity: T;
-  name: string = "";
   _status: TSocketIoStatus;
 
   static generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
     let result: BaseNode<BaseEntity> = new (<any>this)();
     result.entity = entity;
     result.parent = parent;
-    result.name = entity.name;
     result.log("trace", `Generate ${this.name} object was started.`);
     result.status = "processing";
     return Promise.resolve().then(() => {
@@ -145,7 +143,7 @@ export abstract class BaseNode<T extends BaseEntity> {
   }
 
   protected _keyLabel(): string {
-    return `${this.name}(${(<any>this.constructor).name})`;
+    return `${this.entity.shortId}(${(<any>this.constructor).name})`;
   }
 
 }

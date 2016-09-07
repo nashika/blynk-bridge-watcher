@@ -34,9 +34,9 @@ export class JobNode extends BaseNode<JobEntity> {
     super.run();
     let action = <ActionNode<BaseActionEntity>>serverServiceRegistry.socketIo.getNode(this.entity.action);
     if (action.status != "ready") {
-      return action.log("warn", `Job '${this.name}' can not run. Action '${action.name}' status='${action.status}' is not ready.`);
+      return action.log("warn", `Job '${this.entity._id}' can not run. Action '${action.entity._id}' status='${action.status}' is not ready.`);
     }
-    this.log("debug", `Job '${this.name}' was kicked.`);
+    this.log("debug", `Job '${this.entity._id}' was kicked.`);
     action.run();
   }
 

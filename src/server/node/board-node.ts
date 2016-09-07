@@ -60,20 +60,20 @@ export class BoardNode extends BaseNode<BoardEntity> {
 
   private onConnect = (): void => {
     this.log("debug", `Auth dummy blynk board was finished.`);
-    this.log("info", `Board ${this.name} was connected.`);
-    for (let bridgeName in this.bridges)
-      this.bridges[bridgeName].connect();
+    this.log("info", `Board ${this.entity._id} was connected.`);
+    for (let bridge of this.bridges)
+      bridge.connect();
     this.status = "ready";
   };
 
   private onDisconnect = (): void => {
     this.status = "processing";
-    this.log("info", `Board ${this.name} was disconnected.`);
+    this.log("info", `Board ${this.entity._id} was disconnected.`);
   };
 
   private onError = (e: any): void => {
     this.status = "error";
-    this.log("error", `Board ${this.name} was error. error="${e}"`);
+    this.log("error", `Board ${this.entity._id} was error. error="${e}"`);
   };
 
   private onInputVPin = (param: string[]): void => {

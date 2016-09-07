@@ -11,9 +11,6 @@ export class PushbulletNotifierEntity extends BaseNotifierEntity {
     icon: "bullhorn",
     children: {},
     fields: _.merge({}, BaseNotifierEntity.params.fields, {
-      name: {
-        default: "NTPB01",
-      },
       type: {
         default: "pushbullet",
       },

@@ -104,7 +104,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   remove() {
-    if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} name:${this.entity.name}?`)) return;
+    if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} id:${this.entity._id}?`)) return;
     serviceRegistry.entity.remove(this.entity).then(entity => {
       this.parent.reload();
     });
@@ -148,11 +148,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   get title(): string {
-    return `${this.entity.name} [ID: ${this.shortId}] [Type: ${_.startCase(this.EntityClass.params.entityName)}]`;
-  }
-
-  get shortId(): string {
-    return this.entity._id.substr(0, 4);
+    return `${this.entity.shortId} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.entityName)}]`;
   }
 
   get isRunning(): boolean {

@@ -10,11 +10,7 @@ export class BaseActionEntity extends BaseTypedEntity {
     entityName: "action",
     icon: "cog",
     children: {},
-    fields: _.merge({}, BaseTypedEntity.params.fields, {
-      name: {
-        default: "AC01",
-      },
-    }),
+    fields: _.merge({}, BaseTypedEntity.params.fields, {}),
   };
 
 }

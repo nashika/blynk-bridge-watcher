@@ -11,9 +11,6 @@ export class WriteActionEntity extends BaseActionEntity {
     icon: "pencil-square-o",
     children: {},
     fields: _.merge({}, BaseActionEntity.params.fields, {
-      name: {
-        default: "ACWR01",
-      },
       type: {
         default: "write",
       },

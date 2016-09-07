@@ -6,7 +6,7 @@ mixin children(componentName, singularName, pluralName, mode)
     .body
       if mode == "tab"
         tabs(v-if="#{pluralName}")
-          tab(v-for="#{singularName} in #{pluralName}", :header="#{singularName}.name")
+          tab(v-for="#{singularName} in #{pluralName}", :header="#{singularName}.shortId")
             #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this")
         .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
         .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}

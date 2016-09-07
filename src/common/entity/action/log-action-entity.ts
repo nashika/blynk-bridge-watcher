@@ -12,9 +12,6 @@ export class LogActionEntity extends BaseActionEntity {
     icon: "terminal",
     children: {},
     fields: _.merge({}, BaseActionEntity.params.fields, {
-      name: {
-        default: "ACLG01",
-      },
       type: {
         default: "log",
       },

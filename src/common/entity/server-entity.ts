@@ -16,11 +16,7 @@ export class ServerEntity extends BaseEntity {
       notifiers: BaseNotifierEntity,
       jobs: JobEntity,
     },
-    fields: _.merge({}, BaseEntity.params.fields, {
-      name: {
-        default: "SV01",
-      },
-    }),
+    fields: _.merge({}, BaseEntity.params.fields, {}),
   };
 
 }

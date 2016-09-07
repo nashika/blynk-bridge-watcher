@@ -12,9 +12,6 @@ export class BaseNotifierEntity extends BaseTypedEntity {
     icon: "bell",
     children: {},
     fields: _.merge({}, BaseTypedEntity.params.fields, {
-      name: {
-        default: "NT01",
-      },
       firstDelay: {
         type: "number",
         default: 3000,

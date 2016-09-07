@@ -13,9 +13,6 @@ export class BridgeEntity extends BaseEntity {
       actions: BaseActionEntity,
     },
     fields: _.merge({}, BaseEntity.params.fields, {
-      name: {
-        default: "BR01",
-      },
       token: {
         type: "text",
         required: true,

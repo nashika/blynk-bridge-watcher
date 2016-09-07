@@ -11,9 +11,6 @@ export class IfActionEntity extends BaseActionEntity {
     icon: "code-fork",
     children: {},
     fields: _.merge({}, BaseActionEntity.params.fields, {
-      name: {
-        default: "ACIF01",
-      },
       type: {
         default: "if",
       },

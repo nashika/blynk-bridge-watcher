@@ -11,9 +11,6 @@ export class NotifyActionEntity extends BaseActionEntity {
     icon: "bell",
     children: {},
     fields: _.merge({}, BaseActionEntity.params.fields, {
-      name: {
-        default: "ACNT01",
-      },
       type: {
         default: "notify",
       },

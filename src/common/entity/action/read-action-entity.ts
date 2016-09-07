@@ -11,9 +11,6 @@ export class ReadActionEntity extends BaseActionEntity {
     icon: "eye",
     children: {},
     fields: _.merge({}, BaseActionEntity.params.fields, {
-      name: {
-        default: "ACRD01",
-      },
       type: {
         default: "read",
       },
