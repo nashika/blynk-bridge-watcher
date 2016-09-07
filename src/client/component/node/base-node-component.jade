@@ -20,6 +20,7 @@ mixin children(componentName, singularName, pluralName, mode)
 section(v-if="!add", :class="EntityClass.params.tableName")
   .header
     .menu
+      button.btn.btn-danger.btn-sm(v-if="isRunning") #[i.fa.fa-circle-o-notch.fa-spin]
       dropdown(v-if="status == 'stop'")
         button.btn.btn-default.btn-sm.dropdown-toggle(slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
         ul.dropdown-menu(slot="dropdown-menu")

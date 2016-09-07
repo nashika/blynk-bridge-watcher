@@ -31,6 +31,7 @@ export class JobNode extends BaseNode<JobEntity> {
   }
 
   run(): void {
+    super.run();
     let action = <ActionNode<BaseActionEntity>>socketIoServer.getNode(this.entity.action);
     if (action.status != "ready") {
       return action.log("warn", `Job '${this.name}' can not run. Action '${action.name}' status='${action.status}' is not ready.`);

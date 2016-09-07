@@ -5,7 +5,7 @@ import _ = require("lodash");
 
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
-  ISocketIoSendData
+  ISocketIoSendData, ISocketIoData
 } from "../../common/util/socket-io-util";
 import {BaseNodeComponent} from "../component/node/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
@@ -28,6 +28,7 @@ export class SocketIoService extends BaseService {
     this.socket = socketIo.connect();
     this.socket.on("connect", this.onConnect);
     this.socket.on("disconnect", this.onDisconnect);
+    this.socket.on("run", this.onRun);
     this.socket.on("log", this.onLog);
     this.socket.on("status", this.onStatus);
   }
@@ -44,6 +45,10 @@ export class SocketIoService extends BaseService {
     this.logs = [];
   };
 
+  private onRun = (data: ISocketIoData) => {
+    if (this.components[data._id]) this.components[data._id].notifyRun();
+  };
+
   private onLog = (data: ISocketIoLogData) => {
     this.logs.push(data);
     if (this.components[data._id]) this.components[data._id].addLog(data);
@@ -54,7 +59,6 @@ export class SocketIoService extends BaseService {
     if (this.components[data._id])
       this.components[data._id].status = data.status;
     this.statuses[data._id] = data;
-    console.log(`${data._id} ${data.status}`);
   };
 
   registerComponent(component: BaseNodeComponent<BaseEntity>) {

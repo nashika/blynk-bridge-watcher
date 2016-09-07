@@ -6,7 +6,7 @@ import _ = require("lodash");
 
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus, TSocketIoLogLevel,
-  ISocketIoSendData
+  ISocketIoSendData, ISocketIoData
 } from "../common/util/socket-io-util";
 import {BaseNode} from "./node/base-node";
 import {BaseEntity} from "../common/entity/base-entity";
@@ -43,13 +43,18 @@ export class SocketIoServer {
     if (node) node.run(...data.args);
   };
 
-  log(_id: string, level: TSocketIoLogLevel, message: string) {
+  run(_id: string): void {
+    let data: ISocketIoData = {_id: _id};
+    this.io.sockets.emit("run", data);
+  }
+
+  log(_id: string, level: TSocketIoLogLevel, message: string): void {
     let data: ISocketIoLogData = {_id: _id, level: level, message: message, timestamp: (new Date()).toISOString()};
     this.logs.push(data);
     this.io.sockets.emit("log", data);
   }
 
-  status(_id: string, status: TSocketIoStatus) {
+  status(_id: string, status: TSocketIoStatus): void {
     let data: ISocketIoStatusData = {_id: _id, status: status};
     this.statuses[_id] = data;
     this.io.sockets.emit("status", data);
@@ -64,7 +69,7 @@ export class SocketIoServer {
   }
 
   getNode(id: string): BaseNode<BaseEntity> {
-    return _.find(this.nodes, (node: BaseNode<BaseEntity>, _id:string) => _.startsWith(_id, id));
+    return _.find(this.nodes, (node: BaseNode<BaseEntity>, _id: string) => _.startsWith(_id, id));
   }
 
 }

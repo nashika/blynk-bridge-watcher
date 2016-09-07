@@ -45,6 +45,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   EntityClass: typeof BaseEntity;
   showEdit: boolean;
   showLogs: boolean;
+  runningCount: number;
   status: TSocketIoStatus;
   logs: ISocketIoLogData[];
 
@@ -56,6 +57,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     return _.assign(super.data(), {
       showEdit: false,
       showLogs: false,
+      runningCount: 0,
       status: "connecting",
       logs: [],
     });
@@ -132,6 +134,11 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
+  notifyRun() {
+    this.runningCount++;
+    setTimeout(() => this.runningCount--, 1000);
+  }
+
   addLog(data: ISocketIoLogData) {
     this.logs.push(data);
   }
@@ -146,6 +153,10 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   get shortId(): string {
     return this.entity._id.substr(0, 4);
+  }
+
+  get isRunning(): boolean {
+    return this.runningCount > 0;
   }
 
   get isFirst(): boolean {

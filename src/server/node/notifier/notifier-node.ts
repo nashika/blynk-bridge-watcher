@@ -20,6 +20,7 @@ export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNod
   }
 
   run(message: string, ...args: string[]) {
+    super.run();
     message = message || "%s";
     message = util.format(message, ...args);
     this.messages.push(message);

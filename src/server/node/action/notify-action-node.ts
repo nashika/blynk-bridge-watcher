@@ -7,6 +7,7 @@ import {NotifierNode} from "../notifier/notifier-node";
 export class NotifyActionNode extends ActionNode<NotifyActionEntity> {
 
   run(...args:string[]) {
+    super.run();
     this.log("debug", `Notify action. notifier="${this.entity.notifier}", message="${this.entity.message}", args="${JSON.stringify(args)}"`);
     let notifier = <NotifierNode<BaseNotifierEntity>>socketIoServer.getNode(this.entity.notifier);
     notifier.run(this.entity.message, ...args);

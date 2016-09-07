@@ -6,6 +6,7 @@ import {BaseActionEntity} from "../../../common/entity/action/base-action-entity
 export class ReadActionNode extends ActionNode<ReadActionEntity> {
 
   run(...args: string[]) {
+    super.run();
     this.log("debug", `Read action. type=${this.entity.pinType}, pin=${this.entity.pin}`);
     let command: string;
     switch (this.entity.pinType) {
