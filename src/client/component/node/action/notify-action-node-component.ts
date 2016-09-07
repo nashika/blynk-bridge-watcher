@@ -18,8 +18,4 @@ export class NotifyActionNodeComponent extends BaseActionNodeComponent<NotifyAct
     });
   }
 
-  run() {
-    serviceRegistry.socketIo.send(this.entity._id);
-  }
-
 }

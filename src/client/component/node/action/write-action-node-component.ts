@@ -18,10 +18,6 @@ export class WriteActionNodeComponent extends BaseActionNodeComponent<WriteActio
     });
   }
 
-  run() {
-    serviceRegistry.socketIo.send(this.entity._id);
-  }
-
   get shortPinType(): string {
     switch (this.entity.pinType) {
       case "digital":

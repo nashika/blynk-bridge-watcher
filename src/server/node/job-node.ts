@@ -20,23 +20,23 @@ export class JobNode extends BaseNode<JobEntity> {
     return super.initialize().then(() => {
       _.defaults(this.entity, {});
       try {
-        this.cronJob = new CronJob(this.entity.cronTime, this._run);
+        this.cronJob = new CronJob(this.entity.cronTime, () => this.run());
       } catch (e) {
         this.log("fatal", `cronTime '${this.entity.cronTime}' is invalid format.`);
         process.exit(1);
       }
       this.cronJob.start();
+      this.status = "ready";
     });
   }
 
-  protected _run = () => {
+  run(): void {
     let action = <ActionNode<BaseActionEntity>>socketIoServer.getNode(this.entity.action);
     if (action.status != "ready") {
-      action.log("warn", `Job '${this.name}' can not run. Action '${action.name}' status='${action.status}' is not ready.`);
-      return;
+      return action.log("warn", `Job '${this.name}' can not run. Action '${action.name}' status='${action.status}' is not ready.`);
     }
     this.log("debug", `Job '${this.name}' was kicked.`);
     action.run();
-  };
+  }
 
 }

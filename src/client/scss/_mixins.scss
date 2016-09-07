@@ -9,7 +9,7 @@
     @include clearfix;
 
     .menu {
-      margin: 3px;
+      margin: 0px 3px;
       text-align: right;
       line-height: 2.5;
 
@@ -21,8 +21,8 @@
     > span {
       > h1 {
         margin: 0px;
-        padding: 10px;
-        font-size: 120%;
+        padding: 5px 10px;
+        font-size: 110%;
         color: #fff;
         overflow: hidden;
         white-space: nowrap;
@@ -32,15 +32,16 @@
   }
 
   > .body {
-    height: 80px;
+    height: 55px;
     padding: 10px;
+    vertical-align: middle;
   }
 }
 
 @mixin component-tab {
 
   > .header {
-    margin: 10px 0px;
+    margin: 5px 0px;
     @include border-top-radius(10px);
     @include border-bottom-radius(10px);
     background-color: $brand-dark;
@@ -87,7 +88,7 @@
 }
 
 @mixin components-list {
-  margin: 10px 0px;
+  margin: 5px 0px;
   @include border-top-radius(5px);
   @include border-bottom-radius(5px);
   border: 1px solid $brand-lightest;

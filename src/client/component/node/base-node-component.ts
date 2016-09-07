@@ -82,6 +82,10 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
+  run(...args: any[]) {
+    serviceRegistry.socketIo.send(this.entity._id);
+  }
+
   edit(editEntity: T) {
     if (this.add) {
       editEntity._parent = this.parent.entity._id;

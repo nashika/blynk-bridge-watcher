@@ -18,8 +18,4 @@ export class LogActionNodeComponent extends BaseActionNodeComponent<LogActionEnt
     });
   }
 
-  run() {
-    serviceRegistry.socketIo.send(this.entity._id);
-  }
-
 }

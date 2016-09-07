@@ -15,9 +15,10 @@ export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierEntit
     this.pushbullet.me((err: any, response: any) => {
       if (err) {
         this.log("fatal", `Pushbullet auth failed.`);
-        process.exit(1);
+        this.status = "error";
       } else {
         this.log("info", `Pushbullet auth succeed. response=${JSON.stringify(response)}`);
+        this.status = "ready";
       }
     });
     return super.initialize();
