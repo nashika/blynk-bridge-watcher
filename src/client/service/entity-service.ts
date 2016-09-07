@@ -49,7 +49,7 @@ export class EntityService extends BaseService {
   }
 
   private cleanEntity<T extends BaseEntity>(entity: T) {
-    for (let key in entity) {
+    for (let key of Object.keys(entity)) {
       let value = _.get(entity, key);
       let field = entity.Class.params.fields[key];
       if (field) {

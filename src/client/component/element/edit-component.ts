@@ -52,7 +52,6 @@ export class EditComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   onChangeShow() {
-    console.log(this.show);
     if (this.show) {
       if (this.add) this.editEntity = <T>this.EntityClass.generateDefault();
       else this.editEntity = _.cloneDeep(this.entity);
