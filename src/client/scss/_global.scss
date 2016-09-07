@@ -1,0 +1,41 @@
+html, body {
+}
+
+.nothing, .loading {
+  @include border-top-radius(5px);
+  @include border-bottom-radius(5px);
+  border: 3px dotted $mono-light;
+  margin: 10px;
+  padding: 10px;
+  font-size: 150%;
+  text-align: center;
+}
+
+section.add {
+  margin: 20px 0px;
+
+  > .header {
+    @include border-top-radius(5px);
+    @include border-bottom-radius(5px);
+    background-color: $brand-darker;
+
+    > h1 {
+      margin: 0px;
+      padding: 5px 10px 5px 10px;
+      font-size: 100%;
+      color: #fff;
+    }
+  }
+
+  > .body {
+    padding: 10px;
+
+    > .add {
+      display: inline;
+
+      > button {
+        margin: 5px;
+      }
+    }
+  }
+}

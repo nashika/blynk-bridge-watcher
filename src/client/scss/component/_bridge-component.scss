@@ -1,0 +1,7 @@
+section.bridges {
+  @include components-list;
+}
+
+section.bridge {
+  @include component-tab;
+}

@@ -1,0 +1,6 @@
+extends base-node-component
+
+block body
+  +children("board-node-component", "board", "boards", "tab")
+  +children("notifier-node-component", "notifier", "notifiers", "box")
+  +children("job-node-component", "job", "jobs", "box")

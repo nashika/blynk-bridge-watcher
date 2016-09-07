@@ -1,0 +1,7 @@
+section.jobs {
+  @include components-list;
+}
+
+section.job {
+  @include component-box;
+}

@@ -1,0 +1,118 @@
+@mixin component-box {
+  margin: 0px 0px 20px 0px;
+  @include border-top-radius(5px);
+  @include border-bottom-radius(5px);
+  border: 1px solid $brand-dark;
+
+  > .header {
+    background-color: $brand-dark;
+    @include clearfix;
+
+    .menu {
+      margin: 0px 3px;
+      text-align: right;
+      line-height: 2.5;
+
+      > button {
+        margin: 0px 3px;
+      }
+    }
+
+    > span {
+      > h1 {
+        margin: 0px;
+        padding: 5px 10px;
+        font-size: 110%;
+        color: #fff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  > .body {
+    height: 55px;
+    padding: 10px;
+    vertical-align: middle;
+  }
+}
+
+@mixin component-tab {
+
+  > .header {
+    margin: 5px 0px;
+    @include border-top-radius(10px);
+    @include border-bottom-radius(10px);
+    background-color: $brand-dark;
+    @include clearfix;
+
+    .menu {
+      margin: 3px;
+      float: right;
+      text-align: right;
+      line-height: 2.5;
+      max-width: 50%;
+
+      > button {
+        margin: 0px 3px;
+      }
+    }
+
+    > span {
+      > h1 {
+        margin: 0px;
+        padding: 10px;
+        font-size: 120%;
+        color: #fff;
+      }
+    }
+  }
+
+  > .body {
+
+    .boxes {
+      @include make-row;
+
+      .box {
+        @media screen and (max-width: 480px) {
+          @include make-xs-column(12);
+        }
+        @include make-xs-column(6);
+        @include make-sm-column(4);
+        @include make-md-column(3);
+        @include make-lg-column(12 / 5);
+      }
+    }
+  }
+}
+
+@mixin components-list {
+  margin: 5px 0px;
+  @include border-top-radius(5px);
+  @include border-bottom-radius(5px);
+  border: 1px solid $brand-lightest;
+
+  > .header {
+
+    > .add {
+
+      > button {
+        margin: 3px;
+        float: right;
+      }
+    }
+
+    > h1 {
+      margin: 0px;
+      padding: 5px 10px 5px 10px;
+      font-size: 120%;
+      font-weight: bold;
+      color: $brand-dark;
+    }
+  }
+
+  > .body {
+    padding: 10px;
+  }
+}

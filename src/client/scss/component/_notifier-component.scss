@@ -1,0 +1,7 @@
+section.notifiers {
+  @include components-list;
+}
+
+section.notifier {
+  @include component-box;
+}
