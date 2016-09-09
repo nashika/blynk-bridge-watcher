@@ -110,8 +110,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
     if (!this.sendDeferred[requestId])
       return;
     let msg = `Request key='${requestId}' was timeout.`;
-    if (this.status != "error")
-      this.log("warn", msg);
+    this.log("debug", msg);
     let reject = this.sendDeferred[requestId].reject;
     delete this.sendDeferred[requestId];
     reject(msg);

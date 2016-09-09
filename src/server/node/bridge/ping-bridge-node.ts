@@ -48,7 +48,7 @@ export class PingBridgeNode extends TransceiverBridgeNode {
       this.pingFailureCount++;
       this.pinging = false;
       if (this.status != "error") {
-        this.log("error", `Ping was no response, failure count ${this.pingFailureCount} / ${this.entity.pingLimit}.`);
+        this.log("warn", `Ping was no response, failure count ${this.pingFailureCount} / ${this.entity.pingLimit}.`);
         if (this.pingFailureCount >= this.entity.pingLimit) {
           this.log("error", `Ping failed ${this.pingFailureCount} times, the bridge will stop.`);
           for (let actionName in this.actions)
