@@ -1,9 +1,15 @@
 import {ActionNode} from "./action-node";
 import {IfActionEntity} from "../../../common/entity/action/if-action-entity";
 import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
-import {serverServiceRegistry} from "../../service/server-service-registry";
+import {TableService} from "../../service/table-service";
+import {SocketIoServerService} from "../../service/socket-io-server-service";
 
 export class IfActionNode extends ActionNode<IfActionEntity> {
+
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService) {
+    super(tableService, socketIoServerService);
+  }
 
   run(...args: string[]): void {
     super.run();
@@ -44,9 +50,9 @@ export class IfActionNode extends ActionNode<IfActionEntity> {
     }
     let action: ActionNode<BaseActionEntity>;
     if (result && this.entity.then)
-      action = <ActionNode<BaseActionEntity>>serverServiceRegistry.socketIo.getNode(this.entity.then);
+      action = <ActionNode<BaseActionEntity>>this.socketIoServerService.getNode(this.entity.then);
     else if (!result && this.entity.else)
-      action = <ActionNode<BaseActionEntity>>serverServiceRegistry.socketIo.getNode(this.entity.else);
+      action = <ActionNode<BaseActionEntity>>this.socketIoServerService.getNode(this.entity.else);
     if (action)
       action.run(...args);
   };

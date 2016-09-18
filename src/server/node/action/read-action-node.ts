@@ -1,9 +1,15 @@
 import {ReadActionEntity} from "../../../common/entity/action/read-action-entity";
 import {ActionNode} from "./action-node";
 import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
-import {serverServiceRegistry} from "../../service/server-service-registry";
+import {SocketIoServerService} from "../../service/socket-io-server-service";
+import {TableService} from "../../service/table-service";
 
 export class ReadActionNode extends ActionNode<ReadActionEntity> {
+
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService) {
+    super(tableService, socketIoServerService);
+  }
 
   run(...args: string[]) {
     super.run();
@@ -26,7 +32,7 @@ export class ReadActionNode extends ActionNode<ReadActionEntity> {
       let value = args[0];
       this.log("debug", `Read response. type=${this.entity.pinType}, pin=${this.entity.pin}, value=${value}`);
       if (this.entity.next) {
-        let action = <ActionNode<BaseActionEntity>>serverServiceRegistry.socketIo.getNode(this.entity.next);
+        let action = <ActionNode<BaseActionEntity>>this.socketIoServerService.getNode(this.entity.next);
         action.run(value);
       }
     });

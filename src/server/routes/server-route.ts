@@ -1,21 +1,31 @@
+import {injectable} from "inversify";
 import {getLogger} from "log4js";
 
 import {BaseRoute} from "./base-route";
 import {Express, Response, Request} from "express";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {ServerNode} from "../node/server-node";
-import {serverServiceRegistry} from "../service/server-service-registry";
+import {TableService} from "../service/table-service";
+import {SocketIoServerService} from "../service/socket-io-server-service";
+import {NodeService} from "../service/node-service";
 
 let logger = getLogger("system");
 
+@injectable()
 export class ServerRoute extends BaseRoute<ServerEntity> {
 
   static EntityClass = ServerEntity;
 
-  serverNode:ServerNode;
+  private serverNode: ServerNode;
 
-  constructor(app: Express) {
-    super(app, false);
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
+    super(tableService, socketIoServerService);
+  }
+
+  initialize(app: Express): void {
+    super.initialize(app, false);
     app.get("/server", this.onIndex);
     app.post("/server/edit", this.onEdit);
     app.get("/server/status", this.onStatus);
@@ -25,7 +35,7 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
   }
 
   index(req: Request, res: Response) {
-    serverServiceRegistry.table.findOne(ServerEntity).then(entity => {
+    this.tableService.findOne(ServerEntity).then(entity => {
       res.json(entity);
     }).catch(err => this.responseErrorJson(res, err));
   }
@@ -46,9 +56,9 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
     }).catch(err => this.responseErrorJson(res, err));
   };
 
-  start():Promise<void> {
+  start(): Promise<void> {
     logger.info("Server node initialize started.");
-    return ServerNode.start().then(serverNode => {
+    return this.nodeService.start().then(serverNode => {
       this.serverNode = serverNode;
       logger.info("Server node initialize finished.");
       return;
@@ -58,7 +68,7 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
     });
   }
 
-  stop():Promise<void> {
+  stop(): Promise<void> {
     logger.info("Server node destruct started.");
     return this.serverNode.finalize().then(() => {
       delete this.serverNode;

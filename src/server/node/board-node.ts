@@ -6,7 +6,8 @@ import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {BridgeNode} from "./bridge/bridge-node";
 import {uid} from "../../common/util/uid";
-import {serverServiceRegistry} from "../service/server-service-registry";
+import {SocketIoServerService} from "../service/socket-io-server-service";
+import {TableService} from "../service/table-service";
 
 export class BoardNode extends BaseNode<BoardEntity> {
 
@@ -20,6 +21,11 @@ export class BoardNode extends BaseNode<BoardEntity> {
 
   private inputVPin: any;
   private sendDeferred: {[key: string]: {resolve: (value: string[]) => void, reject: (reason: any) => void}};
+
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService) {
+    super(tableService, socketIoServerService);
+  }
 
   initialize(): Promise<void> {
     _.defaults(this.entity, {addr: "", port: 8442});
@@ -87,7 +93,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
     } else if (id.length == 4) {
       let args: string[] = params.splice(1);
       this.log("trace", `Receive input data, id='${id}' args=${JSON.stringify(args)}`);
-      let node = serverServiceRegistry.socketIo.getNode(id);
+      let node = this.socketIoServerService.getNode(id);
       if (!node)
         return this.log("warn", `Node id='${id}' was not found.`);
       node.run(...args);

@@ -2,6 +2,7 @@ import path = require("path");
 
 import NeDBDataStore = require("nedb");
 import {getLogger} from "log4js";
+import {injectable} from "inversify";
 
 import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
@@ -10,6 +11,7 @@ import {BaseServerService} from "./base-server-service";
 
 let logger = getLogger("system");
 
+@injectable()
 export class TableService extends BaseServerService {
 
   private dataStores: {[tableName: string]: NeDBDataStore};

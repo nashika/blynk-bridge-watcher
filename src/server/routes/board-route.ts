@@ -1,13 +1,18 @@
-import {BaseRoute} from "./base-route";
-import {Express} from "express";
-import {BoardEntity} from "../../common/entity/board-entity";
+import {injectable} from "inversify";
 
+import {BaseRoute} from "./base-route";
+import {BoardEntity} from "../../common/entity/board-entity";
+import {SocketIoServerService} from "../service/socket-io-server-service";
+import {TableService} from "../service/table-service";
+
+@injectable()
 export class BoardRoute extends BaseRoute<BoardEntity> {
 
   static EntityClass = BoardEntity;
 
-  constructor(app: Express) {
-    super(app, true);
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService) {
+    super(tableService, socketIoServerService);
   }
 
 }

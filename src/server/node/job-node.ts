@@ -6,7 +6,8 @@ import {ServerNode} from "./server-node";
 import {JobEntity} from "../../common/entity/job-entity";
 import {ActionNode} from "./action/action-node";
 import {BaseActionEntity} from "../../common/entity/action/base-action-entity";
-import {serverServiceRegistry} from "../service/server-service-registry";
+import {SocketIoServerService} from "../service/socket-io-server-service";
+import {TableService} from "../service/table-service";
 
 export class JobNode extends BaseNode<JobEntity> {
 
@@ -15,6 +16,11 @@ export class JobNode extends BaseNode<JobEntity> {
   parent: ServerNode;
 
   private cronJob: CronJob;
+
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService) {
+    super(tableService, socketIoServerService);
+  }
 
   initialize(): Promise<void> {
     return super.initialize().then(() => {
@@ -32,7 +38,7 @@ export class JobNode extends BaseNode<JobEntity> {
 
   run(): void {
     super.run();
-    let action = <ActionNode<BaseActionEntity>>serverServiceRegistry.socketIo.getNode(this.entity.action);
+    let action = <ActionNode<BaseActionEntity>>this.socketIoServerService.getNode(this.entity.action);
     if (action.status != "ready") {
       return action.log("warn", `Job '${this.entity._id}' can not run. Action '${action.entity._id}' status='${action.status}' is not ready.`);
     }
