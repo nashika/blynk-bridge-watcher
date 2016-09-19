@@ -17,7 +17,6 @@ export class NotifyActionNode extends ActionNode<NotifyActionEntity> {
     super(tableService, socketIoServerService, nodeService);
   }
 
-
   run(...args:string[]) {
     super.run();
     this.log("debug", `Notify action. notifier="${this.entity.notifier}", message="${this.entity.message}", args="${JSON.stringify(args)}"`);

@@ -9,8 +9,6 @@ import {NodeService} from "../../service/node-service";
 
 export abstract class ActionNode<T extends BaseActionEntity> extends BaseNode<T> {
 
-  static EntityClass = BaseActionEntity;
-
   parent: BridgeNode;
 
   constructor(protected tableService: TableService,

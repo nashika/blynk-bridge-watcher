@@ -16,8 +16,6 @@ export class BoardNode extends BaseNode<BoardEntity> {
 
   SEND_TIMEOUT: number = 10000;
 
-  static EntityClass = BoardEntity;
-
   parent: ServerNode;
   blynk: any;
   bridges: BridgeNode[];

@@ -36,12 +36,12 @@ export class NodeService extends BaseServerService {
     let result: BaseNode<BaseEntity> = kernel.getNamed(BaseNode, entity.Class.params.entityName);
     result.entity = entity;
     result.parent = parent;
-    result.log("trace", `Generate ${result.Class.name} object was started.`);
+    result.log("trace", `Generate ${result.constructor.name} object was started.`);
     result.status = "processing";
     return Promise.resolve().then(() => {
       return result.initialize();
     }).then(() => {
-      result.log("trace", `Generate ${result.Class.name} object was finished.`);
+      result.log("trace", `Generate ${result.constructor.name} object was finished.`);
       return result;
     });
   }

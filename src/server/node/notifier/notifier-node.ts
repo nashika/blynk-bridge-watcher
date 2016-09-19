@@ -7,8 +7,6 @@ import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-
 
 export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNode<T> {
 
-  static EntityClass = BaseNotifierEntity;
-
   parent: ServerNode;
 
   private waiting: boolean = false;

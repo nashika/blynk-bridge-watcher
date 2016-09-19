@@ -14,8 +14,6 @@ import {NodeService} from "../service/node-service";
 @injectable()
 export class JobNode extends BaseNode<JobEntity> {
 
-  static EntityClass = JobEntity;
-
   parent: ServerNode;
 
   private cronJob: CronJob;

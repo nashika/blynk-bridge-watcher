@@ -13,8 +13,6 @@ import {NodeService} from "../service/node-service";
 @injectable()
 export class ServerNode extends BaseNode<ServerEntity> {
 
-  static EntityClass = ServerEntity;
-
   boards: BoardNode[];
   notifiers: NotifierNode<BaseNotifierEntity>[];
   jobs: JobNode[];

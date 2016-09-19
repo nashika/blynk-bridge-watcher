@@ -13,11 +13,12 @@ import {NotifierNode} from "./notifier/notifier-node";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
+import {kernel} from "../../common/inversify.config";
 
 @injectable()
 export abstract class BaseNode<T extends BaseEntity> {
 
-  static EntityClass: typeof BaseEntity;
+  EntityClass: typeof BaseEntity;
 
   parent: BaseNode<BaseEntity>;
   entity: T;
@@ -26,10 +27,8 @@ export abstract class BaseNode<T extends BaseEntity> {
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService,
               protected nodeService: NodeService) {
-  }
-
-  get Class(): typeof BaseNode {
-    return <typeof BaseNode>this.constructor;
+    let name = _.lowerFirst(_.replace(this.constructor.name, /Node$/, ""));
+    this.EntityClass = <any>kernel.getNamed(BaseEntity, name);
   }
 
   get status(): TSocketIoStatus {
@@ -43,7 +42,7 @@ export abstract class BaseNode<T extends BaseEntity> {
 
   initialize(): Promise<void> {
     this.socketIoServerService.registerNode(this);
-    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
+    return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let childNodes: BaseNode<BaseEntity>[] = [];
       _.set(this, key, childNodes);
@@ -66,7 +65,7 @@ export abstract class BaseNode<T extends BaseEntity> {
   finalize(): Promise<void> {
     this.status = "processing";
     this.socketIoServerService.unregisterNode(this.entity._id);
-    return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
+    return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let childNodes = _.get<BaseNode<BaseEntity>[]>(this, key, []);
       return MyPromise.eachPromiseSeries(childNodes, (childNode: BaseNode<BaseEntity>) => {

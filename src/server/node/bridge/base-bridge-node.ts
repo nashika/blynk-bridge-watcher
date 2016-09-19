@@ -8,8 +8,6 @@ export type WidgetBridge = any;
 
 export class BaseBridgeNode extends BaseNode<BridgeEntity> {
 
-  static EntityClass = BridgeEntity;
-
   parent: BoardNode;
   actions: ActionNode<BaseActionEntity>[];
   protected widgetBridge: WidgetBridge;

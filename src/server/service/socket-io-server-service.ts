@@ -93,7 +93,7 @@ export class SocketIoServerService extends BaseServerService {
   }
 
   getNodes(filter: string): BaseNode<BaseEntity>[] {
-    return _.filter(this.nodes, node => !filter || filter == node.Class.EntityClass.params.tableName);
+    return _.filter(this.nodes, node => !filter || filter == node.EntityClass.params.tableName);
   }
 
 }
