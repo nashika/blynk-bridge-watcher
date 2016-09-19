@@ -8,6 +8,7 @@ import {BridgeNode} from "./bridge/bridge-node";
 import {uid} from "../../common/util/uid";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
+import {NodeService} from "../service/node-service";
 
 export class BoardNode extends BaseNode<BoardEntity> {
 
@@ -23,9 +24,11 @@ export class BoardNode extends BaseNode<BoardEntity> {
   private sendDeferred: {[key: string]: {resolve: (value: string[]) => void, reject: (reason: any) => void}};
 
   constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService) {
-    super(tableService, socketIoServerService);
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
+    super(tableService, socketIoServerService, nodeService);
   }
+
 
   initialize(): Promise<void> {
     _.defaults(this.entity, {addr: "", port: 8442});

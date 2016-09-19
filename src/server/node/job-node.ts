@@ -8,6 +8,7 @@ import {ActionNode} from "./action/action-node";
 import {BaseActionEntity} from "../../common/entity/action/base-action-entity";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
+import {NodeService} from "../service/node-service";
 
 export class JobNode extends BaseNode<JobEntity> {
 
@@ -18,9 +19,11 @@ export class JobNode extends BaseNode<JobEntity> {
   private cronJob: CronJob;
 
   constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService) {
-    super(tableService, socketIoServerService);
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
+    super(tableService, socketIoServerService, nodeService);
   }
+
 
   initialize(): Promise<void> {
     return super.initialize().then(() => {

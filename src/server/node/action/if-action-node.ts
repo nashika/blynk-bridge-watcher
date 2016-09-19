@@ -3,13 +3,16 @@ import {IfActionEntity} from "../../../common/entity/action/if-action-entity";
 import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
 import {TableService} from "../../service/table-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
+import {NodeService} from "../../service/node-service";
 
 export class IfActionNode extends ActionNode<IfActionEntity> {
 
   constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService) {
-    super(tableService, socketIoServerService);
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
+    super(tableService, socketIoServerService, nodeService);
   }
+
 
   run(...args: string[]): void {
     super.run();

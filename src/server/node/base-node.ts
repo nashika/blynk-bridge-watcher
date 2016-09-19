@@ -6,12 +6,12 @@ import Socket = SocketIO.Socket;
 
 import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
-import {nodeRegistry} from "./node-registry";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
 import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
 import {NotifierNode} from "./notifier/notifier-node";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
+import {NodeService} from "../service/node-service";
 
 export abstract class BaseNode<T extends BaseEntity> {
 
@@ -22,21 +22,8 @@ export abstract class BaseNode<T extends BaseEntity> {
   _status: TSocketIoStatus;
 
   constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService) {
-  }
-
-  static generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
-    let result: BaseNode<BaseEntity> = new (<any>this)();
-    result.entity = entity;
-    result.parent = parent;
-    result.log("trace", `Generate ${this.name} object was started.`);
-    result.status = "processing";
-    return Promise.resolve().then(() => {
-      return result.initialize();
-    }).then(() => {
-      result.log("trace", `Generate ${this.name} object was finished.`);
-      return result;
-    });
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
   }
 
   get Class(): typeof BaseNode {
@@ -52,7 +39,7 @@ export abstract class BaseNode<T extends BaseEntity> {
     this.socketIoServerService.status(this.entity._id, value);
   }
 
-  protected initialize(): Promise<void> {
+  initialize(): Promise<void> {
     this.socketIoServerService.registerNode(this);
     return MyPromise.eachPromiseSeries(this.Class.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
@@ -63,7 +50,7 @@ export abstract class BaseNode<T extends BaseEntity> {
       }).then(entities => {
         return MyPromise.eachPromiseSeries(entities, (entity: BaseEntity) => {
           return Promise.resolve().then(() => {
-            return nodeRegistry.generate(ChildEntityClass.params.tableName, entity, this);
+            return this.nodeService.generate(this, entity);
           }).then(node => {
             childNodes.push(node);
           });

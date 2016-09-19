@@ -4,13 +4,16 @@ import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-
 import {NotifierNode} from "../notifier/notifier-node";
 import {TableService} from "../../service/table-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
+import {NodeService} from "../../service/node-service";
 
 export class NotifyActionNode extends ActionNode<NotifyActionEntity> {
 
   constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService) {
-    super(tableService, socketIoServerService);
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
+    super(tableService, socketIoServerService, nodeService);
   }
+
 
   run(...args:string[]) {
     super.run();
