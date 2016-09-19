@@ -10,6 +10,10 @@ export interface ISocketIoLogData extends ISocketIoData {
   timestamp: string;
 }
 
+export interface ISocketIoCountLogData extends ISocketIoData {
+  count: number;
+}
+
 export type TSocketIoStatus = "connecting" | "processing" | "ready" | "stop" | "error";
 
 export interface ISocketIoStatusData extends ISocketIoData {
@@ -18,4 +22,13 @@ export interface ISocketIoStatusData extends ISocketIoData {
 
 export interface ISocketIoSendData extends ISocketIoData {
   args: any[];
+}
+
+export interface ISocketIoRequestLogsData extends ISocketIoData {
+  page: number;
+  limit: number;
+}
+
+export interface ISocketIoResponseLogsData extends ISocketIoData {
+  logs: ISocketIoLogData[];
 }

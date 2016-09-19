@@ -32,7 +32,7 @@ section(v-if="!add", :class="EntityClass.params.tableName")
             a(@click="move(false)") #[i.fa.fa-arrow-up] Move Up
           li(v-if="parent && !isLast")
             a(@click="move(true)") #[i.fa.fa-arrow-down] Move Down
-      button.btn.btn-default.btn-sm(type="button", @click="showLogs = true") #[i.fa.fa-terminal] {{logs.length}}
+      button.btn.btn-default.btn-sm(type="button", @click="showLogs = true") #[i.fa.fa-terminal] {{countLog}}
       button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
       button.btn.btn-default.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
       button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]
@@ -44,7 +44,7 @@ section(v-if="!add", :class="EntityClass.params.tableName")
         | &nbsp;{{title}}
   .body
     block body
-  logs-component(:show.sync="showLogs", :logs="logs")
+  logs-component(:show.sync="showLogs", :id="entity._id", :count="countLog")
 .add(v-else)
   button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
   type="button", @click="showEdit = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}

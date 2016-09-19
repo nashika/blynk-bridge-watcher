@@ -4,7 +4,7 @@ var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
-import {TSocketIoStatus, ISocketIoLogData} from "../../../common/util/socket-io-util";
+import {TSocketIoStatus} from "../../../common/util/socket-io-util";
 import {LogsComponent} from "../element/logs-component";
 import {EditComponent} from "../element/edit-component";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
@@ -50,7 +50,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   showLogs: boolean;
   runningCount: number;
   status: TSocketIoStatus;
-  logs: ISocketIoLogData[];
+  countLog: number;
 
   get this(): BaseNodeComponent<BaseEntity> {
     return this;
@@ -64,7 +64,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
       showLogs: false,
       runningCount: 0,
       status: "connecting",
-      logs: [],
+      countLog: 0,
     });
   }
 
@@ -72,7 +72,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     if (!this.add) {
       this.socketIoClientService.registerComponent(this);
       this.status = this.socketIoClientService.getStatus(this.entity._id);
-      this.logs = this.socketIoClientService.getLogs(this.entity._id);
+      this.countLog = this.socketIoClientService.getCountLog(this.entity._id);
       this.reload();
     }
   }
@@ -144,12 +144,12 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     setTimeout(() => this.runningCount--, 1000);
   }
 
-  addLog(data: ISocketIoLogData) {
-    this.logs.push(data);
+  setCountLog(count: number) {
+    this.countLog = count;
   }
 
   clearLog() {
-    this.logs = [];
+    this.countLog = 0;
   }
 
   get title(): string {

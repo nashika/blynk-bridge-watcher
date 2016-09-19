@@ -6,7 +6,7 @@ import _ = require("lodash");
 import {BaseService} from "./base-service";
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
-  ISocketIoSendData, ISocketIoData
+  ISocketIoSendData, ISocketIoData, ISocketIoCountLogData, ISocketIoResponseLogsData, ISocketIoRequestLogsData
 } from "../../common/util/socket-io-util";
 import {BaseNodeComponent} from "../component/node/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
@@ -14,15 +14,16 @@ import {BaseEntity} from "../../common/entity/base-entity";
 @injectable()
 export class SocketIoClientService extends BaseService {
 
-  protected socket: Socket;
-  protected components: {[_id: string]: BaseNodeComponent<BaseEntity>};
-  protected logs: ISocketIoLogData[];
-  protected statuses: {[_id: string]: ISocketIoStatusData};
+  private socket: Socket;
+  private components: {[_id: string]: BaseNodeComponent<BaseEntity>};
+  private countLogs: {[_id: string]: number};
+  private statuses: {[_id: string]: ISocketIoStatusData};
+  private logsDeferred: {resolve: (value: ISocketIoLogData[]) => void, reject: (reason: any) => void};
 
   constructor() {
     super();
     this.components = {};
-    this.logs = [];
+    this.countLogs = {};
     this.statuses = {};
   }
 
@@ -31,7 +32,7 @@ export class SocketIoClientService extends BaseService {
     this.socket.on("connect", this.onConnect);
     this.socket.on("disconnect", this.onDisconnect);
     this.socket.on("run", this.onRun);
-    this.socket.on("log", this.onLog);
+    this.socket.on("countLog", this.onCountLog);
     this.socket.on("status", this.onStatus);
   }
 
@@ -43,18 +44,17 @@ export class SocketIoClientService extends BaseService {
       this.components[_id].status = "connecting";
       this.components[_id].clearLog();
       this.statuses[_id].status = "connecting";
+      this.countLogs[_id] = 0;
     }
-    this.logs = [];
   };
 
   private onRun = (data: ISocketIoData) => {
     if (this.components[data._id]) this.components[data._id].notifyRun();
   };
 
-  private onLog = (data: ISocketIoLogData) => {
-    this.logs.push(data);
-    if (this.components[data._id]) this.components[data._id].addLog(data);
-    console.log(`${data._id} [${data.level}] ${data.message}`);
+  private onCountLog = (data: ISocketIoCountLogData) => {
+    this.countLogs[data._id] = data.count;
+    if (this.components[data._id]) this.components[data._id].setCountLog(data.count);
   };
 
   private onStatus = (data: ISocketIoStatusData) => {
@@ -80,8 +80,17 @@ export class SocketIoClientService extends BaseService {
     return this.statuses[_id] ? this.statuses[_id].status : "connecting";
   }
 
-  getLogs(_id: string): ISocketIoLogData[] {
-    return this.logs.filter(log => log._id == _id);
+  getCountLog(_id: string): number {
+    return this.countLogs[_id] || 0;
+  }
+
+  getLogs(_id: string, page: number, limit: number): Promise<ISocketIoLogData[]> {
+    return new Promise((resolve, reject) => {
+      let request: ISocketIoRequestLogsData = {_id: _id, page: page, limit: limit};
+      this.socket.emit("logs", request, (data: ISocketIoResponseLogsData) => {
+        resolve(data.logs);
+      });
+    });
   }
 
   send(_id: string, ...args: any[]) {
