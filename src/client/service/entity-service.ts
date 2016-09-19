@@ -1,10 +1,12 @@
 import request = require("superagent");
 import _ = require("lodash");
+import {injectable} from "inversify";
 
 import {BaseService} from "./base-service";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {entityRegistry} from "../../common/entity/entity-registry";
 
+@injectable()
 export class EntityService extends BaseService {
 
   getOne<T extends BaseEntity>(EntityClass: typeof BaseEntity, id: string = ""): Promise<T> {

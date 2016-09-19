@@ -3,7 +3,6 @@ import _ = require("lodash");
 
 import {BaseActionNodeComponent} from "./base-action-node-component";
 import {IfActionEntity} from "../../../../common/entity/action/if-action-entity";
-import {serviceRegistry} from "../../../service/service-registry";
 
 let template = require("./if-action-node-component.jade");
 
@@ -19,7 +18,7 @@ export class IfActionNodeComponent extends BaseActionNodeComponent<IfActionEntit
   }
 
   run(flag: boolean) {
-    serviceRegistry.socketIo.send(this.entity._id, flag ? "if" : "else");
+    this.socketIoClientService.send(this.entity._id, flag ? "if" : "else");
   }
 
 }

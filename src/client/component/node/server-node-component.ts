@@ -9,7 +9,8 @@ import {BaseNodeComponent} from "./base-node-component";
 import {NotifierNodeComponent} from "./notifier/notifier-node-component";
 import {JobNodeComponent} from "./job-node-component";
 import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
-import {serviceRegistry} from "../../service/service-registry";
+import {ServerService} from "../../service/server-service";
+import {kernel} from "../../../common/inversify.config";
 
 let template = require("./server-node-component.jade");
 
@@ -23,12 +24,14 @@ let template = require("./server-node-component.jade");
 })
 export class ServerNodeComponent extends BaseNodeComponent<ServerEntity> {
 
+  serverService: ServerService;
   boards: BoardEntity[];
   notifiers: BaseNotifierEntity[];
   jobs: JobEntity[];
 
   data(): any {
     return _.assign(super.data(), {
+      serverService: kernel.get(ServerService),
       EntityClass: ServerEntity,
       boards: null,
       notifiers: null,
@@ -37,11 +40,11 @@ export class ServerNodeComponent extends BaseNodeComponent<ServerEntity> {
   }
 
   start() {
-    serviceRegistry.server.start();
+    this.serverService.start();
   }
 
   stop() {
-    serviceRegistry.server.stop();
+    this.serverService.stop();
   }
 
 }

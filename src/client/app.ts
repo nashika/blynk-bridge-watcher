@@ -3,9 +3,12 @@ import "./scss/style.scss";
 
 import "core-js";
 
-import {AppComponent} from "./component/app-component";
-import {serviceRegistry} from "./service/service-registry";
+import "./inversify.config";
+import {kernel} from "../common/inversify.config";
+import {SocketIoClientService} from "./service/socket-io-client-service";
 
-let app:AppComponent = new (<any>AppComponent)({el: "#app"});
+let AppComponent = kernel.getNamed("Newable<Component>", "app");
+let app = new (<any>AppComponent)({el: "#app"});
 
-serviceRegistry.socketIo.initialize();
+let socketIoClientService = kernel.get(SocketIoClientService);
+socketIoClientService.initialize();

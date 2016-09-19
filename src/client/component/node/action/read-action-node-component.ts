@@ -3,7 +3,6 @@ import _ = require("lodash");
 
 import {BaseActionNodeComponent} from "./base-action-node-component";
 import {ReadActionEntity} from "../../../../common/entity/action/read-action-entity";
-import {serviceRegistry} from "../../../service/service-registry";
 
 let template = require("./read-action-node-component.jade");
 
