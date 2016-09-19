@@ -1,10 +1,11 @@
 import {Express, Request, Response} from "express";
 import _ = require("lodash");
 import log4js = require("log4js");
+import {injectable, inject} from "inversify";
 
 import {BaseEntity} from "../../common/entity/base-entity";
-import {entityRegistry} from "../../common/entity/entity-registry";
-import {serverServiceRegistry} from "../service/server-service-registry";
+import {TableService} from "../service/table-service";
+import {SocketIoServerService} from "../service/socket-io-server-service";
 
 let logger = log4js.getLogger("system");
 
@@ -27,21 +28,30 @@ export class Code500Error extends CodeError {
   message: string = "Internal Server Error";
 }
 
+@injectable()
 export abstract class BaseRoute<T extends BaseEntity> {
 
-  static EntityClass:typeof BaseEntity;
+  static EntityClass: typeof BaseEntity;
 
-  constructor(protected app: Express, applyDefaultRoute:boolean) {
+  protected app: Express;
+  @inject("Factory<Entity>") protected entityFactory: (tableName: string, data: any) => BaseEntity;
+
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService) {
+  }
+
+  get Class(): typeof BaseRoute {
+    return <typeof BaseRoute>this.constructor;
+  }
+
+  initialize(app: Express, applyDefaultRoute: boolean = true): void {
+    this.app = app;
     if (applyDefaultRoute) {
       app.post(`/${this.Class.EntityClass.params.tableName}`, this.onIndex);
       app.post(`/${this.Class.EntityClass.params.tableName}/add`, this.onAdd);
       app.post(`/${this.Class.EntityClass.params.tableName}/edit`, this.onEdit);
       app.post(`/${this.Class.EntityClass.params.tableName}/remove`, this.onRemove);
     }
-  }
-
-  get Class():typeof BaseRoute {
-    return <typeof BaseRoute>this.constructor;
   }
 
   onIndex = (req: Request, res: Response) => {
@@ -61,29 +71,29 @@ export abstract class BaseRoute<T extends BaseEntity> {
   };
 
   index(req: Request, res: Response) {
-    serverServiceRegistry.table.find(this.Class.EntityClass, req.body).then(entities => {
+    this.tableService.find(this.Class.EntityClass, req.body).then(entities => {
       res.json(entities);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   add(req: Request, res: Response) {
-    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
-    serverServiceRegistry.table.insert(entity).then(newEntity => {
-      serverServiceRegistry.socketIo.status(newEntity._id, "stop");
+    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
+    this.tableService.insert(entity).then(newEntity => {
+      this.socketIoServerService.status(newEntity._id, "stop");
       res.json(newEntity);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   edit(req: Request, res: Response) {
-    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
-    serverServiceRegistry.table.update(entity).then(updatedEntity => {
+    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
+    this.tableService.update(entity).then(updatedEntity => {
       res.json(updatedEntity);
     });
   }
 
   remove(req: Request, res: Response) {
-    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
-    serverServiceRegistry.table.remove(entity).then(() => {
+    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
+    this.tableService.remove(entity).then(() => {
       res.json(true);
     });
   }

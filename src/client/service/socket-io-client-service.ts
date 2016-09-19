@@ -1,8 +1,9 @@
+import {injectable} from "inversify";
 import socketIo = require("socket.io-client");
-import {BaseService} from "./base-service";
 import Socket = SocketIOClient.Socket;
 import _ = require("lodash");
 
+import {BaseService} from "./base-service";
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
   ISocketIoSendData, ISocketIoData
@@ -10,6 +11,7 @@ import {
 import {BaseNodeComponent} from "../component/node/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
 
+@injectable()
 export class SocketIoClientService extends BaseService {
 
   protected socket: Socket;

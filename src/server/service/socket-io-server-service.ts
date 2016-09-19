@@ -3,6 +3,7 @@ import {Server as HttpServer} from "http";
 import Server = SocketIO.Server;
 import Socket = SocketIO.Socket;
 import _ = require("lodash");
+import {injectable} from "inversify";
 
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus, TSocketIoLogLevel,
@@ -10,8 +11,10 @@ import {
 } from "../../common/util/socket-io-util";
 import {BaseNode} from "../node/base-node";
 import {BaseEntity} from "../../common/entity/base-entity";
+import {BaseServerService} from "./base-server-service";
 
-export class SocketIoServerService {
+@injectable()
+export class SocketIoServerService extends BaseServerService {
 
   private io: Server;
   private logs: ISocketIoLogData[];
@@ -19,6 +22,7 @@ export class SocketIoServerService {
   private nodes: {[_id: string]: BaseNode<BaseEntity>};
 
   constructor() {
+    super();
     this.logs = [];
     this.statuses = {};
     this.nodes = {};

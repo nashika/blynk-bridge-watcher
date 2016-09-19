@@ -1,10 +1,16 @@
-import {serverServiceRegistry} from "./service/server-service-registry";
-require("source-map-support").install();
+import sourceMapSupport = require("source-map-support");
+sourceMapSupport.install();
 
-import http = require('http');
+import "reflect-metadata";
+import http = require("http");
 
 import commander = require("commander");
 import _ = require("lodash");
+
+import "./inversify.config";
+import {kernel} from "../common/inversify.config";
+import {SocketIoServerService} from "./service/socket-io-server-service";
+import {app} from "./app-express";
 
 let pjson = require("../../package");
 
@@ -16,7 +22,6 @@ commander
 let port:number = _.get<number>(commander, "port");
 port = port || 3000;
 
-import {app} from "./app-express";
 let debug = require('debug')('server:server');
 
 app.set('port', port);
@@ -73,4 +78,4 @@ function onListening() {
 
 
 // initialize socket.io
-serverServiceRegistry.socketIo.initialize(server);
+kernel.get<SocketIoServerService>(SocketIoServerService).initialize(server);

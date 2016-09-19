@@ -3,11 +3,13 @@ import Component from "vue-class-component";
 var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "../base-component";
-import {serviceRegistry} from "../../service/service-registry";
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {TSocketIoStatus, ISocketIoLogData} from "../../../common/util/socket-io-util";
 import {LogsComponent} from "../element/logs-component";
 import {EditComponent} from "../element/edit-component";
+import {SocketIoClientService} from "../../service/socket-io-client-service";
+import {EntityService} from "../../service/entity-service";
+import {kernel} from "../../../common/inversify.config";
 
 @Component({
   components: {
@@ -33,7 +35,6 @@ import {EditComponent} from "../element/edit-component";
       type: Boolean,
     }
   },
-  ready: BaseNodeComponent.prototype.onReady,
 })
 export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
@@ -43,6 +44,8 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   add: boolean;
 
   EntityClass: typeof BaseEntity;
+  entityService: EntityService;
+  socketIoClientService: SocketIoClientService;
   showEdit: boolean;
   showLogs: boolean;
   runningCount: number;
@@ -55,6 +58,8 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   data(): any {
     return _.assign(super.data(), {
+      entityService: kernel.get(EntityService),
+      socketIoClientService: kernel.get(SocketIoClientService),
       showEdit: false,
       showLogs: false,
       runningCount: 0,
@@ -63,11 +68,11 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
-  onReady() {
+  ready() {
     if (!this.add) {
-      serviceRegistry.socketIo.registerComponent(this);
-      this.status = serviceRegistry.socketIo.getStatus(this.entity._id);
-      this.logs = serviceRegistry.socketIo.getLogs(this.entity._id);
+      this.socketIoClientService.registerComponent(this);
+      this.status = this.socketIoClientService.getStatus(this.entity._id);
+      this.logs = this.socketIoClientService.getLogs(this.entity._id);
       this.reload();
     }
   }
@@ -75,29 +80,29 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   reload() {
     _.forIn(this.EntityClass.params.children, (EntityClass: typeof BaseEntity, key: string) => {
       _.forEach(_.get(this, key), (entity: BaseEntity) => {
-        serviceRegistry.socketIo.unregisterComponent(entity._id);
+        this.socketIoClientService.unregisterComponent(entity._id);
       });
       _.set(this, key, null);
-      serviceRegistry.entity.getChildren(EntityClass, this.entity._id).then(entities => {
+      this.entityService.getChildren(EntityClass, this.entity._id).then(entities => {
         _.set(this, key, entities);
       });
     });
   }
 
   run(...args: any[]) {
-    serviceRegistry.socketIo.send(this.entity._id);
+    this.socketIoClientService.send(this.entity._id);
   }
 
   edit(editEntity: T) {
     if (this.add) {
       editEntity._parent = this.parent.entity._id;
       editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
-      serviceRegistry.entity.add(editEntity).then(entity => {
+      this.entityService.add(editEntity).then(entity => {
         editEntity = <T>this.EntityClass.generateDefault();
         this.parent.reload();
       });
     } else {
-      serviceRegistry.entity.edit(editEntity).then(entity => {
+      this.entityService.edit(editEntity).then(entity => {
         this.parent.reload();
       });
     }
@@ -105,7 +110,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   remove() {
     if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} id:${this.entity._id}?`)) return;
-    serviceRegistry.entity.remove(this.entity).then(entity => {
+    this.entityService.remove(this.entity).then(entity => {
       this.parent.reload();
     });
   }
@@ -126,9 +131,9 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     entity1._orderNo = entity2._orderNo;
     entity2._orderNo = tmpNo;
     Promise.resolve().then(() => {
-      return serviceRegistry.entity.edit(entity1);
+      return this.entityService.edit(entity1);
     }).then(entity => {
-      return serviceRegistry.entity.edit(entity2);
+      return this.entityService.edit(entity2);
     }).then(entity => {
       this.parent.reload();
     });

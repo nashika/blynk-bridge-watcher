@@ -1,8 +1,10 @@
 import request = require("superagent");
+import {injectable} from "inversify";
 
 import {BaseService} from "./base-service";
 import _ = require("lodash");
 
+@injectable()
 export class ServerService extends BaseService {
 
   start(): Promise<void> {
