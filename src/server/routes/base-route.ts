@@ -1,10 +1,9 @@
 import {Express, Request, Response} from "express";
 import _ = require("lodash");
 import log4js = require("log4js");
-import {injectable} from "inversify";
+import {injectable, inject} from "inversify";
 
 import {BaseEntity} from "../../common/entity/base-entity";
-import {entityRegistry} from "../../common/entity/entity-registry";
 import {TableService} from "../service/table-service";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 
@@ -35,6 +34,7 @@ export abstract class BaseRoute<T extends BaseEntity> {
   static EntityClass: typeof BaseEntity;
 
   protected app: Express;
+  @inject("Factory<BaseEntity>") protected entityFactory: (tableName: string, data: any) => BaseEntity;
 
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService) {
@@ -77,7 +77,7 @@ export abstract class BaseRoute<T extends BaseEntity> {
   }
 
   add(req: Request, res: Response) {
-    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
+    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
     this.tableService.insert(entity).then(newEntity => {
       this.socketIoServerService.status(newEntity._id, "stop");
       res.json(newEntity);
@@ -85,14 +85,14 @@ export abstract class BaseRoute<T extends BaseEntity> {
   }
 
   edit(req: Request, res: Response) {
-    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
+    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
     this.tableService.update(entity).then(updatedEntity => {
       res.json(updatedEntity);
     });
   }
 
   remove(req: Request, res: Response) {
-    let entity = entityRegistry.generate(this.Class.EntityClass.params.tableName, req.body);
+    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
     this.tableService.remove(entity).then(() => {
       res.json(true);
     });

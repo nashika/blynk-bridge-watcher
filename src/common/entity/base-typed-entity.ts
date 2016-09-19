@@ -2,7 +2,7 @@ import _ = require("lodash");
 
 import {BaseEntity, IEntityParams} from "./base-entity";
 
-export class BaseTypedEntity extends BaseEntity {
+export abstract class BaseTypedEntity extends BaseEntity {
 
   static params: IEntityParams = {
     tableName: "",

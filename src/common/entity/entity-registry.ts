@@ -42,7 +42,7 @@ export class EntityRegistry extends ClassRegistry<BaseEntity> {
       entityName = _.camelCase(tableName);
     }
     let EntityClass = this.getClass(entityName);
-    return new EntityClass(data);
+    return new (<any>EntityClass)(data);
   }
 
 }

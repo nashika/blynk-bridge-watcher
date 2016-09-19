@@ -18,7 +18,7 @@ export interface IEntityFieldParams {
   filter?: string;
 }
 
-export class BaseEntity {
+export abstract class BaseEntity {
 
   static params: IEntityParams = {
     tableName: "",
@@ -64,7 +64,7 @@ export class BaseEntity {
   }
 
   static generateDefault<T extends BaseEntity>(): T {
-    let result: T = <T>(new this());
+    let result: T = <T>(new (<any>this)());
     _.forEach(this.params.fields, (field: IEntityFieldParams, name: string) => {
       if (!_.isUndefined(field.default) && field.required)
         _.set(result, name, field.default);

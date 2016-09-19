@@ -4,7 +4,7 @@ import {IEntityParams} from "../base-entity";
 import {BaseTypedEntity} from "../base-typed-entity";
 import {TSocketIoLogLevel} from "../../util/socket-io-util";
 
-export class BaseNotifierEntity extends BaseTypedEntity {
+export abstract class BaseNotifierEntity extends BaseTypedEntity {
 
   static params: IEntityParams = {
     tableName: "notifier",
