@@ -35,7 +35,6 @@ import {kernel} from "../../../common/inversify.config";
       type: Boolean,
     }
   },
-  ready: BaseNodeComponent.prototype.onReady,
 })
 export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
@@ -69,7 +68,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
-  onReady() {
+  ready() {
     if (!this.add) {
       this.socketIoClientService.registerComponent(this);
       this.status = this.socketIoClientService.getStatus(this.entity._id);

@@ -15,7 +15,7 @@ export class TableService extends BaseServerService {
 
   private dataStores: {[tableName: string]: NeDBDataStore};
 
-  constructor(@inject("Factory<BaseEntity>") protected entityFactory: (tableName: string, data: any) => BaseEntity) {
+  constructor(@inject("Factory<Entity>") protected entityFactory: (tableName: string, data: any) => BaseEntity) {
     super();
     this.dataStores = {};
   }

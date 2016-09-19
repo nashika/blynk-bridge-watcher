@@ -28,7 +28,7 @@ kernel.bind(BaseEntity).toConstructor(BridgeEntity).whenTargetNamed("bridge");
 kernel.bind(BaseEntity).toConstructor(JobEntity).whenTargetNamed("job");
 kernel.bind(BaseEntity).toConstructor(ServerEntity).whenTargetNamed("server");
 
-kernel.bind<interfaces.Factory<BaseEntity>>("Factory<BaseEntity>").toFactory<BaseEntity>(context => {
+kernel.bind<interfaces.Factory<BaseEntity>>("Factory<Entity>").toFactory<BaseEntity>(context => {
   return (tableName: string, data: any) => {
     let entityName: string;
     if (data.type) {

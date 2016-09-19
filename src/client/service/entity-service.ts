@@ -8,7 +8,7 @@ import {BaseEntity} from "../../common/entity/base-entity";
 @injectable()
 export class EntityService extends BaseService {
 
-  constructor(@inject("Factory<BaseEntity>") protected entityFactory: (tableName: string, data: any) => BaseEntity) {
+  constructor(@inject("Factory<Entity>") protected entityFactory: (tableName: string, data: any) => BaseEntity) {
     super();
   }
 

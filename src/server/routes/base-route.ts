@@ -34,7 +34,7 @@ export abstract class BaseRoute<T extends BaseEntity> {
   static EntityClass: typeof BaseEntity;
 
   protected app: Express;
-  @inject("Factory<BaseEntity>") protected entityFactory: (tableName: string, data: any) => BaseEntity;
+  @inject("Factory<Entity>") protected entityFactory: (tableName: string, data: any) => BaseEntity;
 
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService) {

@@ -13,7 +13,6 @@ let template = require("./app-component.jade");
   components: {
     "server-component": ServerNodeComponent,
   },
-  ready: AppComponent.prototype.onReady,
 })
 export class AppComponent extends BaseComponent {
 
@@ -27,7 +26,7 @@ export class AppComponent extends BaseComponent {
     }
   }
 
-  onReady() {
+  ready() {
     this.entityService.getOne(ServerEntity).then(entity => {
       this.server = entity;
     });
