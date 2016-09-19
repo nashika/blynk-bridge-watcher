@@ -1,13 +1,16 @@
 import request = require("superagent");
 import _ = require("lodash");
-import {injectable} from "inversify";
+import {injectable, inject} from "inversify";
 
 import {BaseService} from "./base-service";
 import {BaseEntity} from "../../common/entity/base-entity";
-import {entityRegistry} from "../../common/entity/entity-registry";
 
 @injectable()
 export class EntityService extends BaseService {
+
+  constructor(@inject("Factory<BaseEntity>") protected entityFactory: (tableName: string, data: any) => BaseEntity) {
+    super();
+  }
 
   getOne<T extends BaseEntity>(EntityClass: typeof BaseEntity, id: string = ""): Promise<T> {
     let url: string;
@@ -18,7 +21,7 @@ export class EntityService extends BaseService {
     }
     return request.get(url).then(res => {
       if (!_.isObject(res.body)) throw new Error(`getOne expects one entity object.`);
-      return <T>entityRegistry.generate(EntityClass.params.tableName, res.body);
+      return <T>this.entityFactory(EntityClass.params.tableName, res.body);
     });
   }
 
@@ -30,7 +33,7 @@ export class EntityService extends BaseService {
     let url: string = `/${EntityClass.params.tableName}`;
     return request.post(url).send(query).then(res => {
       if (!_.isArray(res.body)) throw new Error(`getAll expects entity array.`);
-      return _.map(res.body, data => <T>entityRegistry.generate(EntityClass.params.tableName, data));
+      return _.map(res.body, data => <T>this.entityFactory(EntityClass.params.tableName, data));
     });
   }
 
@@ -38,7 +41,7 @@ export class EntityService extends BaseService {
     this.cleanEntity(entity);
     let url: string = `/${entity.Class.params.tableName}/add`;
     return request.post(url).send(entity).then(res => {
-      return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
+      return <T>this.entityFactory(entity.Class.params.tableName, res.body);
     });
   }
 
@@ -46,7 +49,7 @@ export class EntityService extends BaseService {
     this.cleanEntity(entity);
     let url: string = `/${entity.Class.params.tableName}/edit`;
     return request.post(url).send(entity).then(res => {
-      return <T>entityRegistry.generate(entity.Class.params.tableName, res.body);
+      return <T>this.entityFactory(entity.Class.params.tableName, res.body);
     });
   }
 
