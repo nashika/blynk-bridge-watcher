@@ -26,7 +26,6 @@ export class JobNode extends BaseNode<JobEntity> {
     super(tableService, socketIoServerService, nodeService);
   }
 
-
   initialize(): Promise<void> {
     return super.initialize().then(() => {
       _.defaults(this.entity, {});
@@ -38,6 +37,13 @@ export class JobNode extends BaseNode<JobEntity> {
       }
       this.cronJob.start();
       this.status = "ready";
+    });
+  }
+
+  finalize(): Promise<void> {
+    return super.finalize().then(() => {
+      this.cronJob.stop();
+      this.cronJob = null;
     });
   }
 
