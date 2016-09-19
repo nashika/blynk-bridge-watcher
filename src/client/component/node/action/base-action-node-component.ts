@@ -8,9 +8,7 @@ import {BaseActionEntity} from "../../../../common/entity/action/base-action-ent
 export class BaseActionNodeComponent<T extends BaseActionEntity> extends BaseNodeComponent<T> {
 
   data(): any {
-    return _.merge(super.data(), {
-      EntityClass: BaseActionEntity,
-    });
+    return _.merge(super.data(), {});
   }
 
 }

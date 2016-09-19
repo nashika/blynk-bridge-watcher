@@ -11,9 +11,7 @@ export class BaseNotifierNodeComponent<T extends BaseNotifierEntity> extends Bas
   parent: ServerNodeComponent;
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: BaseNotifierEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
   run() {

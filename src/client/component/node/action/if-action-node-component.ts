@@ -12,9 +12,7 @@ let template = require("./if-action-node-component.jade");
 export class IfActionNodeComponent extends BaseActionNodeComponent<IfActionEntity> {
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: IfActionEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
   run(flag: boolean) {

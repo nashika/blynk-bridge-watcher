@@ -22,7 +22,6 @@ export class BridgeNodeComponent extends BaseNodeComponent<BridgeEntity> {
 
   data(): any {
     return _.assign(super.data(), {
-      EntityClass: BridgeEntity,
       actions: null,
     });
   }

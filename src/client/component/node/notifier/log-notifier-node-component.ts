@@ -12,9 +12,7 @@ let template = require("./log-notifier-node-component.jade");
 export class LogNotifierNodeComponent extends BaseNotifierNodeComponent<LogNotifierEntity> {
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: LogNotifierEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
 }

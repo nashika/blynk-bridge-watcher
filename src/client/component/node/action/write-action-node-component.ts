@@ -12,9 +12,7 @@ let template = require("./write-action-node-component.jade");
 export class WriteActionNodeComponent extends BaseActionNodeComponent<WriteActionEntity> {
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: WriteActionEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
   get shortPinType(): string {

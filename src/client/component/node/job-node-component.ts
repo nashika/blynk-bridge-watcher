@@ -15,9 +15,7 @@ export class JobNodeComponent extends BaseNodeComponent<JobEntity> {
   parent: ServerNodeComponent;
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: JobEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
 }

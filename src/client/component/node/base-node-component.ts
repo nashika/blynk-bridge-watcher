@@ -57,7 +57,9 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   }
 
   data(): any {
+    let name = _.lowerFirst(_.replace(this.constructor.name, /NodeComponent$/, ""));
     return _.assign(super.data(), {
+      EntityClass: <any>kernel.getNamed(BaseEntity, name),
       entityService: kernel.get(EntityService),
       socketIoClientService: kernel.get(SocketIoClientService),
       showEdit: false,

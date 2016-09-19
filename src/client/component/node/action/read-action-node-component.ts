@@ -12,9 +12,7 @@ let template = require("./read-action-node-component.jade");
 export class ReadActionNodeComponent extends BaseActionNodeComponent<ReadActionEntity> {
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: ReadActionEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
   get shortPinType(): string {

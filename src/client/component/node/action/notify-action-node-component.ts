@@ -12,9 +12,7 @@ let template = require("./notify-action-node-component.jade");
 export class NotifyActionNodeComponent extends BaseActionNodeComponent<NotifyActionEntity> {
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: NotifyActionEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
 }

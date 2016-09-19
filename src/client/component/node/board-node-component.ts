@@ -22,7 +22,6 @@ export class BoardNodeComponent extends BaseNodeComponent<BoardEntity> {
 
   data(): any {
     return _.assign(super.data(), {
-      EntityClass: BoardEntity,
       bridges: null,
     });
   }

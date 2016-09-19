@@ -19,9 +19,7 @@ let template = require("./notifier-node-component.jade");
 export class NotifierNodeComponent extends BaseSwitchNodeComponent<BaseNotifierEntity> {
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: BaseActionEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
 }

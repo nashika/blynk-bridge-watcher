@@ -12,9 +12,7 @@ let template = require("./log-action-node-component.jade");
 export class LogActionNodeComponent extends BaseActionNodeComponent<LogActionEntity> {
 
   data(): any {
-    return _.assign(super.data(), {
-      EntityClass: LogActionEntity,
-    });
+    return _.assign(super.data(), {});
   }
 
 }
