@@ -1,3 +1,5 @@
+import {injectable} from "inversify";
+
 import {ActionNode} from "./action-node";
 import {NotifyActionEntity} from "../../../common/entity/action/notify-action-entity";
 import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
@@ -6,6 +8,7 @@ import {TableService} from "../../service/table-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {NodeService} from "../../service/node-service";
 
+@injectable()
 export class NotifyActionNode extends ActionNode<NotifyActionEntity> {
 
   constructor(protected tableService: TableService,

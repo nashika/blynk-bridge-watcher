@@ -3,6 +3,7 @@ import util = require("util");
 import _ = require("lodash");
 import log4js = require("log4js");
 import Socket = SocketIO.Socket;
+import {injectable} from "inversify";
 
 import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
@@ -13,6 +14,7 @@ import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 
+@injectable()
 export abstract class BaseNode<T extends BaseEntity> {
 
   static EntityClass: typeof BaseEntity;

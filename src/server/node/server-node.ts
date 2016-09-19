@@ -1,3 +1,5 @@
+import {injectable} from "inversify";
+
 import {BaseNode} from "./base-node";
 import {BoardNode} from "./board-node";
 import {NotifierNode} from "./notifier/notifier-node";
@@ -8,6 +10,7 @@ import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 
+@injectable()
 export class ServerNode extends BaseNode<ServerEntity> {
 
   static EntityClass = ServerEntity;

@@ -1,14 +1,24 @@
+import {injectable} from "inversify";
 var Pushbullet = require("pushbullet");
 
 import {NotifierNode} from "./notifier-node";
-import {ServerNode} from "../server-node";
 import {PushbulletNotifierEntity} from "../../../common/entity/notifier/pushbullet-notifier-entity";
+import {NodeService} from "../../service/node-service";
+import {SocketIoServerService} from "../../service/socket-io-server-service";
+import {TableService} from "../../service/table-service";
 
 type Pushbullet = any;
 
+@injectable()
 export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierEntity> {
 
   private pushbullet: Pushbullet;
+
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
+    super(tableService, socketIoServerService, nodeService);
+  }
 
   initialize(): Promise<void> {
     this.pushbullet = new Pushbullet(this.entity.apiKey);

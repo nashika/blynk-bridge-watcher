@@ -1,4 +1,5 @@
 import _ = require("lodash");
+import {injectable} from "inversify";
 var Blynk = require("blynk-library");
 
 import {BoardEntity} from "../../common/entity/board-entity";
@@ -10,6 +11,7 @@ import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 
+@injectable()
 export class BoardNode extends BaseNode<BoardEntity> {
 
   SEND_TIMEOUT: number = 10000;

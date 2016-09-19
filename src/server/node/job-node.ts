@@ -1,4 +1,5 @@
 import _ = require("lodash");
+import {injectable} from "inversify";
 import {CronJob} from "cron";
 
 import {BaseNode} from "./base-node";
@@ -10,6 +11,7 @@ import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 
+@injectable()
 export class JobNode extends BaseNode<JobEntity> {
 
   static EntityClass = JobEntity;

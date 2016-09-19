@@ -1,3 +1,5 @@
+import {injectable} from "inversify";
+
 import {ReadActionEntity} from "../../../common/entity/action/read-action-entity";
 import {ActionNode} from "./action-node";
 import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
@@ -5,6 +7,7 @@ import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
 import {NodeService} from "../../service/node-service";
 
+@injectable()
 export class ReadActionNode extends ActionNode<ReadActionEntity> {
 
   constructor(protected tableService: TableService,
