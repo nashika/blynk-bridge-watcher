@@ -6,7 +6,7 @@ import {ServerNode} from "../node/server-node";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {BaseNode} from "../node/base-node";
 import {BaseEntity} from "../../common/entity/base-entity";
-import {svKernel} from "../inversify.config";
+import {kernel} from "../../common/inversify.config";
 
 @injectable()
 export class NodeService extends BaseServerService {
@@ -33,7 +33,7 @@ export class NodeService extends BaseServerService {
   }
 
   generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
-    let result: BaseNode<BaseEntity> = svKernel.getNamed(BaseNode, entity.Class.params.entityName);
+    let result: BaseNode<BaseEntity> = kernel.getNamed(BaseNode, entity.Class.params.entityName);
     result.entity = entity;
     result.parent = parent;
     result.log("trace", `Generate ${result.Class.name} object was started.`);

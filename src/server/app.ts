@@ -7,7 +7,8 @@ import http = require("http");
 import commander = require("commander");
 import _ = require("lodash");
 
-import {svKernel} from "./inversify.config";
+import "./inversify.config";
+import {kernel} from "../common/inversify.config";
 import {SocketIoServerService} from "./service/socket-io-server-service";
 import {app} from "./app-express";
 
@@ -77,4 +78,4 @@ function onListening() {
 
 
 // initialize socket.io
-svKernel.get<SocketIoServerService>(SocketIoServerService).initialize(server);
+kernel.get<SocketIoServerService>(SocketIoServerService).initialize(server);

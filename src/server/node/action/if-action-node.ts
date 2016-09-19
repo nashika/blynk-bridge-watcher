@@ -16,7 +16,6 @@ export class IfActionNode extends ActionNode<IfActionEntity> {
     super(tableService, socketIoServerService, nodeService);
   }
 
-
   run(...args: string[]): void {
     super.run();
     if (args.length < 1)

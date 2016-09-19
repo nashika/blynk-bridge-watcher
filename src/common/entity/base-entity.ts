@@ -63,8 +63,8 @@ export class BaseEntity {
     return this._id.substr(0, 4);
   }
 
-  static generateDefault(): BaseEntity {
-    let result: BaseEntity = new this();
+  static generateDefault<T extends BaseEntity>(): T {
+    let result: T = <T>(new this());
     _.forEach(this.params.fields, (field: IEntityFieldParams, name: string) => {
       if (!_.isUndefined(field.default) && field.required)
         _.set(result, name, field.default);
