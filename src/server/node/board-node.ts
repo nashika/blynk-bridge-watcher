@@ -96,7 +96,7 @@ export class BoardNode extends BaseNode<BoardEntity> {
     } else if (id.length == 4) {
       let args: string[] = params.splice(1);
       this.log("trace", `Receive input data, id='${id}' args=${JSON.stringify(args)}`);
-      let node = this.socketIoServerService.getNode(id);
+      let node = this.nodeService.getNode(id);
       if (!node)
         return this.log("warn", `Node id='${id}' was not found.`);
       node.run(...args);

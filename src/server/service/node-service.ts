@@ -1,4 +1,5 @@
 import {injectable} from "inversify";
+import _ = require("lodash");
 
 import {BaseServerService} from "./base-server-service";
 import {TableService} from "./table-service";
@@ -11,11 +12,14 @@ import {kernel} from "../../common/inversify.config";
 @injectable()
 export class NodeService extends BaseServerService {
 
+  private nodes: {[_id: string]: BaseNode<BaseEntity>};
+
   constructor(protected tableService: TableService) {
     super();
+    this.nodes = {};
   }
 
-  start(): Promise<ServerNode> {
+  initialize(): Promise<ServerNode> {
     return Promise.resolve().then(() => {
       return this.tableService.findOne(ServerEntity);
     }).then(serverEntity => {
@@ -44,6 +48,22 @@ export class NodeService extends BaseServerService {
       result.log("trace", `Generate ${result.constructor.name} object was finished.`);
       return result;
     });
+  }
+
+  registerNode(node: BaseNode<BaseEntity>): void {
+    this.nodes[node.entity._id] = node;
+  }
+
+  unregisterNode(_id: string): void {
+    delete this.nodes[_id];
+  }
+
+  getNode(id: string): BaseNode<BaseEntity> {
+    return _.find(this.nodes, (node: BaseNode<BaseEntity>, _id: string) => _.startsWith(_id, id));
+  }
+
+  getNodes(filter: string): BaseNode<BaseEntity>[] {
+    return _.filter(this.nodes, node => !filter || filter == node.EntityClass.params.tableName);
   }
 
 }

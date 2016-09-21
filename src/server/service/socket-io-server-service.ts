@@ -9,9 +9,9 @@ import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus, TSocketIoLogLevel,
   ISocketIoSendData, ISocketIoData, ISocketIoCountLogData, ISocketIoRequestLogsData, ISocketIoResponseLogsData
 } from "../../common/util/socket-io-util";
-import {BaseNode} from "../node/base-node";
-import {BaseEntity} from "../../common/entity/base-entity";
 import {BaseServerService} from "./base-server-service";
+import {NodeService} from "./node-service";
+import {kernel} from "../../common/inversify.config";
 
 @injectable()
 export class SocketIoServerService extends BaseServerService {
@@ -19,13 +19,14 @@ export class SocketIoServerService extends BaseServerService {
   private io: Server;
   private logs: {[_id: string]: ISocketIoLogData[]};
   private statuses: {[_id: string]: ISocketIoStatusData};
-  private nodes: {[_id: string]: BaseNode<BaseEntity>};
+
+  protected nodeService: NodeService;
 
   constructor() {
     super();
+    this.nodeService = kernel.get(NodeService); // inject bug?
     this.logs = {};
     this.statuses = {};
-    this.nodes = {};
   }
 
   initialize(server: HttpServer) {
@@ -46,7 +47,7 @@ export class SocketIoServerService extends BaseServerService {
   }
 
   private onSend = (data: ISocketIoSendData) => {
-    let node = this.nodes[data._id];
+    let node = this.nodeService.getNode(data._id);
     if (node) node.run(...data.args);
   };
 
@@ -78,22 +79,6 @@ export class SocketIoServerService extends BaseServerService {
     let data: ISocketIoStatusData = {_id: _id, status: status};
     this.statuses[_id] = data;
     this.io.sockets.emit("status", data);
-  }
-
-  registerNode(node: BaseNode<BaseEntity>): void {
-    this.nodes[node.entity._id] = node;
-  }
-
-  unregisterNode(_id: string): void {
-    delete this.nodes[_id];
-  }
-
-  getNode(id: string): BaseNode<BaseEntity> {
-    return _.find(this.nodes, (node: BaseNode<BaseEntity>, _id: string) => _.startsWith(_id, id));
-  }
-
-  getNodes(filter: string): BaseNode<BaseEntity>[] {
-    return _.filter(this.nodes, node => !filter || filter == node.EntityClass.params.tableName);
   }
 
 }

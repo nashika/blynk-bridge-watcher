@@ -55,9 +55,9 @@ export class IfActionNode extends ActionNode<IfActionEntity> {
     }
     let action: ActionNode<BaseActionEntity>;
     if (result && this.entity.then)
-      action = <ActionNode<BaseActionEntity>>this.socketIoServerService.getNode(this.entity.then);
+      action = <ActionNode<BaseActionEntity>>this.nodeService.getNode(this.entity.then);
     else if (!result && this.entity.else)
-      action = <ActionNode<BaseActionEntity>>this.socketIoServerService.getNode(this.entity.else);
+      action = <ActionNode<BaseActionEntity>>this.nodeService.getNode(this.entity.else);
     if (action)
       action.run(...args);
   };

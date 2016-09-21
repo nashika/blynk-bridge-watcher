@@ -41,7 +41,7 @@ export abstract class BaseNode<T extends BaseEntity> {
   }
 
   initialize(): Promise<void> {
-    this.socketIoServerService.registerNode(this);
+    this.nodeService.registerNode(this);
     return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let childNodes: BaseNode<BaseEntity>[] = [];
@@ -64,7 +64,7 @@ export abstract class BaseNode<T extends BaseEntity> {
 
   finalize(): Promise<void> {
     this.status = "processing";
-    this.socketIoServerService.unregisterNode(this.entity._id);
+    this.nodeService.unregisterNode(this.entity._id);
     return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let childNodes = _.get<BaseNode<BaseEntity>[]>(this, key, []);
@@ -85,7 +85,7 @@ export abstract class BaseNode<T extends BaseEntity> {
   log(level: TSocketIoLogLevel, message: string, ...args: any[]): void {
     message = util.format(message, ...args);
     this.socketIoServerService.log(this.entity._id, level, message);
-    for (let node of this.socketIoServerService.getNodes("notifier")) {
+    for (let node of this.nodeService.getNodes("notifier")) {
       let notifierNode = <NotifierNode<BaseNotifierEntity>>node;
       if (this.logLevelToNumber(level) >= this.logLevelToNumber(notifierNode.entity.level))
         notifierNode.run(message);

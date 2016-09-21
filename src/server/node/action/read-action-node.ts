@@ -38,7 +38,7 @@ export class ReadActionNode extends ActionNode<ReadActionEntity> {
       let value = args[0];
       this.log("debug", `Read response. type=${this.entity.pinType}, pin=${this.entity.pin}, value=${value}`);
       if (this.entity.next) {
-        let action = <ActionNode<BaseActionEntity>>this.socketIoServerService.getNode(this.entity.next);
+        let action = <ActionNode<BaseActionEntity>>this.nodeService.getNode(this.entity.next);
         action.run(value);
       }
     });
