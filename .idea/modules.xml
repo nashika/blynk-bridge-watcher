@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/blynk-controller.iml" filepath="$PROJECT_DIR$/.idea/blynk-controller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/blynk-bridge-watcher.iml" filepath="$PROJECT_DIR$/.idea/blynk-bridge-watcher.iml" />
     </modules>
   </component>
 </project>
