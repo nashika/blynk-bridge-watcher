@@ -22,7 +22,8 @@ export abstract class BaseNode<T extends BaseEntity> {
 
   parent: BaseNode<BaseEntity>;
   entity: T;
-  _status: TSocketIoStatus;
+
+  private _status: TSocketIoStatus;
 
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService,
@@ -76,6 +77,15 @@ export abstract class BaseNode<T extends BaseEntity> {
     }).then(() => {
       this.status = "stop";
     });
+  }
+
+  start(): Promise<void> {
+    this.status = "processing";
+    return Promise.resolve();
+  }
+
+  stop(): Promise<void> {
+    return Promise.resolve();
   }
 
   run(...args: string[]): void {
