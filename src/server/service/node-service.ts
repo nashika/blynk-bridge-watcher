@@ -20,6 +20,7 @@ export class NodeService extends BaseServerService {
   }
 
   initialize(): Promise<ServerNode> {
+    let serverNode: ServerNode;
     return Promise.resolve().then(() => {
       return this.tableService.findOne(ServerEntity);
     }).then(serverEntity => {
@@ -32,7 +33,10 @@ export class NodeService extends BaseServerService {
     }).then(entity => {
       return this.generate(null, entity);
     }).then(node => {
-      return node;
+      serverNode = <ServerNode>node;
+      return serverNode.startWrap();
+    }).then(() => {
+      return serverNode;
     });
   }
 
@@ -40,12 +44,10 @@ export class NodeService extends BaseServerService {
     let result: BaseNode<BaseEntity> = kernel.getNamed(BaseNode, entity.Class.params.entityName);
     result.entity = entity;
     result.parent = parent;
-    result.log("trace", `Generate ${result.constructor.name} object was started.`);
+    result.log("debug", `Generate ${result.constructor.name} object was started.`);
     result.status = "processing";
-    return Promise.resolve().then(() => {
-      return result.initialize();
-    }).then(() => {
-      result.log("trace", `Generate ${result.constructor.name} object was finished.`);
+    return result.initializeWrap().then(() => {
+      result.log("debug", `Generate ${result.constructor.name} object was finished.`);
       return result;
     });
   }

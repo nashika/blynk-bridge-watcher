@@ -41,7 +41,14 @@ export abstract class BaseNode<T extends BaseEntity> {
     this.socketIoServerService.status(this.entity._id, value);
   }
 
-  initialize(): Promise<void> {
+  initializeWrap(): Promise<void> {
+    this.log("debug", `Initialize process was started.`);
+    return this.initialize().then(() => {
+      this.log("debug", `Initialize process was finished.`)
+    });
+  }
+
+  protected initialize(): Promise<void> {
     this.nodeService.registerNode(this);
     return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
@@ -63,7 +70,14 @@ export abstract class BaseNode<T extends BaseEntity> {
     });
   }
 
-  finalize(): Promise<void> {
+  finalizeWrap(): Promise<void> {
+    this.log("debug", `Finalize process was started.`);
+    return this.finalize().then(() => {
+      this.log("debug", `Finalize process was finished.`);
+    });
+  }
+
+  protected finalize(): Promise<void> {
     this.status = "processing";
     this.nodeService.unregisterNode(this.entity._id);
     return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
@@ -79,12 +93,26 @@ export abstract class BaseNode<T extends BaseEntity> {
     });
   }
 
-  start(): Promise<void> {
+  startWrap(): Promise<void> {
+    this.log("debug", `Start process was started.`);
+    return this.start().then(() => {
+      this.log("debug", `Start process was finished.`);
+    });
+  }
+
+  protected start(): Promise<void> {
     this.status = "processing";
     return Promise.resolve();
   }
 
-  stop(): Promise<void> {
+  stopWrap(): Promise<void> {
+    this.log("debug", `Stop process was started.`);
+    return this.stop().then(() => {
+      this.log("debug", `Stop process was finished.`);
+    })
+  }
+
+  protected stop(): Promise<void> {
     return Promise.resolve();
   }
 
@@ -101,8 +129,7 @@ export abstract class BaseNode<T extends BaseEntity> {
         notifierNode.run(message);
     }
     let logger = log4js.getLogger("system");
-    if (this.parent)
-      message = `${this.allKeyLabel()} ${message}`;
+    message = `${this.allKeyLabel()} ${message}`;
     switch (level) {
       case "trace":
         return logger.trace(message);
@@ -138,15 +165,17 @@ export abstract class BaseNode<T extends BaseEntity> {
     }
   }
 
-  public allKeyLabel(...args: string[]): string {
-    if (this.parent)
-      return this.parent.allKeyLabel(this._keyLabel(), ...args);
-    else
+  private allKeyLabel(...args: string[]): string {
+    if (this.parent) {
+      return this.parent.allKeyLabel(this.keyLabel(), ...args);
+    } else {
+      args.unshift(this.keyLabel());
       return `[${args.join('->')}]`;
+    }
   }
 
-  protected _keyLabel(): string {
-    return `${this.entity.shortId}(${(<any>this.constructor).name})`;
+  private keyLabel(): string {
+    return `${this.entity.shortId}(${_.replace((<any>this.constructor).name, /Node$/, "")})`;
   }
 
 }
