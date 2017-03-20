@@ -16,17 +16,10 @@ let template = require("./app-component.jade");
 })
 export class AppComponent extends BaseComponent {
 
-  entityService: EntityService;
-  server:ServerEntity;
+  entityService: EntityService = container.get(EntityService);
+  server: ServerEntity = null;
 
-  data():any {
-    return {
-      entityService: container.get(EntityService),
-      server: null,
-    }
-  }
-
-  ready() {
+  mounted() {
     this.entityService.getOne(ServerEntity).then(entity => {
       this.server = entity;
     });

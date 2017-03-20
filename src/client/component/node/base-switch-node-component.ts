@@ -1,5 +1,4 @@
 import Component from "vue-class-component";
-import _ = require("lodash");
 
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {BaseComponent} from "../base-component";
@@ -10,17 +9,11 @@ import {BaseNodeComponent} from "./base-node-component";
 })
 export class BaseSwitchNodeComponent<T extends BaseEntity> extends BaseComponent {
 
+  showAddBox: boolean = false;
+
   entity: T;
   brotherEntities: T[];
   parent: BaseNodeComponent<BaseEntity>;
   add: boolean;
-
-  showAddBox:boolean;
-
-  data(): any {
-    return _.assign(super.data(), {
-      showAddBox: false,
-    });
-  }
 
 }

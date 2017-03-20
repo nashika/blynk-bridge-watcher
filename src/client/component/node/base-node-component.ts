@@ -1,6 +1,5 @@
 import _ = require("lodash");
 import Component from "vue-class-component";
-var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
@@ -13,11 +12,6 @@ import {container} from "../../../common/inversify.config";
 
 @Component({
   components: {
-    dropdown: VueStrap.dropdown,
-    tooltip: VueStrap.tooltip,
-    tabs: VueStrap.tabset,
-    tabGroup: VueStrap.tabGroup,
-    tab: VueStrap.tab,
     "logs-component": LogsComponent,
     "edit-component": EditComponent,
   },
@@ -38,39 +32,25 @@ import {container} from "../../../common/inversify.config";
 })
 export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
+  EntityClass: typeof BaseEntity = BaseEntity;
+  entityService: EntityService = container.get(EntityService);
+  socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  showEdit: boolean = false;
+  showLogs: boolean = false;
+  runningCount: number = 0;
+  status: TSocketIoStatus = "connecting";
+  countLog: number = 0;
+
   entity: T;
   brotherEntities: T[];
   parent: BaseNodeComponent<BaseEntity>;
   add: boolean;
 
-  EntityClass: typeof BaseEntity;
-  entityService: EntityService;
-  socketIoClientService: SocketIoClientService;
-  showEdit: boolean;
-  showLogs: boolean;
-  runningCount: number;
-  status: TSocketIoStatus;
-  countLog: number;
-
   get this(): BaseNodeComponent<BaseEntity> {
     return this;
   }
 
-  data(): any {
-    let name = _.lowerFirst(_.replace(this.constructor.name, /NodeComponent$/, ""));
-    return _.assign(super.data(), {
-      EntityClass: <any>container.getNamed(BaseEntity, name),
-      entityService: container.get(EntityService),
-      socketIoClientService: container.get(SocketIoClientService),
-      showEdit: false,
-      showLogs: false,
-      runningCount: 0,
-      status: "connecting",
-      countLog: 0,
-    });
-  }
-
-  ready() {
+  mounted() {
     if (!this.add) {
       this.socketIoClientService.registerComponent(this);
       this.status = this.socketIoClientService.getStatus(this.entity._id);

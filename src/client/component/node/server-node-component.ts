@@ -1,5 +1,4 @@
 import Component from "vue-class-component";
-import _ = require("lodash");
 
 import {BoardNodeComponent} from "./board-node-component";
 import {ServerEntity} from "../../../common/entity/server-entity";
@@ -24,20 +23,11 @@ let template = require("./server-node-component.jade");
 })
 export class ServerNodeComponent extends BaseNodeComponent<ServerEntity> {
 
-  serverService: ServerService;
-  boards: BoardEntity[];
-  notifiers: BaseNotifierEntity[];
-  jobs: JobEntity[];
-
-  data(): any {
-    return _.assign(super.data(), {
-      serverService: container.get(ServerService),
-      EntityClass: ServerEntity,
-      boards: null,
-      notifiers: null,
-      jobs: null,
-    });
-  }
+  EntityClass = ServerEntity;
+  serverService: ServerService = container.get(ServerService);
+  boards: BoardEntity[] = null;
+  notifiers: BaseNotifierEntity[] = null;
+  jobs: JobEntity[] = null;
 
   start() {
     this.serverService.start();

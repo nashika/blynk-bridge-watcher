@@ -17,37 +17,38 @@ mixin children(componentName, singularName, pluralName, mode)
         .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
         .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
 
-section(v-if="!add", :class="EntityClass.params.tableName")
-  .header
-    .menu
-      button.btn.btn-danger.btn-sm(v-if="isRunning") #[i.fa.fa-circle-o-notch.fa-spin]
-      dropdown(v-if="status == 'stop'")
-        button.btn.btn-default.btn-sm.dropdown-toggle(slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
-        ul.dropdown-menu(slot="dropdown-menu")
-          li
-            a(@click="showEdit = true") #[i.fa.fa-pencil] Edit
-          li(v-if="parent")
-            a(@click="remove()") #[i.fa.fa-trash-o] Remove
-          li(v-if="parent && !isFirst")
-            a(@click="move(false)") #[i.fa.fa-arrow-up] Move Up
-          li(v-if="parent && !isLast")
-            a(@click="move(true)") #[i.fa.fa-arrow-down] Move Down
-      button.btn.btn-default.btn-sm(type="button", @click="showLogs = true") #[i.fa.fa-terminal] {{countLog}}
-      button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
-      button.btn.btn-default.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
-      button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]
-      button.btn.btn-default.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
-      button.btn.btn-warning.btn-sm(v-if="status == 'processing'", type="button") #[i.fa.fa-refresh.fa-spin]
-    tooltip(placement="bottom", :content="title")
-      h1
-        i.fa(:class="'fa-' + EntityClass.params.icon")
-        | &nbsp;{{title}}
-  .body
-    block body
-  logs-component(:show.sync="showLogs", :id="entity._id", :count="countLog")
-.add(v-else)
-  button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
-  type="button", @click="showEdit = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}
-  button.btn.btn-success(v-else,
-  type="button", @click="showEdit = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}
-edit-component(:show.sync="showEdit", :entity-class="EntityClass", :add="add", :entity="entity")
+section.base-node-component
+  section(v-if="!add", :class="EntityClass.params.tableName")
+    .header
+      .menu
+        button.btn.btn-danger.btn-sm(v-if="isRunning") #[i.fa.fa-circle-o-notch.fa-spin]
+        dropdown(v-if="status == 'stop'")
+          button.btn.btn-default.btn-sm.dropdown-toggle(slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
+          ul.dropdown-menu(slot="dropdown-menu")
+            li
+              a(@click="showEdit = true") #[i.fa.fa-pencil] Edit
+            li(v-if="parent")
+              a(@click="remove()") #[i.fa.fa-trash-o] Remove
+            li(v-if="parent && !isFirst")
+              a(@click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            li(v-if="parent && !isLast")
+              a(@click="move(true)") #[i.fa.fa-arrow-down] Move Down
+        button.btn.btn-default.btn-sm(type="button", @click="showLogs = true") #[i.fa.fa-terminal] {{countLog}}
+        button.btn.btn-success.btn-sm(v-if="status == 'ready'", type="button", @click="stop()") #[i.fa.fa-toggle-on]
+        button.btn.btn-default.btn-sm(v-if="status == 'stop'", type="button", @click="start()") #[i.fa.fa-toggle-off]
+        button.btn.btn-danger.btn-sm(v-if="status == 'error'", type="button") #[i.fa.fa-warning]
+        button.btn.btn-default.btn-sm(v-if="status == 'connecting'", type="button") #[i.fa.fa-spinner.fa-pulse]
+        button.btn.btn-warning.btn-sm(v-if="status == 'processing'", type="button") #[i.fa.fa-refresh.fa-spin]
+      tooltip(placement="bottom", :content="title")
+        h1
+          i.fa(:class="'fa-' + EntityClass.params.icon")
+          | &nbsp;{{title}}
+    .body
+      block body
+    logs-component(:show.sync="showLogs", :id="entity._id", :count="countLog")
+  .add(v-else)
+    button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
+    type="button", @click="showEdit = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}
+    button.btn.btn-success(v-else,
+    type="button", @click="showEdit = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}
+  edit-component(:show.sync="showEdit", :entity-class="EntityClass", :add="add", :entity="entity")

@@ -1,5 +1,4 @@
 import Component from "vue-class-component";
-import _ = require("lodash");
 
 import {BaseNodeComponent} from "./base-node-component";
 import {JobEntity} from "../../../common/entity/job-entity";
@@ -14,8 +13,6 @@ export class JobNodeComponent extends BaseNodeComponent<JobEntity> {
 
   parent: ServerNodeComponent;
 
-  data(): any {
-    return _.assign(super.data(), {});
-  }
+  EntityClass = JobEntity;
 
 }

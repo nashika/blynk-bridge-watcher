@@ -1,5 +1,4 @@
 import Component from "vue-class-component";
-import _ = require("lodash");
 
 import {BridgeEntity} from "../../../common/entity/bridge-entity";
 import {BaseNodeComponent} from "./base-node-component";
@@ -18,12 +17,8 @@ let template = require("./bridge-node-component.jade");
 export class BridgeNodeComponent extends BaseNodeComponent<BridgeEntity> {
 
   parent: BoardNodeComponent;
-  actions:BaseActionEntity[];
 
-  data(): any {
-    return _.assign(super.data(), {
-      actions: null,
-    });
-  }
+  EntityClass = BridgeEntity;
+  actions: BaseActionEntity[] = null;
 
 }

@@ -16,6 +16,9 @@ let webpackConfig:webpack.Configuration = {
   },
   resolve: {
     extensions: [".ts", ".js"],
+    alias: {
+      vue: "vue/dist/vue.js",
+    },
   },
   module: {
     loaders: [
@@ -41,7 +44,7 @@ let webpackConfig:webpack.Configuration = {
   devServer: {
     contentBase: "./public",
     publicPath: "/dist/",
-    host: "0.0.0.0",
+    host: "localhost",
     port: 8080,
     //hot: true,
     historyApiFallback: true,

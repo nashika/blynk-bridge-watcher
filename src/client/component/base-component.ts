@@ -4,12 +4,6 @@ import {LoDashStatic} from "lodash";
 
 export class BaseComponent extends Vue {
 
-  lodash: LoDashStatic;
-
-  data(): any {
-    return {
-      lodash: _,
-    };
-  }
+  lodash: LoDashStatic = _;
 
 }

@@ -1,6 +1,5 @@
 import _ = require("lodash");
 import Component from "vue-class-component";
-var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
@@ -12,9 +11,6 @@ let template = require("./edit-component.jade");
 
 @Component({
   template: template,
-  components: {
-    modal: VueStrap.modal,
-  },
   props: {
     show: {
       type: Boolean,
@@ -39,20 +35,13 @@ export class EditComponent<T extends BaseEntity> extends BaseComponent {
 
   $parent : BaseNodeComponent<T>;
 
-  socketIoClientService: SocketIoClientService;
+  socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  editEntity: T = null;
+
   show: boolean;
   EntityClass: typeof BaseEntity;
   entity: T;
   add: boolean;
-
-  editEntity: T;
-
-  data(): any {
-    return _.assign(super.data(), {
-      socketIoClientService: container.get(SocketIoClientService),
-      editEntity: null,
-    });
-  }
 
   onChangeShow() {
     if (this.show) {

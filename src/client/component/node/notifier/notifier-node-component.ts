@@ -1,5 +1,4 @@
 import Component from "vue-class-component";
-import _ = require("lodash");
 
 import {BaseSwitchNodeComponent} from "../base-switch-node-component";
 import {BaseNotifierEntity} from "../../../../common/entity/notifier/base-notifier-entity";
@@ -16,9 +15,4 @@ let template = require("./notifier-node-component.jade");
   },
 })
 export class NotifierNodeComponent extends BaseSwitchNodeComponent<BaseNotifierEntity> {
-
-  data(): any {
-    return _.assign(super.data(), {});
-  }
-
 }

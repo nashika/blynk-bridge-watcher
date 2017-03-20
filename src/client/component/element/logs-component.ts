@@ -1,6 +1,4 @@
-import _ = require("lodash");
 import Component from "vue-class-component";
-var VueStrap = require("vue-strap");
 
 import {BaseComponent} from "../base-component";
 import {ISocketIoLogData} from "../../../common/util/socket-io-util";
@@ -11,9 +9,6 @@ let template = require("./logs-component.jade");
 
 @Component({
   template: template,
-  components: {
-    modal: VueStrap.modal,
-  },
   props: {
     show: {
       type: Boolean,
@@ -36,22 +31,13 @@ let template = require("./logs-component.jade");
 })
 export class LogsComponent extends BaseComponent {
 
+  socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  page: number = 1;
+  limit: number = 20;
+  logs: ISocketIoLogData[] = null;
+
   show: boolean;
   id: string;
-
-  socketIoClientService: SocketIoClientService;
-  page: number;
-  limit: number;
-  logs: ISocketIoLogData[];
-
-  data(): any {
-    return _.assign(super.data(), {
-      socketIoClientService: container.get(SocketIoClientService),
-      page: 1,
-      limit: 20,
-      logs: null,
-    });
-  }
 
   onChangeShow() {
     if (!this.show) return;

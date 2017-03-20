@@ -75,13 +75,20 @@
       @include make-row;
 
       .box {
-        @media screen and (max-width: 480px) {
-          @include make-xs-column(12);
+        @include make-col-ready;
+        @include make-col(12);
+        @include media-breakpoint-up(sm) {
+          @include make-col(6);
         }
-        @include make-xs-column(6);
-        @include make-sm-column(4);
-        @include make-md-column(3);
-        @include make-lg-column(12 / 5);
+        @include media-breakpoint-up(md) {
+          @include make-col(4);
+        }
+        @include media-breakpoint-up(lg) {
+          @include make-col(3);
+        }
+        @include media-breakpoint-up(xl) {
+          @include make-col(12 / 5);
+        }
       }
     }
   }

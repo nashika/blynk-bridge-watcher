@@ -1,4 +1,3 @@
-import _ = require("lodash");
 import Component from "vue-class-component";
 
 import {BaseNodeComponent} from "../base-node-component";
@@ -10,9 +9,7 @@ export class BaseNotifierNodeComponent<T extends BaseNotifierEntity> extends Bas
 
   parent: ServerNodeComponent;
 
-  data(): any {
-    return _.assign(super.data(), {});
-  }
+  EntityClass = BaseNotifierEntity;
 
   run() {
     this.socketIoClientService.send(this.entity._id, "Test Message");

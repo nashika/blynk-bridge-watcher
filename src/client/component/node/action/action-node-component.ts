@@ -1,5 +1,4 @@
 import Component from "vue-class-component";
-import _ = require("lodash");
 
 import {BaseActionEntity} from "../../../../common/entity/action/base-action-entity";
 import {IfActionNodeComponent} from "./if-action-node-component";
@@ -22,9 +21,4 @@ let template = require("./action-node-component.jade");
   },
 })
 export class ActionNodeComponent extends BaseSwitchNodeComponent<BaseActionEntity> {
-
-  data(): any {
-    return _.assign(super.data(), {});
-  }
-
 }
