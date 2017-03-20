@@ -91,7 +91,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     });
   }
 
-  run(...args: any[]) {
+  run(..._args: any[]) {
     this.socketIoClientService.send(this.entity._id);
   }
 
@@ -99,12 +99,12 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     if (this.add) {
       editEntity._parent = this.parent.entity._id;
       editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
-      this.entityService.add(editEntity).then(entity => {
+      this.entityService.add(editEntity).then(_entity => {
         editEntity = <T>this.EntityClass.generateDefault();
         this.parent.reload();
       });
     } else {
-      this.entityService.edit(editEntity).then(entity => {
+      this.entityService.edit(editEntity).then(_entity => {
         this.parent.reload();
       });
     }
@@ -112,7 +112,7 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   remove() {
     if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} id:${this.entity._id}?`)) return;
-    this.entityService.remove(this.entity).then(entity => {
+    this.entityService.remove(this.entity).then(_entity => {
       this.parent.reload();
     });
   }
@@ -134,9 +134,9 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
     entity2._orderNo = tmpNo;
     Promise.resolve().then(() => {
       return this.entityService.edit(entity1);
-    }).then(entity => {
+    }).then(_entity => {
       return this.entityService.edit(entity2);
-    }).then(entity => {
+    }).then(_entity => {
       this.parent.reload();
     });
   }

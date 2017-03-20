@@ -18,7 +18,6 @@ export class SocketIoClientService extends BaseService {
   private components: {[_id: string]: BaseNodeComponent<BaseEntity>};
   private countLogs: {[_id: string]: number};
   private statuses: {[_id: string]: ISocketIoStatusData};
-  private logsDeferred: {resolve: (value: ISocketIoLogData[]) => void, reject: (reason: any) => void};
 
   constructor() {
     super();
@@ -85,7 +84,7 @@ export class SocketIoClientService extends BaseService {
   }
 
   getLogs(_id: string, page: number, limit: number): Promise<ISocketIoLogData[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       let request: ISocketIoRequestLogsData = {_id: _id, page: page, limit: limit};
       this.socket.emit("logs", request, (data: ISocketIoResponseLogsData) => {
         resolve(data.logs);

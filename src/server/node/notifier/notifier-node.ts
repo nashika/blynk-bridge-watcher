@@ -2,7 +2,6 @@ import util = require("util");
 
 import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
-import {NotifyActionNode} from "../action/notify-action-node";
 import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
 
 export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNode<T> {

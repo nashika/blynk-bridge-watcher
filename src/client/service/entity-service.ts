@@ -75,7 +75,7 @@ export class EntityService extends BaseService {
 
   remove<T extends BaseEntity>(entity: T): Promise<void> {
     let url: string = `/${entity.Class.params.tableName}/remove`;
-    return request.post(url).send(entity).then(res => {
+    return request.post(url).send(entity).then(_res => {
       return;
     });
   }

@@ -34,23 +34,23 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
     this.start();
   }
 
-  index(req: Request, res: Response) {
+  index(_req: Request, res: Response) {
     this.tableService.findOne(ServerEntity).then(entity => {
       res.json(entity);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
-  onStatus = (req: Request, res: Response) => {
+  onStatus = (_req: Request, res: Response) => {
     res.json(!!this.serverNode);
   };
 
-  onStart = (req: Request, res: Response) => {
+  onStart = (_req: Request, res: Response) => {
     this.start().then(() => {
       res.json(true);
     }).catch(err => this.responseErrorJson(res, err));
   };
 
-  onStop = (req: Request, res: Response) => {
+  onStop = (_req: Request, res: Response) => {
     this.stop().then(() => {
       res.json(true);
     }).catch(err => this.responseErrorJson(res, err));

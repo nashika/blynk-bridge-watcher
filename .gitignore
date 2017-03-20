@@ -7,7 +7,6 @@
 /public/dist
 /src/**/*.js
 /src/**/*.js.map
-/typings
 /*.js
 /*.js.map
 

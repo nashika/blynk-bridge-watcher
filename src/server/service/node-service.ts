@@ -61,7 +61,7 @@ export class NodeService extends BaseServerService {
   }
 
   getNode(id: string): BaseNode<BaseEntity> {
-    return _.find(this.nodes, (node: BaseNode<BaseEntity>, _id: string) => _.startsWith(_id, id));
+    return _.find(this.nodes, (_node: BaseNode<BaseEntity>, _id: string) => _.startsWith(_id, id));
   }
 
   getNodes(filter: string): BaseNode<BaseEntity>[] {

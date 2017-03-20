@@ -1,7 +1,7 @@
 import path = require("path");
 
 import express = require("express");
-import {Express, Request, Response, NextFunction} from "express";
+import {Express, Request, Response} from "express";
 import cookieParser = require("cookie-parser");
 import bodyParser = require("body-parser");
 import log4js = require("log4js");
@@ -30,7 +30,7 @@ for (let node of kernel.getAll<BaseRoute<BaseEntity>>(BaseRoute))
   node.initialize(app);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (_req, _res, next) {
   var err:any = new Error("Not Found");
   err["status"] = 404;
   next(err);
@@ -41,7 +41,7 @@ app.use(function (req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get("env") === "development") {
-  app.use((err:any, req:Request, res:Response, next:NextFunction) => {
+  app.use((err: any, _req: Request, res: Response) => {
     res.status(err.status || 500);
     res.render("error", {
       message: err.message,
@@ -52,7 +52,7 @@ if (app.get("env") === "development") {
 
 // production error handler
 // no stacktraces leaked to user
-app.use((err:any, req:Request, res:Response, next:NextFunction) => {
+app.use((err: any, _req: Request, res:Response) => {
   res.status(err.status || 500);
   res.render("error", {
     message: err.message,

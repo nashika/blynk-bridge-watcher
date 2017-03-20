@@ -71,22 +71,22 @@ export abstract class BaseRoute<T extends BaseEntity> {
   };
 
   index(req: Request, res: Response) {
-    this.tableService.find(this.Class.EntityClass, req.body).then(entities => {
+    this.tableService.find<T>(this.Class.EntityClass, req.body).then(entities => {
       res.json(entities);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   add(req: Request, res: Response) {
-    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
-    this.tableService.insert(entity).then(newEntity => {
+    let entity = <T>this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
+    this.tableService.insert<T>(entity).then(newEntity => {
       this.socketIoServerService.status(newEntity._id, "stop");
       res.json(newEntity);
     }).catch(err => this.responseErrorJson(res, err));
   }
 
   edit(req: Request, res: Response) {
-    let entity = this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
-    this.tableService.update(entity).then(updatedEntity => {
+    let entity = <T>this.entityFactory(this.Class.EntityClass.params.tableName, req.body);
+    this.tableService.update<T>(entity).then(updatedEntity => {
       res.json(updatedEntity);
     });
   }

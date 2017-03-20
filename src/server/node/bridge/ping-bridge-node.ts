@@ -59,9 +59,9 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     }
   };
 
-  private onPing = () => {
+  /*private onPing = () => {
     this.log("debug", `Ping from bridge, response Pong.`);
     this.send("po", []);
-  };
+  };*/
 
 }

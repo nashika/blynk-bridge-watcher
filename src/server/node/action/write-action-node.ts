@@ -16,7 +16,7 @@ export class WriteActionNode extends ActionNode<WriteActionEntity> {
   }
 
 
-  run(...args: string[]) {
+  run(..._args: string[]) {
     super.run();
     this.log("debug", `Write action. type=${this.entity.pinType}, pin=${this.entity.pin}, value=${this.entity.value}`);
     this.parent.write(this.entity.pinType, this.entity.pin, this.entity.value);

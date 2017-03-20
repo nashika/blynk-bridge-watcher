@@ -2,7 +2,6 @@ import util = require("util");
 
 import _ = require("lodash");
 import log4js = require("log4js");
-import Socket = SocketIO.Socket;
 import {injectable} from "inversify";
 
 import {BaseEntity} from "../../common/entity/base-entity";
@@ -116,7 +115,7 @@ export abstract class BaseNode<T extends BaseEntity> {
     return Promise.resolve();
   }
 
-  run(...args: string[]): void {
+  run(..._args: string[]): void {
     this.socketIoServerService.run(this.entity._id);
   }
 

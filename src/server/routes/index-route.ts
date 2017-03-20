@@ -1,5 +1,4 @@
 import {Request, Response} from "express";
-import _ = require("lodash");
 import {injectable} from "inversify";
 
 import {BaseRoute} from "./base-route";
@@ -21,7 +20,7 @@ export class IndexRoute extends BaseRoute<BaseEntity> {
     app.get("/", this.onIndex);
   }
 
-  onIndex = (req: Request, res: Response) => {
+  onIndex = (_req: Request, res: Response) => {
     res.render("index", {});
   };
 

@@ -1,7 +1,6 @@
 import socketIo = require("socket.io");
 import {Server as HttpServer} from "http";
 import Server = SocketIO.Server;
-import Socket = SocketIO.Socket;
 import _ = require("lodash");
 import {injectable} from "inversify";
 
@@ -40,7 +39,7 @@ export class SocketIoServerService extends BaseServerService {
       }
       for (let _id in this.statuses)
         socket.emit("status", this.statuses[_id]);
-      socket.on("client_to_server", (data: any) => {
+      socket.on("client_to_server", (_data: any) => {
         // client to server
       });
     });
