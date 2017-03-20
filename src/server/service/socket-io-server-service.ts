@@ -10,7 +10,7 @@ import {
 } from "../../common/util/socket-io-util";
 import {BaseServerService} from "./base-server-service";
 import {NodeService} from "./node-service";
-import {kernel} from "../../common/inversify.config";
+import {container} from "../../common/inversify.config";
 
 @injectable()
 export class SocketIoServerService extends BaseServerService {
@@ -23,7 +23,7 @@ export class SocketIoServerService extends BaseServerService {
 
   constructor() {
     super();
-    this.nodeService = kernel.get(NodeService); // inject bug?
+    this.nodeService = container.get(NodeService); // inject bug?
     this.logs = {};
     this.statuses = {};
   }

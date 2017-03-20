@@ -10,7 +10,7 @@ import {NotifierNodeComponent} from "./notifier/notifier-node-component";
 import {JobNodeComponent} from "./job-node-component";
 import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
 import {ServerService} from "../../service/server-service";
-import {kernel} from "../../../common/inversify.config";
+import {container} from "../../../common/inversify.config";
 
 let template = require("./server-node-component.jade");
 
@@ -31,7 +31,7 @@ export class ServerNodeComponent extends BaseNodeComponent<ServerEntity> {
 
   data(): any {
     return _.assign(super.data(), {
-      serverService: kernel.get(ServerService),
+      serverService: container.get(ServerService),
       EntityClass: ServerEntity,
       boards: null,
       notifiers: null,

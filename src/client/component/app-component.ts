@@ -4,7 +4,7 @@ import {BaseComponent} from "./base-component";
 import {ServerNodeComponent} from "./node/server-node-component";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {EntityService} from "../service/entity-service";
-import {kernel} from "../../common/inversify.config";
+import {container} from "../../common/inversify.config";
 
 let template = require("./app-component.jade");
 
@@ -21,7 +21,7 @@ export class AppComponent extends BaseComponent {
 
   data():any {
     return {
-      entityService: kernel.get(EntityService),
+      entityService: container.get(EntityService),
       server: null,
     }
   }

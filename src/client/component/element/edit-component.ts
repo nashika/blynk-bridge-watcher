@@ -6,7 +6,7 @@ import {BaseComponent} from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {BaseNodeComponent} from "../node/base-node-component";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
-import {kernel} from "../../../common/inversify.config";
+import {container} from "../../../common/inversify.config";
 
 let template = require("./edit-component.jade");
 
@@ -49,7 +49,7 @@ export class EditComponent<T extends BaseEntity> extends BaseComponent {
 
   data(): any {
     return _.assign(super.data(), {
-      socketIoClientService: kernel.get(SocketIoClientService),
+      socketIoClientService: container.get(SocketIoClientService),
       editEntity: null,
     });
   }

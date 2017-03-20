@@ -1,4 +1,4 @@
-import {Kernel, interfaces} from "inversify";
+import {Container, interfaces} from "inversify";
 import _ = require("lodash");
 
 import {BaseEntity} from "./entity/base-entity";
@@ -14,21 +14,21 @@ import {BridgeEntity} from "./entity/bridge-entity";
 import {JobEntity} from "./entity/job-entity";
 import {ServerEntity} from "./entity/server-entity";
 
-export var kernel = new Kernel();
+export var container = new Container();
 
-kernel.bind(BaseEntity).toConstructor(IfActionEntity).whenTargetNamed("ifAction");
-kernel.bind(BaseEntity).toConstructor(LogActionEntity).whenTargetNamed("logAction");
-kernel.bind(BaseEntity).toConstructor(NotifyActionEntity).whenTargetNamed("notifyAction");
-kernel.bind(BaseEntity).toConstructor(ReadActionEntity).whenTargetNamed("readAction");
-kernel.bind(BaseEntity).toConstructor(WriteActionEntity).whenTargetNamed("writeAction");
-kernel.bind(BaseEntity).toConstructor(LogNotifierEntity).whenTargetNamed("logNotifier");
-kernel.bind(BaseEntity).toConstructor(PushbulletNotifierEntity).whenTargetNamed("pushbulletNotifier");
-kernel.bind(BaseEntity).toConstructor(BoardEntity).whenTargetNamed("board");
-kernel.bind(BaseEntity).toConstructor(BridgeEntity).whenTargetNamed("bridge");
-kernel.bind(BaseEntity).toConstructor(JobEntity).whenTargetNamed("job");
-kernel.bind(BaseEntity).toConstructor(ServerEntity).whenTargetNamed("server");
+container.bind(BaseEntity).toConstructor(IfActionEntity).whenTargetNamed("ifAction");
+container.bind(BaseEntity).toConstructor(LogActionEntity).whenTargetNamed("logAction");
+container.bind(BaseEntity).toConstructor(NotifyActionEntity).whenTargetNamed("notifyAction");
+container.bind(BaseEntity).toConstructor(ReadActionEntity).whenTargetNamed("readAction");
+container.bind(BaseEntity).toConstructor(WriteActionEntity).whenTargetNamed("writeAction");
+container.bind(BaseEntity).toConstructor(LogNotifierEntity).whenTargetNamed("logNotifier");
+container.bind(BaseEntity).toConstructor(PushbulletNotifierEntity).whenTargetNamed("pushbulletNotifier");
+container.bind(BaseEntity).toConstructor(BoardEntity).whenTargetNamed("board");
+container.bind(BaseEntity).toConstructor(BridgeEntity).whenTargetNamed("bridge");
+container.bind(BaseEntity).toConstructor(JobEntity).whenTargetNamed("job");
+container.bind(BaseEntity).toConstructor(ServerEntity).whenTargetNamed("server");
 
-kernel.bind<interfaces.Factory<BaseEntity>>("Factory<Entity>").toFactory<BaseEntity>(context => {
+container.bind<interfaces.Factory<BaseEntity>>("Factory<Entity>").toFactory<BaseEntity>(context => {
   return (tableName: string, data: any) => {
     let entityName: string;
     if (data.type) {
@@ -36,7 +36,7 @@ kernel.bind<interfaces.Factory<BaseEntity>>("Factory<Entity>").toFactory<BaseEnt
     } else {
       entityName = _.camelCase(tableName);
     }
-    let EntityClass: typeof BaseEntity = <any>context.kernel.getNamed(BaseEntity, entityName);
+    let EntityClass: typeof BaseEntity = <any>context.container.getNamed(BaseEntity, entityName);
     return new (<any>EntityClass)(data);
   }
 });

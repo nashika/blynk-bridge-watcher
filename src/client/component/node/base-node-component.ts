@@ -9,7 +9,7 @@ import {LogsComponent} from "../element/logs-component";
 import {EditComponent} from "../element/edit-component";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {EntityService} from "../../service/entity-service";
-import {kernel} from "../../../common/inversify.config";
+import {container} from "../../../common/inversify.config";
 
 @Component({
   components: {
@@ -59,9 +59,9 @@ export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
   data(): any {
     let name = _.lowerFirst(_.replace(this.constructor.name, /NodeComponent$/, ""));
     return _.assign(super.data(), {
-      EntityClass: <any>kernel.getNamed(BaseEntity, name),
-      entityService: kernel.get(EntityService),
-      socketIoClientService: kernel.get(SocketIoClientService),
+      EntityClass: <any>container.getNamed(BaseEntity, name),
+      entityService: container.get(EntityService),
+      socketIoClientService: container.get(SocketIoClientService),
       showEdit: false,
       showLogs: false,
       runningCount: 0,

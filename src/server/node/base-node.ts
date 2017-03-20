@@ -12,7 +12,7 @@ import {NotifierNode} from "./notifier/notifier-node";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
-import {kernel} from "../../common/inversify.config";
+import {container} from "../../common/inversify.config";
 
 @injectable()
 export abstract class BaseNode<T extends BaseEntity> {
@@ -28,7 +28,7 @@ export abstract class BaseNode<T extends BaseEntity> {
               protected socketIoServerService: SocketIoServerService,
               protected nodeService: NodeService) {
     let name = _.lowerFirst(_.replace(this.constructor.name, /Node$/, ""));
-    this.EntityClass = <any>kernel.getNamed(BaseEntity, name);
+    this.EntityClass = <any>container.getNamed(BaseEntity, name);
   }
 
   get status(): TSocketIoStatus {

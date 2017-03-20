@@ -7,7 +7,7 @@ import {ServerNode} from "../node/server-node";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {BaseNode} from "../node/base-node";
 import {BaseEntity} from "../../common/entity/base-entity";
-import {kernel} from "../../common/inversify.config";
+import {container} from "../../common/inversify.config";
 
 @injectable()
 export class NodeService extends BaseServerService {
@@ -41,7 +41,7 @@ export class NodeService extends BaseServerService {
   }
 
   generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
-    let result: BaseNode<BaseEntity> = kernel.getNamed(BaseNode, entity.Class.params.entityName);
+    let result: BaseNode<BaseEntity> = container.getNamed(BaseNode, entity.Class.params.entityName);
     result.entity = entity;
     result.parent = parent;
     result.log("debug", `Generate ${result.constructor.name} object was started.`);

@@ -6,7 +6,7 @@ import cookieParser = require("cookie-parser");
 import bodyParser = require("body-parser");
 import log4js = require("log4js");
 
-import {kernel} from "../common/inversify.config";
+import {container} from "../common/inversify.config";
 import {BaseRoute} from "./routes/base-route";
 
 import "./log4js";
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use("/dist", express.static(path.join(__dirname, "../../dist")));
-for (let node of kernel.getAll<BaseRoute<BaseEntity>>(BaseRoute))
+for (let node of container.getAll<BaseRoute<BaseEntity>>(BaseRoute))
   node.initialize(app);
 
 // catch 404 and forward to error handler

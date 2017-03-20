@@ -1,4 +1,4 @@
-import {kernel} from "../common/inversify.config";
+import {container} from "../common/inversify.config";
 
 import {NodeService} from "./service/node-service";
 import {SocketIoServerService} from "./service/socket-io-server-service";
@@ -28,26 +28,26 @@ import {BoardNode} from "./node/board-node";
 import {JobNode} from "./node/job-node";
 import {ServerNode} from "./node/server-node";
 
-kernel.bind<NodeService>(NodeService).toSelf().inSingletonScope();
-kernel.bind<SocketIoServerService>(SocketIoServerService).toSelf().inSingletonScope();
-kernel.bind<TableService>(TableService).toSelf().inSingletonScope();
+container.bind<NodeService>(NodeService).toSelf().inSingletonScope();
+container.bind<SocketIoServerService>(SocketIoServerService).toSelf().inSingletonScope();
+container.bind<TableService>(TableService).toSelf().inSingletonScope();
 
-kernel.bind<BaseRoute<BaseEntity>>(BaseRoute).to(ActionRoute).whenTargetNamed("action");
-kernel.bind<BaseRoute<BaseEntity>>(BaseRoute).to(BoardRoute).whenTargetNamed("board");
-kernel.bind<BaseRoute<BaseEntity>>(BaseRoute).to(BridgeRoute).whenTargetNamed("bridge");
-kernel.bind<BaseRoute<BaseEntity>>(BaseRoute).to(IndexRoute).whenTargetNamed("index");
-kernel.bind<BaseRoute<BaseEntity>>(BaseRoute).to(JobRoute).whenTargetNamed("job");
-kernel.bind<BaseRoute<BaseEntity>>(BaseRoute).to(NotifierRoute).whenTargetNamed("notifier");
-kernel.bind<BaseRoute<BaseEntity>>(BaseRoute).to(ServerRoute).whenTargetNamed("server");
+container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(ActionRoute).whenTargetNamed("action");
+container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(BoardRoute).whenTargetNamed("board");
+container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(BridgeRoute).whenTargetNamed("bridge");
+container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(IndexRoute).whenTargetNamed("index");
+container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(JobRoute).whenTargetNamed("job");
+container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(NotifierRoute).whenTargetNamed("notifier");
+container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(ServerRoute).whenTargetNamed("server");
 
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(IfActionNode).whenTargetNamed("ifAction");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(LogActionNode).whenTargetNamed("logAction");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(NotifyActionNode).whenTargetNamed("notifyAction");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(ReadActionNode).whenTargetNamed("readAction");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(WriteActionNode).whenTargetNamed("writeAction");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(BridgeNode).whenTargetNamed("bridge");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(LogNotifierNode).whenTargetNamed("logNotifier");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(PushbulletNotifierNode).whenTargetNamed("pushbulletNotifier");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(BoardNode).whenTargetNamed("board");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(JobNode).whenTargetNamed("job");
-kernel.bind<BaseNode<BaseEntity>>(BaseNode).to(ServerNode).whenTargetNamed("server");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(IfActionNode).whenTargetNamed("ifAction");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(LogActionNode).whenTargetNamed("logAction");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(NotifyActionNode).whenTargetNamed("notifyAction");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(ReadActionNode).whenTargetNamed("readAction");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(WriteActionNode).whenTargetNamed("writeAction");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(BridgeNode).whenTargetNamed("bridge");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(LogNotifierNode).whenTargetNamed("logNotifier");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(PushbulletNotifierNode).whenTargetNamed("pushbulletNotifier");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(BoardNode).whenTargetNamed("board");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(JobNode).whenTargetNamed("job");
+container.bind<BaseNode<BaseEntity>>(BaseNode).to(ServerNode).whenTargetNamed("server");

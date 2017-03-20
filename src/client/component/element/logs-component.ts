@@ -5,7 +5,7 @@ var VueStrap = require("vue-strap");
 import {BaseComponent} from "../base-component";
 import {ISocketIoLogData} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
-import {kernel} from "../../../common/inversify.config";
+import {container} from "../../../common/inversify.config";
 
 let template = require("./logs-component.jade");
 
@@ -46,7 +46,7 @@ export class LogsComponent extends BaseComponent {
 
   data(): any {
     return _.assign(super.data(), {
-      socketIoClientService: kernel.get(SocketIoClientService),
+      socketIoClientService: container.get(SocketIoClientService),
       page: 1,
       limit: 20,
       logs: null,
