@@ -486,9 +486,9 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bootstrap-vue@0.10.0-alpha.2:
-  version "0.10.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-0.10.0-alpha.2.tgz#dd43509301d4d43b9bb1142489617139aa5512a6"
+bootstrap-vue@0.10.0-rc.1:
+  version "0.10.0-rc.1"
+  resolved "https://registry.yarnpkg.com/bootstrap-vue/-/bootstrap-vue-0.10.0-rc.1.tgz#3312654c9941fac590b11d8b918b79b7d6b87404"
   dependencies:
     bootstrap "^4.0.0-"
     tether latest
