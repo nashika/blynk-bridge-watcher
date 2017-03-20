@@ -10,3 +10,5 @@
 /typings
 /*.js
 /*.js.map
+
+!.gitkeep
