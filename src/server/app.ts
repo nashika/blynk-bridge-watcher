@@ -19,7 +19,7 @@ commander
   .option("-p --port <n>", "set HTTP server port number.", parseInt)
   .parse(process.argv);
 
-let port:number = _.get<number>(commander, "port");
+let port: number = _.get<number>(commander, "port");
 port = port || 3000;
 
 let debug = require('debug')('server:server');
