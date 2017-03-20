@@ -19,7 +19,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "blynk-library": "0.0.37",
+    "blynk-library": "0.4.7",
     "body-parser": "1.17.1",
     "commander": "2.9.0",
     "cookie-parser": "1.4.3",
@@ -32,7 +32,7 @@
     "log4js": "1.1.1",
     "nedb": "1.8.0",
     "pluralize": "4.0.0",
-    "pushbullet": "1.4.3",
+    "pushbullet": "2.0.0",
     "reflect-metadata": "0.1.10",
     "socket.io": "1.7.3",
     "source-map-support": "0.4.14"
