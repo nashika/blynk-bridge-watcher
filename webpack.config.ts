@@ -1,27 +1,31 @@
+import * as path from "path";
+
 import webpack = require("webpack");
+
 let UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 
 let webpackConfig:webpack.Configuration = {
+  target: "web",
   entry: {
     app: "./src/client/app",
   },
   output: {
-    path: "./public/dist",
+    path: path.join(__dirname, "./dist"),
     publicPath: "/dist/",
     filename: "[name].bundle.js",
   },
   resolve: {
-    extensions: ["", ".ts", ".js"],
+    extensions: [".ts", ".js"],
   },
   module: {
     loaders: [
-      {test: /\.ts$/, loader: "ts", exclude: /node_modules/,},
-      {test: /\.html$/, loader: "html", },
-      {test: /\.jade$/, loaders: ["raw", "jade-html"], },
-      {test: /\.css$/, loaders: ["style", "css"], },
-      {test: /\.scss$/, loaders: ["style", "css", "sass"], },
-      {test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/, loader: "url", query: {prefix: "dist/fonts/", name:"fonts/[name].[ext]", limit: 10000, mimetype: "application/font-woff"}},
-      {test: /\.(ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, loader: "file", query: {name: "fonts/[name].[ext]"}},
+      {test: /\.ts$/, loader: "awesome-typescript-loader", exclude: /node_modules/,},
+      {test: /\.html$/, loader: "html-loader", },
+      {test: /\.jade$/, loaders: ["raw-loader", "jade-html-loader"], },
+      {test: /\.css$/, loaders: ["style-loader", "css-loader"], },
+      {test: /\.scss$/, loaders: ["style-loader", "css-loader", "sass-loader"], },
+      {test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader", query: {prefix: "dist/fonts/", name:"fonts/[name].[ext]", limit: 10000, mimetype: "application/font-woff"}},
+      {test: /\.(ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader", query: {name: "fonts/[name].[ext]"}},
     ],
   },
   plugins: process.env.NODE_ENV == "production" ? [new UglifyJsPlugin({
@@ -30,8 +34,9 @@ let webpackConfig:webpack.Configuration = {
     },
     mangle: {
       keep_fnames: true,
-    }}),
-  ] : [],
+    },
+    sourceMap: true,
+  })] : [],
   devtool: "source-map",
   devServer: {
     contentBase: "./public",
@@ -41,6 +46,7 @@ let webpackConfig:webpack.Configuration = {
     //hot: true,
     historyApiFallback: true,
     inline: true,
+    open: true,
     proxy: {
       "**": {
         target: "http://localhost:3000",
