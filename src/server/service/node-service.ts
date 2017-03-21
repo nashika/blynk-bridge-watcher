@@ -19,25 +19,14 @@ export class NodeService extends BaseServerService {
     this.nodes = {};
   }
 
-  initialize(): Promise<ServerNode> {
-    let serverNode: ServerNode;
-    return Promise.resolve().then(() => {
-      return this.tableService.findOne(ServerEntity);
-    }).then(serverEntity => {
-      if (serverEntity) {
-        return serverEntity;
-      } else {
-        let entity = ServerEntity.generateDefault();
-        return this.tableService.insert(entity);
-      }
-    }).then(entity => {
-      return this.generate(null, entity);
-    }).then(node => {
-      serverNode = <ServerNode>node;
-      return serverNode.startWrap();
-    }).then(() => {
-      return serverNode;
-    });
+  async initialize(): Promise<ServerNode> {
+    let serverEntity = await this.tableService.findOne(ServerEntity);
+    if (!serverEntity) {
+      serverEntity = await this.tableService.insert(ServerEntity.generateDefault());
+    }
+    let serverNode = <ServerNode>await this.generate(null, serverEntity);
+    await serverNode.startWrap();
+    return serverNode;
   }
 
   generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {

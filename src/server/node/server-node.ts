@@ -23,11 +23,9 @@ export class ServerNode extends BaseNode<ServerEntity> {
     super(tableService, socketIoServerService, nodeService);
   }
 
-
-  initialize(): Promise<void> {
-    return super.initialize().then(() => {
-      this.status = "ready";
-    });
+  async initialize(): Promise<void> {
+    await super.initialize();
+    this.status = "ready";
   }
 
 }

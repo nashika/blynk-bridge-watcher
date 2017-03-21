@@ -56,16 +56,15 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
     }).catch(err => this.responseErrorJson(res, err));
   };
 
-  start(): Promise<void> {
+  async start(): Promise<void> {
     logger.info("Server node initialize started.");
-    return this.nodeService.initialize().then(serverNode => {
-      this.serverNode = serverNode;
-      logger.info("Server node initialize finished.");
-      return;
-    }).catch(err => {
+    try {
+      this.serverNode = await this.nodeService.initialize();
+    } catch (err) {
       logger.fatal(err);
-      return Promise.reject(err);
-    });
+      throw err;
+    }
+    logger.info("Server node initialize finished.");
   }
 
   stop(): Promise<void> {

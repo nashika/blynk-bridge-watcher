@@ -47,7 +47,7 @@ export abstract class BaseNode<T extends BaseEntity> {
     });
   }
 
-  protected initialize(): Promise<void> {
+  protected async initialize(): Promise<void> {
     this.nodeService.registerNode(this);
     return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);

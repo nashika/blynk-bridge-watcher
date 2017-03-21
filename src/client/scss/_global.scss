@@ -2,11 +2,16 @@ html, body {
 }
 
 .node-component-block {
+  border-bottom: 1px solid $mono-lighter;
   @include make-row;
 
   > .header {
     @include make-col-ready;
     @include make-col(2);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   > .body {
@@ -19,6 +24,8 @@ html, body {
       .data {
         @include make-col-ready;
         @include make-col(2);
+        border-left: 1px solid $mono-lighter;
+        padding: 3px;
       }
     }
   }
