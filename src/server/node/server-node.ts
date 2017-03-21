@@ -25,6 +25,10 @@ export class ServerNode extends BaseNode<ServerEntity> {
 
   async initialize(): Promise<void> {
     await super.initialize();
+  }
+
+  async start(): Promise<void> {
+    await super.start();
     this.status = "ready";
   }
 

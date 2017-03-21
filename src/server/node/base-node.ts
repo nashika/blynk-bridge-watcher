@@ -92,27 +92,23 @@ export abstract class BaseNode<T extends BaseEntity> {
     });
   }
 
-  startWrap(): Promise<void> {
+  async startWrap(): Promise<void> {
     this.log("debug", `Start process was started.`);
-    return this.start().then(() => {
-      this.log("debug", `Start process was finished.`);
-    });
+    await this.start();
+    this.log("debug", `Start process was finished.`);
   }
 
-  protected start(): Promise<void> {
+  protected async start(): Promise<void> {
     this.status = "processing";
-    return Promise.resolve();
   }
 
-  stopWrap(): Promise<void> {
+  async stopWrap(): Promise<void> {
     this.log("debug", `Stop process was started.`);
-    return this.stop().then(() => {
-      this.log("debug", `Stop process was finished.`);
-    })
+    await this.stop();
+    this.log("debug", `Stop process was finished.`);
   }
 
-  protected stop(): Promise<void> {
-    return Promise.resolve();
+  protected async stop(): Promise<void> {
   }
 
   run(..._args: string[]): void {
