@@ -2,7 +2,7 @@ block variables
 
 div(v-if="!add")
   each child in children
-    #{child + "-" + singularName + "-node-component"}(v-if="entity.type == '#{child}'", :entity="entity", :brother-entities="brotherEntities", :parent="parent", :depth="depth")
+    #{child + "-" + singularName + "-node-component"}(v-if="entity.type == '" + child + "'", :entity="entity", :brother-entities="brotherEntities", :parent="parent", :depth="depth")
 .add(v-else)
   button.btn.btn-success(@click="showAddBox = !showAddBox", :class="{active: showAddBox}") #[i.fa.fa-plus] Add {{lodash.startCase('#{singularName}')}}
   section.add-box(v-show="showAddBox")

@@ -1,11 +1,10 @@
 mixin children(componentName, singularName, pluralName)
-  .node-component-blocks(class!=pluralName)
-    template(v-for="#{singularName} in #{pluralName}")
-      #{componentName}(:entity="#{singularName}", :brother-entities="#{pluralName}", :parent="this",
-      :depth="depth + 1")
-    .loading(v-if="!#{pluralName}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
-    .nothing(v-if="#{pluralName} && #{pluralName}.length == 0") #[i.fa.fa-ban] No #{pluralName}
-    #{componentName}(v-if="status == 'stop'", :brother-entities="#{pluralName}", :parent="this", :depth="depth + 1")
+  .node-component-blocks(class=pluralName)
+    template(v-for=singularName + " in " + pluralName)
+      #{componentName}(:entity=singularName, :brother-entities=pluralName, :parent="this", :depth="depth + 1")
+    .loading(v-if="!" + pluralName) #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
+    .nothing(v-if=pluralName + " && " + pluralName + ".length == 0") #[i.fa.fa-ban] No #{pluralName}
+    #{componentName}(v-if="status == 'stop'", :brother-entities=pluralName, :parent="this", :depth="depth + 1")
 
 .base-node-component
   template(v-if="!add")

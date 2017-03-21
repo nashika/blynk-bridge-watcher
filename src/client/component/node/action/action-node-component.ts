@@ -8,7 +8,7 @@ import {ReadActionNodeComponent} from "./read-action-node-component";
 import {WriteActionNodeComponent} from "./write-action-node-component";
 import {BaseSwitchNodeComponent} from "../base-switch-node-component";
 
-let template = require("./action-node-component.jade");
+let template = require("./action-node-component.pug");
 
 @Component({
   template: template,

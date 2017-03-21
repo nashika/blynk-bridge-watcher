@@ -6,7 +6,7 @@ import {BaseActionEntity} from "../../../common/entity/action/base-action-entity
 import {ActionNodeComponent} from "./action/action-node-component";
 import {BoardNodeComponent} from "./board-node-component";
 
-let template = require("./bridge-node-component.jade");
+let template = require("./bridge-node-component.pug");
 
 @Component({
   template: template,

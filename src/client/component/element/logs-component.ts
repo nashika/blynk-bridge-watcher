@@ -5,7 +5,7 @@ import {ISocketIoLogData} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
 
-let template = require("./logs-component.jade");
+let template = require("./logs-component.pug");
 
 @Component({
   template: template,

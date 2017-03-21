@@ -11,7 +11,7 @@ import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-
 import {ServerService} from "../../service/server-service";
 import {container} from "../../../common/inversify.config";
 
-let template = require("./server-node-component.jade");
+let template = require("./server-node-component.pug");
 
 @Component({
   template: template,

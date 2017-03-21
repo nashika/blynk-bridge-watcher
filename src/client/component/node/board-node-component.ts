@@ -6,7 +6,7 @@ import {BridgeNodeComponent} from "./bridge-node-component";
 import {BridgeEntity} from "../../../common/entity/bridge-entity";
 import {ServerNodeComponent} from "./server-node-component";
 
-let template = require("./board-node-component.jade");
+let template = require("./board-node-component.pug");
 
 @Component({
   template: template,

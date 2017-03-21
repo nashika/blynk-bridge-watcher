@@ -5,7 +5,7 @@ import {BaseNotifierEntity} from "../../../../common/entity/notifier/base-notifi
 import {PushbulletNotifierNodeComponent} from "./pushbullet-notifier-node-component";
 import {LogNotifierNodeComponent} from "./log-notifier-node-component";
 
-let template = require("./notifier-node-component.jade");
+let template = require("./notifier-node-component.pug");
 
 @Component({
   template: template,

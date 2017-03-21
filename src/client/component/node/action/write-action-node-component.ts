@@ -3,7 +3,7 @@ import Component from "vue-class-component";
 import {BaseActionNodeComponent} from "./base-action-node-component";
 import {WriteActionEntity} from "../../../../common/entity/action/write-action-entity";
 
-let template = require("./write-action-node-component.jade");
+let template = require("./write-action-node-component.pug");
 
 @Component({
   template: template,

@@ -3,7 +3,7 @@ import Component from "vue-class-component";
 import {BaseActionNodeComponent} from "./base-action-node-component";
 import {ReadActionEntity} from "../../../../common/entity/action/read-action-entity";
 
-let template = require("./read-action-node-component.jade");
+let template = require("./read-action-node-component.pug");
 
 @Component({
   template: template,

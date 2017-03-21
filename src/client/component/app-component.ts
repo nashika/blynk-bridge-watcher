@@ -8,7 +8,7 @@ import {container} from "../../common/inversify.config";
 import {EditComponent} from "./element/edit-component";
 import {LogsComponent} from "./element/logs-component";
 
-let template = require("./app-component.jade");
+let template = require("./app-component.pug");
 
 @Component({
   template: template,

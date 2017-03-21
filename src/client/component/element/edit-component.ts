@@ -7,7 +7,7 @@ import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
 import {AppComponent} from "../app-component";
 
-let template = require("./edit-component.jade");
+let template = require("./edit-component.pug");
 
 @Component({
   template: template,
