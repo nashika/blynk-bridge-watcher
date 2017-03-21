@@ -10,6 +10,7 @@ import {
 } from "../../common/util/socket-io-util";
 import {BaseNodeComponent} from "../component/node/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
+import {logger} from "../logger";
 
 @injectable()
 export class SocketIoClientService extends BaseService {
@@ -36,9 +37,11 @@ export class SocketIoClientService extends BaseService {
   }
 
   private onConnect = () => {
+    logger.debug("connected");
   };
 
   private onDisconnect = () => {
+    logger.debug("disconnected");
     for (let _id in this.components) {
       this.components[_id].status = "connecting";
       this.components[_id].clearLog();
@@ -57,6 +60,7 @@ export class SocketIoClientService extends BaseService {
   };
 
   private onStatus = (data: ISocketIoStatusData) => {
+    logger.debug(`status change, id=${data._id} status=${data.status}`);
     if (this.components[data._id])
       this.components[data._id].status = data.status;
     this.statuses[data._id] = data;

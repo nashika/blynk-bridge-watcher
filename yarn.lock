@@ -52,6 +52,10 @@
   dependencies:
     "@types/express" "*"
 
+"@types/loglevel@1.4.29":
+  version "1.4.29"
+  resolved "https://registry.yarnpkg.com/@types/loglevel/-/loglevel-1.4.29.tgz#4d1eaf46fb5cd245b647e58ff6907e5c077dfa23"
+
 "@types/mime@*":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-0.0.29.tgz#fbcfd330573b912ef59eeee14602bface630754b"
@@ -2585,6 +2589,10 @@ log4js@1.1.1:
     debug "^2.2.0"
     semver "^5.3.0"
     streamroller "^0.4.0"
+
+loglevel@1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.4.1.tgz#95b383f91a3c2756fd4ab093667e4309161f2bcd"
 
 longest@^1.0.1:
   version "1.0.1"
