@@ -18,7 +18,7 @@ export var app:Express = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "jade");
+app.set("view engine", "pug");
 
 let expressLogger = log4js.getLogger("express");
 app.use(log4js.connectLogger(expressLogger, {}));
