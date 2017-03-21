@@ -3,60 +3,51 @@ import Component from "vue-class-component";
 
 import {BaseComponent} from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
-import {BaseNodeComponent} from "../node/base-node-component";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
+import {AppComponent} from "../app-component";
 
 let template = require("./edit-component.jade");
 
 @Component({
   template: template,
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
-      twoWay: true,
-    },
-    EntityClass: {
-      type: Function,
-    },
-    entity: {
-      type: Object,
-    },
-    add: {
-      type: Boolean,
-    },
-  },
-  watch: {
-    show: EditComponent.prototype.onChangeShow,
-  },
 })
-export class EditComponent<T extends BaseEntity> extends BaseComponent {
+export class EditComponent extends BaseComponent {
 
-  $parent : BaseNodeComponent<T>;
+  $parent: AppComponent;
 
-  socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
-  editEntity: T = null;
+  private socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
-  show: boolean;
-  EntityClass: typeof BaseEntity;
-  entity: T;
-  add: boolean;
-
-  onChangeShow() {
-    if (this.show) {
-      if (this.add) this.editEntity = <T>this.EntityClass.generateDefault();
-      else this.editEntity = _.cloneDeep(this.entity);
-    }
-  }
-
-  edit() {
-    this.show = false;
-    this.$parent.edit(this.editEntity);
-  }
+  private EntityClass: typeof BaseEntity = null;
+  private editEntity: BaseEntity = null;
+  private deffered: (entity: any) => void = null;
 
   getNodeOptions(filter: string): {[_id: string]: string} {
     return this.socketIoClientService.getNodeOptions(filter);
+  }
+
+  async edit<T extends BaseEntity>(EntityClass: typeof BaseEntity, entity: T): Promise<T> {
+    this.EntityClass = EntityClass;
+    if (entity)
+      this.editEntity = _.cloneDeep(entity);
+    else
+      this.editEntity = EntityClass.generateDefault();
+    (<any>this.$refs.modal).show();
+    let result = await new Promise<T>((resolve) => {
+      this.deffered = resolve;
+    });
+    this.EntityClass = null;
+    this.editEntity = null;
+    this.deffered = null;
+    return result;
+  }
+
+  ok() {
+    this.deffered(this.editEntity);
+  }
+
+  cancel() {
+    this.deffered(null);
   }
 
 }

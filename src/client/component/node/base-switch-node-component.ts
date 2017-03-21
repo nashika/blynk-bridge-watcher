@@ -5,7 +5,23 @@ import {BaseComponent} from "../base-component";
 import {BaseNodeComponent} from "./base-node-component";
 
 @Component({
-  props: ["entity", "brotherEntities", "parent", "add"],
+  props: {
+    entity: {
+      type: Object,
+    },
+    brotherEntities: {
+      type: Array,
+    },
+    parent: {
+      type: Window,
+    },
+    add: {
+      type: Boolean,
+    },
+    depth: {
+      type: Number,
+    },
+  },
 })
 export class BaseSwitchNodeComponent<T extends BaseEntity> extends BaseComponent {
 

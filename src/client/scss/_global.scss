@@ -1,40 +1,24 @@
 html, body {
 }
 
-.nothing, .loading {
-  @include border-top-radius(5px);
-  @include border-bottom-radius(5px);
-  border: 3px dotted $mono-light;
-  margin: 10px;
-  padding: 10px;
-  font-size: 150%;
-  text-align: center;
-}
-
-section.add {
-  margin: 20px 0px;
+.node-component-block {
+  @include make-row;
 
   > .header {
-    @include border-top-radius(5px);
-    @include border-bottom-radius(5px);
-    background-color: $brand-darker;
-
-    > h1 {
-      margin: 0px;
-      padding: 5px 10px 5px 10px;
-      font-size: 100%;
-      color: #fff;
-    }
+    @include make-col-ready;
+    @include make-col(2);
   }
 
   > .body {
-    padding: 10px;
+    @include make-col-ready;
+    @include make-col(10);
 
-    > .add {
-      display: inline;
+    .datas {
+      @include make-row;
 
-      > button {
-        margin: 5px;
+      .data {
+        @include make-col-ready;
+        @include make-col(2);
       }
     }
   }

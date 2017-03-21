@@ -9,35 +9,15 @@ let template = require("./logs-component.jade");
 
 @Component({
   template: template,
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
-      default: false,
-      twoWay: true,
-    },
-    id: {
-      type: String,
-      required: true,
-    },
-    count: {
-      type: Number,
-      required: true,
-    }
-  },
-  watch: {
-    show: LogsComponent.prototype.onChangeShow,
-  },
 })
 export class LogsComponent extends BaseComponent {
 
   socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+
   page: number = 1;
   limit: number = 20;
   logs: ISocketIoLogData[] = null;
-
-  show: boolean;
-  id: string;
+  id: string = null;
 
   onChangeShow() {
     if (!this.show) return;
@@ -50,6 +30,10 @@ export class LogsComponent extends BaseComponent {
     this.socketIoClientService.getLogs(this.id, this.page, this.limit).then(logs => {
       this.logs = logs;
     });
+  }
+
+  async show(id: string): Promise<void> {
+    id
   }
 
   previous() {

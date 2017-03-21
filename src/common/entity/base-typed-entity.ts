@@ -18,6 +18,6 @@ export abstract class BaseTypedEntity extends BaseEntity {
     }),
   };
 
-  type:string;
+  type: string;
 
 }
