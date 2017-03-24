@@ -22,7 +22,8 @@ let webpackConfig:webpack.Configuration = {
   },
   module: {
     loaders: [
-      {test: /\.ts$/, loader: "awesome-typescript-loader", exclude: /node_modules/,},
+      {test: /\.ts$/, loader: "ts-loader", exclude: /node_modules/},
+      {test: /\.vue$/, loader: "vue-loader"},
       {test: /\.html$/, loader: "html-loader", },
       {test: /\.pug/, loaders: ["raw-loader", "pug-html-loader"], },
       {test: /\.css$/, loaders: ["style-loader", "css-loader"], },

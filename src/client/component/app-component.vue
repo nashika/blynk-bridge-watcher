@@ -1,0 +1,22 @@
+<template lang="pug">
+  section.app-component
+    .node-component-blocks
+      .node-component-block
+        .header Tree
+        .body
+          .datas
+            .data ID
+            .data Type
+            .data Label
+            .data Content
+            .data Status
+            .data Log
+      template(v-if="server")
+        server-component(:entity="server", :depth="0")
+      template(v-else)
+        p Loading server...
+    edit-component(ref="edit")
+    logs-component(ref="logs")
+</template>
+
+<script lang="ts" src="./app-component.ts"></script>
