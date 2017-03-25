@@ -3,6 +3,9 @@ import util = require("util");
 import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
 import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
+import {NodeService} from "../../service/node-service";
+import {SocketIoServerService} from "../../service/socket-io-server-service";
+import {TableService} from "../../service/table-service";
 
 export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNode<T> {
 
@@ -10,6 +13,12 @@ export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNod
 
   private waiting: boolean = false;
   private messages: string[] = null;
+
+  constructor(protected tableService: TableService,
+              protected socketIoServerService: SocketIoServerService,
+              protected nodeService: NodeService) {
+    super(tableService, socketIoServerService, nodeService);
+  }
 
   initialize(): Promise<void> {
     this.messages = [];
