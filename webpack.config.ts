@@ -25,6 +25,7 @@ let webpackConfig:webpack.Configuration = {
       {test: /\.ts$/, loader: "ts-loader", exclude: /node_modules/},
       {test: /\.vue$/, loader: "vue-loader", options: {
         loaders: {
+          pug: "pug-html-loader",
           scss: "style-loader!css-loader!sass-loader",
         }}
       },
