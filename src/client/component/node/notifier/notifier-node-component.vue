@@ -11,4 +11,8 @@
       ];
 </template>
 
+<style scoped lang="sass">
+  @import "../base-node-component.scss"
+</style>
+
 <script lang="ts" src="./notifier-node-component.ts"></script>

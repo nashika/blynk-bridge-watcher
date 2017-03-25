@@ -7,4 +7,8 @@
     +children("job-node-component", "job", "jobs")
 </template>
 
+<style scoped lang="sass">
+  @import "./base-node-component.scss"
+</style>
+
 <script lang="ts" src="./server-node-component.ts"></script>

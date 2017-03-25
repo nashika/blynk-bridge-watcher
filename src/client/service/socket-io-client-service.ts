@@ -6,7 +6,7 @@ import _ = require("lodash");
 import {BaseService} from "./base-service";
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
-  ISocketIoSendData, ISocketIoData, ISocketIoCountLogData, ISocketIoResponseLogsData, ISocketIoRequestLogsData
+  ISocketIoSendData, ISocketIoData, ISocketIoResponseLogsData, ISocketIoRequestLogsData
 } from "../../common/util/socket-io-util";
 import BaseNodeComponent from "../component/node/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
@@ -17,13 +17,13 @@ export class SocketIoClientService extends BaseService {
 
   private socket: Socket;
   private components: {[_id: string]: BaseNodeComponent<BaseEntity>};
-  private countLogs: {[_id: string]: number};
+  private lastLogs: {[_id: string]: ISocketIoLogData};
   private statuses: {[_id: string]: ISocketIoStatusData};
 
   constructor() {
     super();
     this.components = {};
-    this.countLogs = {};
+    this.lastLogs = {};
     this.statuses = {};
   }
 
@@ -32,7 +32,7 @@ export class SocketIoClientService extends BaseService {
     this.socket.on("connect", this.onConnect);
     this.socket.on("disconnect", this.onDisconnect);
     this.socket.on("run", this.onRun);
-    this.socket.on("countLog", this.onCountLog);
+    this.socket.on("log", this.onLog);
     this.socket.on("status", this.onStatus);
   }
 
@@ -46,7 +46,7 @@ export class SocketIoClientService extends BaseService {
       this.components[_id].status = "connecting";
       this.components[_id].clearLog();
       this.statuses[_id].status = "connecting";
-      this.countLogs[_id] = 0;
+      this.lastLogs[_id] = null;
     }
   };
 
@@ -54,9 +54,9 @@ export class SocketIoClientService extends BaseService {
     if (this.components[data._id]) this.components[data._id].notifyRun();
   };
 
-  private onCountLog = (data: ISocketIoCountLogData) => {
-    this.countLogs[data._id] = data.count;
-    if (this.components[data._id]) this.components[data._id].setCountLog(data.count);
+  private onLog = (data: ISocketIoLogData) => {
+    this.lastLogs[data._id] = data;
+    if (this.components[data._id]) this.components[data._id].setLastLog(data);
   };
 
   private onStatus = (data: ISocketIoStatusData) => {
@@ -83,8 +83,8 @@ export class SocketIoClientService extends BaseService {
     return this.statuses[_id] ? this.statuses[_id].status : "connecting";
   }
 
-  getCountLog(_id: string): number {
-    return this.countLogs[_id] || 0;
+  getLastLog(_id: string): ISocketIoLogData {
+    return this.lastLogs[_id] || null;
   }
 
   getLogs(_id: string, page: number, limit: number): Promise<ISocketIoLogData[]> {

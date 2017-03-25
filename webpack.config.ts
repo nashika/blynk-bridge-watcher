@@ -23,7 +23,11 @@ let webpackConfig:webpack.Configuration = {
   module: {
     loaders: [
       {test: /\.ts$/, loader: "ts-loader", exclude: /node_modules/},
-      {test: /\.vue$/, loader: "vue-loader"},
+      {test: /\.vue$/, loader: "vue-loader", options: {
+        loaders: {
+          scss: "style-loader!css-loader!sass-loader",
+        }}
+      },
       {test: /\.css$/, loaders: ["style-loader", "css-loader"], },
       {test: /\.scss$/, loaders: ["style-loader", "css-loader", "sass-loader"], },
       {test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader", query: {prefix: "dist/fonts/", name:"fonts/[name].[ext]", limit: 10000, mimetype: "application/font-woff"}},

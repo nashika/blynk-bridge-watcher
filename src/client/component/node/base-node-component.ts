@@ -3,7 +3,7 @@ import Component from "vue-class-component";
 
 import BaseComponent from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
-import {TSocketIoStatus} from "../../../common/util/socket-io-util";
+import {ISocketIoLogData, TSocketIoStatus} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {EntityService} from "../../service/entity-service";
 import {container} from "../../../common/inversify.config";
@@ -43,7 +43,7 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
   showLogs: boolean = false;
   runningCount: number = 0;
   status: TSocketIoStatus = "connecting";
-  countLog: number = 0;
+  lastLog: ISocketIoLogData = null;
 
   get this(): BaseNodeComponent<BaseEntity> {
     return this;
@@ -53,7 +53,7 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     if (!this.add) {
       this.socketIoClientService.registerComponent(this);
       this.status = this.socketIoClientService.getStatus(this.entity._id);
-      this.countLog = this.socketIoClientService.getCountLog(this.entity._id);
+      this.lastLog = this.socketIoClientService.getLastLog(this.entity._id);
       await this.reload();
     }
   }
@@ -117,12 +117,12 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     setTimeout(() => this.runningCount--, 1000);
   }
 
-  setCountLog(count: number) {
-    this.countLog = count;
+  setLastLog(log: ISocketIoLogData) {
+    this.lastLog = log;
   }
 
   clearLog() {
-    this.countLog = 0;
+    this.lastLog = null;
   }
 
   get title(): string {

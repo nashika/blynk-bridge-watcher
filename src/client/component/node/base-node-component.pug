@@ -17,9 +17,6 @@ mixin children(componentName, singularName, pluralName)
           | &nbsp;{{title}}
         .body
           .datas
-            .data {{entity.shortId}}
-            .data {{EntityClass.params.entityName}}
-            .data {{entity.label}}
             .data
               block body
             .data
@@ -40,8 +37,9 @@ mixin children(componentName, singularName, pluralName)
               b-button(v-if="status == 'error'", size="sm", variant="danger") #[i.fa.fa-warning]
               b-button(v-if="status == 'connecting'", size="sm", variant="secondary") #[i.fa.fa-spinner.fa-pulse]
               b-button(v-if="status == 'processing'", size="sm", variant="warning") #[i.fa.fa-refresh.fa-spin]
-            .data
-              b-button(type="button", size="sm", variant="secondary", @click="showLogs = true") #[i.fa.fa-terminal] {{countLog}}
+            .data.log
+              b-button(type="button", size="sm", variant="secondary", @click="showLogs = true") #[i.fa.fa-terminal] {{lastLog ? lastLog.no : 0}}
+              | {{lastLog ? lastLog.message : ""}}
     block children
   template(v-else)
     button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",

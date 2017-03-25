@@ -6,12 +6,9 @@ export type TSocketIoLogLevel = "none" | "fatal" | "error" | "warn" | "info" | "
 
 export interface ISocketIoLogData extends ISocketIoData {
   level: TSocketIoLogLevel;
+  no: number;
   message: string;
   timestamp: string;
-}
-
-export interface ISocketIoCountLogData extends ISocketIoData {
-  count: number;
 }
 
 export type TSocketIoStatus = "connecting" | "processing" | "ready" | "stop" | "error";

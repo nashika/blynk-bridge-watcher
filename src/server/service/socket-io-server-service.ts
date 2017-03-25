@@ -6,7 +6,7 @@ import {injectable} from "inversify";
 
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus, TSocketIoLogLevel,
-  ISocketIoSendData, ISocketIoData, ISocketIoCountLogData, ISocketIoRequestLogsData, ISocketIoResponseLogsData
+  ISocketIoSendData, ISocketIoData, ISocketIoRequestLogsData, ISocketIoResponseLogsData
 } from "../../common/util/socket-io-util";
 import {BaseServerService} from "./base-server-service";
 import {NodeService} from "./node-service";
@@ -34,8 +34,8 @@ export class SocketIoServerService extends BaseServerService {
       socket.on("send", this.onSend);
       socket.on("logs", this.onRequestLogs);
       for (let _id in this.logs) {
-        let data: ISocketIoCountLogData = {_id: _id, count: _.size(this.logs[_id])};
-        socket.emit("countLog", data);
+        let log: ISocketIoLogData = _.last(this.logs[_id]);
+        socket.emit("log", log);
       }
       for (let _id in this.statuses)
         socket.emit("status", this.statuses[_id]);
@@ -67,11 +67,11 @@ export class SocketIoServerService extends BaseServerService {
   }
 
   log(_id: string, level: TSocketIoLogLevel, message: string): void {
-    let log: ISocketIoLogData = {_id: _id, level: level, message: message, timestamp: (new Date()).toISOString()};
     if (!this.logs[_id]) this.logs[_id] = [];
+    let no = _.size(this.logs[_id]);
+    let log: ISocketIoLogData = {_id: _id, no: no, level: level, message: message, timestamp: (new Date()).toISOString(), };
     this.logs[_id].push(log);
-    let data: ISocketIoCountLogData = {_id: _id, count: _.size(this.logs[_id])};
-    this.io.sockets.emit("countLog", data);
+    this.io.sockets.emit("log", log);
   }
 
   status(_id: string, status: TSocketIoStatus): void {

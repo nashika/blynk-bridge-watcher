@@ -1,0 +1,38 @@
+@import "../../scss/lib";
+
+.node-component-block {
+  border-bottom: 1px solid $mono-lighter;
+  @include make-row;
+
+  > .header {
+    @include make-col-ready;
+    @include make-col(6);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  > .body {
+    @include make-col-ready;
+    @include make-col(6);
+
+    .datas {
+      @include make-row;
+
+      .data {
+        @include make-col-ready;
+        @include make-col(2);
+        border-left: 1px solid $mono-lighter;
+        padding: 3px;
+
+        &.log{
+          @include make-col(6);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}
