@@ -13,7 +13,7 @@ import BaseNodeComponent from "./base-node-component";
       type: Array,
     },
     parent: {
-      type: Window,
+      type: Object,
     },
     add: {
       type: Boolean,

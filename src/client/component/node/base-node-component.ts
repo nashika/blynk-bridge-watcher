@@ -17,7 +17,7 @@ import {container} from "../../../common/inversify.config";
       type: Array,
     },
     parent: {
-      type: Window,
+      type: Object,
     },
     add: {
       type: Boolean,
@@ -45,7 +45,7 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
   status: TSocketIoStatus = "connecting";
   lastLog: ISocketIoLogData = null;
 
-  get this(): BaseNodeComponent<BaseEntity> {
+  get me(): BaseNodeComponent<BaseEntity> {
     return this;
   }
 

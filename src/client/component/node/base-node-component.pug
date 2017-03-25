@@ -1,48 +1,41 @@
 mixin children(componentName, singularName, pluralName)
   .node-component-blocks(class=pluralName)
     template(v-for=singularName + " in " + pluralName)
-      #{componentName}(:entity=singularName, :brother-entities=pluralName, :parent="this", :depth="depth + 1")
+      #{componentName}(:entity=singularName, :brother-entities=pluralName, :parent="me", :depth="depth + 1")
     template(v-if="!" + pluralName)
-      .loading(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
+      .node.loading(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
     template(v-if=pluralName + " && " + pluralName + ".length == 0")
-      .nothing(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-ban] No #{pluralName}
+      .node.nothing(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-ban] No #{pluralName}
     #{componentName}(v-if="status == 'stop'", :brother-entities=pluralName, :parent="this", :depth="depth + 1")
 
 .base-node-component
-  template(v-if="!add")
-    template(v-if="entity")
-      .node-component-block
-        .header(:style="{paddingLeft: 20 + depth * 15 + 'px'}")
-          i.fa(:class="'fa-' + EntityClass.params.icon")
-          | &nbsp;{{title}}
-        .body
-          .datas
-            .data
-              block body
-            .data
-              b-button(v-if="isRunning", size="sm", variant="danger") #[i.fa.fa-circle-o-notch.fa-spin]
-              dropdown(v-if="status == 'stop'")
-                button.btn.btn-default.btn-sm.dropdown-toggle(slot="button", type="button") #[i.fa.fa-bars] #[i.fa.fa-caret-down]
-                ul.dropdown-menu(slot="dropdown-menu")
-                  li
-                    a(@click="showEdit = true") #[i.fa.fa-pencil] Edit
-                  li(v-if="parent")
-                    a(@click="remove()") #[i.fa.fa-trash-o] Remove
-                  li(v-if="parent && !isFirst")
-                    a(@click="move(false)") #[i.fa.fa-arrow-up] Move Up
-                  li(v-if="parent && !isLast")
-                    a(@click="move(true)") #[i.fa.fa-arrow-down] Move Down
-              b-button(v-if="status == 'ready'", size="sm", variant="success", @click="stop()") #[i.fa.fa-toggle-on]
-              b-button(v-if="status == 'stop'", size="sm", variant="secondary", @click="start()") #[i.fa.fa-toggle-off]
-              b-button(v-if="status == 'error'", size="sm", variant="danger") #[i.fa.fa-warning]
-              b-button(v-if="status == 'connecting'", size="sm", variant="secondary") #[i.fa.fa-spinner.fa-pulse]
-              b-button(v-if="status == 'processing'", size="sm", variant="warning") #[i.fa.fa-refresh.fa-spin]
-            .data.log
-              b-button(type="button", size="sm", variant="secondary", @click="showLogs = true") #[i.fa.fa-terminal] {{lastLog ? lastLog.no : 0}}
-              | {{lastLog ? lastLog.message : ""}}
+  template(v-if="!add && entity")
+    .node
+      .datas
+        .data.title
+          .header(:style="{paddingLeft: 20 + depth * 15 + 'px'}")
+            i.fa(:class="'fa-' + EntityClass.params.icon")
+            | &nbsp;{{title}}
+        .data.content
+          block body
+        .data.log
+          b-button(v-if="status == 'ready'", size="sm", variant="success", @click="stop()") #[i.fa.fa-toggle-on]
+          b-button(v-if="status == 'stop'", size="sm", variant="secondary", @click="start()") #[i.fa.fa-toggle-off]
+          b-button(v-if="status == 'error'", size="sm", variant="danger") #[i.fa.fa-warning]
+          b-button(v-if="status == 'connecting'", size="sm", variant="secondary") #[i.fa.fa-spinner.fa-pulse]
+          b-button(v-if="status == 'processing'", size="sm", variant="warning") #[i.fa.fa-refresh.fa-spin]
+          b-dropdown(v-if="status == 'stop'" text="#[i.fa.fa-bars]" size="sm")
+            b-dropdown-item(click="showEdit = true") #[i.fa.fa-pencil] Edit
+            b-dropdown-item(v-if="parent", click="remove()") #[i.fa.fa-trash-o] Remove
+            b-dropdown-item(v-if="parent && !isFirst", click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            b-dropdown-item(v-if="parent && !isLast", click="move(true)") #[i.fa.fa-arrow-down] Move Down
+          b-button(v-if="isRunning", size="sm", variant="danger") #[i.fa.fa-circle-o-notch.fa-spin]
+          b-button(type="button", size="sm", variant="secondary", @click="showLogs = true") #[i.fa.fa-terminal] {{lastLog ? lastLog.no : 0}}
+          | {{lastLog ? lastLog.message : ""}}
     block children
   template(v-else)
     button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
     type="button", @click="showEdit = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}
     button.btn.btn-success(v-else,
     type="button", @click="showEdit = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}
+
