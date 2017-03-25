@@ -8,17 +8,14 @@ import {container} from "../../common/inversify.config";
 import {EditComponent} from "./element/edit-component";
 import {LogsComponent} from "./element/logs-component";
 
-let template = require("./app-component.vue");
-
 @Component({
-  template: template,
   components: {
     "server-component": ServerNodeComponent,
     "logs-component": LogsComponent,
     "edit-component": EditComponent,
   },
 })
-export class AppComponent extends BaseComponent {
+export default class AppComponent extends BaseComponent {
 
   entityService: EntityService = container.get(EntityService);
   server: ServerEntity = null;

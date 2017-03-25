@@ -1,7 +1,7 @@
 import Vue = require("vue");
 import _ = require("lodash");
 import {LoDashStatic} from "lodash";
-import {AppComponent} from "./app-component";
+import AppComponent from "./app-component";
 
 export class BaseComponent extends Vue {
 

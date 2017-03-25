@@ -5,8 +5,8 @@ import {container} from "../common/inversify.config";
 import {EntityService} from "./service/entity-service";
 import {ServerService} from "./service/server-service";
 import {SocketIoClientService} from "./service/socket-io-client-service";
-import {AppComponent} from "./component/app-component";
-let AppComponentVue = require("./component/app-component.vue").AppComponent;
+import AppComponent from "./component/app-component";
+let AppComponentVue = require("./component/app-component.vue");
 
 container.bind<EntityService>(EntityService).toSelf().inSingletonScope();
 container.bind<ServerService>(ServerService).toSelf().inSingletonScope();

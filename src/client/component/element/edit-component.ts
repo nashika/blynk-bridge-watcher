@@ -5,7 +5,7 @@ import {BaseComponent} from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
-import {AppComponent} from "../app-component";
+import AppComponent from "../app-component";
 
 let template = require("./edit-component.pug");
 
