@@ -1,8 +1,8 @@
 import Component from "vue-class-component";
 
 import {BaseEntity} from "../../../common/entity/base-entity";
-import {BaseComponent} from "../base-component";
-import {BaseNodeComponent} from "./base-node-component";
+import BaseComponent from "../base-component";
+import BaseNodeComponent from "./base-node-component";
 
 @Component({
   props: {
@@ -23,7 +23,7 @@ import {BaseNodeComponent} from "./base-node-component";
     },
   },
 })
-export class BaseSwitchNodeComponent<T extends BaseEntity> extends BaseComponent {
+export default class BaseSwitchNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   showAddBox: boolean = false;
 

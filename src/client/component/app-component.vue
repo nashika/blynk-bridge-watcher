@@ -12,7 +12,7 @@
             .data Status
             .data Log
       template(v-if="server")
-        server-component(:entity="server", :depth="0")
+        server-node-component(:entity="server", :depth="0")
       template(v-else)
         p Loading server...
     edit-component(ref="edit")

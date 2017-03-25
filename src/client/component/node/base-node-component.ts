@@ -1,7 +1,7 @@
 import _ = require("lodash");
 import Component from "vue-class-component";
 
-import {BaseComponent} from "../base-component";
+import BaseComponent from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {TSocketIoStatus} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
@@ -27,7 +27,7 @@ import {container} from "../../../common/inversify.config";
     },
   },
 })
-export class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
+export default class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
 
   entity: T;
   brotherEntities: T[];

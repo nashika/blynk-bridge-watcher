@@ -1,14 +1,10 @@
 import Component from "vue-class-component";
 
-import {BaseActionNodeComponent} from "./base-action-node-component";
+import BaseActionNodeComponent from "./base-action-node-component";
 import {WriteActionEntity} from "../../../../common/entity/action/write-action-entity";
 
-let template = require("./write-action-node-component.pug");
-
-@Component({
-  template: template,
-})
-export class WriteActionNodeComponent extends BaseActionNodeComponent<WriteActionEntity> {
+@Component({})
+export default class WriteActionNodeComponent extends BaseActionNodeComponent<WriteActionEntity> {
 
   EntityClass = WriteActionEntity;
 

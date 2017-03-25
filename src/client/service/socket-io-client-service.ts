@@ -8,7 +8,7 @@ import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
   ISocketIoSendData, ISocketIoData, ISocketIoCountLogData, ISocketIoResponseLogsData, ISocketIoRequestLogsData
 } from "../../common/util/socket-io-util";
-import {BaseNodeComponent} from "../component/node/base-node-component";
+import BaseNodeComponent from "../component/node/base-node-component";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {logger} from "../logger";
 

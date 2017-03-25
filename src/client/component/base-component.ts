@@ -3,7 +3,7 @@ import _ = require("lodash");
 import {LoDashStatic} from "lodash";
 import AppComponent from "./app-component";
 
-export class BaseComponent extends Vue {
+export default class BaseComponent extends Vue {
 
   $root: AppComponent;
   lodash: LoDashStatic = _;

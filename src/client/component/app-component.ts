@@ -1,20 +1,13 @@
 import Component from "vue-class-component";
 
-import {BaseComponent} from "./base-component";
-import {ServerNodeComponent} from "./node/server-node-component";
+import BaseComponent from "./base-component";
 import {ServerEntity} from "../../common/entity/server-entity";
 import {EntityService} from "../service/entity-service";
 import {container} from "../../common/inversify.config";
-import {EditComponent} from "./element/edit-component";
-import {LogsComponent} from "./element/logs-component";
+import EditComponent from "./element/edit-component";
+import LogsComponent from "./element/logs-component";
 
-@Component({
-  components: {
-    "server-component": ServerNodeComponent,
-    "logs-component": LogsComponent,
-    "edit-component": EditComponent,
-  },
-})
+@Component({})
 export default class AppComponent extends BaseComponent {
 
   entityService: EntityService = container.get(EntityService);

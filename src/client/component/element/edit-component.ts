@@ -1,18 +1,14 @@
 import _ = require("lodash");
 import Component from "vue-class-component";
 
-import {BaseComponent} from "../base-component";
+import BaseComponent from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
 import AppComponent from "../app-component";
 
-let template = require("./edit-component.pug");
-
-@Component({
-  template: template,
-})
-export class EditComponent extends BaseComponent {
+@Component({})
+export default class EditComponent extends BaseComponent {
 
   $parent: AppComponent;
 

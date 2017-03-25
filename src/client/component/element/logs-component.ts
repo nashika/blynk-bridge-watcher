@@ -1,16 +1,12 @@
 import Component from "vue-class-component";
 
-import {BaseComponent} from "../base-component";
+import BaseComponent from "../base-component";
 import {ISocketIoLogData} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
 
-let template = require("./logs-component.pug");
-
-@Component({
-  template: template,
-})
-export class LogsComponent extends BaseComponent {
+@Component({})
+export default class LogsComponent extends BaseComponent {
 
   socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 

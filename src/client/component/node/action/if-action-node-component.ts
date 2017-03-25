@@ -1,14 +1,10 @@
 import Component from "vue-class-component";
 
-import {BaseActionNodeComponent} from "./base-action-node-component";
+import BaseActionNodeComponent from "./base-action-node-component";
 import {IfActionEntity} from "../../../../common/entity/action/if-action-entity";
 
-let template = require("./if-action-node-component.pug");
-
-@Component({
-  template: template,
-})
-export class IfActionNodeComponent extends BaseActionNodeComponent<IfActionEntity> {
+@Component({})
+export default class IfActionNodeComponent extends BaseActionNodeComponent<IfActionEntity> {
 
   EntityClass = IfActionEntity;
 

@@ -1,14 +1,10 @@
 import Component from "vue-class-component";
 
-import {BaseActionNodeComponent} from "./base-action-node-component";
+import BaseActionNodeComponent from "./base-action-node-component";
 import {ReadActionEntity} from "../../../../common/entity/action/read-action-entity";
 
-let template = require("./read-action-node-component.pug");
-
-@Component({
-  template: template,
-})
-export class ReadActionNodeComponent extends BaseActionNodeComponent<ReadActionEntity> {
+@Component({})
+export default class ReadActionNodeComponent extends BaseActionNodeComponent<ReadActionEntity> {
 
   EntityClass = ReadActionEntity;
 

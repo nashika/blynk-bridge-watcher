@@ -24,8 +24,6 @@ let webpackConfig:webpack.Configuration = {
     loaders: [
       {test: /\.ts$/, loader: "ts-loader", exclude: /node_modules/},
       {test: /\.vue$/, loader: "vue-loader"},
-      {test: /\.html$/, loader: "html-loader", },
-      {test: /\.pug/, loaders: ["raw-loader", "pug-html-loader"], },
       {test: /\.css$/, loaders: ["style-loader", "css-loader"], },
       {test: /\.scss$/, loaders: ["style-loader", "css-loader", "sass-loader"], },
       {test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader", query: {prefix: "dist/fonts/", name:"fonts/[name].[ext]", limit: 10000, mimetype: "application/font-woff"}},
