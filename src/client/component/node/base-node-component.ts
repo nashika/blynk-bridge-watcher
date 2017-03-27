@@ -93,7 +93,8 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
 
   protected async edit(): Promise<void> {
     let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.entity);
-    if (this.entity) {
+    if (!editEntity) return;
+    if (!this.entity) {
       editEntity._parent = this.parent.entity._id;
       editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
       await this.entityService.add(editEntity);

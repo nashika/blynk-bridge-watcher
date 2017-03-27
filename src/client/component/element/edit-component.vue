@@ -2,16 +2,16 @@
   b-modal(title="Edit", ref="modal", @ok="ok", @cancel="cancel")
     template(v-if="EntityClass")
       form(@submit.stop.prevent="edit()")
-        .form-group(v-for="(fieldName, field) in EntityClass.params.fields")
-          div(v-if="!field.hidden")
+        .form-group(v-for="(field, fieldName) in EntityClass.params.fields")
+          template(v-if="!field.hidden")
             label {{lodash.startCase(fieldName)}}
             input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
             input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
             select.form-control(v-if="field.type == 'select'", v-model="editEntity[fieldName]", :disabled="field.disabled")
-              option(v-for="(key, label) in field.options", :value="key") {{label}}
+              option(v-for="(label, key) in field.options", :value="key") {{label}}
             select.form-control(v-if="field.type == 'node'", v-model="editEntity[fieldName]", :disabled="field.disabled")
               option(v-if="!field.required", :value="undefined") Empty
-              option(v-for="(_id, label) in getNodeOptions(field.filter)", :value="_id") {{label}}
+              option(v-for="(label, _id) in getNodeOptions(field.filter)", :value="_id") {{label}}
 </template>
 
 <script lang="ts" src="./edit-component.ts"></script>
