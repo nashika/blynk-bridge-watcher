@@ -1,39 +1,42 @@
 @import "../../scss/lib";
 
+$height: 35px;
+
 .node {
   border-bottom: 1px solid $mono-lighter;
-  min-height: 35px;
+  min-height: $height;
+  display: flex;
+  align-items: center;
 
-  .datas {
-    @include make-row;
+  > .data {
+    height: $height;
+    border-right: 1px solid $mono-lighter;
+    padding: 3px;
+    display: flex;
+    align-items: center;
 
-    .data {
-      @include make-col-ready;
-      border-left: 1px solid $mono-lighter;
-      padding: 3px;
-      height: 35px;
+    &.title {
+      flex: 1 1 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-      &.title {
-        @include make-col(4);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    &.content {
+      flex: 1 1 300px;
+      overflow: hidden;
+    }
 
-      &.content {
-        @include make-col(3);
-      }
+    &.log {
+      flex: 1 2 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-      &.action {
-        @include make-col(2);
-      }
-
-      &.log {
-        @include make-col(3);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    &.action {
+      flex: 0 0 55px;
+      justify-content: flex-end;
     }
   }
 }

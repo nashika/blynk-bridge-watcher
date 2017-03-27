@@ -2,7 +2,7 @@
   extends ../base-node-component
 
   block body
-    button.btn.btn-default.btn-block.btn-sm(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Write {{entity.value}} to {{shortPinType}}{{entity.pin}}
+    button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Write {{entity.value}} to {{shortPinType}}{{entity.pin}}
 </template>
 
 <style scoped lang="scss">

@@ -1,39 +1,40 @@
 .node-component
   .node
-    .datas
-      .data.title
-        .header(:style="{paddingLeft: 20 + depth * 15 + 'px'}")
-          i.fa(:class="'fa-' + EntityClass.params.icon")
-          | &nbsp;{{title}}
-      .data.content
-        block body
-      .data.action
-        b-dropdown(size="sm", :variant="buttonColor")
-          template(slot="text")
-            template(v-if="isRunning")
-              i.fa.fa-circle-o-notch.fa-spin
+    .data.title
+      .header(:style="{paddingLeft: 20 + depth * 15 + 'px'}")
+        b-tooltip(:content="title", placement="bottom")
+          span
+            i.fa(:class="'fa-' + EntityClass.params.icon")
+            | &nbsp;{{title}}
+    .data.content
+      block body
+    .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
+    .data.action
+      b-dropdown(size="sm", :variant="buttonColor", :right="true")
+        template(slot="text")
+          template(v-if="isRunning")
+            i.fa.fa-circle-o-notch.fa-spin
+          template(v-else)
+            template(v-if="status == 'ready'"): i.fa.fa-toggle-on
+            template(v-if="status == 'stop'"): i.fa.fa-toggle-off
+            template(v-if="status == 'error'"): i.fa.fa-warning
+            template(v-if="status == 'connecting'"): i.fa.fa-spinner.fa-pulse
+            template(v-if="status == 'processing'"): i.fa.fa-refresh.fa-spin
+        b-dropdown-item(@click="logs()") #[i.fa.fa-terminal] Show Logs
+        template(v-if="status != 'stop'")
+          b-dropdown-item(@click="stop()") #[i.fa.fa-power-off] Stop
+        template(v-if="status == 'stop'")
+          b-dropdown-item(@click="start()") #[i.fa.fa-power-off] Start
+          b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
+          b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
+          b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
+          b-dropdown-item(v-if="parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
+          template(v-for="ChildEntityClass in EntityClass.params.children")
+            template(v-if="ChildEntityClass.subClasses")
+              template(v-for="ChildSubEntityClass in ChildEntityClass.subClasses")
+                b-dropdown-item(@click="add(ChildSubEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildSubEntityClass.params.entityName)}}
             template(v-else)
-              template(v-if="status == 'ready'"): i.fa.fa-toggle-on
-              template(v-if="status == 'stop'"): i.fa.fa-toggle-off
-              template(v-if="status == 'error'"): i.fa.fa-warning
-              template(v-if="status == 'connecting'"): i.fa.fa-spinner.fa-pulse
-              template(v-if="status == 'processing'"): i.fa.fa-refresh.fa-spin
-          b-dropdown-item(@click="logs()") #[i.fa.fa-terminal] Show Logs
-          template(v-if="status != 'stop'")
-            b-dropdown-item(@click="stop()") #[i.fa.fa-power-off] Stop
-          template(v-if="status == 'stop'")
-            b-dropdown-item(@click="start()") #[i.fa.fa-power-off] Start
-            b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
-            b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
-            b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
-            b-dropdown-item(v-if="parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
-            template(v-for="ChildEntityClass in EntityClass.params.children")
-              template(v-if="ChildEntityClass.subClasses")
-                template(v-for="ChildSubEntityClass in ChildEntityClass.subClasses")
-                  b-dropdown-item(@click="add(ChildSubEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildSubEntityClass.params.entityName)}}
-              template(v-else)
-                b-dropdown-item(@click="add(ChildEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildEntityClass.params.entityName)}}
-      .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
+              b-dropdown-item(@click="add(ChildEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildEntityClass.params.entityName)}}
   template(v-for="ChildEntityClass in EntityClass.params.children")
     .child-node-components(:class="ChildEntityClass.params.entityName")
       template(v-for="childEntity in getChildEntities(ChildEntityClass)")

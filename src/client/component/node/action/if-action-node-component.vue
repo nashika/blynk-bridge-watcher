@@ -2,11 +2,11 @@
   extends ../base-node-component.pug
 
   block body
-    .row
-      .col-xs-6(style="padding: 0 5px 0 15px")
-        button.btn.btn-default.btn-block.btn-sm(type="button", @click="run(true)", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") If
-      .col-xs-6(style="padding: 0 15px 0 5px")
-        button.btn.btn-default.btn-block.btn-sm(type="button", @click="run(false)", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Else
+    .row.no-gutter.w-100
+      .col-6
+        button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run(true)", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") If
+      .col-6
+        button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run(false)", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Else
 </template>
 
 <style scoped lang="scss">

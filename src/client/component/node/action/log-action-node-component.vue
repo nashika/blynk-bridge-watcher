@@ -2,7 +2,7 @@
   extends ../base-node-component
 
   block body
-    button.btn.btn-default.btn-block.btn-sm(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Log
+    button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Log
 </template>
 
 <style scoped lang="scss">
