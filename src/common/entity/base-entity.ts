@@ -61,7 +61,10 @@ export abstract class BaseEntity {
   }
 
   get shortId(): string {
-    return this._id.substr(0, 4);
+    if (this._id)
+      return this._id.substr(0, 4);
+    else
+      return "";
   }
 
   static generateDefault<T extends BaseEntity>(): T {

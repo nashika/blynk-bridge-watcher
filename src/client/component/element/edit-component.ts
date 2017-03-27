@@ -39,6 +39,7 @@ export default class EditComponent extends BaseComponent {
   }
 
   protected ok() {
+    (<any>this.$refs.modal).hide();
     this.deffered(this.editEntity);
   }
 

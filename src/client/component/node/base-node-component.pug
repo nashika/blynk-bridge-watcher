@@ -23,16 +23,16 @@
             b-dropdown-item(@click="stop()") #[i.fa.fa-power-off] Stop
           template(v-if="status == 'stop'")
             b-dropdown-item(@click="start()") #[i.fa.fa-power-off] Start
+            b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
+            b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
+            b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            b-dropdown-item(v-if="parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
             template(v-for="ChildEntityClass in EntityClass.params.children")
               template(v-if="ChildEntityClass.subClasses")
                 template(v-for="ChildSubEntityClass in ChildEntityClass.subClasses")
                   b-dropdown-item(@click="add(ChildSubEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildSubEntityClass.params.entityName)}}
               template(v-else)
                 b-dropdown-item(@click="add(ChildEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildEntityClass.params.entityName)}}
-            b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
-            b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
-            b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
-            b-dropdown-item(v-if="parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
       .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
   template(v-for="ChildEntityClass in EntityClass.params.children")
     .child-node-components(:class="ChildEntityClass.params.entityName")

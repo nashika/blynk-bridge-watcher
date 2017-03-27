@@ -1,7 +1,7 @@
 <template lang="pug">
   b-modal(title="Edit", ref="modal", @ok="ok", @cancel="cancel")
     template(v-if="EntityClass")
-      form(@submit.stop.prevent="edit()")
+      form(@submit.stop.prevent="ok()")
         .form-group(v-for="(field, fieldName) in EntityClass.params.fields")
           template(v-if="!field.hidden")
             label {{_.startCase(fieldName)}}

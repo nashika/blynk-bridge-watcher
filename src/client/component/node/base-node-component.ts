@@ -82,13 +82,24 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
 
   protected async reload(): Promise<void> {
     for (let key in this.EntityClass.params.children) {
-      let EntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
       _.forEach(_.get(this, key), (entity: BaseEntity) => {
         this.socketIoClientService.unregisterComponent(entity._id);
       });
       _.set(this, key, null);
+    }
+    for (let key in this.EntityClass.params.children) {
+      let EntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
       let entities = await this.entityService.getChildren(EntityClass, this.entity._id);
       _.set(this, key, entities);
+    }
+  }
+
+  protected async reloadParent(): Promise<void> {
+    if (this.parent) {
+      await this.parent.reload();
+    } else {
+      this.entity = await this.entityService.getOne<T>(this.EntityClass, this.entity._id);
+      await this.reload();
     }
   }
 
@@ -102,20 +113,20 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     editEntity._parent = this.entity._id;
     editEntity._orderNo = (_.max(this.getChildEntities(ChildEntityClass).map(entity => entity._orderNo)) + 1) || 1;
     await this.entityService.add(editEntity);
-    await this.parent.reload();
+    await this.reloadParent();
   }
 
   protected async edit(): Promise<void> {
     let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.entity);
     if (!editEntity) return;
     await this.entityService.edit(editEntity);
-    await this.parent.reload();
+    await this.reloadParent();
   }
 
   protected async remove(): Promise<void> {
     if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} id:${this.entity._id}?`)) return;
     await this.entityService.remove(this.entity);
-    await this.parent.reload();
+    await this.reloadParent();
   }
 
   protected async move(directionUp: boolean): Promise<void> {
@@ -135,7 +146,7 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     entity2._orderNo = tmpNo;
     await this.entityService.edit(entity1);
     await this.entityService.edit(entity2);
-    await this.parent.reload();
+    await this.reloadParent();
   }
 
   protected get isRunning(): boolean {
