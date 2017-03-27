@@ -1,22 +1,19 @@
 <template lang="pug">
-  b-modal(:fade="true")
+  b-modal(ref="modal", title="Logs", size="lg", :fade="true")
     div(v-if="logs")
-      table.table.table-bordered.table-striped.table-condensed
-        tr
-          th Timestamp
-          th Level
-          th Message
-        tr(v-for="log in logs", :class="{danger: log.level == 'fatal' || log.level == 'error', warning: log.level == 'warn'}")
-          td {{log.timestamp}}
-          td {{log.level}}
-          td {{log.message}}
-      pre Page:{{page}} Count:{{count}} Limit:{{limit}}
-        nav
-      ul.pager
-        li.previous(v-if="page * limit < count")
-          a.disabled(@click="previous()") Previous
-        li.next(v-if="page > 1")
-          a(@click="next()") Next
+      table.table.table-bordered.table-striped.table-sm
+        thead
+          tr
+            th Timestamp
+            th Level
+            th Message
+        tbody
+          tr(v-for="log in logs", :class="{'table-danger': log.level == 'fatal' || log.level == 'error', 'table-warning': log.level == 'warn'}")
+            td {{log.timestamp}}
+            td {{log.level}}
+            td {{log.message}}
+      pre Page:{{page}} Now:{{(page - 1) * limit + 1}}-{{page * limit > lastLog.no ? lastLog.no : page * limit}} Count:{{lastLog.no}}
+      b-pagination(size="md", v-model="page", :total-rows="lastLog.no", :per-page="limit", @input="changePage($event)")
     div(v-else).loading #[i.fa.fa-pulse.fa-spinner] Loading...
 </template>
 

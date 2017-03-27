@@ -74,6 +74,10 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     this.socketIoClientService.send(this.entity._id);
   }
 
+  async logs(): Promise<void> {
+    await this.$root.logsComponent.show(this.entity._id);
+  }
+
   async edit(): Promise<void> {
     let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.add ? null : this.entity);
     if (this.add) {

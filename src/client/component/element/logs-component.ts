@@ -8,38 +8,30 @@ import {container} from "../../../common/inversify.config";
 @Component({})
 export default class LogsComponent extends BaseComponent {
 
-  socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
-  page: number = 1;
-  limit: number = 20;
-  logs: ISocketIoLogData[] = null;
-  id: string = null;
-
-  onChangeShow() {
-    if (!this.show) return;
-    this.page = 1;
-    this.reload();
-  }
-
-  reload() {
-    this.logs = null;
-    this.socketIoClientService.getLogs(this.id, this.page, this.limit).then(logs => {
-      this.logs = logs;
-    });
-  }
+  protected page: number = 1;
+  protected limit: number = 20;
+  protected lastLog: ISocketIoLogData = null;
+  protected logs: ISocketIoLogData[] = null;
+  protected id: string = null;
 
   async show(id: string): Promise<void> {
-    id
+    this.page = 1;
+    this.id = id;
+    (<any>this.$refs.modal).show();
+    await this.reload();
   }
 
-  previous() {
-    this.page++;
-    this.reload();
+  protected async reload(): Promise<void> {
+    this.logs = null;
+    this.lastLog = await this.socketIoClientService.getLastLog(this.id);
+    this.logs = await this.socketIoClientService.getLogs(this.id, this.page, this.limit);
   }
 
-  next() {
-    this.page--;
-    this.reload();
+  protected async changePage(newPage: number): Promise<void> {
+    this.page = newPage;
+    await this.reload();
   }
 
 }

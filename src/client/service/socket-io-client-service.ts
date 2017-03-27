@@ -87,8 +87,8 @@ export class SocketIoClientService extends BaseService {
     return this.lastLogs[_id] || null;
   }
 
-  getLogs(_id: string, page: number, limit: number): Promise<ISocketIoLogData[]> {
-    return new Promise((resolve) => {
+  async getLogs(_id: string, page: number, limit: number): Promise<ISocketIoLogData[]> {
+    return new Promise<ISocketIoLogData[]>((resolve) => {
       let request: ISocketIoRequestLogsData = {_id: _id, page: page, limit: limit};
       this.socket.emit("logs", request, (data: ISocketIoResponseLogsData) => {
         resolve(data.logs);

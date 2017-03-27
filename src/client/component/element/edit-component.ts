@@ -12,15 +12,11 @@ export default class EditComponent extends BaseComponent {
 
   $parent: AppComponent;
 
-  private socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
-  private EntityClass: typeof BaseEntity = null;
-  private editEntity: BaseEntity = null;
-  private deffered: (entity: any) => void = null;
-
-  getNodeOptions(filter: string): {[_id: string]: string} {
-    return this.socketIoClientService.getNodeOptions(filter);
-  }
+  protected EntityClass: typeof BaseEntity = null;
+  protected editEntity: BaseEntity = null;
+  protected deffered: (entity: any) => void = null;
 
   async edit<T extends BaseEntity>(EntityClass: typeof BaseEntity, entity: T): Promise<T> {
     this.EntityClass = EntityClass;
@@ -38,11 +34,15 @@ export default class EditComponent extends BaseComponent {
     return result;
   }
 
-  ok() {
+  protected getNodeOptions(filter: string): {[_id: string]: string} {
+    return this.socketIoClientService.getNodeOptions(filter);
+  }
+
+  protected ok() {
     this.deffered(this.editEntity);
   }
 
-  cancel() {
+  protected cancel() {
     this.deffered(null);
   }
 
