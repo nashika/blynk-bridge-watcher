@@ -18,10 +18,12 @@ export default class ServerNodeComponent extends BaseNodeComponent<ServerEntity>
   jobs: JobEntity[] = null;
 
   start() {
+    console.log("start");
     this.serverService.start();
   }
 
   stop() {
+    console.log("stop");
     this.serverService.stop();
   }
 

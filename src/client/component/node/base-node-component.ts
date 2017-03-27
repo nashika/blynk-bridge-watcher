@@ -145,4 +145,21 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     return index == this.brotherEntities.length - 1;
   }
 
+  get buttonColor(): string {
+    if (this.isRunning) return "danger";
+    switch (this.status) {
+      case "ready":
+        return "success";
+      case "stop":
+        return "secondary";
+      case "error":
+        return "danger";
+      case "connecting":
+      case "processing":
+        return "warning";
+      default:
+        return "secondary";
+    }
+  }
+
 }

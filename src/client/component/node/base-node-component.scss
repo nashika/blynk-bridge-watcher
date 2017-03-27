@@ -21,11 +21,15 @@
       }
 
       &.content {
-        @include make-col(4);
+        @include make-col(3);
+      }
+
+      &.action {
+        @include make-col(2);
       }
 
       &.log {
-        @include make-col(4);
+        @include make-col(3);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

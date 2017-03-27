@@ -18,20 +18,25 @@ mixin children(componentName, singularName, pluralName)
             | &nbsp;{{title}}
         .data.content
           block body
-        .data.log
-          b-button(v-if="status == 'ready'", size="sm", variant="success", @click="stop()") #[i.fa.fa-toggle-on]
-          b-button(v-if="status == 'stop'", size="sm", variant="secondary", @click="start()") #[i.fa.fa-toggle-off]
-          b-button(v-if="status == 'error'", size="sm", variant="danger") #[i.fa.fa-warning]
-          b-button(v-if="status == 'connecting'", size="sm", variant="secondary") #[i.fa.fa-spinner.fa-pulse]
-          b-button(v-if="status == 'processing'", size="sm", variant="warning") #[i.fa.fa-refresh.fa-spin]
-          b-dropdown(v-if="status == 'stop'" text="#[i.fa.fa-bars]" size="sm")
-            b-dropdown-item(click="showEdit = true") #[i.fa.fa-pencil] Edit
-            b-dropdown-item(v-if="parent", click="remove()") #[i.fa.fa-trash-o] Remove
-            b-dropdown-item(v-if="parent && !isFirst", click="move(false)") #[i.fa.fa-arrow-up] Move Up
-            b-dropdown-item(v-if="parent && !isLast", click="move(true)") #[i.fa.fa-arrow-down] Move Down
-          b-button(v-if="isRunning", size="sm", variant="danger") #[i.fa.fa-circle-o-notch.fa-spin]
-          b-button(type="button", size="sm", variant="secondary", @click="showLogs = true") #[i.fa.fa-terminal] {{lastLog ? lastLog.no : 0}}
-          | {{lastLog ? lastLog.message : ""}}
+        .data.action
+          b-dropdown(size="sm", :variant="buttonColor")
+            template(slot="text")
+              template(v-if="isRunning")
+                i.fa.fa-circle-o-notch.fa-spin
+              template(v-else)
+                template(v-if="status == 'ready'"): i.fa.fa-toggle-on
+                template(v-if="status == 'stop'"): i.fa.fa-toggle-off
+                template(v-if="status == 'error'"): i.fa.fa-warning
+                template(v-if="status == 'connecting'"): i.fa.fa-spinner.fa-pulse
+                template(v-if="status == 'processing'"): i.fa.fa-refresh.fa-spin
+            b-dropdown-item(@click="logs()") #[i.fa.fa-terminal] Show Logs
+            b-dropdown-item(v-if="status != 'stop'", @click="stop()") #[i.fa.fa-power-off] Stop
+            b-dropdown-item(v-if="status == 'stop'", @click="start()") #[i.fa.fa-power-off] Start
+            b-dropdown-item(v-if="status == 'stop'", @click="edit()") #[i.fa.fa-pencil] Edit
+            b-dropdown-item(v-if="status == 'stop' && parent", @click="remove()") #[i.fa.fa-trash-o] Remove
+            b-dropdown-item(v-if="status == 'stop' && parent && !isFirst", click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            b-dropdown-item(v-if="status == 'stop' && parent && !isLast", click="move(true)") #[i.fa.fa-arrow-down] Move Down
+        .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
     block children
   template(v-else)
     button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
