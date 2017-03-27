@@ -34,13 +34,13 @@ mixin children(componentName, singularName, pluralName)
             b-dropdown-item(v-if="status == 'stop'", @click="start()") #[i.fa.fa-power-off] Start
             b-dropdown-item(v-if="status == 'stop'", @click="edit()") #[i.fa.fa-pencil] Edit
             b-dropdown-item(v-if="status == 'stop' && parent", @click="remove()") #[i.fa.fa-trash-o] Remove
-            b-dropdown-item(v-if="status == 'stop' && parent && !isFirst", click="move(false)") #[i.fa.fa-arrow-up] Move Up
-            b-dropdown-item(v-if="status == 'stop' && parent && !isLast", click="move(true)") #[i.fa.fa-arrow-down] Move Down
+            b-dropdown-item(v-if="status == 'stop' && parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            b-dropdown-item(v-if="status == 'stop' && parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
         .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
     block children
   template(v-else)
     button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
-    type="button", @click="showEdit = true") #[i.fa.fa-plus] Add {{lodash.startCase(EntityClass.params.entityName)}}
+    type="button", @click="showEdit = true") #[i.fa.fa-plus] Add {{_.startCase(EntityClass.params.entityName)}}
     button.btn.btn-success(v-else,
-    type="button", @click="showEdit = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{lodash.startCase(EntityClass.params.entityName)}}
+    type="button", @click="showEdit = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{_.startCase(EntityClass.params.entityName)}}
 

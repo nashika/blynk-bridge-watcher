@@ -4,10 +4,10 @@ div(v-if="entity")
   each child in children
     #{child + "-" + singularName + "-node-component"}(v-if="entity.type == '" + child + "'", :entity="entity", :brother-entities="brotherEntities", :parent="parent", :depth="depth")
 .add(v-else)
-  button.btn.btn-success(@click="showAddBox = !showAddBox", :class="{active: showAddBox}") #[i.fa.fa-plus] Add {{lodash.startCase('#{singularName}')}}
+  button.btn.btn-success(@click="showAddBox = !showAddBox", :class="{active: showAddBox}") #[i.fa.fa-plus] Add {{_.startCase('#{singularName}')}}
   section.add-box(v-show="showAddBox")
     .header
-      h1 Add {{lodash.startCase('#{singularName}')}} Menu
+      h1 Add {{_.startCase('#{singularName}')}} Menu
     .body
       each child in children
         #{child + "-" + singularName + "-node-component"}(:add="true", :brother-entities="brotherEntities", :parent="parent", :depth="depth")

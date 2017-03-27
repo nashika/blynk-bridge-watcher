@@ -6,7 +6,10 @@ import AppComponent from "./app-component";
 export default class BaseComponent extends Vue {
 
   $root: AppComponent;
-  lodash: LoDashStatic = _;
+
+  get _(): LoDashStatic {
+    return _;
+  }
 
   async beforeCreate(): Promise<void> {
   }

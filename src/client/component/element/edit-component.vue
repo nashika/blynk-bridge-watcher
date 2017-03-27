@@ -4,7 +4,7 @@
       form(@submit.stop.prevent="edit()")
         .form-group(v-for="(field, fieldName) in EntityClass.params.fields")
           template(v-if="!field.hidden")
-            label {{lodash.startCase(fieldName)}}
+            label {{_.startCase(fieldName)}}
             input.form-control(v-if="field.type == 'text'", type="text", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
             input.form-control(v-if="field.type == 'number'", type="number", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
             select.form-control(v-if="field.type == 'select'", v-model="editEntity[fieldName]", :disabled="field.disabled")
