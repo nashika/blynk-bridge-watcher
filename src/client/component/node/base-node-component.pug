@@ -9,7 +9,7 @@ mixin children(componentName, singularName, pluralName)
     #{componentName}(v-if="status == 'stop'", :brother-entities=pluralName, :parent="this", :depth="depth + 1")
 
 .base-node-component
-  template(v-if="!add && entity")
+  template(v-if="entity")
     .node
       .datas
         .data.title

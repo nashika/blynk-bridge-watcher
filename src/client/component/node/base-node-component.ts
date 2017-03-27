@@ -19,9 +19,6 @@ import {container} from "../../../common/inversify.config";
     parent: {
       type: Object,
     },
-    add: {
-      type: Boolean,
-    },
     depth: {
       type: Number,
     },
@@ -32,7 +29,6 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
   entity: T;
   brotherEntities: T[];
   parent: BaseNodeComponent<BaseEntity>;
-  add: boolean;
   depth: number;
 
   EntityClass: typeof BaseEntity = BaseEntity;
@@ -50,7 +46,7 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
   }
 
   async mounted(): Promise<void> {
-    if (!this.add) {
+    if (this.entity) {
       this.socketIoClientService.registerComponent(this);
       this.status = this.socketIoClientService.getStatus(this.entity._id);
       this.lastLog = this.socketIoClientService.getLastLog(this.entity._id);
@@ -58,7 +54,28 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     }
   }
 
-  async reload(): Promise<void> {
+  get title(): string {
+    return `${this.entity.shortId} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.entityName)}]`;
+  }
+
+  run(..._args: any[]) {
+    this.socketIoClientService.send(this.entity._id);
+  }
+
+  notifyRun() {
+    this.runningCount++;
+    setTimeout(() => this.runningCount--, 1000);
+  }
+
+  setLastLog(log: ISocketIoLogData) {
+    this.lastLog = log;
+  }
+
+  clearLog() {
+    this.lastLog = null;
+  }
+
+  protected async reload(): Promise<void> {
     for (let key in this.EntityClass.params.children) {
       let EntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
       _.forEach(_.get(this, key), (entity: BaseEntity) => {
@@ -70,17 +87,13 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     }
   }
 
-  run(..._args: any[]) {
-    this.socketIoClientService.send(this.entity._id);
-  }
-
-  async logs(): Promise<void> {
+  protected async logs(): Promise<void> {
     await this.$root.logsComponent.show(this.entity._id);
   }
 
-  async edit(): Promise<void> {
-    let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.add ? null : this.entity);
-    if (this.add) {
+  protected async edit(): Promise<void> {
+    let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.entity);
+    if (this.entity) {
       editEntity._parent = this.parent.entity._id;
       editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
       await this.entityService.add(editEntity);
@@ -90,13 +103,13 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     await this.parent.reload();
   }
 
-  async remove(): Promise<void> {
+  protected async remove(): Promise<void> {
     if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} id:${this.entity._id}?`)) return;
     await this.entityService.remove(this.entity);
     await this.parent.reload();
   }
 
-  async move(directionUp: boolean): Promise<void> {
+  protected async move(directionUp: boolean): Promise<void> {
     let entity1: T, entity2: T;
     let index = this.brotherEntities.findIndex(entity => this.entity == entity);
     if (directionUp) {
@@ -116,40 +129,23 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     await this.parent.reload();
   }
 
-  notifyRun() {
-    this.runningCount++;
-    setTimeout(() => this.runningCount--, 1000);
-  }
-
-  setLastLog(log: ISocketIoLogData) {
-    this.lastLog = log;
-  }
-
-  clearLog() {
-    this.lastLog = null;
-  }
-
-  get title(): string {
-    return `${this.entity.shortId} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.entityName)}]`;
-  }
-
-  get isRunning(): boolean {
+  protected get isRunning(): boolean {
     return this.runningCount > 0;
   }
 
-  get isFirst(): boolean {
+  protected get isFirst(): boolean {
     if (!this.brotherEntities) return false;
     let index = this.brotherEntities.findIndex(entity => this.entity == entity);
     return index == 0;
   }
 
-  get isLast(): boolean {
+  protected get isLast(): boolean {
     if (!this.brotherEntities) return false;
     let index = this.brotherEntities.findIndex(entity => this.entity == entity);
     return index == this.brotherEntities.length - 1;
   }
 
-  get buttonColor(): string {
+  protected get buttonColor(): string {
     if (this.isRunning) return "danger";
     switch (this.status) {
       case "ready":

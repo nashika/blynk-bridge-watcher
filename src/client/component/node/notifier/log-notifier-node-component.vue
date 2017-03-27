@@ -1,5 +1,5 @@
 <template lang="pug">
-  extends ../base-node-component
+  extends ../base-node-component.pug
 
   block body
     button.btn.btn-default.btn-block(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Text Notify

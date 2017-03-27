@@ -1,13 +1,13 @@
 <template lang="pug">
-  extends ../base-switch-node-component
+  extends ../base-switch-node-component.pug
 
   block variables
     -
       var singularName = "notifier";
       var pluralName = "notifiers";
       var children = [
-      "log",
-      "pushbullet",
+        "log",
+        "pushbullet",
       ];
 </template>
 
