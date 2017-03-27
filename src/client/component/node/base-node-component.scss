@@ -2,7 +2,7 @@
 
 .node {
   border-bottom: 1px solid $mono-lighter;
-  min-height: 50px;
+  min-height: 35px;
 
   .datas {
     @include make-row;
@@ -11,7 +11,7 @@
       @include make-col-ready;
       border-left: 1px solid $mono-lighter;
       padding: 3px;
-      height: 50px;
+      height: 35px;
 
       &.title {
         @include make-col(4);
