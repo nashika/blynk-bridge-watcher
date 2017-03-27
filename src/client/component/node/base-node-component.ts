@@ -1,5 +1,6 @@
 import _ = require("lodash");
 import Component from "vue-class-component";
+import pluralize = require("pluralize");
 
 import BaseComponent from "../base-component";
 import {BaseEntity} from "../../../common/entity/base-entity";
@@ -75,6 +76,10 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     this.lastLog = null;
   }
 
+  protected getChildEntities(ChildEntityClass: typeof BaseEntity): T[] {
+    return <T[]>_.get(this, pluralize(ChildEntityClass.params.entityName));
+  }
+
   protected async reload(): Promise<void> {
     for (let key in this.EntityClass.params.children) {
       let EntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
@@ -91,16 +96,19 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     await this.$root.logsComponent.show(this.entity._id);
   }
 
+  protected async add(ChildEntityClass: typeof BaseEntity): Promise<void> {
+    let editEntity: T = await this.$root.editComponent.edit<T>(ChildEntityClass, null);
+    if (!editEntity) return;
+    editEntity._parent = this.entity._id;
+    editEntity._orderNo = (_.max(this.getChildEntities(ChildEntityClass).map(entity => entity._orderNo)) + 1) || 1;
+    await this.entityService.add(editEntity);
+    await this.parent.reload();
+  }
+
   protected async edit(): Promise<void> {
     let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.entity);
     if (!editEntity) return;
-    if (!this.entity) {
-      editEntity._parent = this.parent.entity._id;
-      editEntity._orderNo = (_.max(this.brotherEntities.map(entity => entity._orderNo)) + 1) || 1;
-      await this.entityService.add(editEntity);
-    } else {
-      await this.entityService.edit(editEntity);
-    }
+    await this.entityService.edit(editEntity);
     await this.parent.reload();
   }
 

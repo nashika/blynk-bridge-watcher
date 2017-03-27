@@ -1,4 +1,5 @@
 import _ = require("lodash");
+import {container} from "../inversify.config";
 
 export interface IEntityParams {
   tableName: string;
@@ -70,6 +71,13 @@ export abstract class BaseEntity {
         _.set(result, name, field.default);
     });
     return result;
+  }
+
+  static get subClasses(): typeof BaseEntity[] {
+    if (container.isBound(<any>this))
+      return container.getAll<typeof BaseEntity>(<any>this);
+    else
+      return null;
   }
 
 }

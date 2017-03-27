@@ -19,13 +19,11 @@ Vue.component("server-node-component", require("./component/node/server-node-com
 Vue.component("board-node-component", require("./component/node/board-node-component.vue"));
 Vue.component("job-node-component", require("./component/node/job-node-component.vue"));
 Vue.component("bridge-node-component", require("./component/node/bridge-node-component.vue"));
-Vue.component("action-node-component", require("./component/node/action/action-node-component.vue"));
 Vue.component("if-action-node-component", require("./component/node/action/if-action-node-component.vue"));
 Vue.component("log-action-node-component", require("./component/node/action/log-action-node-component.vue"));
 Vue.component("notify-action-node-component", require("./component/node/action/notify-action-node-component.vue"));
 Vue.component("read-action-node-component", require("./component/node/action/read-action-node-component.vue"));
 Vue.component("write-action-node-component", require("./component/node/action/write-action-node-component.vue"));
-Vue.component("notifier-node-component", require("./component/node/notifier/notifier-node-component.vue"));
 Vue.component("log-notifier-node-component", require("./component/node/notifier/log-notifier-node-component.vue"));
 Vue.component("pushbullet-notifier-node-component", require("./component/node/notifier/pushbullet-notifier-node-component.vue"));
 

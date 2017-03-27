@@ -2,10 +2,12 @@ import Vue = require("vue");
 import _ = require("lodash");
 import {LoDashStatic} from "lodash";
 import AppComponent from "./app-component";
+import * as pluralize from "pluralize";
 
 export default class BaseComponent extends Vue {
 
   $root: AppComponent;
+  pluralize = pluralize;
 
   get _(): LoDashStatic {
     return _;

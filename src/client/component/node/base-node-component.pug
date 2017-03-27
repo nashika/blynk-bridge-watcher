@@ -1,46 +1,47 @@
-mixin children(componentName, singularName, pluralName)
-  .node-component-blocks(class=pluralName)
-    template(v-for=singularName + " in " + pluralName)
-      #{componentName}(:entity=singularName, :brother-entities=pluralName, :parent="me", :depth="depth + 1")
-    template(v-if="!" + pluralName)
-      .node.loading(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-spinner.fa-pulse] Loading #{pluralName}...
-    template(v-if=pluralName + " && " + pluralName + ".length == 0")
-      .node.nothing(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-ban] No #{pluralName}
-    #{componentName}(v-if="status == 'stop'", :brother-entities=pluralName, :parent="this", :depth="depth + 1")
-
-.base-node-component
-  template(v-if="entity")
-    .node
-      .datas
-        .data.title
-          .header(:style="{paddingLeft: 20 + depth * 15 + 'px'}")
-            i.fa(:class="'fa-' + EntityClass.params.icon")
-            | &nbsp;{{title}}
-        .data.content
-          block body
-        .data.action
-          b-dropdown(size="sm", :variant="buttonColor")
-            template(slot="text")
-              template(v-if="isRunning")
-                i.fa.fa-circle-o-notch.fa-spin
+.node-component
+  .node
+    .datas
+      .data.title
+        .header(:style="{paddingLeft: 20 + depth * 15 + 'px'}")
+          i.fa(:class="'fa-' + EntityClass.params.icon")
+          | &nbsp;{{title}}
+      .data.content
+        block body
+      .data.action
+        b-dropdown(size="sm", :variant="buttonColor")
+          template(slot="text")
+            template(v-if="isRunning")
+              i.fa.fa-circle-o-notch.fa-spin
+            template(v-else)
+              template(v-if="status == 'ready'"): i.fa.fa-toggle-on
+              template(v-if="status == 'stop'"): i.fa.fa-toggle-off
+              template(v-if="status == 'error'"): i.fa.fa-warning
+              template(v-if="status == 'connecting'"): i.fa.fa-spinner.fa-pulse
+              template(v-if="status == 'processing'"): i.fa.fa-refresh.fa-spin
+          b-dropdown-item(@click="logs()") #[i.fa.fa-terminal] Show Logs
+          template(v-if="status != 'stop'")
+            b-dropdown-item(@click="stop()") #[i.fa.fa-power-off] Stop
+          template(v-if="status == 'stop'")
+            b-dropdown-item(@click="start()") #[i.fa.fa-power-off] Start
+            template(v-for="ChildEntityClass in EntityClass.params.children")
+              template(v-if="ChildEntityClass.subClasses")
+                template(v-for="ChildSubEntityClass in ChildEntityClass.subClasses")
+                  b-dropdown-item(@click="add(ChildSubEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildSubEntityClass.params.entityName)}}
               template(v-else)
-                template(v-if="status == 'ready'"): i.fa.fa-toggle-on
-                template(v-if="status == 'stop'"): i.fa.fa-toggle-off
-                template(v-if="status == 'error'"): i.fa.fa-warning
-                template(v-if="status == 'connecting'"): i.fa.fa-spinner.fa-pulse
-                template(v-if="status == 'processing'"): i.fa.fa-refresh.fa-spin
-            b-dropdown-item(@click="logs()") #[i.fa.fa-terminal] Show Logs
-            b-dropdown-item(v-if="status != 'stop'", @click="stop()") #[i.fa.fa-power-off] Stop
-            b-dropdown-item(v-if="status == 'stop'", @click="start()") #[i.fa.fa-power-off] Start
-            b-dropdown-item(v-if="status == 'stop'", @click="edit()") #[i.fa.fa-pencil] Edit
-            b-dropdown-item(v-if="status == 'stop' && parent", @click="remove()") #[i.fa.fa-trash-o] Remove
-            b-dropdown-item(v-if="status == 'stop' && parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
-            b-dropdown-item(v-if="status == 'stop' && parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
-        .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
-    block children
-  template(v-else)
-    button.btn.btn-success(v-if="EntityClass.params.tableName == EntityClass.params.entityName",
-    type="button", @click="showEdit = true") #[i.fa.fa-plus] Add {{_.startCase(EntityClass.params.entityName)}}
-    button.btn.btn-success(v-else,
-    type="button", @click="showEdit = true") #[i.fa(:class="'fa-' + EntityClass.params.icon")] {{_.startCase(EntityClass.params.entityName)}}
-
+                b-dropdown-item(@click="add(ChildEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildEntityClass.params.entityName)}}
+            b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
+            b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
+            b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            b-dropdown-item(v-if="parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
+      .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
+  template(v-for="ChildEntityClass in EntityClass.params.children")
+    .child-node-components(:class="ChildEntityClass.params.entityName")
+      template(v-for="childEntity in getChildEntities(ChildEntityClass)")
+        template(v-if="ChildEntityClass.subClasses")
+          component(:is="childEntity.type + '-' + ChildEntityClass.params.entityName + '-node-component'", :entity="childEntity", :brother-entities="getChildEntities(ChildEntityClass)", :parent="me", :depth="depth + 1")
+        template(v-else)
+          component(:is="ChildEntityClass.params.entityName + '-node-component'", :entity="childEntity", :brother-entities="getChildEntities(ChildEntityClass)", :parent="me", :depth="depth + 1")
+      template(v-if="!getChildEntities(ChildEntityClass)")
+        .node.loading(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-spinner.fa-pulse] Loading {{_.startCase(ChildEntityClass.params.entityName)}}...
+      template(v-if="getChildEntities(ChildEntityClass) && getChildEntities(ChildEntityClass).length == 0")
+        .node.nothing(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-ban] No {{_.startCase(ChildEntityClass.params.entityName)}}

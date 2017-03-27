@@ -5,7 +5,7 @@ import {IEntityParams} from "../base-entity";
 
 export class IfActionEntity extends BaseActionEntity {
 
-  static params:IEntityParams = {
+  static params: IEntityParams = {
     tableName: "action",
     entityName: "ifAction",
     icon: "code-fork",
@@ -44,9 +44,9 @@ export class IfActionEntity extends BaseActionEntity {
     }),
   };
 
-  operator:string;
-  value:number;
-  then:string;
-  else:string;
+  operator: string;
+  value: number;
+  then: string;
+  else: string;
 
 }

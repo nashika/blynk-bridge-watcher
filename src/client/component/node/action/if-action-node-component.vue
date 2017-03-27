@@ -10,7 +10,7 @@
 </template>
 
 <style scoped lang="scss">
-  @import "../base-node-component.scss"
+  @import "../base-node-component.scss";
 </style>
 
 <script lang="ts" src="./if-action-node-component.ts"></script>
