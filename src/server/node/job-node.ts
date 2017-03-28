@@ -4,15 +4,15 @@ import {CronJob} from "cron";
 
 import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
-import {JobEntity} from "../../common/entity/job-entity";
+import {JobNodeEntity} from "../../common/entity/node/job-node-entity";
 import {ActionNode} from "./action/action-node";
-import {BaseActionEntity} from "../../common/entity/action/base-action-entity";
+import {BaseActionNodeEntity} from "../../common/entity/node/action/base-action-node-entity";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 
 @injectable()
-export class JobNode extends BaseNode<JobEntity> {
+export class JobNode extends BaseNode<JobNodeEntity> {
 
   parent: ServerNode;
 
@@ -47,7 +47,7 @@ export class JobNode extends BaseNode<JobEntity> {
 
   run(): void {
     super.run();
-    let action = <ActionNode<BaseActionEntity>>this.nodeService.getNode(this.entity.action);
+    let action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNode(this.entity.action);
     if (action.status != "ready") {
       return action.log("warn", `Job '${this.entity._id}' can not run. Action '${action.entity._id}' status='${action.status}' is not ready.`);
     }

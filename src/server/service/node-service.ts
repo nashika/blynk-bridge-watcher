@@ -4,7 +4,7 @@ import _ = require("lodash");
 import {BaseServerService} from "./base-server-service";
 import {TableService} from "./table-service";
 import {ServerNode} from "../node/server-node";
-import {ServerEntity} from "../../common/entity/server-entity";
+import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {BaseNode} from "../node/base-node";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {container} from "../../common/inversify.config";
@@ -20,9 +20,9 @@ export class NodeService extends BaseServerService {
   }
 
   async initialize(): Promise<ServerNode> {
-    let serverEntity = await this.tableService.findOne(ServerEntity);
+    let serverEntity = await this.tableService.findOne(ServerNodeEntity);
     if (!serverEntity) {
-      serverEntity = await this.tableService.insert(ServerEntity.generateDefault());
+      serverEntity = await this.tableService.insert(ServerNodeEntity.generateDefault());
     }
     let serverNode = <ServerNode>await this.generate(null, serverEntity);
     await serverNode.startWrap();

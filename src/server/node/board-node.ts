@@ -2,7 +2,7 @@ import _ = require("lodash");
 import {injectable} from "inversify";
 var Blynk = require("blynk-library");
 
-import {BoardEntity} from "../../common/entity/board-entity";
+import {BoardNodeEntity} from "../../common/entity/node/board-node-entity";
 import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {BridgeNode} from "./bridge/bridge-node";
@@ -12,7 +12,7 @@ import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 
 @injectable()
-export class BoardNode extends BaseNode<BoardEntity> {
+export class BoardNode extends BaseNode<BoardNodeEntity> {
 
   SEND_TIMEOUT: number = 10000;
 

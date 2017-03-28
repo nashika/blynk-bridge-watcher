@@ -1,18 +1,19 @@
 import _ = require("lodash");
 
-import {BaseEntity, IEntityParams} from "./base-entity";
-import {BaseActionEntity} from "./action/base-action-entity";
+import {IEntityParams} from "../base-entity";
+import {BaseActionNodeEntity} from "./action/base-action-node-entity";
+import {BaseNodeEntity} from "./base-node-entity";
 
-export class BridgeEntity extends BaseEntity {
+export class BridgeNodeEntity extends BaseNodeEntity {
 
   static params: IEntityParams = {
     tableName: "bridge",
     entityName: "bridge",
     icon: "plug",
     children: {
-      actions: BaseActionEntity,
+      actions: BaseActionNodeEntity,
     },
-    fields: _.merge({}, BaseEntity.params.fields, {
+    fields: _.merge({}, BaseNodeEntity.params.fields, {
       token: {
         type: "text",
         required: true,

@@ -30,7 +30,7 @@ export class TableService extends BaseServerService {
     return this.dataStores[tableName];
   }
 
-  find<T extends BaseEntity>(EntityClass: typeof BaseEntity, query: any = {}): Promise<T[]> {
+  async find<T extends BaseEntity>(EntityClass: typeof BaseEntity, query: any = {}): Promise<T[]> {
     let tableName = EntityClass.params.tableName;
     logger.trace(`Find ${tableName} table, query="${JSON.stringify(query)}".`);
     return new Promise<T[]>((resolve, reject) => {

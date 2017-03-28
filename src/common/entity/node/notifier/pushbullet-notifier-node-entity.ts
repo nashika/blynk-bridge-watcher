@@ -1,16 +1,16 @@
 import _ = require("lodash");
 
-import {IEntityParams} from "../base-entity";
-import {BaseNotifierEntity} from "./base-notifier-entity";
+import {IEntityParams} from "../../base-entity";
+import {BaseNotifierNodeEntity} from "./base-notifier-node-entity";
 
-export class PushbulletNotifierEntity extends BaseNotifierEntity {
+export class PushbulletNotifierNodeEntity extends BaseNotifierNodeEntity {
 
   static params: IEntityParams = {
     tableName: "notifier",
     entityName: "pushbulletNotifier",
     icon: "bullhorn",
     children: {},
-    fields: _.merge({}, BaseNotifierEntity.params.fields, {
+    fields: _.merge({}, BaseNotifierNodeEntity.params.fields, {
       type: {
         default: "pushbullet",
       },

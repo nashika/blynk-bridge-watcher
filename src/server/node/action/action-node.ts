@@ -2,12 +2,12 @@ import _ = require("lodash");
 
 import {BaseNode} from "../base-node";
 import {BridgeNode} from "../bridge/bridge-node";
-import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
 import {NodeService} from "../../service/node-service";
 
-export abstract class ActionNode<T extends BaseActionEntity> extends BaseNode<T> {
+export abstract class ActionNode<T extends BaseActionNodeEntity> extends BaseNode<T> {
 
   parent: BridgeNode;
 

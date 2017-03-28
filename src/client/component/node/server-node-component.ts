@@ -1,21 +1,21 @@
 import Component from "vue-class-component";
 
-import {ServerEntity} from "../../../common/entity/server-entity";
-import {BoardEntity} from "../../../common/entity/board-entity";
-import {JobEntity} from "../../../common/entity/job-entity";
+import {ServerNodeEntity} from "../../../common/entity/node/server-node-entity";
+import {BoardNodeEntity} from "../../../common/entity/node/board-node-entity";
+import {JobNodeEntity} from "../../../common/entity/node/job-node-entity";
 import BaseNodeComponent from "./base-node-component";
-import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
+import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-notifier-node-entity";
 import {ServerService} from "../../service/server-service";
 import {container} from "../../../common/inversify.config";
 
 @Component({})
-export default class ServerNodeComponent extends BaseNodeComponent<ServerEntity> {
+export default class ServerNodeComponent extends BaseNodeComponent<ServerNodeEntity> {
 
-  EntityClass = ServerEntity;
+  EntityClass = ServerNodeEntity;
   serverService: ServerService = container.get(ServerService);
-  boards: BoardEntity[] = null;
-  notifiers: BaseNotifierEntity[] = null;
-  jobs: JobEntity[] = null;
+  boards: BoardNodeEntity[] = null;
+  notifiers: BaseNotifierNodeEntity[] = null;
+  jobs: JobNodeEntity[] = null;
 
   start() {
     console.log("start");

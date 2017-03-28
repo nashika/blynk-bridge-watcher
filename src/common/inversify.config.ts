@@ -2,42 +2,42 @@ import {Container, interfaces} from "inversify";
 import _ = require("lodash");
 
 import {BaseEntity} from "./entity/base-entity";
-import {BaseActionEntity} from "./entity/action/base-action-entity";
-import {IfActionEntity} from "./entity/action/if-action-entity";
-import {LogActionEntity} from "./entity/action/log-action-entity";
-import {NotifyActionEntity} from "./entity/action/notify-action-entity";
-import {ReadActionEntity} from "./entity/action/read-action-entity";
-import {WriteActionEntity} from "./entity/action/write-action-entity";
-import {LogNotifierEntity} from "./entity/notifier/log-notifier-entity";
-import {PushbulletNotifierEntity} from "./entity/notifier/pushbullet-notifier-entity";
-import {BoardEntity} from "./entity/board-entity";
-import {BridgeEntity} from "./entity/bridge-entity";
-import {JobEntity} from "./entity/job-entity";
-import {ServerEntity} from "./entity/server-entity";
-import {BaseNotifierEntity} from "./entity/notifier/base-notifier-entity";
+import {BaseActionNodeEntity} from "./entity/node/action/base-action-node-entity";
+import {IfActionNodeEntity} from "./entity/node/action/if-action-node-entity";
+import {LogActionNodeEntity} from "./entity/node/action/log-action-node-entity";
+import {NotifyActionNodeEntity} from "./entity/node/action/notify-action-node-entity";
+import {ReadActionNodeEntity} from "./entity/node/action/read-action-node-entity";
+import {WriteActionNodeEntity} from "./entity/node/action/write-action-node-entity";
+import {LogNotifierNodeEntity} from "./entity/node/notifier/log-notifier-node-entity";
+import {PushbulletNotifierNodeEntity} from "./entity/node/notifier/pushbullet-notifier-node-entity";
+import {BoardNodeEntity} from "./entity/node/board-node-entity";
+import {BridgeNodeEntity} from "./entity/node/bridge-node-entity";
+import {JobNodeEntity} from "./entity/node/job-node-entity";
+import {ServerNodeEntity} from "./entity/node/server-node-entity";
+import {BaseNotifierNodeEntity} from "./entity/node/notifier/base-notifier-node-entity";
 
 export var container = new Container();
 
-container.bind(BaseEntity).toConstructor(IfActionEntity).whenTargetNamed("ifAction");
-container.bind(BaseEntity).toConstructor(LogActionEntity).whenTargetNamed("logAction");
-container.bind(BaseEntity).toConstructor(NotifyActionEntity).whenTargetNamed("notifyAction");
-container.bind(BaseEntity).toConstructor(ReadActionEntity).whenTargetNamed("readAction");
-container.bind(BaseEntity).toConstructor(WriteActionEntity).whenTargetNamed("writeAction");
-container.bind(BaseEntity).toConstructor(LogNotifierEntity).whenTargetNamed("logNotifier");
-container.bind(BaseEntity).toConstructor(PushbulletNotifierEntity).whenTargetNamed("pushbulletNotifier");
-container.bind(BaseEntity).toConstructor(BoardEntity).whenTargetNamed("board");
-container.bind(BaseEntity).toConstructor(BridgeEntity).whenTargetNamed("bridge");
-container.bind(BaseEntity).toConstructor(JobEntity).whenTargetNamed("job");
-container.bind(BaseEntity).toConstructor(ServerEntity).whenTargetNamed("server");
+container.bind(BaseEntity).toConstructor(IfActionNodeEntity).whenTargetNamed("ifAction");
+container.bind(BaseEntity).toConstructor(LogActionNodeEntity).whenTargetNamed("logAction");
+container.bind(BaseEntity).toConstructor(NotifyActionNodeEntity).whenTargetNamed("notifyAction");
+container.bind(BaseEntity).toConstructor(ReadActionNodeEntity).whenTargetNamed("readAction");
+container.bind(BaseEntity).toConstructor(WriteActionNodeEntity).whenTargetNamed("writeAction");
+container.bind(BaseEntity).toConstructor(LogNotifierNodeEntity).whenTargetNamed("logNotifier");
+container.bind(BaseEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbulletNotifier");
+container.bind(BaseEntity).toConstructor(BoardNodeEntity).whenTargetNamed("board");
+container.bind(BaseEntity).toConstructor(BridgeNodeEntity).whenTargetNamed("bridge");
+container.bind(BaseEntity).toConstructor(JobNodeEntity).whenTargetNamed("job");
+container.bind(BaseEntity).toConstructor(ServerNodeEntity).whenTargetNamed("server");
 
-container.bind(BaseActionEntity).toConstructor(IfActionEntity).whenTargetNamed("if");
-container.bind(BaseActionEntity).toConstructor(LogActionEntity).whenTargetNamed("log");
-container.bind(BaseActionEntity).toConstructor(NotifyActionEntity).whenTargetNamed("notify");
-container.bind(BaseActionEntity).toConstructor(ReadActionEntity).whenTargetNamed("read");
-container.bind(BaseActionEntity).toConstructor(WriteActionEntity).whenTargetNamed("write");
+container.bind(BaseActionNodeEntity).toConstructor(IfActionNodeEntity).whenTargetNamed("if");
+container.bind(BaseActionNodeEntity).toConstructor(LogActionNodeEntity).whenTargetNamed("log");
+container.bind(BaseActionNodeEntity).toConstructor(NotifyActionNodeEntity).whenTargetNamed("notify");
+container.bind(BaseActionNodeEntity).toConstructor(ReadActionNodeEntity).whenTargetNamed("read");
+container.bind(BaseActionNodeEntity).toConstructor(WriteActionNodeEntity).whenTargetNamed("write");
 
-container.bind(BaseNotifierEntity).toConstructor(LogNotifierEntity).whenTargetNamed("log");
-container.bind(BaseNotifierEntity).toConstructor(PushbulletNotifierEntity).whenTargetNamed("pushbullet");
+container.bind(BaseNotifierNodeEntity).toConstructor(LogNotifierNodeEntity).whenTargetNamed("log");
+container.bind(BaseNotifierNodeEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbullet");
 
 container.bind<interfaces.Factory<BaseEntity>>("Factory<Entity>").toFactory<BaseEntity>(context => {
   return (tableName: string, data: any) => {

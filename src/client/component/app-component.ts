@@ -1,7 +1,7 @@
 import Component from "vue-class-component";
 
 import BaseComponent from "./base-component";
-import {ServerEntity} from "../../common/entity/server-entity";
+import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {EntityService} from "../service/entity-service";
 import {container} from "../../common/inversify.config";
 import EditComponent from "./element/edit-component";
@@ -11,7 +11,7 @@ import LogsComponent from "./element/logs-component";
 export default class AppComponent extends BaseComponent {
 
   entityService: EntityService = container.get(EntityService);
-  server: ServerEntity = null;
+  server: ServerNodeEntity = null;
 
   get editComponent(): EditComponent {
     return <EditComponent>this.$refs.edit;
@@ -22,7 +22,7 @@ export default class AppComponent extends BaseComponent {
   }
 
   async mounted(): Promise<void> {
-    let entity = await this.entityService.getOne<ServerEntity>(ServerEntity);
+    let entity = await this.entityService.getOne<ServerNodeEntity>(ServerNodeEntity);
     this.server = entity;
   }
 

@@ -2,13 +2,13 @@ import {injectable} from "inversify";
 import {getLogger} from "log4js";
 
 import {NotifierNode} from "./notifier-node";
-import {LogNotifierEntity} from "../../../common/entity/notifier/log-notifier-entity";
+import {LogNotifierNodeEntity} from "../../../common/entity/node/notifier/log-notifier-node-entity";
 import {NodeService} from "../../service/node-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
 
 @injectable()
-export class LogNotifierNode extends NotifierNode<LogNotifierEntity> {
+export class LogNotifierNode extends NotifierNode<LogNotifierNodeEntity> {
 
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService,

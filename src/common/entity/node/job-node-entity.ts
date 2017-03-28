@@ -1,15 +1,16 @@
 import _ = require("lodash");
 
-import {BaseEntity, IEntityParams} from "./base-entity";
+import {IEntityParams} from "../base-entity";
+import {BaseNodeEntity} from "./base-node-entity";
 
-export class JobEntity extends BaseEntity {
+export class JobNodeEntity extends BaseNodeEntity {
 
   static params: IEntityParams = {
     tableName: "job",
     entityName: "job",
     icon: "clock-o",
     children: {},
-    fields: _.merge({}, BaseEntity.params.fields, {
+    fields: _.merge({}, BaseNodeEntity.params.fields, {
       cronTime: {
         type: "text",
         default: "0 0 0 * * *",

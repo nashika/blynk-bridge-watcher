@@ -3,7 +3,7 @@ import {getLogger} from "log4js";
 
 import {BaseRoute} from "./base-route";
 import {Express, Response, Request} from "express";
-import {ServerEntity} from "../../common/entity/server-entity";
+import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {ServerNode} from "../node/server-node";
 import {TableService} from "../service/table-service";
 import {SocketIoServerService} from "../service/socket-io-server-service";
@@ -12,9 +12,9 @@ import {NodeService} from "../service/node-service";
 let logger = getLogger("system");
 
 @injectable()
-export class ServerRoute extends BaseRoute<ServerEntity> {
+export class ServerRoute extends BaseRoute<ServerNodeEntity> {
 
-  static EntityClass = ServerEntity;
+  static EntityClass = ServerNodeEntity;
 
   private serverNode: ServerNode;
 
@@ -35,7 +35,7 @@ export class ServerRoute extends BaseRoute<ServerEntity> {
   }
 
   index(_req: Request, res: Response) {
-    this.tableService.findOne(ServerEntity).then(entity => {
+    this.tableService.findOne(ServerNodeEntity).then(entity => {
       res.json(entity);
     }).catch(err => this.responseErrorJson(res, err));
   }

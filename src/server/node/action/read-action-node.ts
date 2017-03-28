@@ -1,14 +1,14 @@
 import {injectable} from "inversify";
 
-import {ReadActionEntity} from "../../../common/entity/action/read-action-entity";
+import {ReadActionNodeEntity} from "../../../common/entity/node/action/read-action-node-entity";
 import {ActionNode} from "./action-node";
-import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
 import {NodeService} from "../../service/node-service";
 
 @injectable()
-export class ReadActionNode extends ActionNode<ReadActionEntity> {
+export class ReadActionNode extends ActionNode<ReadActionNodeEntity> {
 
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService,
@@ -38,7 +38,7 @@ export class ReadActionNode extends ActionNode<ReadActionEntity> {
       let value = args[0];
       this.log("debug", `Read response. type=${this.entity.pinType}, pin=${this.entity.pin}, value=${value}`);
       if (this.entity.next) {
-        let action = <ActionNode<BaseActionEntity>>this.nodeService.getNode(this.entity.next);
+        let action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNode(this.entity.next);
         action.run(value);
       }
     });

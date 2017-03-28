@@ -2,7 +2,7 @@ import {injectable} from "inversify";
 var Pushbullet = require("pushbullet");
 
 import {NotifierNode} from "./notifier-node";
-import {PushbulletNotifierEntity} from "../../../common/entity/notifier/pushbullet-notifier-entity";
+import {PushbulletNotifierNodeEntity} from "../../../common/entity/node/notifier/pushbullet-notifier-node-entity";
 import {NodeService} from "../../service/node-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
@@ -10,7 +10,7 @@ import {TableService} from "../../service/table-service";
 type Pushbullet = any;
 
 @injectable()
-export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierEntity> {
+export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierNodeEntity> {
 
   private pushbullet: Pushbullet;
 

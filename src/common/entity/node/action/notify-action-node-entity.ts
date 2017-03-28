@@ -1,16 +1,16 @@
 import _ = require("lodash");
 
-import {BaseActionEntity} from "./base-action-entity";
-import {IEntityParams} from "../base-entity";
+import {BaseActionNodeEntity} from "./base-action-node-entity";
+import {IEntityParams} from "../../base-entity";
 
-export class NotifyActionEntity extends BaseActionEntity {
+export class NotifyActionNodeEntity extends BaseActionNodeEntity {
 
   static params: IEntityParams = {
     tableName: "action",
     entityName: "notifyAction",
     icon: "bell",
     children: {},
-    fields: _.merge({}, BaseActionEntity.params.fields, {
+    fields: _.merge({}, BaseActionNodeEntity.params.fields, {
       type: {
         default: "notify",
       },

@@ -1,17 +1,17 @@
 import _ = require("lodash");
 
-import {BaseActionEntity} from "./base-action-entity";
-import {IEntityParams} from "../base-entity";
-import {TSocketIoLogLevel} from "../../util/socket-io-util";
+import {BaseActionNodeEntity} from "./base-action-node-entity";
+import {IEntityParams} from "../../base-entity";
+import {TSocketIoLogLevel} from "../../../util/socket-io-util";
 
-export class LogActionEntity extends BaseActionEntity {
+export class LogActionNodeEntity extends BaseActionNodeEntity {
 
   static params: IEntityParams = {
     tableName: "action",
     entityName: "logAction",
     icon: "terminal",
     children: {},
-    fields: _.merge({}, BaseActionEntity.params.fields, {
+    fields: _.merge({}, BaseActionNodeEntity.params.fields, {
       type: {
         default: "log",
       },

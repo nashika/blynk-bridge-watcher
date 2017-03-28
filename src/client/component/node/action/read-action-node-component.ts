@@ -1,12 +1,12 @@
 import Component from "vue-class-component";
 
 import BaseActionNodeComponent from "./base-action-node-component";
-import {ReadActionEntity} from "../../../../common/entity/action/read-action-entity";
+import {ReadActionNodeEntity} from "../../../../common/entity/node/action/read-action-node-entity";
 
 @Component({})
-export default class ReadActionNodeComponent extends BaseActionNodeComponent<ReadActionEntity> {
+export default class ReadActionNodeComponent extends BaseActionNodeComponent<ReadActionNodeEntity> {
 
-  EntityClass = ReadActionEntity;
+  EntityClass = ReadActionNodeEntity;
 
   get shortPinType(): string {
     switch (this.entity.pinType) {

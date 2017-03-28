@@ -1,18 +1,18 @@
 import {BaseNode} from "../base-node";
 import {BoardNode} from "../board-node";
 import {ActionNode} from "../action/action-node";
-import {BridgeEntity} from "../../../common/entity/bridge-entity";
-import {BaseActionEntity} from "../../../common/entity/action/base-action-entity";
+import {BridgeNodeEntity} from "../../../common/entity/node/bridge-node-entity";
+import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
 import {NodeService} from "../../service/node-service";
 
 export type WidgetBridge = any;
 
-export class BaseBridgeNode extends BaseNode<BridgeEntity> {
+export class BaseBridgeNode extends BaseNode<BridgeNodeEntity> {
 
   parent: BoardNode;
-  actions: ActionNode<BaseActionEntity>[];
+  actions: ActionNode<BaseActionNodeEntity>[];
   protected widgetBridge: WidgetBridge;
 
   constructor(protected tableService: TableService,

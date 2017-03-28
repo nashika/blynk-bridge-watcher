@@ -2,12 +2,12 @@ import util = require("util");
 
 import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
-import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
+import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-notifier-node-entity";
 import {NodeService} from "../../service/node-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
 
-export abstract class NotifierNode<T extends BaseNotifierEntity> extends BaseNode<T> {
+export abstract class NotifierNode<T extends BaseNotifierNodeEntity> extends BaseNode<T> {
 
   parent: ServerNode;
 

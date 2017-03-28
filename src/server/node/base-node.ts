@@ -7,7 +7,7 @@ import {injectable} from "inversify";
 import {BaseEntity} from "../../common/entity/base-entity";
 import {MyPromise} from "../../common/util/my-promise";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
-import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
+import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-notifier-node-entity";
 import {NotifierNode} from "./notifier/notifier-node";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
@@ -119,7 +119,7 @@ export abstract class BaseNode<T extends BaseEntity> {
     message = util.format(message, ...args);
     this.socketIoServerService.log(this.entity._id, level, message);
     for (let node of this.nodeService.getNodes("notifier")) {
-      let notifierNode = <NotifierNode<BaseNotifierEntity>>node;
+      let notifierNode = <NotifierNode<BaseNotifierNodeEntity>>node;
       if (this.logLevelToNumber(level) >= this.logLevelToNumber(notifierNode.entity.level))
         notifierNode.run(message);
     }

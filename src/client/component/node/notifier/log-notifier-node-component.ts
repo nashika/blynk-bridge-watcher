@@ -1,11 +1,11 @@
 import Component from "vue-class-component";
 
 import BaseNotifierNodeComponent from "./base-notifier-node-component";
-import {LogNotifierEntity} from "../../../../common/entity/notifier/log-notifier-entity";
+import {LogNotifierNodeEntity} from "../../../../common/entity/node/notifier/log-notifier-node-entity";
 
 @Component({})
-export default class LogNotifierNodeComponent extends BaseNotifierNodeComponent<LogNotifierEntity> {
+export default class LogNotifierNodeComponent extends BaseNotifierNodeComponent<LogNotifierNodeEntity> {
 
-  EntityClass = LogNotifierEntity;
+  EntityClass = LogNotifierNodeEntity;
 
 }

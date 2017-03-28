@@ -1,15 +1,15 @@
 import {injectable} from "inversify";
 
 import {ActionNode} from "./action-node";
-import {NotifyActionEntity} from "../../../common/entity/action/notify-action-entity";
-import {BaseNotifierEntity} from "../../../common/entity/notifier/base-notifier-entity";
+import {NotifyActionNodeEntity} from "../../../common/entity/node/action/notify-action-node-entity";
+import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-notifier-node-entity";
 import {NotifierNode} from "../notifier/notifier-node";
 import {TableService} from "../../service/table-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {NodeService} from "../../service/node-service";
 
 @injectable()
-export class NotifyActionNode extends ActionNode<NotifyActionEntity> {
+export class NotifyActionNode extends ActionNode<NotifyActionNodeEntity> {
 
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService,
@@ -20,7 +20,7 @@ export class NotifyActionNode extends ActionNode<NotifyActionEntity> {
   run(...args:string[]) {
     super.run();
     this.log("debug", `Notify action. notifier="${this.entity.notifier}", message="${this.entity.message}", args="${JSON.stringify(args)}"`);
-    let notifier = <NotifierNode<BaseNotifierEntity>>this.nodeService.getNode(this.entity.notifier);
+    let notifier = <NotifierNode<BaseNotifierNodeEntity>>this.nodeService.getNode(this.entity.notifier);
     notifier.run(this.entity.message, ...args);
   };
 

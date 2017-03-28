@@ -4,17 +4,17 @@ import {BaseNode} from "./base-node";
 import {BoardNode} from "./board-node";
 import {NotifierNode} from "./notifier/notifier-node";
 import {JobNode} from "./job-node";
-import {ServerEntity} from "../../common/entity/server-entity";
-import {BaseNotifierEntity} from "../../common/entity/notifier/base-notifier-entity";
+import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
+import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-notifier-node-entity";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 
 @injectable()
-export class ServerNode extends BaseNode<ServerEntity> {
+export class ServerNode extends BaseNode<ServerNodeEntity> {
 
   boards: BoardNode[];
-  notifiers: NotifierNode<BaseNotifierEntity>[];
+  notifiers: NotifierNode<BaseNotifierNodeEntity>[];
   jobs: JobNode[];
 
   constructor(protected tableService: TableService,
