@@ -4,7 +4,6 @@ import pluralize = require("pluralize");
 
 import BaseComponent from "../base-component";
 import {ISocketIoLogData, TSocketIoStatus} from "../../../common/util/socket-io-util";
-import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {NodeClientService} from "../../service/node-client-service";
 import {container} from "../../../common/inversify.config";
 import {BaseNodeEntity} from "../../../common/entity/node/base-node-entity";
@@ -33,8 +32,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   depth: number;
 
   EntityClass: typeof BaseNodeEntity = BaseNodeEntity;
-  protected nodeEntityService: NodeClientService = container.get(NodeClientService);
-  protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  protected nodeClientService: NodeClientService = container.get(NodeClientService);
 
   showEdit: boolean = false;
   showLogs: boolean = false;
@@ -48,9 +46,9 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
 
   async mounted(): Promise<void> {
     if (this.entity) {
-      this.socketIoClientService.registerComponent(this);
-      this.status = this.socketIoClientService.getStatus(this.entity._id);
-      this.lastLog = this.socketIoClientService.getLastLog(this.entity._id);
+      this.nodeClientService.registerComponent(this);
+      this.status = this.nodeClientService.getStatus(this.entity._id);
+      this.lastLog = this.nodeClientService.getLastLog(this.entity._id);
       await this.reload();
     }
   }
@@ -60,7 +58,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   }
 
   run(..._args: any[]) {
-    this.socketIoClientService.send(this.entity._id);
+    this.nodeClientService.send(this.entity._id);
   }
 
   notifyRun() {
@@ -83,13 +81,13 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   protected async reload(): Promise<void> {
     for (let key in this.EntityClass.params.children) {
       _.forEach(_.get(this, key), (entity: BaseNodeEntity) => {
-        this.socketIoClientService.unregisterComponent(entity._id);
+        this.nodeClientService.unregisterComponent(entity._id);
       });
       _.set(this, key, null);
     }
     for (let key in this.EntityClass.params.children) {
       let EntityClass: typeof BaseNodeEntity = this.EntityClass.params.children[key];
-      let entities = await this.nodeEntityService.getChildren(EntityClass, this.entity._id);
+      let entities = await this.nodeClientService.findChildren(EntityClass, this.entity._id);
       _.set(this, key, entities);
     }
   }
@@ -98,7 +96,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
     if (this.parent) {
       await this.parent.reload();
     } else {
-      this.entity = await this.nodeEntityService.getOne<T>(this.EntityClass, this.entity._id);
+      this.entity = await this.nodeClientService.findOne<T>(this.EntityClass, this.entity._id);
       await this.reload();
     }
   }
@@ -112,20 +110,20 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
     if (!editEntity) return;
     editEntity._parent = this.entity._id;
     editEntity._orderNo = (_.max(this.getChildEntities(ChildEntityClass).map(entity => entity._orderNo)) + 1) || 1;
-    await this.nodeEntityService.add(editEntity);
+    await this.nodeClientService.add(editEntity);
     await this.reloadParent();
   }
 
   protected async edit(): Promise<void> {
     let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.entity);
     if (!editEntity) return;
-    await this.nodeEntityService.edit(editEntity);
+    await this.nodeClientService.edit(editEntity);
     await this.reloadParent();
   }
 
   protected async remove(): Promise<void> {
     if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.type} id:${this.entity._id}?`)) return;
-    await this.nodeEntityService.remove(this.entity);
+    await this.nodeClientService.remove(this.entity);
     await this.reloadParent();
   }
 
@@ -144,8 +142,8 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
     let tmpNo = entity1._orderNo;
     entity1._orderNo = entity2._orderNo;
     entity2._orderNo = tmpNo;
-    await this.nodeEntityService.edit(entity1);
-    await this.nodeEntityService.edit(entity2);
+    await this.nodeClientService.edit(entity1);
+    await this.nodeClientService.edit(entity2);
     await this.reloadParent();
   }
 

@@ -16,12 +16,12 @@ export default class ServerNodeComponent extends BaseNodeComponent<ServerNodeEnt
 
   async start() {
     console.log("start");
-    await this.nodeEntityService.start();
+    await this.nodeClientService.start();
   }
 
   async stop() {
     console.log("stop");
-    this.nodeEntityService.stop();
+    this.nodeClientService.stop();
   }
 
 }

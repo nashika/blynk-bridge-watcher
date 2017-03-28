@@ -9,6 +9,7 @@ import {SocketIoClientService} from "./service/socket-io-client-service";
 import Vue = require("vue");
 //import VueRouter from "vue-router";
 import BootstrapVue from "bootstrap-vue";
+import {NodeClientService} from "./service/node-client-service";
 
 //Vue.use(VueRouter);
 Vue.use(BootstrapVue);
@@ -30,5 +31,5 @@ Vue.component("pushbullet-notifier-node-component", require("./component/node/no
 let AppComponent = require("./component/app-component.vue");
 new (<any>AppComponent)().$mount("#app");
 
-let socketIoClientService = container.get(SocketIoClientService);
-socketIoClientService.initialize();
+container.get<SocketIoClientService>(SocketIoClientService).initialize();
+container.get<NodeClientService>(NodeClientService).initialize();

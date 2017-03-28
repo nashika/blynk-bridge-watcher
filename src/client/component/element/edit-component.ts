@@ -2,17 +2,17 @@ import _ = require("lodash");
 import Component from "vue-class-component";
 
 import BaseComponent from "../base-component";
-import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
 import AppComponent from "../app-component";
 import {BaseNodeEntity} from "../../../common/entity/node/base-node-entity";
+import {NodeClientService} from "../../service/node-client-service";
 
 @Component({})
 export default class EditComponent extends BaseComponent {
 
   $parent: AppComponent;
 
-  protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  protected nodeClientService: NodeClientService = container.get(NodeClientService);
 
   protected EntityClass: typeof BaseNodeEntity = null;
   protected editEntity: BaseNodeEntity = null;
@@ -35,7 +35,7 @@ export default class EditComponent extends BaseComponent {
   }
 
   protected getNodeOptions(filter: string): {[_id: string]: string} {
-    return this.socketIoClientService.getNodeOptions(filter);
+    return this.nodeClientService.getNodeOptions(filter);
   }
 
   protected ok() {

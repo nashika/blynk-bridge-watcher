@@ -12,7 +12,7 @@ export default class BaseNotifierNodeComponent<T extends BaseNotifierNodeEntity>
   EntityClass = BaseNotifierNodeEntity;
 
   run() {
-    this.socketIoClientService.send(this.entity._id, "Test Message");
+    this.nodeClientService.send(this.entity._id, "Test Message");
   }
 
 }

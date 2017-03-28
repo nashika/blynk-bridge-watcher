@@ -41,10 +41,10 @@ export class SocketIoServerService extends BaseServerService {
   }
 
   private onConnection = (socket: SocketIO.Socket) => {
-    socket.on("send", this.onSend);
-    socket.on("logs", this.onRequestLogs);
     socket.on("server::start", this.onWrap(this.startServer));
     socket.on("server::stop", this.onWrap(this.stopServer));
+    socket.on("node::send", this.onWrap(this.sendNode));
+    socket.on("node::logs", this.onWrap(this.logsNode));
     socket.on("node::find", this.onWrap(this.findNode));
     socket.on("node::add", this.onWrap(this.addNode));
     socket.on("node::edit", this.onWrap(this.editNode));
@@ -55,22 +55,6 @@ export class SocketIoServerService extends BaseServerService {
     }
     for (let _id in this.statuses)
       socket.emit("status", this.statuses[_id]);
-  };
-
-  private onSend = (data: ISocketIoSendData) => {
-    let node = this.nodeService.getNodeById(data._id);
-    if (node) node.run(...data.args);
-  };
-
-  private onRequestLogs = (data: ISocketIoRequestLogsData, ack: (data: any) => void) => {
-    let response: ISocketIoResponseLogsData = {_id: data._id, logs: []};
-    let length = this.logs[data._id].length;
-    let start = length - data.page * data.limit;
-    let end = start + data.limit;
-    if (start < 0) start = 0;
-    if (end < 0) end = 0;
-    response.logs = this.logs[data._id].slice(start, end);
-    ack(response);
   };
 
   private onWrap = (func: (...args: any[]) => Promise<any>) => {
@@ -95,6 +79,22 @@ export class SocketIoServerService extends BaseServerService {
     logger.info("Server node destruct started.");
     await this.nodeService.finalize();
     logger.info("Server node destruct finished.");
+  }
+
+  private async sendNode(data: ISocketIoSendData): Promise<void> {
+    let node = this.nodeService.getNodeById(data._id);
+    if (node) node.run(...data.args);
+  }
+
+  private async logsNode(data: ISocketIoRequestLogsData): Promise<ISocketIoResponseLogsData> {
+    let response: ISocketIoResponseLogsData = {_id: data._id, logs: []};
+    let length = this.logs[data._id].length;
+    let start = length - data.page * data.limit;
+    let end = start + data.limit;
+    if (start < 0) start = 0;
+    if (end < 0) end = 0;
+    response.logs = this.logs[data._id].slice(start, end);
+    return response;
   }
 
   private async findNode<T extends BaseNodeEntity>(query: ISocketIoFindQuery): Promise<T[]> {

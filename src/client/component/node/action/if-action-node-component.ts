@@ -9,7 +9,7 @@ export default class IfActionNodeComponent extends BaseActionNodeComponent<IfAct
   EntityClass = IfActionNodeEntity;
 
   run(flag: boolean) {
-    this.socketIoClientService.send(this.entity._id, flag ? "if" : "else");
+    this.nodeClientService.send(this.entity._id, flag ? "if" : "else");
   }
 
 }

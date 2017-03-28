@@ -26,7 +26,7 @@ export default class AppComponent extends BaseComponent {
 
   async mounted(): Promise<void> {
     await this.socketIoClientService.initialize();
-    let entity = await this.entityService.getOne<ServerNodeEntity>(ServerNodeEntity);
+    let entity = await this.entityService.findOne<ServerNodeEntity>(ServerNodeEntity);
     this.server = entity;
   }
 

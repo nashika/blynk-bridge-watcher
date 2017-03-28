@@ -2,13 +2,13 @@ import Component from "vue-class-component";
 
 import BaseComponent from "../base-component";
 import {ISocketIoLogData} from "../../../common/util/socket-io-util";
-import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {container} from "../../../common/inversify.config";
+import {NodeClientService} from "../../service/node-client-service";
 
 @Component({})
 export default class LogsComponent extends BaseComponent {
 
-  protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  protected nodeClientService: NodeClientService = container.get(NodeClientService);
 
   protected page: number = 1;
   protected limit: number = 20;
@@ -25,8 +25,8 @@ export default class LogsComponent extends BaseComponent {
 
   protected async reload(): Promise<void> {
     this.logs = null;
-    this.lastLog = await this.socketIoClientService.getLastLog(this.id);
-    this.logs = await this.socketIoClientService.getLogs(this.id, this.page, this.limit);
+    this.lastLog = await this.nodeClientService.getLastLog(this.id);
+    this.logs = await this.nodeClientService.logs(this.id, this.page, this.limit);
   }
 
   protected async changePage(newPage: number): Promise<void> {
