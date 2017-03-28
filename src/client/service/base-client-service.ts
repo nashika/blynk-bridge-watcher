@@ -1,5 +1,5 @@
 import {injectable} from "inversify";
 
 @injectable()
-export abstract class BaseService {
+export abstract class BaseClientService {
 }

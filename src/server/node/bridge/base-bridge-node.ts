@@ -5,7 +5,7 @@ import {BridgeNodeEntity} from "../../../common/entity/node/bridge-node-entity";
 import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
-import {NodeService} from "../../service/node-service";
+import {NodeService} from "../../service/node-server-service";
 
 export type WidgetBridge = any;
 

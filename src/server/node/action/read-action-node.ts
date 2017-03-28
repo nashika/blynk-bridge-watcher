@@ -5,7 +5,7 @@ import {ActionNode} from "./action-node";
 import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
-import {NodeService} from "../../service/node-service";
+import {NodeService} from "../../service/node-server-service";
 
 @injectable()
 export class ReadActionNode extends ActionNode<ReadActionNodeEntity> {

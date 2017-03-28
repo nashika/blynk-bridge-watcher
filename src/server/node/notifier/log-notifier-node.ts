@@ -3,7 +3,7 @@ import {getLogger} from "log4js";
 
 import {NotifierNode} from "./notifier-node";
 import {LogNotifierNodeEntity} from "../../../common/entity/node/notifier/log-notifier-node-entity";
-import {NodeService} from "../../service/node-service";
+import {NodeService} from "../../service/node-server-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
 

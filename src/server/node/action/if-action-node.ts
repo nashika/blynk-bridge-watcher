@@ -5,7 +5,7 @@ import {IfActionNodeEntity} from "../../../common/entity/node/action/if-action-n
 import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
 import {TableService} from "../../service/table-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
-import {NodeService} from "../../service/node-service";
+import {NodeService} from "../../service/node-server-service";
 
 @injectable()
 export class IfActionNode extends ActionNode<IfActionNodeEntity> {

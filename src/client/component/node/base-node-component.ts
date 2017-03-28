@@ -5,7 +5,7 @@ import pluralize = require("pluralize");
 import BaseComponent from "../base-component";
 import {ISocketIoLogData, TSocketIoStatus} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
-import {NodeEntityService} from "../../service/node-entity-service";
+import {NodeClientService} from "../../service/node-client-service";
 import {container} from "../../../common/inversify.config";
 import {BaseNodeEntity} from "../../../common/entity/node/base-node-entity";
 
@@ -33,7 +33,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   depth: number;
 
   EntityClass: typeof BaseNodeEntity = BaseNodeEntity;
-  protected nodeEntityService: NodeEntityService = container.get(NodeEntityService);
+  protected nodeEntityService: NodeClientService = container.get(NodeClientService);
   protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
   showEdit: boolean = false;

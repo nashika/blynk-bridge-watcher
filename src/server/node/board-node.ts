@@ -9,7 +9,7 @@ import {BridgeNode} from "./bridge/bridge-node";
 import {uid} from "../../common/util/uid";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
-import {NodeService} from "../service/node-service";
+import {NodeService} from "../service/node-server-service";
 
 @injectable()
 export class BoardNode extends BaseNode<BoardNodeEntity> {

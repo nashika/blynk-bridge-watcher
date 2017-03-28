@@ -9,7 +9,7 @@ import {
   ISocketIoSendData, ISocketIoData, ISocketIoRequestLogsData, ISocketIoResponseLogsData, ISocketIoFindQuery
 } from "../../common/util/socket-io-util";
 import {BaseServerService} from "./base-server-service";
-import {NodeService} from "./node-service";
+import {NodeService} from "./node-server-service";
 import {container} from "../../common/inversify.config";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 import {TableService} from "./table-service";

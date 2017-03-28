@@ -6,7 +6,7 @@ import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-
 import {NotifierNode} from "../notifier/notifier-node";
 import {TableService} from "../../service/table-service";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
-import {NodeService} from "../../service/node-service";
+import {NodeService} from "../../service/node-server-service";
 
 @injectable()
 export class NotifyActionNode extends ActionNode<NotifyActionNodeEntity> {

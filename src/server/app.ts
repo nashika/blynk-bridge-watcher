@@ -11,7 +11,7 @@ import "./inversify.config";
 import {container} from "../common/inversify.config";
 import {SocketIoServerService} from "./service/socket-io-server-service";
 import {app} from "./app-express";
-import {NodeService} from "./service/node-service";
+import {NodeService} from "./service/node-server-service";
 
 let pjson = require("../../package");
 

@@ -9,7 +9,7 @@ import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-not
 import {NotifierNode} from "./notifier/notifier-node";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
-import {NodeService} from "../service/node-service";
+import {NodeService} from "../service/node-server-service";
 import {container} from "../../common/inversify.config";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 

@@ -2,7 +2,7 @@ import Component from "vue-class-component";
 
 import BaseComponent from "./base-component";
 import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
-import {NodeEntityService} from "../service/node-entity-service";
+import {NodeClientService} from "../service/node-client-service";
 import {container} from "../../common/inversify.config";
 import EditComponent from "./element/edit-component";
 import LogsComponent from "./element/logs-component";
@@ -11,7 +11,7 @@ import {SocketIoClientService} from "../service/socket-io-client-service";
 @Component({})
 export default class AppComponent extends BaseComponent {
 
-  protected entityService: NodeEntityService = container.get(NodeEntityService);
+  protected entityService: NodeClientService = container.get(NodeClientService);
   protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
   protected server: ServerNodeEntity = null;

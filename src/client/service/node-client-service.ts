@@ -1,13 +1,13 @@
 import _ = require("lodash");
 import {injectable, inject} from "inversify";
 
-import {BaseService} from "./base-service";
+import {BaseClientService} from "./base-client-service";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 import {SocketIoClientService} from "./socket-io-client-service";
 import {ISocketIoFindQuery} from "../../common/util/socket-io-util";
 
 @injectable()
-export class NodeEntityService extends BaseService {
+export class NodeClientService extends BaseClientService {
 
   constructor(@inject("Factory<BaseNodeEntity>") protected entityFactory: (data: any) => BaseNodeEntity,
               protected socketIoClientService: SocketIoClientService) {

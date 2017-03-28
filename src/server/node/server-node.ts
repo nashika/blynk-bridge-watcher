@@ -8,7 +8,7 @@ import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-notifier-node-entity";
 import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
-import {NodeService} from "../service/node-service";
+import {NodeService} from "../service/node-server-service";
 
 @injectable()
 export class ServerNode extends BaseNode<ServerNodeEntity> {

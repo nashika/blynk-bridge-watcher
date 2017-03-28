@@ -3,7 +3,7 @@ import socketIo = require("socket.io-client");
 import Socket = SocketIOClient.Socket;
 import _ = require("lodash");
 
-import {BaseService} from "./base-service";
+import {BaseClientService} from "./base-client-service";
 import {
   ISocketIoLogData, ISocketIoStatusData, TSocketIoStatus,
   ISocketIoSendData, ISocketIoData, ISocketIoResponseLogsData, ISocketIoRequestLogsData
@@ -13,7 +13,7 @@ import {logger} from "../logger";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 
 @injectable()
-export class SocketIoClientService extends BaseService {
+export class SocketIoClientService extends BaseClientService {
 
   private socket: Socket;
   private components: { [_id: string]: BaseNodeComponent<BaseNodeEntity> };

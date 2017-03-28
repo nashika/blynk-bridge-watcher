@@ -4,7 +4,7 @@ import {ActionNode} from "./action-node";
 import {WriteActionNodeEntity} from "../../../common/entity/node/action/write-action-node-entity";
 import {SocketIoServerService} from "../../service/socket-io-server-service";
 import {TableService} from "../../service/table-service";
-import {NodeService} from "../../service/node-service";
+import {NodeService} from "../../service/node-server-service";
 
 @injectable()
 export class WriteActionNode extends ActionNode<WriteActionNodeEntity> {
