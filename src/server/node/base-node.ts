@@ -5,7 +5,6 @@ import log4js = require("log4js");
 import {injectable} from "inversify";
 
 import {BaseEntity} from "../../common/entity/base-entity";
-import {MyPromise} from "../../common/util/my-promise";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
 import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-notifier-node-entity";
 import {NotifierNode} from "./notifier/notifier-node";
@@ -49,24 +48,18 @@ export abstract class BaseNode<T extends BaseEntity> {
 
   protected async initialize(): Promise<void> {
     this.nodeService.registerNode(this);
-    return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
+    for (let key in this.EntityClass.params.children) {
+      let ChildEntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let childNodes: BaseNode<BaseEntity>[] = [];
       _.set(this, key, childNodes);
-      return Promise.resolve().then(() => {
-        return this.tableService.find(ChildEntityClass, {_parent: this.entity._id});
-      }).then(entities => {
-        return MyPromise.eachPromiseSeries(entities, (entity: BaseEntity) => {
-          return Promise.resolve().then(() => {
-            return this.nodeService.generate(this, entity);
-          }).then(node => {
-            childNodes.push(node);
-          });
-        });
-      }).then(() => {
-        this.log("debug", `Construct child '${key}' objects was finished.`);
-      });
-    });
+      let entities = await this.tableService.find(ChildEntityClass, {_parent: this.entity._id});
+      for (let entity of entities) {
+        let node = await this.nodeService.generate(this, entity);
+        childNodes.push(node);
+      }
+      this.log("debug", `Construct child '${key}' objects was finished.`);
+    }
   }
 
   finalizeWrap(): Promise<void> {
@@ -76,20 +69,19 @@ export abstract class BaseNode<T extends BaseEntity> {
     });
   }
 
-  protected finalize(): Promise<void> {
+  protected async finalize(): Promise<void> {
     this.status = "processing";
     this.nodeService.unregisterNode(this.entity._id);
-    return MyPromise.eachPromiseSeries(this.EntityClass.params.children, (ChildEntityClass: typeof BaseEntity, key: string) => {
+    for (let key in this.EntityClass.params.children) {
+      let ChildEntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
       let childNodes = _.get<BaseNode<BaseEntity>[]>(this, key, []);
-      return MyPromise.eachPromiseSeries(childNodes, (childNode: BaseNode<BaseEntity>) => {
-        return childNode.finalize();
-      }).then(() => {
-        _.set(this, key, []);
-      });
-    }).then(() => {
-      this.status = "stop";
-    });
+      for (let childNode of childNodes) {
+        await childNode.finalize();
+      }
+      _.set(this, key, []);
+    }
+    this.status = "stop";
   }
 
   async startWrap(): Promise<void> {

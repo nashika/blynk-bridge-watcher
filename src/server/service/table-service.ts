@@ -3,9 +3,9 @@ import path = require("path");
 import NeDBDataStore = require("nedb");
 import {getLogger} from "log4js";
 import {injectable, inject} from "inversify";
+import * as _ from "lodash";
 
 import {BaseEntity} from "../../common/entity/base-entity";
-import {MyPromise} from "../../common/util/my-promise";
 import {BaseServerService} from "./base-server-service";
 
 let logger = getLogger("system");
@@ -33,7 +33,7 @@ export class TableService extends BaseServerService {
   async find<T extends BaseEntity>(EntityClass: typeof BaseEntity, query: any = {}): Promise<T[]> {
     let tableName = EntityClass.params.tableName;
     logger.trace(`Find ${tableName} table, query="${JSON.stringify(query)}".`);
-    return new Promise<T[]>((resolve, reject) => {
+    return await new Promise<T[]>((resolve, reject) => {
       this.getDataStore(tableName).find<T>(query).sort({_orderNo: 1}).exec((err, docs) => {
         if (err) return reject(err);
         let entities: T[] = docs.map(doc => <T>this.entityFactory(tableName, doc));
@@ -42,10 +42,10 @@ export class TableService extends BaseServerService {
     });
   }
 
-  findOne<T extends BaseEntity>(EntityClass: typeof BaseEntity, id: string = ""): Promise<T> {
+  async findOne<T extends BaseEntity>(EntityClass: typeof BaseEntity, id: string = ""): Promise<T> {
     let tableName = EntityClass.params.tableName;
     logger.trace(`Find ${tableName} table, id="${id}".`);
-    return new Promise<T>((resolve, reject) => {
+    return await new Promise<T>((resolve, reject) => {
       if (id) {
         this.getDataStore(tableName).findOne<T>({_id: id}, (err, doc) => {
           if (err) return reject(err);
@@ -62,10 +62,10 @@ export class TableService extends BaseServerService {
     });
   }
 
-  insert<T extends BaseEntity>(entity: T): Promise<T> {
+  async insert<T extends BaseEntity>(entity: T): Promise<T> {
     let tableName = entity.Class.params.tableName;
     logger.trace(`Insert ${tableName} table, entity="${JSON.stringify(entity)}".`);
-    return new Promise((resolve, reject) => {
+    return await new Promise<T>((resolve, reject) => {
       this.getDataStore(tableName).insert(entity, (err, newDoc) => {
         if (err) return reject(err);
         let entity: T = <T>this.entityFactory(tableName, newDoc);
@@ -74,11 +74,11 @@ export class TableService extends BaseServerService {
     });
   }
 
-  update<T extends BaseEntity>(entity: T): Promise<T> {
+  async update<T extends BaseEntity>(entity: T): Promise<T> {
     let tableName = entity.Class.params.tableName;
     if (!entity._id) throw new Error(`update need _id key`);
     logger.trace(`Update ${tableName} table, entity="${JSON.stringify(entity)}".`);
-    return new Promise((resolve, reject) => {
+    return await new Promise<T>((resolve, reject) => {
       this.getDataStore(tableName).update({_id: entity._id}, entity, {returnUpdatedDocs: true}, err => {
         if (err) return reject(err);
         resolve(entity);
@@ -86,24 +86,22 @@ export class TableService extends BaseServerService {
     });
   }
 
-  remove<T extends BaseEntity>(entity: T): Promise<void> {
+  async remove<T extends BaseEntity>(entity: T): Promise<void> {
     let tableName = entity.Class.params.tableName;
     if (!entity._id) throw new Error(`remove need _id key`);
     logger.trace(`Remove ${tableName} table, entity="${JSON.stringify(entity)}".`);
-    return new Promise<void>((resolve, reject) => {
+    await new Promise<void>((resolve, reject) => {
       this.getDataStore(tableName).remove({_id: entity._id}, {}, err => {
         if (err) return reject(err);
         resolve();
       });
-    }).then(() => {
-      return MyPromise.eachPromiseSeries(entity.Class.params.children, (ChildEntityClass: typeof BaseEntity) => {
-        return this.find(ChildEntityClass, {_parent: entity._id}).then(childEntities => {
-          return MyPromise.eachPromiseSeries(childEntities, childEntity => {
-            return this.remove(childEntity);
-          });
-        });
-      });
     });
+    for (let ChildEntityClass of _.values<typeof BaseEntity>(entity.Class.params.children)) {
+      let childEntities = await this.find(ChildEntityClass, {_parent: entity._id});
+      for (let childEntity of childEntities) {
+        await this.remove(childEntity);
+      }
+    }
   }
 
 }
