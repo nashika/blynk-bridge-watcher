@@ -6,14 +6,12 @@ import {INodeEntityParams} from "../base-node-entity";
 export class IfActionNodeEntity extends BaseActionNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "action",
-    entityName: "ifAction",
+    table: "node",
+    type: "action",
+    subType: "if",
     icon: "code-fork",
     children: {},
     fields: _.merge({}, BaseActionNodeEntity.params.fields, {
-      type: {
-        default: "if",
-      },
       operator: {
         type: "select",
         options: {

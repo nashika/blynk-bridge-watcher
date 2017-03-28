@@ -29,3 +29,10 @@ export interface ISocketIoRequestLogsData extends ISocketIoData {
 export interface ISocketIoResponseLogsData extends ISocketIoData {
   logs: ISocketIoLogData[];
 }
+
+export interface ISocketIoFindQuery {
+  _id?: string;
+  _parent?: string;
+  type?: string;
+  subType?: string;
+}

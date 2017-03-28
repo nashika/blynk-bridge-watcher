@@ -16,9 +16,9 @@ import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 export class SocketIoClientService extends BaseService {
 
   private socket: Socket;
-  private components: {[_id: string]: BaseNodeComponent<BaseNodeEntity>};
-  private lastLogs: {[_id: string]: ISocketIoLogData};
-  private statuses: {[_id: string]: ISocketIoStatusData};
+  private components: { [_id: string]: BaseNodeComponent<BaseNodeEntity> };
+  private lastLogs: { [_id: string]: ISocketIoLogData };
+  private statuses: { [_id: string]: ISocketIoStatusData };
 
   constructor() {
     super();
@@ -27,18 +27,19 @@ export class SocketIoClientService extends BaseService {
     this.statuses = {};
   }
 
-  initialize() {
+  async initialize(): Promise<void> {
     this.socket = socketIo.connect();
-    this.socket.on("connect", this.onConnect);
     this.socket.on("disconnect", this.onDisconnect);
     this.socket.on("run", this.onRun);
     this.socket.on("log", this.onLog);
     this.socket.on("status", this.onStatus);
+    return new Promise<void>(resolve => {
+      this.socket.on("connect", () => {
+        logger.debug("connected");
+        resolve();
+      });
+    })
   }
-
-  private onConnect = () => {
-    logger.debug("connected");
-  };
 
   private onDisconnect = () => {
     logger.debug("disconnected");
@@ -74,8 +75,8 @@ export class SocketIoClientService extends BaseService {
     delete this.components[_id];
   }
 
-  getNodeOptions(filter: string): {[_id: string]: string} {
-    let components: {[_id: string]: BaseNodeComponent<BaseNodeEntity>} = _.pickBy<{[_id: string]: BaseNodeComponent<BaseNodeEntity>}, {[_id: string]: BaseNodeComponent<BaseNodeEntity>}>(this.components, component => !filter || filter == component.EntityClass.params.tableName);
+  getNodeOptions(filter: string): { [_id: string]: string } {
+    let components: { [_id: string]: BaseNodeComponent<BaseNodeEntity> } = _.pickBy<{ [_id: string]: BaseNodeComponent<BaseNodeEntity> }, { [_id: string]: BaseNodeComponent<BaseNodeEntity> }>(this.components, component => !filter || filter == component.EntityClass.params.tableName);
     return _.mapValues(components, (component: BaseNodeComponent<BaseNodeEntity>) => component.title)
   }
 
@@ -88,11 +89,14 @@ export class SocketIoClientService extends BaseService {
   }
 
   async getLogs(_id: string, page: number, limit: number): Promise<ISocketIoLogData[]> {
-    return new Promise<ISocketIoLogData[]>((resolve) => {
-      let request: ISocketIoRequestLogsData = {_id: _id, page: page, limit: limit};
-      this.socket.emit("logs", request, (data: ISocketIoResponseLogsData) => {
-        resolve(data.logs);
-      });
+    let param: ISocketIoRequestLogsData = {_id: _id, page: page, limit: limit};
+    let res = await this.request<ISocketIoResponseLogsData>("logs", param);
+    return res.logs;
+  }
+
+  async request<T>(event: string, params?: any): Promise<T> {
+    return await new Promise<T>((resolve) => {
+      this.socket.emit(event, params, (data: T) => resolve(data));
     });
   }
 

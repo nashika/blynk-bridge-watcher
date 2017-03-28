@@ -2,16 +2,19 @@ import Component from "vue-class-component";
 
 import BaseComponent from "./base-component";
 import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
-import {EntityService} from "../service/entity-service";
+import {NodeEntityService} from "../service/node-entity-service";
 import {container} from "../../common/inversify.config";
 import EditComponent from "./element/edit-component";
 import LogsComponent from "./element/logs-component";
+import {SocketIoClientService} from "../service/socket-io-client-service";
 
 @Component({})
 export default class AppComponent extends BaseComponent {
 
-  entityService: EntityService = container.get(EntityService);
-  server: ServerNodeEntity = null;
+  protected entityService: NodeEntityService = container.get(NodeEntityService);
+  protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+
+  protected server: ServerNodeEntity = null;
 
   get editComponent(): EditComponent {
     return <EditComponent>this.$refs.edit;
@@ -22,6 +25,7 @@ export default class AppComponent extends BaseComponent {
   }
 
   async mounted(): Promise<void> {
+    await this.socketIoClientService.initialize();
     let entity = await this.entityService.getOne<ServerNodeEntity>(ServerNodeEntity);
     this.server = entity;
   }

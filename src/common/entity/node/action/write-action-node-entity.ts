@@ -6,14 +6,12 @@ import {INodeEntityParams} from "../base-node-entity";
 export class WriteActionNodeEntity extends BaseActionNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "action",
-    entityName: "writeAction",
+    table: "node",
+    type: "action",
+    subType: "write",
     icon: "pencil-square-o",
     children: {},
     fields: _.merge({}, BaseActionNodeEntity.params.fields, {
-      type: {
-        default: "write",
-      },
       pinType: {
         type: "select",
         options: {

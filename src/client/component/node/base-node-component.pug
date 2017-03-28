@@ -32,17 +32,23 @@
           template(v-for="ChildEntityClass in EntityClass.params.children")
             template(v-if="ChildEntityClass.subClasses")
               template(v-for="ChildSubEntityClass in ChildEntityClass.subClasses")
-                b-dropdown-item(@click="add(ChildSubEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildSubEntityClass.params.entityName)}}
+                b-dropdown-item(@click="add(ChildSubEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildSubEntityClass.params.type)}}
             template(v-else)
-              b-dropdown-item(@click="add(ChildEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildEntityClass.params.entityName)}}
+              b-dropdown-item(@click="add(ChildEntityClass)") #[i.fa.fa-plus] Add {{_.startCase(ChildEntityClass.params.type)}}
   template(v-for="ChildEntityClass in EntityClass.params.children")
-    .child-node-components(:class="ChildEntityClass.params.entityName")
+    .child-node-components(:class="ChildEntityClass.params.type")
       template(v-for="childEntity in getChildEntities(ChildEntityClass)")
         template(v-if="ChildEntityClass.subClasses")
-          component(:is="childEntity.type + '-' + ChildEntityClass.params.entityName + '-node-component'", :entity="childEntity", :brother-entities="getChildEntities(ChildEntityClass)", :parent="me", :depth="depth + 1")
+          component(:is="childEntity.subType + '-' + ChildEntityClass.params.type + '-node-component'", :entity="childEntity", :brother-entities="getChildEntities(ChildEntityClass)", :parent="me", :depth="depth + 1")
         template(v-else)
-          component(:is="ChildEntityClass.params.entityName + '-node-component'", :entity="childEntity", :brother-entities="getChildEntities(ChildEntityClass)", :parent="me", :depth="depth + 1")
+          component(:is="ChildEntityClass.params.type + '-node-component'", :entity="childEntity", :brother-entities="getChildEntities(ChildEntityClass)", :parent="me", :depth="depth + 1")
       template(v-if="!getChildEntities(ChildEntityClass)")
-        .node.loading(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-spinner.fa-pulse] Loading {{_.startCase(ChildEntityClass.params.entityName)}}...
+        .node
+          .data.title
+            .header(:style="{paddingLeft: 20 + (depth + 1) * 15 + 'px'}")
+              | #[i.fa.fa-spinner.fa-pulse] Loading {{_.startCase(ChildEntityClass.params.type)}}...
       template(v-if="getChildEntities(ChildEntityClass) && getChildEntities(ChildEntityClass).length == 0")
-        .node.nothing(:style="{paddingLeft: 20 + depth * 15 + 'px'}") #[i.fa.fa-ban] No {{_.startCase(ChildEntityClass.params.entityName)}}
+        .node
+          .data.title
+            .header(:style="{paddingLeft: 20 + (depth + 1) * 15 + 'px'}")
+              | #[i.fa.fa-ban] No {{_.startCase(ChildEntityClass.params.type)}}

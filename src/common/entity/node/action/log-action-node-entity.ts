@@ -7,14 +7,12 @@ import {INodeEntityParams} from "../base-node-entity";
 export class LogActionNodeEntity extends BaseActionNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "action",
-    entityName: "logAction",
+    table: "node",
+    type: "action",
+    subType: "log",
     icon: "terminal",
     children: {},
     fields: _.merge({}, BaseActionNodeEntity.params.fields, {
-      type: {
-        default: "log",
-      },
       level: {
         type: "select",
         options: {

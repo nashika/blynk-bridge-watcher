@@ -4,8 +4,9 @@ import {container} from "../../inversify.config";
 import {BaseEntity} from "../base-entity";
 
 export interface INodeEntityParams {
-  tableName: string;
-  entityName: string;
+  table: string;
+  type: string;
+  subType?: string;
   icon: string;
   children: {[key: string]: typeof BaseNodeEntity};
   fields: {[name: string]: INodeEntityFieldParams};
@@ -24,8 +25,8 @@ export interface INodeEntityFieldParams {
 export abstract class BaseNodeEntity extends BaseEntity {
 
   static params: INodeEntityParams = {
-    tableName: "",
-    entityName: "",
+    table: "node",
+    type: "*",
     icon: "times",
     children: {},
     fields: {
@@ -47,9 +48,10 @@ export abstract class BaseNodeEntity extends BaseEntity {
     },
   };
 
+  type: string;
+  subType: string;
   _parent: string;
   _orderNo: number;
-  type: string;
   label: string;
 
   get Class(): typeof BaseNodeEntity {
@@ -64,12 +66,15 @@ export abstract class BaseNodeEntity extends BaseEntity {
   }
 
   static generateDefault<T extends BaseNodeEntity>(): T {
-    let result: T = <T>(new (<any>this)());
+    let entity: T = <T>(new (<any>this)());
     _.forEach(this.params.fields, (field: INodeEntityFieldParams, name: string) => {
       if (!_.isUndefined(field.default) && field.required)
-        _.set(result, name, field.default);
+        _.set(entity, name, field.default);
     });
-    return result;
+    entity.type = this.params.type;
+    if (this.params.subType)
+      entity.subType = this.params.subType;
+    return entity;
   }
 
   static get subClasses(): typeof BaseNodeEntity[] {

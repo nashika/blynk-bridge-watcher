@@ -6,8 +6,8 @@ import {BaseNodeEntity, INodeEntityParams} from "./base-node-entity";
 export class BridgeNodeEntity extends BaseNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "bridge",
-    entityName: "bridge",
+    table: "node",
+    type: "bridge",
     icon: "plug",
     children: {
       actions: BaseActionNodeEntity,

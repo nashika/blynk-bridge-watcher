@@ -8,8 +8,8 @@ import {BaseNodeEntity, INodeEntityParams} from "./base-node-entity";
 export class ServerNodeEntity extends BaseNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "server",
-    entityName: "server",
+    table: "node",
+    type: "server",
     icon: "globe",
     children: {
       boards: BoardNodeEntity,

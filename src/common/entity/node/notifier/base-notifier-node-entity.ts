@@ -6,8 +6,9 @@ import {TSocketIoLogLevel} from "../../../util/socket-io-util";
 export abstract class BaseNotifierNodeEntity extends BaseNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "notifier",
-    entityName: "notifier",
+    table: "node",
+    type: "notifier",
+    subType: "*",
     icon: "bell",
     children: {},
     fields: _.merge({}, BaseNodeEntity.params.fields, {

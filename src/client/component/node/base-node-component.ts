@@ -5,7 +5,7 @@ import pluralize = require("pluralize");
 import BaseComponent from "../base-component";
 import {ISocketIoLogData, TSocketIoStatus} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
-import {EntityService} from "../../service/entity-service";
+import {NodeEntityService} from "../../service/node-entity-service";
 import {container} from "../../../common/inversify.config";
 import {BaseNodeEntity} from "../../../common/entity/node/base-node-entity";
 
@@ -33,8 +33,8 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   depth: number;
 
   EntityClass: typeof BaseNodeEntity = BaseNodeEntity;
-  entityService: EntityService = container.get(EntityService);
-  socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
+  protected nodeEntityService: NodeEntityService = container.get(NodeEntityService);
+  protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
   showEdit: boolean = false;
   showLogs: boolean = false;
@@ -56,7 +56,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   }
 
   get title(): string {
-    return `${this.entity.shortId} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.entityName)}]`;
+    return `${this.entity.shortId} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.subType || "")}${_.startCase(this.EntityClass.params.type)}]`;
   }
 
   run(..._args: any[]) {
@@ -77,7 +77,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   }
 
   protected getChildEntities(ChildEntityClass: typeof BaseNodeEntity): T[] {
-    return <T[]>_.get(this, pluralize(ChildEntityClass.params.entityName));
+    return <T[]>_.get(this, pluralize(ChildEntityClass.params.type));
   }
 
   protected async reload(): Promise<void> {
@@ -89,7 +89,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
     }
     for (let key in this.EntityClass.params.children) {
       let EntityClass: typeof BaseNodeEntity = this.EntityClass.params.children[key];
-      let entities = await this.entityService.getChildren(EntityClass, this.entity._id);
+      let entities = await this.nodeEntityService.getChildren(EntityClass, this.entity._id);
       _.set(this, key, entities);
     }
   }
@@ -98,7 +98,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
     if (this.parent) {
       await this.parent.reload();
     } else {
-      this.entity = await this.entityService.getOne<T>(this.EntityClass, this.entity._id);
+      this.entity = await this.nodeEntityService.getOne<T>(this.EntityClass, this.entity._id);
       await this.reload();
     }
   }
@@ -112,20 +112,20 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
     if (!editEntity) return;
     editEntity._parent = this.entity._id;
     editEntity._orderNo = (_.max(this.getChildEntities(ChildEntityClass).map(entity => entity._orderNo)) + 1) || 1;
-    await this.entityService.add(editEntity);
+    await this.nodeEntityService.add(editEntity);
     await this.reloadParent();
   }
 
   protected async edit(): Promise<void> {
     let editEntity: T = await this.$root.editComponent.edit<T>(this.EntityClass, this.entity);
     if (!editEntity) return;
-    await this.entityService.edit(editEntity);
+    await this.nodeEntityService.edit(editEntity);
     await this.reloadParent();
   }
 
   protected async remove(): Promise<void> {
-    if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.tableName} id:${this.entity._id}?`)) return;
-    await this.entityService.remove(this.entity);
+    if (!confirm(`Are you sure you want to remove ${this.entity.Class.params.type} id:${this.entity._id}?`)) return;
+    await this.nodeEntityService.remove(this.entity);
     await this.reloadParent();
   }
 
@@ -144,8 +144,8 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
     let tmpNo = entity1._orderNo;
     entity1._orderNo = entity2._orderNo;
     entity2._orderNo = tmpNo;
-    await this.entityService.edit(entity1);
-    await this.entityService.edit(entity2);
+    await this.nodeEntityService.edit(entity1);
+    await this.nodeEntityService.edit(entity2);
     await this.reloadParent();
   }
 

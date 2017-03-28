@@ -6,14 +6,12 @@ import {INodeEntityParams} from "../base-node-entity";
 export class PushbulletNotifierNodeEntity extends BaseNotifierNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "notifier",
-    entityName: "pushbulletNotifier",
+    table: "node",
+    type: "notifier",
+    subType: "pushbullet",
     icon: "bullhorn",
     children: {},
     fields: _.merge({}, BaseNotifierNodeEntity.params.fields, {
-      type: {
-        default: "pushbullet",
-      },
       apiKey: {
         type: "text",
         required: true,

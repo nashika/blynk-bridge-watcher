@@ -40,14 +40,9 @@ container.bind(BaseNotifierNodeEntity).toConstructor(LogNotifierNodeEntity).when
 container.bind(BaseNotifierNodeEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbullet");
 
 container.bind<interfaces.Factory<BaseNodeEntity>>("Factory<BaseNodeEntity>").toFactory<BaseNodeEntity>(context => {
-  return (tableName: string, data: any) => {
-    let entityName: string;
-    if (data.type) {
-      entityName = _.camelCase(data.type + "_" + tableName);
-    } else {
-      entityName = _.camelCase(tableName);
-    }
-    let EntityClass: typeof BaseNodeEntity = <any>context.container.getNamed(BaseNodeEntity, entityName);
-    return new (<any>EntityClass)(data);
+  return (data: any) => {
+    let fullType = data.subType ? _.camelCase(data.type + "_" + data.subType) : _.camelCase(data.type);
+    let NodeEntityClass: typeof BaseNodeEntity = <any>context.container.getNamed(BaseNodeEntity, fullType);
+    return new (<any>NodeEntityClass)(data);
   }
 });

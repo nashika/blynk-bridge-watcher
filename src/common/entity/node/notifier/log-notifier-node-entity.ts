@@ -6,15 +6,12 @@ import {INodeEntityParams} from "../base-node-entity";
 export class LogNotifierNodeEntity extends BaseNotifierNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "notifier",
-    entityName: "logNotifier",
+    table: "node",
+    type: "notifier",
+    subType: "log",
     icon: "terminal",
     children: {},
-    fields: _.merge({}, BaseNotifierNodeEntity.params.fields, {
-      type: {
-        default: "log",
-      },
-    }),
+    fields: _.merge({}, BaseNotifierNodeEntity.params.fields, {}),
   };
 
 }

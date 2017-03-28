@@ -50,10 +50,10 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
     this.nodeService.registerNode(this);
     for (let key in this.EntityClass.params.children) {
       let ChildEntityClass: typeof BaseNodeEntity = this.EntityClass.params.children[key];
-      this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
+      this.log("debug", `Construct child '${ChildEntityClass.params.type}' objects was started.`);
       let childNodes: BaseNode<BaseNodeEntity>[] = [];
       _.set(this, key, childNodes);
-      let entities = await this.tableService.find(ChildEntityClass, {_parent: this.entity._id});
+      let entities = await this.tableService.find({_parent: this.entity._id});
       for (let entity of entities) {
         let node = await this.nodeService.generate(this, entity);
         childNodes.push(node);
@@ -74,7 +74,7 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
     this.nodeService.unregisterNode(this.entity._id);
     for (let key in this.EntityClass.params.children) {
       let ChildEntityClass: typeof BaseNodeEntity = this.EntityClass.params.children[key];
-      this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
+      this.log("debug", `Destruct child '${ChildEntityClass.params.type}' objects was started.`);
       let childNodes = _.get<BaseNode<BaseNodeEntity>[]>(this, key, []);
       for (let childNode of childNodes) {
         await childNode.finalize();
@@ -110,7 +110,7 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
   log(level: TSocketIoLogLevel, message: string, ...args: any[]): void {
     message = util.format(message, ...args);
     this.socketIoServerService.log(this.entity._id, level, message);
-    for (let node of this.nodeService.getNodes("notifier")) {
+    for (let node of this.nodeService.getNodesByType("notifier")) {
       let notifierNode = <NotifierNode<BaseNotifierNodeEntity>>node;
       if (this.logLevelToNumber(level) >= this.logLevelToNumber(notifierNode.entity.level))
         notifierNode.run(message);

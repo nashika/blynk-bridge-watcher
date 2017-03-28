@@ -4,15 +4,6 @@ import {NodeService} from "./service/node-service";
 import {SocketIoServerService} from "./service/socket-io-server-service";
 import {TableService} from "./service/table-service";
 
-import {BaseRoute} from "./routes/base-route";
-import {ActionRoute} from "./routes/action-route";
-import {BoardRoute} from "./routes/board-route";
-import {BridgeRoute} from "./routes/bridge-route";
-import {IndexRoute} from "./routes/index-route";
-import {JobRoute} from "./routes/job-route";
-import {NotifierRoute} from "./routes/notifier-route";
-import {ServerRoute} from "./routes/server-route";
-
 import {BaseNode} from "./node/base-node";
 import {IfActionNode} from "./node/action/if-action-node";
 import {LogActionNode} from "./node/action/log-action-node";
@@ -30,14 +21,6 @@ import {BaseNodeEntity} from "../common/entity/node/base-node-entity";
 container.bind<NodeService>(NodeService).toSelf().inSingletonScope();
 container.bind<SocketIoServerService>(SocketIoServerService).toSelf().inSingletonScope();
 container.bind<TableService>(TableService).toSelf().inSingletonScope();
-
-container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(ActionRoute).whenTargetNamed("action");
-container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(BoardRoute).whenTargetNamed("board");
-container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(BridgeRoute).whenTargetNamed("bridge");
-container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(IndexRoute).whenTargetNamed("index");
-container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(JobRoute).whenTargetNamed("job");
-container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(NotifierRoute).whenTargetNamed("notifier");
-container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(ServerRoute).whenTargetNamed("server");
 
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(IfActionNode).whenTargetNamed("ifAction");
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(LogActionNode).whenTargetNamed("logAction");

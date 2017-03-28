@@ -11,6 +11,7 @@ import "./inversify.config";
 import {container} from "../common/inversify.config";
 import {SocketIoServerService} from "./service/socket-io-server-service";
 import {app} from "./app-express";
+import {NodeService} from "./service/node-service";
 
 let pjson = require("../../package");
 
@@ -77,5 +78,6 @@ function onListening() {
 
 
 
-// initialize socket.io
+// initialize
 container.get<SocketIoServerService>(SocketIoServerService).initialize(server);
+container.get<NodeService>(NodeService).initialize();

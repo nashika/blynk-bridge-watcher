@@ -3,19 +3,20 @@ import path = require("path");
 import NeDBDataStore = require("nedb");
 import {getLogger} from "log4js";
 import {injectable, inject} from "inversify";
-import * as _ from "lodash";
 
 import {BaseServerService} from "./base-server-service";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
+import {ISocketIoFindQuery} from "../../common/util/socket-io-util";
 
 let logger = getLogger("system");
+let tableName = "nodes";
 
 @injectable()
 export class TableService extends BaseServerService {
 
   private dataStores: {[tableName: string]: NeDBDataStore};
 
-  constructor(@inject("Factory<BaseNodeEntity>") protected entityFactory: (tableName: string, data: any) => BaseNodeEntity) {
+  constructor(@inject("Factory<BaseNodeEntity>") protected nodeEntityFactory: (data: any) => BaseNodeEntity) {
     super();
     this.dataStores = {};
   }
@@ -30,52 +31,43 @@ export class TableService extends BaseServerService {
     return this.dataStores[tableName];
   }
 
-  async find<T extends BaseNodeEntity>(EntityClass: typeof BaseNodeEntity, query: any = {}): Promise<T[]> {
-    let tableName = EntityClass.params.tableName;
+  async find<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T[]> {
     logger.trace(`Find ${tableName} table, query="${JSON.stringify(query)}".`);
     return await new Promise<T[]>((resolve, reject) => {
       this.getDataStore(tableName).find<T>(query).sort({_orderNo: 1}).exec((err, docs) => {
         if (err) return reject(err);
-        let entities: T[] = docs.map(doc => <T>this.entityFactory(tableName, doc));
+        let entities: T[] = docs.map(doc => <T>this.nodeEntityFactory(doc));
         resolve(entities);
       });
     });
   }
 
-  async findOne<T extends BaseNodeEntity>(EntityClass: typeof BaseNodeEntity, id: string = ""): Promise<T> {
-    let tableName = EntityClass.params.tableName;
-    logger.trace(`Find ${tableName} table, id="${id}".`);
+  async findOne<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T> {
     return await new Promise<T>((resolve, reject) => {
-      if (id) {
-        this.getDataStore(tableName).findOne<T>({_id: id}, (err, doc) => {
-          if (err) return reject(err);
-          let entity: T = <T>this.entityFactory(tableName, doc);
-          resolve(entity);
-        });
-      } else {
-        this.getDataStore(tableName).find<T>({}).limit(1).exec((err, docs) => {
-          if (err) return reject(err);
-          let entity: T = docs[0] ? <T>this.entityFactory(tableName, docs[0]) : null;
-          resolve(entity);
-        });
-      }
+      this.getDataStore(tableName).find<T>(query).limit(1).exec((err, docs) => {
+        if (err) return reject(err);
+        let entity: T = docs[0] ? <T>this.nodeEntityFactory(docs[0]) : null;
+        resolve(entity);
+      });
     });
   }
 
+  async findById<T extends BaseNodeEntity>(id: string): Promise<T> {
+    return await this.findOne<T>({_id: id});
+  }
+
   async insert<T extends BaseNodeEntity>(entity: T): Promise<T> {
-    let tableName = entity.Class.params.tableName;
     logger.trace(`Insert ${tableName} table, entity="${JSON.stringify(entity)}".`);
     return await new Promise<T>((resolve, reject) => {
       this.getDataStore(tableName).insert(entity, (err, newDoc) => {
         if (err) return reject(err);
-        let entity: T = <T>this.entityFactory(tableName, newDoc);
+        let entity: T = <T>this.nodeEntityFactory(newDoc);
         resolve(entity);
       });
     });
   }
 
   async update<T extends BaseNodeEntity>(entity: T): Promise<T> {
-    let tableName = entity.Class.params.tableName;
     if (!entity._id) throw new Error(`update need _id key`);
     logger.trace(`Update ${tableName} table, entity="${JSON.stringify(entity)}".`);
     return await new Promise<T>((resolve, reject) => {
@@ -87,7 +79,6 @@ export class TableService extends BaseServerService {
   }
 
   async remove<T extends BaseNodeEntity>(entity: T): Promise<void> {
-    let tableName = entity.Class.params.tableName;
     if (!entity._id) throw new Error(`remove need _id key`);
     logger.trace(`Remove ${tableName} table, entity="${JSON.stringify(entity)}".`);
     await new Promise<void>((resolve, reject) => {
@@ -96,11 +87,9 @@ export class TableService extends BaseServerService {
         resolve();
       });
     });
-    for (let ChildEntityClass of _.values<typeof BaseNodeEntity>(entity.Class.params.children)) {
-      let childEntities = await this.find(ChildEntityClass, {_parent: entity._id});
-      for (let childEntity of childEntities) {
-        await this.remove(childEntity);
-      }
+    let childEntities = await this.find({_parent: entity._id});
+    for (let childEntity of childEntities) {
+      await this.remove(childEntity);
     }
   }
 

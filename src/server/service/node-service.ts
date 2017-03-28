@@ -12,6 +12,7 @@ import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 @injectable()
 export class NodeService extends BaseServerService {
 
+  private serverNode: ServerNode;
   private nodes: {[_id: string]: BaseNode<BaseNodeEntity>};
 
   constructor(protected tableService: TableService) {
@@ -19,26 +20,29 @@ export class NodeService extends BaseServerService {
     this.nodes = {};
   }
 
-  async initialize(): Promise<ServerNode> {
-    let serverEntity = await this.tableService.findOne(ServerNodeEntity);
+  async initialize(): Promise<void> {
+    let serverEntity = await this.tableService.findOne({type: "server"});
     if (!serverEntity) {
       serverEntity = await this.tableService.insert(ServerNodeEntity.generateDefault());
     }
-    let serverNode = <ServerNode>await this.generate(null, serverEntity);
-    await serverNode.startWrap();
-    return serverNode;
+    this.serverNode = <ServerNode>await this.generate(null, serverEntity);
+    await this.serverNode.startWrap();
   }
 
-  generate(parent: BaseNode<BaseNodeEntity>, entity: BaseNodeEntity): Promise<BaseNode<BaseNodeEntity>> {
-    let result: BaseNode<BaseNodeEntity> = container.getNamed(BaseNode, entity.Class.params.entityName);
+  async finalize(): Promise<void> {
+    await this.serverNode.finalizeWrap();
+    delete this.serverNode;
+  }
+
+  async generate(parent: BaseNode<BaseNodeEntity>, entity: BaseNodeEntity): Promise<BaseNode<BaseNodeEntity>> {
+    let result: BaseNode<BaseNodeEntity> = container.getNamed(BaseNode, _.camelCase((entity.Class.params.subType ? entity.Class.params.subType + "_" : "") + entity.Class.params.type));
     result.entity = entity;
     result.parent = parent;
     result.log("debug", `Generate ${result.constructor.name} object was started.`);
     result.status = "processing";
-    return result.initializeWrap().then(() => {
-      result.log("debug", `Generate ${result.constructor.name} object was finished.`);
-      return result;
-    });
+    await result.initializeWrap();
+    result.log("debug", `Generate ${result.constructor.name} object was finished.`);
+    return result;
   }
 
   registerNode(node: BaseNode<BaseNodeEntity>): void {
@@ -49,12 +53,12 @@ export class NodeService extends BaseServerService {
     delete this.nodes[_id];
   }
 
-  getNode(id: string): BaseNode<BaseNodeEntity> {
+  getNodeById(id: string): BaseNode<BaseNodeEntity> {
     return _.find(this.nodes, (_node: BaseNode<BaseNodeEntity>, _id: string) => _.startsWith(_id, id));
   }
 
-  getNodes(filter: string): BaseNode<BaseNodeEntity>[] {
-    return _.filter(this.nodes, node => !filter || filter == node.EntityClass.params.tableName);
+  getNodesByType(type: string = ""): BaseNode<BaseNodeEntity>[] {
+    return _.filter(this.nodes, node => !type || type == node.EntityClass.params.type);
   }
 
 }

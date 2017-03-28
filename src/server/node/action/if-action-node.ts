@@ -55,9 +55,9 @@ export class IfActionNode extends ActionNode<IfActionNodeEntity> {
     }
     let action: ActionNode<BaseActionNodeEntity>;
     if (result && this.entity.then)
-      action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNode(this.entity.then);
+      action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNodeById(this.entity.then);
     else if (!result && this.entity.else)
-      action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNode(this.entity.else);
+      action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNodeById(this.entity.else);
     if (action)
       action.run(...args);
   };

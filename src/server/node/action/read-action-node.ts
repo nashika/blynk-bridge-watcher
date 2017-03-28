@@ -38,7 +38,7 @@ export class ReadActionNode extends ActionNode<ReadActionNodeEntity> {
       let value = args[0];
       this.log("debug", `Read response. type=${this.entity.pinType}, pin=${this.entity.pin}, value=${value}`);
       if (this.entity.next) {
-        let action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNode(this.entity.next);
+        let action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNodeById(this.entity.next);
         action.run(value);
       }
     });

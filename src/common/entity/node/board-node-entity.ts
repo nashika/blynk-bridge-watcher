@@ -6,8 +6,8 @@ import {BaseNodeEntity, INodeEntityParams} from "./base-node-entity";
 export class BoardNodeEntity extends BaseNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "board",
-    entityName: "board",
+    table: "node",
+    type: "board",
     icon: "sitemap",
     children: {
       bridges: BridgeNodeEntity,

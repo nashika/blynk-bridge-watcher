@@ -6,10 +6,6 @@ import cookieParser = require("cookie-parser");
 import bodyParser = require("body-parser");
 import log4js = require("log4js");
 
-import {container} from "../common/inversify.config";
-import {BaseRoute} from "./routes/base-route";
-import {BaseNodeEntity} from "../common/entity/node/base-node-entity";
-
 import "./log4js";
 let logger = log4js.getLogger("system");
 
@@ -26,8 +22,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use("/dist", express.static(path.join(__dirname, "../../dist")));
-for (let node of container.getAll<BaseRoute<BaseNodeEntity>>(BaseRoute))
-  node.initialize(app);
+app.get("/", (_req: Request, res: Response) => {
+  res.render("index", {});
+});
 
 // catch 404 and forward to error handler
 app.use(function (_req, _res, next) {

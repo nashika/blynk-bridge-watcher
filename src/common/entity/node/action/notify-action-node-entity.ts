@@ -6,14 +6,12 @@ import {INodeEntityParams} from "../base-node-entity";
 export class NotifyActionNodeEntity extends BaseActionNodeEntity {
 
   static params: INodeEntityParams = {
-    tableName: "action",
-    entityName: "notifyAction",
+    table: "node",
+    type: "action",
+    subType: "notify",
     icon: "bell",
     children: {},
     fields: _.merge({}, BaseActionNodeEntity.params.fields, {
-      type: {
-        default: "notify",
-      },
       notifier: {
         type: "node",
         filter: "notifier",
