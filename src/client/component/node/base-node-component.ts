@@ -3,11 +3,11 @@ import Component from "vue-class-component";
 import pluralize = require("pluralize");
 
 import BaseComponent from "../base-component";
-import {BaseEntity} from "../../../common/entity/base-entity";
 import {ISocketIoLogData, TSocketIoStatus} from "../../../common/util/socket-io-util";
 import {SocketIoClientService} from "../../service/socket-io-client-service";
 import {EntityService} from "../../service/entity-service";
 import {container} from "../../../common/inversify.config";
+import {BaseNodeEntity} from "../../../common/entity/node/base-node-entity";
 
 @Component({
   props: {
@@ -25,14 +25,14 @@ import {container} from "../../../common/inversify.config";
     },
   },
 })
-export default class BaseNodeComponent<T extends BaseEntity> extends BaseComponent {
+export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseComponent {
 
   entity: T;
   brotherEntities: T[];
-  parent: BaseNodeComponent<BaseEntity>;
+  parent: BaseNodeComponent<BaseNodeEntity>;
   depth: number;
 
-  EntityClass: typeof BaseEntity = BaseEntity;
+  EntityClass: typeof BaseNodeEntity = BaseNodeEntity;
   entityService: EntityService = container.get(EntityService);
   socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
@@ -42,7 +42,7 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
   status: TSocketIoStatus = "connecting";
   lastLog: ISocketIoLogData = null;
 
-  get me(): BaseNodeComponent<BaseEntity> {
+  get me(): BaseNodeComponent<BaseNodeEntity> {
     return this;
   }
 
@@ -76,19 +76,19 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     this.lastLog = null;
   }
 
-  protected getChildEntities(ChildEntityClass: typeof BaseEntity): T[] {
+  protected getChildEntities(ChildEntityClass: typeof BaseNodeEntity): T[] {
     return <T[]>_.get(this, pluralize(ChildEntityClass.params.entityName));
   }
 
   protected async reload(): Promise<void> {
     for (let key in this.EntityClass.params.children) {
-      _.forEach(_.get(this, key), (entity: BaseEntity) => {
+      _.forEach(_.get(this, key), (entity: BaseNodeEntity) => {
         this.socketIoClientService.unregisterComponent(entity._id);
       });
       _.set(this, key, null);
     }
     for (let key in this.EntityClass.params.children) {
-      let EntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
+      let EntityClass: typeof BaseNodeEntity = this.EntityClass.params.children[key];
       let entities = await this.entityService.getChildren(EntityClass, this.entity._id);
       _.set(this, key, entities);
     }
@@ -107,7 +107,7 @@ export default class BaseNodeComponent<T extends BaseEntity> extends BaseCompone
     await this.$root.logsComponent.show(this.entity._id);
   }
 
-  protected async add(ChildEntityClass: typeof BaseEntity): Promise<void> {
+  protected async add(ChildEntityClass: typeof BaseNodeEntity): Promise<void> {
     let editEntity: T = await this.$root.editComponent.edit<T>(ChildEntityClass, null);
     if (!editEntity) return;
     editEntity._parent = this.entity._id;

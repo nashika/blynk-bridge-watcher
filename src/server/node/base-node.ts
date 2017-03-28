@@ -4,7 +4,6 @@ import _ = require("lodash");
 import log4js = require("log4js");
 import {injectable} from "inversify";
 
-import {BaseEntity} from "../../common/entity/base-entity";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
 import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-notifier-node-entity";
 import {NotifierNode} from "./notifier/notifier-node";
@@ -12,13 +11,14 @@ import {SocketIoServerService} from "../service/socket-io-server-service";
 import {TableService} from "../service/table-service";
 import {NodeService} from "../service/node-service";
 import {container} from "../../common/inversify.config";
+import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 
 @injectable()
-export abstract class BaseNode<T extends BaseEntity> {
+export abstract class BaseNode<T extends BaseNodeEntity> {
 
-  EntityClass: typeof BaseEntity;
+  EntityClass: typeof BaseNodeEntity;
 
-  parent: BaseNode<BaseEntity>;
+  parent: BaseNode<BaseNodeEntity>;
   entity: T;
 
   private _status: TSocketIoStatus;
@@ -27,7 +27,7 @@ export abstract class BaseNode<T extends BaseEntity> {
               protected socketIoServerService: SocketIoServerService,
               protected nodeService: NodeService) {
     let name = _.lowerFirst(_.replace(this.constructor.name, /Node$/, ""));
-    this.EntityClass = <any>container.getNamed(BaseEntity, name);
+    this.EntityClass = <any>container.getNamed(BaseNodeEntity, name);
   }
 
   get status(): TSocketIoStatus {
@@ -49,9 +49,9 @@ export abstract class BaseNode<T extends BaseEntity> {
   protected async initialize(): Promise<void> {
     this.nodeService.registerNode(this);
     for (let key in this.EntityClass.params.children) {
-      let ChildEntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
+      let ChildEntityClass: typeof BaseNodeEntity = this.EntityClass.params.children[key];
       this.log("debug", `Construct child '${ChildEntityClass.params.tableName}' objects was started.`);
-      let childNodes: BaseNode<BaseEntity>[] = [];
+      let childNodes: BaseNode<BaseNodeEntity>[] = [];
       _.set(this, key, childNodes);
       let entities = await this.tableService.find(ChildEntityClass, {_parent: this.entity._id});
       for (let entity of entities) {
@@ -73,9 +73,9 @@ export abstract class BaseNode<T extends BaseEntity> {
     this.status = "processing";
     this.nodeService.unregisterNode(this.entity._id);
     for (let key in this.EntityClass.params.children) {
-      let ChildEntityClass: typeof BaseEntity = this.EntityClass.params.children[key];
+      let ChildEntityClass: typeof BaseNodeEntity = this.EntityClass.params.children[key];
       this.log("debug", `Destruct child '${ChildEntityClass.params.tableName}' objects was started.`);
-      let childNodes = _.get<BaseNode<BaseEntity>[]>(this, key, []);
+      let childNodes = _.get<BaseNode<BaseNodeEntity>[]>(this, key, []);
       for (let childNode of childNodes) {
         await childNode.finalize();
       }

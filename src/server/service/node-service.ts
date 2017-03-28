@@ -6,13 +6,13 @@ import {TableService} from "./table-service";
 import {ServerNode} from "../node/server-node";
 import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {BaseNode} from "../node/base-node";
-import {BaseEntity} from "../../common/entity/base-entity";
 import {container} from "../../common/inversify.config";
+import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 
 @injectable()
 export class NodeService extends BaseServerService {
 
-  private nodes: {[_id: string]: BaseNode<BaseEntity>};
+  private nodes: {[_id: string]: BaseNode<BaseNodeEntity>};
 
   constructor(protected tableService: TableService) {
     super();
@@ -29,8 +29,8 @@ export class NodeService extends BaseServerService {
     return serverNode;
   }
 
-  generate(parent: BaseNode<BaseEntity>, entity: BaseEntity): Promise<BaseNode<BaseEntity>> {
-    let result: BaseNode<BaseEntity> = container.getNamed(BaseNode, entity.Class.params.entityName);
+  generate(parent: BaseNode<BaseNodeEntity>, entity: BaseNodeEntity): Promise<BaseNode<BaseNodeEntity>> {
+    let result: BaseNode<BaseNodeEntity> = container.getNamed(BaseNode, entity.Class.params.entityName);
     result.entity = entity;
     result.parent = parent;
     result.log("debug", `Generate ${result.constructor.name} object was started.`);
@@ -41,7 +41,7 @@ export class NodeService extends BaseServerService {
     });
   }
 
-  registerNode(node: BaseNode<BaseEntity>): void {
+  registerNode(node: BaseNode<BaseNodeEntity>): void {
     this.nodes[node.entity._id] = node;
   }
 
@@ -49,11 +49,11 @@ export class NodeService extends BaseServerService {
     delete this.nodes[_id];
   }
 
-  getNode(id: string): BaseNode<BaseEntity> {
-    return _.find(this.nodes, (_node: BaseNode<BaseEntity>, _id: string) => _.startsWith(_id, id));
+  getNode(id: string): BaseNode<BaseNodeEntity> {
+    return _.find(this.nodes, (_node: BaseNode<BaseNodeEntity>, _id: string) => _.startsWith(_id, id));
   }
 
-  getNodes(filter: string): BaseNode<BaseEntity>[] {
+  getNodes(filter: string): BaseNode<BaseNodeEntity>[] {
     return _.filter(this.nodes, node => !filter || filter == node.EntityClass.params.tableName);
   }
 

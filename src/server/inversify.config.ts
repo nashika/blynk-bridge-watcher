@@ -4,8 +4,6 @@ import {NodeService} from "./service/node-service";
 import {SocketIoServerService} from "./service/socket-io-server-service";
 import {TableService} from "./service/table-service";
 
-import {BaseEntity} from "../common/entity/base-entity";
-
 import {BaseRoute} from "./routes/base-route";
 import {ActionRoute} from "./routes/action-route";
 import {BoardRoute} from "./routes/board-route";
@@ -27,27 +25,28 @@ import {PushbulletNotifierNode} from "./node/notifier/pushbullet-notifier-node";
 import {BoardNode} from "./node/board-node";
 import {JobNode} from "./node/job-node";
 import {ServerNode} from "./node/server-node";
+import {BaseNodeEntity} from "../common/entity/node/base-node-entity";
 
 container.bind<NodeService>(NodeService).toSelf().inSingletonScope();
 container.bind<SocketIoServerService>(SocketIoServerService).toSelf().inSingletonScope();
 container.bind<TableService>(TableService).toSelf().inSingletonScope();
 
-container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(ActionRoute).whenTargetNamed("action");
-container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(BoardRoute).whenTargetNamed("board");
-container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(BridgeRoute).whenTargetNamed("bridge");
-container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(IndexRoute).whenTargetNamed("index");
-container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(JobRoute).whenTargetNamed("job");
-container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(NotifierRoute).whenTargetNamed("notifier");
-container.bind<BaseRoute<BaseEntity>>(BaseRoute).to(ServerRoute).whenTargetNamed("server");
+container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(ActionRoute).whenTargetNamed("action");
+container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(BoardRoute).whenTargetNamed("board");
+container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(BridgeRoute).whenTargetNamed("bridge");
+container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(IndexRoute).whenTargetNamed("index");
+container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(JobRoute).whenTargetNamed("job");
+container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(NotifierRoute).whenTargetNamed("notifier");
+container.bind<BaseRoute<BaseNodeEntity>>(BaseRoute).to(ServerRoute).whenTargetNamed("server");
 
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(IfActionNode).whenTargetNamed("ifAction");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(LogActionNode).whenTargetNamed("logAction");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(NotifyActionNode).whenTargetNamed("notifyAction");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(ReadActionNode).whenTargetNamed("readAction");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(WriteActionNode).whenTargetNamed("writeAction");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(BridgeNode).whenTargetNamed("bridge");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(LogNotifierNode).whenTargetNamed("logNotifier");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(PushbulletNotifierNode).whenTargetNamed("pushbulletNotifier");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(BoardNode).whenTargetNamed("board");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(JobNode).whenTargetNamed("job");
-container.bind<BaseNode<BaseEntity>>(BaseNode).to(ServerNode).whenTargetNamed("server");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(IfActionNode).whenTargetNamed("ifAction");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(LogActionNode).whenTargetNamed("logAction");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(NotifyActionNode).whenTargetNamed("notifyAction");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(ReadActionNode).whenTargetNamed("readAction");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(WriteActionNode).whenTargetNamed("writeAction");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(BridgeNode).whenTargetNamed("bridge");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(LogNotifierNode).whenTargetNamed("logNotifier");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(PushbulletNotifierNode).whenTargetNamed("pushbulletNotifier");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(BoardNode).whenTargetNamed("board");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(JobNode).whenTargetNamed("job");
+container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(ServerNode).whenTargetNamed("server");

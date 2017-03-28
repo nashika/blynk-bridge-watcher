@@ -1,12 +1,12 @@
 import _ = require("lodash");
 
 import {BaseActionNodeEntity} from "./base-action-node-entity";
-import {IEntityParams} from "../../base-entity";
 import {TSocketIoLogLevel} from "../../../util/socket-io-util";
+import {INodeEntityParams} from "../base-node-entity";
 
 export class LogActionNodeEntity extends BaseActionNodeEntity {
 
-  static params: IEntityParams = {
+  static params: INodeEntityParams = {
     tableName: "action",
     entityName: "logAction",
     icon: "terminal",

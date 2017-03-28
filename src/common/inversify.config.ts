@@ -1,7 +1,7 @@
 import {Container, interfaces} from "inversify";
 import _ = require("lodash");
 
-import {BaseEntity} from "./entity/base-entity";
+import {BaseNodeEntity} from "./entity/node/base-node-entity";
 import {BaseActionNodeEntity} from "./entity/node/action/base-action-node-entity";
 import {IfActionNodeEntity} from "./entity/node/action/if-action-node-entity";
 import {LogActionNodeEntity} from "./entity/node/action/log-action-node-entity";
@@ -18,17 +18,17 @@ import {BaseNotifierNodeEntity} from "./entity/node/notifier/base-notifier-node-
 
 export var container = new Container();
 
-container.bind(BaseEntity).toConstructor(IfActionNodeEntity).whenTargetNamed("ifAction");
-container.bind(BaseEntity).toConstructor(LogActionNodeEntity).whenTargetNamed("logAction");
-container.bind(BaseEntity).toConstructor(NotifyActionNodeEntity).whenTargetNamed("notifyAction");
-container.bind(BaseEntity).toConstructor(ReadActionNodeEntity).whenTargetNamed("readAction");
-container.bind(BaseEntity).toConstructor(WriteActionNodeEntity).whenTargetNamed("writeAction");
-container.bind(BaseEntity).toConstructor(LogNotifierNodeEntity).whenTargetNamed("logNotifier");
-container.bind(BaseEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbulletNotifier");
-container.bind(BaseEntity).toConstructor(BoardNodeEntity).whenTargetNamed("board");
-container.bind(BaseEntity).toConstructor(BridgeNodeEntity).whenTargetNamed("bridge");
-container.bind(BaseEntity).toConstructor(JobNodeEntity).whenTargetNamed("job");
-container.bind(BaseEntity).toConstructor(ServerNodeEntity).whenTargetNamed("server");
+container.bind(BaseNodeEntity).toConstructor(IfActionNodeEntity).whenTargetNamed("ifAction");
+container.bind(BaseNodeEntity).toConstructor(LogActionNodeEntity).whenTargetNamed("logAction");
+container.bind(BaseNodeEntity).toConstructor(NotifyActionNodeEntity).whenTargetNamed("notifyAction");
+container.bind(BaseNodeEntity).toConstructor(ReadActionNodeEntity).whenTargetNamed("readAction");
+container.bind(BaseNodeEntity).toConstructor(WriteActionNodeEntity).whenTargetNamed("writeAction");
+container.bind(BaseNodeEntity).toConstructor(LogNotifierNodeEntity).whenTargetNamed("logNotifier");
+container.bind(BaseNodeEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbulletNotifier");
+container.bind(BaseNodeEntity).toConstructor(BoardNodeEntity).whenTargetNamed("board");
+container.bind(BaseNodeEntity).toConstructor(BridgeNodeEntity).whenTargetNamed("bridge");
+container.bind(BaseNodeEntity).toConstructor(JobNodeEntity).whenTargetNamed("job");
+container.bind(BaseNodeEntity).toConstructor(ServerNodeEntity).whenTargetNamed("server");
 
 container.bind(BaseActionNodeEntity).toConstructor(IfActionNodeEntity).whenTargetNamed("if");
 container.bind(BaseActionNodeEntity).toConstructor(LogActionNodeEntity).whenTargetNamed("log");
@@ -39,7 +39,7 @@ container.bind(BaseActionNodeEntity).toConstructor(WriteActionNodeEntity).whenTa
 container.bind(BaseNotifierNodeEntity).toConstructor(LogNotifierNodeEntity).whenTargetNamed("log");
 container.bind(BaseNotifierNodeEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbullet");
 
-container.bind<interfaces.Factory<BaseEntity>>("Factory<Entity>").toFactory<BaseEntity>(context => {
+container.bind<interfaces.Factory<BaseNodeEntity>>("Factory<BaseNodeEntity>").toFactory<BaseNodeEntity>(context => {
   return (tableName: string, data: any) => {
     let entityName: string;
     if (data.type) {
@@ -47,7 +47,7 @@ container.bind<interfaces.Factory<BaseEntity>>("Factory<Entity>").toFactory<Base
     } else {
       entityName = _.camelCase(tableName);
     }
-    let EntityClass: typeof BaseEntity = <any>context.container.getNamed(BaseEntity, entityName);
+    let EntityClass: typeof BaseNodeEntity = <any>context.container.getNamed(BaseNodeEntity, entityName);
     return new (<any>EntityClass)(data);
   }
 });

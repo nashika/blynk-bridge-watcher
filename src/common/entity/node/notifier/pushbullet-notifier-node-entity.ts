@@ -1,11 +1,11 @@
 import _ = require("lodash");
 
-import {IEntityParams} from "../../base-entity";
 import {BaseNotifierNodeEntity} from "./base-notifier-node-entity";
+import {INodeEntityParams} from "../base-node-entity";
 
 export class PushbulletNotifierNodeEntity extends BaseNotifierNodeEntity {
 
-  static params: IEntityParams = {
+  static params: INodeEntityParams = {
     tableName: "notifier",
     entityName: "pushbulletNotifier",
     icon: "bullhorn",

@@ -9,14 +9,14 @@ import {
   ISocketIoSendData, ISocketIoData, ISocketIoResponseLogsData, ISocketIoRequestLogsData
 } from "../../common/util/socket-io-util";
 import BaseNodeComponent from "../component/node/base-node-component";
-import {BaseEntity} from "../../common/entity/base-entity";
 import {logger} from "../logger";
+import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 
 @injectable()
 export class SocketIoClientService extends BaseService {
 
   private socket: Socket;
-  private components: {[_id: string]: BaseNodeComponent<BaseEntity>};
+  private components: {[_id: string]: BaseNodeComponent<BaseNodeEntity>};
   private lastLogs: {[_id: string]: ISocketIoLogData};
   private statuses: {[_id: string]: ISocketIoStatusData};
 
@@ -66,7 +66,7 @@ export class SocketIoClientService extends BaseService {
     this.statuses[data._id] = data;
   };
 
-  registerComponent(component: BaseNodeComponent<BaseEntity>) {
+  registerComponent(component: BaseNodeComponent<BaseNodeEntity>) {
     this.components[component.entity._id] = component;
   }
 
@@ -75,8 +75,8 @@ export class SocketIoClientService extends BaseService {
   }
 
   getNodeOptions(filter: string): {[_id: string]: string} {
-    let components: {[_id: string]: BaseNodeComponent<BaseEntity>} = _.pickBy<{[_id: string]: BaseNodeComponent<BaseEntity>}, {[_id: string]: BaseNodeComponent<BaseEntity>}>(this.components, component => !filter || filter == component.EntityClass.params.tableName);
-    return _.mapValues(components, (component: BaseNodeComponent<BaseEntity>) => component.title)
+    let components: {[_id: string]: BaseNodeComponent<BaseNodeEntity>} = _.pickBy<{[_id: string]: BaseNodeComponent<BaseNodeEntity>}, {[_id: string]: BaseNodeComponent<BaseNodeEntity>}>(this.components, component => !filter || filter == component.EntityClass.params.tableName);
+    return _.mapValues(components, (component: BaseNodeComponent<BaseNodeEntity>) => component.title)
   }
 
   getStatus(_id: string): TSocketIoStatus {

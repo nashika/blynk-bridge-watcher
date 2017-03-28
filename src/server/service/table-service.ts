@@ -5,8 +5,8 @@ import {getLogger} from "log4js";
 import {injectable, inject} from "inversify";
 import * as _ from "lodash";
 
-import {BaseEntity} from "../../common/entity/base-entity";
 import {BaseServerService} from "./base-server-service";
+import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 
 let logger = getLogger("system");
 
@@ -15,7 +15,7 @@ export class TableService extends BaseServerService {
 
   private dataStores: {[tableName: string]: NeDBDataStore};
 
-  constructor(@inject("Factory<Entity>") protected entityFactory: (tableName: string, data: any) => BaseEntity) {
+  constructor(@inject("Factory<BaseNodeEntity>") protected entityFactory: (tableName: string, data: any) => BaseNodeEntity) {
     super();
     this.dataStores = {};
   }
@@ -30,7 +30,7 @@ export class TableService extends BaseServerService {
     return this.dataStores[tableName];
   }
 
-  async find<T extends BaseEntity>(EntityClass: typeof BaseEntity, query: any = {}): Promise<T[]> {
+  async find<T extends BaseNodeEntity>(EntityClass: typeof BaseNodeEntity, query: any = {}): Promise<T[]> {
     let tableName = EntityClass.params.tableName;
     logger.trace(`Find ${tableName} table, query="${JSON.stringify(query)}".`);
     return await new Promise<T[]>((resolve, reject) => {
@@ -42,7 +42,7 @@ export class TableService extends BaseServerService {
     });
   }
 
-  async findOne<T extends BaseEntity>(EntityClass: typeof BaseEntity, id: string = ""): Promise<T> {
+  async findOne<T extends BaseNodeEntity>(EntityClass: typeof BaseNodeEntity, id: string = ""): Promise<T> {
     let tableName = EntityClass.params.tableName;
     logger.trace(`Find ${tableName} table, id="${id}".`);
     return await new Promise<T>((resolve, reject) => {
@@ -62,7 +62,7 @@ export class TableService extends BaseServerService {
     });
   }
 
-  async insert<T extends BaseEntity>(entity: T): Promise<T> {
+  async insert<T extends BaseNodeEntity>(entity: T): Promise<T> {
     let tableName = entity.Class.params.tableName;
     logger.trace(`Insert ${tableName} table, entity="${JSON.stringify(entity)}".`);
     return await new Promise<T>((resolve, reject) => {
@@ -74,7 +74,7 @@ export class TableService extends BaseServerService {
     });
   }
 
-  async update<T extends BaseEntity>(entity: T): Promise<T> {
+  async update<T extends BaseNodeEntity>(entity: T): Promise<T> {
     let tableName = entity.Class.params.tableName;
     if (!entity._id) throw new Error(`update need _id key`);
     logger.trace(`Update ${tableName} table, entity="${JSON.stringify(entity)}".`);
@@ -86,7 +86,7 @@ export class TableService extends BaseServerService {
     });
   }
 
-  async remove<T extends BaseEntity>(entity: T): Promise<void> {
+  async remove<T extends BaseNodeEntity>(entity: T): Promise<void> {
     let tableName = entity.Class.params.tableName;
     if (!entity._id) throw new Error(`remove need _id key`);
     logger.trace(`Remove ${tableName} table, entity="${JSON.stringify(entity)}".`);
@@ -96,7 +96,7 @@ export class TableService extends BaseServerService {
         resolve();
       });
     });
-    for (let ChildEntityClass of _.values<typeof BaseEntity>(entity.Class.params.children)) {
+    for (let ChildEntityClass of _.values<typeof BaseNodeEntity>(entity.Class.params.children)) {
       let childEntities = await this.find(ChildEntityClass, {_parent: entity._id});
       for (let childEntity of childEntities) {
         await this.remove(childEntity);

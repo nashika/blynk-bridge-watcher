@@ -1,12 +1,11 @@
 import _ = require("lodash");
 
-import {IEntityParams} from "../../base-entity";
-import {BaseNodeEntity} from "../base-node-entity";
+import {BaseNodeEntity, INodeEntityParams} from "../base-node-entity";
 import {TSocketIoLogLevel} from "../../../util/socket-io-util";
 
 export abstract class BaseNotifierNodeEntity extends BaseNodeEntity {
 
-  static params: IEntityParams = {
+  static params: INodeEntityParams = {
     tableName: "notifier",
     entityName: "notifier",
     icon: "bell",

@@ -8,9 +8,9 @@ import log4js = require("log4js");
 
 import {container} from "../common/inversify.config";
 import {BaseRoute} from "./routes/base-route";
+import {BaseNodeEntity} from "../common/entity/node/base-node-entity";
 
 import "./log4js";
-import {BaseEntity} from "../common/entity/base-entity";
 let logger = log4js.getLogger("system");
 
 logger.info("Web server initialize started.");
@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use("/dist", express.static(path.join(__dirname, "../../dist")));
-for (let node of container.getAll<BaseRoute<BaseEntity>>(BaseRoute))
+for (let node of container.getAll<BaseRoute<BaseNodeEntity>>(BaseRoute))
   node.initialize(app);
 
 // catch 404 and forward to error handler

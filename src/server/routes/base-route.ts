@@ -3,9 +3,9 @@ import _ = require("lodash");
 import log4js = require("log4js");
 import {injectable, inject} from "inversify";
 
-import {BaseEntity} from "../../common/entity/base-entity";
 import {TableService} from "../service/table-service";
 import {SocketIoServerService} from "../service/socket-io-server-service";
+import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 
 let logger = log4js.getLogger("system");
 
@@ -29,12 +29,12 @@ export class Code500Error extends CodeError {
 }
 
 @injectable()
-export abstract class BaseRoute<T extends BaseEntity> {
+export abstract class BaseRoute<T extends BaseNodeEntity> {
 
-  static EntityClass: typeof BaseEntity;
+  static EntityClass: typeof BaseNodeEntity;
 
   protected app: Express;
-  @inject("Factory<Entity>") protected entityFactory: (tableName: string, data: any) => BaseEntity;
+  @inject("Factory<BaseNodeEntity>") protected entityFactory: (tableName: string, data: any) => BaseNodeEntity;
 
   constructor(protected tableService: TableService,
               protected socketIoServerService: SocketIoServerService) {

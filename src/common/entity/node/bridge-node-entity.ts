@@ -1,12 +1,11 @@
 import _ = require("lodash");
 
-import {IEntityParams} from "../base-entity";
 import {BaseActionNodeEntity} from "./action/base-action-node-entity";
-import {BaseNodeEntity} from "./base-node-entity";
+import {BaseNodeEntity, INodeEntityParams} from "./base-node-entity";
 
 export class BridgeNodeEntity extends BaseNodeEntity {
 
-  static params: IEntityParams = {
+  static params: INodeEntityParams = {
     tableName: "bridge",
     entityName: "bridge",
     icon: "plug",
