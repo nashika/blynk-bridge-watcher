@@ -3,17 +3,15 @@ import {injectable} from "inversify";
 import {ActionNode} from "./action-node";
 import {IfActionNodeEntity} from "../../../common/entity/node/action/if-action-node-entity";
 import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
-import {TableService} from "../../service/table-service";
-import {SocketIoServerService} from "../../service/socket-io-server-service";
-import {NodeService} from "../../service/node-server-service";
+import {TableServerService} from "../../service/table-server-service";
+import {NodeServerService} from "../../service/node-server-service";
 
 @injectable()
 export class IfActionNode extends ActionNode<IfActionNodeEntity> {
 
-  constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService,
-              protected nodeService: NodeService) {
-    super(tableService, socketIoServerService, nodeService);
+  constructor(protected tableServerService: TableServerService,
+              protected nodeServerService: NodeServerService) {
+    super(tableServerService, nodeServerService);
   }
 
   run(...args: string[]): void {
@@ -55,9 +53,9 @@ export class IfActionNode extends ActionNode<IfActionNodeEntity> {
     }
     let action: ActionNode<BaseActionNodeEntity>;
     if (result && this.entity.then)
-      action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNodeById(this.entity.then);
+      action = <ActionNode<BaseActionNodeEntity>>this.nodeServerService.getNodeById(this.entity.then);
     else if (!result && this.entity.else)
-      action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNodeById(this.entity.else);
+      action = <ActionNode<BaseActionNodeEntity>>this.nodeServerService.getNodeById(this.entity.else);
     if (action)
       action.run(...args);
   };

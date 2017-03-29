@@ -3,17 +3,15 @@ import {getLogger} from "log4js";
 
 import {NotifierNode} from "./notifier-node";
 import {LogNotifierNodeEntity} from "../../../common/entity/node/notifier/log-notifier-node-entity";
-import {NodeService} from "../../service/node-server-service";
-import {SocketIoServerService} from "../../service/socket-io-server-service";
-import {TableService} from "../../service/table-service";
+import {NodeServerService} from "../../service/node-server-service";
+import {TableServerService} from "../../service/table-server-service";
 
 @injectable()
 export class LogNotifierNode extends NotifierNode<LogNotifierNodeEntity> {
 
-  constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService,
-              protected nodeService: NodeService) {
-    super(tableService, socketIoServerService, nodeService);
+  constructor(protected tableServerService: TableServerService,
+              protected nodeServerService: NodeServerService) {
+    super(tableServerService, nodeServerService);
   }
 
   initialize(): Promise<void> {

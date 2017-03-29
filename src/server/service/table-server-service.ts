@@ -12,7 +12,7 @@ let logger = getLogger("system");
 let tableName = "nodes";
 
 @injectable()
-export class TableService extends BaseServerService {
+export class TableServerService extends BaseServerService {
 
   private dataStores: {[tableName: string]: NeDBDataStore};
 

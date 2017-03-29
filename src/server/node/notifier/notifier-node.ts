@@ -3,9 +3,8 @@ import util = require("util");
 import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
 import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-notifier-node-entity";
-import {NodeService} from "../../service/node-server-service";
-import {SocketIoServerService} from "../../service/socket-io-server-service";
-import {TableService} from "../../service/table-service";
+import {NodeServerService} from "../../service/node-server-service";
+import {TableServerService} from "../../service/table-server-service";
 
 export abstract class NotifierNode<T extends BaseNotifierNodeEntity> extends BaseNode<T> {
 
@@ -14,10 +13,9 @@ export abstract class NotifierNode<T extends BaseNotifierNodeEntity> extends Bas
   private waiting: boolean = false;
   private messages: string[] = null;
 
-  constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService,
-              protected nodeService: NodeService) {
-    super(tableService, socketIoServerService, nodeService);
+  constructor(protected tableServerService: TableServerService,
+              protected nodeServerService: NodeServerService) {
+    super(tableServerService, nodeServerService);
   }
 
   initialize(): Promise<void> {

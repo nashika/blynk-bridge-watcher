@@ -7,9 +7,8 @@ import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {BridgeNode} from "./bridge/bridge-node";
 import {uid} from "../../common/util/uid";
-import {SocketIoServerService} from "../service/socket-io-server-service";
-import {TableService} from "../service/table-service";
-import {NodeService} from "../service/node-server-service";
+import {TableServerService} from "../service/table-server-service";
+import {NodeServerService} from "../service/node-server-service";
 
 @injectable()
 export class BoardNode extends BaseNode<BoardNodeEntity> {
@@ -23,10 +22,9 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
   private inputVPin: any;
   private sendDeferred: {[key: string]: {resolve: (value: string[]) => void, reject: (reason: any) => void}};
 
-  constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService,
-              protected nodeService: NodeService) {
-    super(tableService, socketIoServerService, nodeService);
+  constructor(protected tableServerService: TableServerService,
+              protected nodeServerService: NodeServerService) {
+    super(tableServerService, nodeServerService);
   }
 
 
@@ -96,7 +94,7 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
     } else if (id.length == 4) {
       let args: string[] = params.splice(1);
       this.log("trace", `Receive input data, id='${id}' args=${JSON.stringify(args)}`);
-      let node = this.nodeService.getNodeById(id);
+      let node = this.nodeServerService.getNodeById(id);
       if (!node)
         return this.log("warn", `Node id='${id}' was not found.`);
       node.run(...args);

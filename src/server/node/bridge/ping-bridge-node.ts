@@ -1,9 +1,8 @@
 import _ = require("lodash");
 
 import {TransceiverBridgeNode} from "./transceiver-bridge-node";
-import {NodeService} from "../../service/node-server-service";
-import {SocketIoServerService} from "../../service/socket-io-server-service";
-import {TableService} from "../../service/table-service";
+import {NodeServerService} from "../../service/node-server-service";
+import {TableServerService} from "../../service/table-server-service";
 
 export class PingBridgeNode extends TransceiverBridgeNode {
 
@@ -11,10 +10,9 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   private pingFailureCount: number = 0;
   private pingIntervalId: any = 0;
 
-  constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService,
-              protected nodeService: NodeService) {
-    super(tableService, socketIoServerService, nodeService);
+  constructor(protected tableServerService: TableServerService,
+              protected nodeServerService: NodeServerService) {
+    super(tableServerService, nodeServerService);
   }
 
   initialize(): Promise<void> {

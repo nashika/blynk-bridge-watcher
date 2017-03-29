@@ -3,9 +3,8 @@ var Pushbullet = require("pushbullet");
 
 import {NotifierNode} from "./notifier-node";
 import {PushbulletNotifierNodeEntity} from "../../../common/entity/node/notifier/pushbullet-notifier-node-entity";
-import {NodeService} from "../../service/node-server-service";
-import {SocketIoServerService} from "../../service/socket-io-server-service";
-import {TableService} from "../../service/table-service";
+import {NodeServerService} from "../../service/node-server-service";
+import {TableServerService} from "../../service/table-server-service";
 
 type Pushbullet = any;
 
@@ -14,10 +13,9 @@ export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierNodeE
 
   private pushbullet: Pushbullet;
 
-  constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService,
-              protected nodeService: NodeService) {
-    super(tableService, socketIoServerService, nodeService);
+  constructor(protected tableServerService: TableServerService,
+              protected nodeServerService: NodeServerService) {
+    super(tableServerService, nodeServerService);
   }
 
   initialize(): Promise<void> {

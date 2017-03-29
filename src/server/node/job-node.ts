@@ -7,9 +7,8 @@ import {ServerNode} from "./server-node";
 import {JobNodeEntity} from "../../common/entity/node/job-node-entity";
 import {ActionNode} from "./action/action-node";
 import {BaseActionNodeEntity} from "../../common/entity/node/action/base-action-node-entity";
-import {SocketIoServerService} from "../service/socket-io-server-service";
-import {TableService} from "../service/table-service";
-import {NodeService} from "../service/node-server-service";
+import {TableServerService} from "../service/table-server-service";
+import {NodeServerService} from "../service/node-server-service";
 
 @injectable()
 export class JobNode extends BaseNode<JobNodeEntity> {
@@ -18,10 +17,9 @@ export class JobNode extends BaseNode<JobNodeEntity> {
 
   private cronJob: CronJob;
 
-  constructor(protected tableService: TableService,
-              protected socketIoServerService: SocketIoServerService,
-              protected nodeService: NodeService) {
-    super(tableService, socketIoServerService, nodeService);
+  constructor(protected tableServerService: TableServerService,
+              protected nodeServerService: NodeServerService) {
+    super(tableServerService, nodeServerService);
   }
 
   initialize(): Promise<void> {
@@ -47,7 +45,7 @@ export class JobNode extends BaseNode<JobNodeEntity> {
 
   run(): void {
     super.run();
-    let action = <ActionNode<BaseActionNodeEntity>>this.nodeService.getNodeById(this.entity.action);
+    let action = <ActionNode<BaseActionNodeEntity>>this.nodeServerService.getNodeById(this.entity.action);
     if (action.status != "ready") {
       return action.log("warn", `Job '${this.entity._id}' can not run. Action '${action.entity._id}' status='${action.status}' is not ready.`);
     }

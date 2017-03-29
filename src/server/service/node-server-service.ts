@@ -1,23 +1,39 @@
-import {injectable} from "inversify";
+import {inject, injectable} from "inversify";
 import _ = require("lodash");
+import {getLogger} from "log4js";
 
 import {BaseServerService} from "./base-server-service";
-import {TableService} from "./table-service";
+import {TableServerService} from "./table-server-service";
 import {ServerNode} from "../node/server-node";
 import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {BaseNode} from "../node/base-node";
 import {container} from "../../common/inversify.config";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
+import {SocketIoServerService} from "./socket-io-server-service";
+import {
+  ISocketIoData,
+  ISocketIoFindQuery,
+  ISocketIoLogData, ISocketIoRequestLogsData, ISocketIoResponseLogsData, ISocketIoSendData,
+  ISocketIoStatusData, TSocketIoLogLevel, TSocketIoStatus
+} from "../../common/util/socket-io-util";
+
+let logger = getLogger("system");
 
 @injectable()
-export class NodeService extends BaseServerService {
+export class NodeServerService extends BaseServerService {
 
   private serverNode: ServerNode;
-  private nodes: {[_id: string]: BaseNode<BaseNodeEntity>};
+  private nodes: { [_id: string]: BaseNode<BaseNodeEntity> };
+  private logs: { [_id: string]: ISocketIoLogData[] };
+  private statuses: { [_id: string]: ISocketIoStatusData };
 
-  constructor(protected tableService: TableService) {
+  constructor(protected tableService: TableServerService,
+              protected socketIoServerService: SocketIoServerService,
+              @inject("Factory<BaseNodeEntity>") protected nodeEntityFactory: (data: any) => BaseNodeEntity) {
     super();
     this.nodes = {};
+    this.logs = {};
+    this.statuses = {};
   }
 
   async initialize(): Promise<void> {
@@ -45,11 +61,104 @@ export class NodeService extends BaseServerService {
     return result;
   }
 
-  registerNode(node: BaseNode<BaseNodeEntity>): void {
+  onConnect(socket: SocketIO.Socket) {
+    this.socketIoServerService.on(this, socket, "server::start", this.onStartServer);
+    this.socketIoServerService.on(this, socket, "server::stop", this.onStopServer);
+    this.socketIoServerService.on(this, socket, "node::send", this.onSend);
+    this.socketIoServerService.on(this, socket, "node::logs", this.onLogs);
+    this.socketIoServerService.on(this, socket, "node::find", this.onFind);
+    this.socketIoServerService.on(this, socket, "node::add", this.onAdd);
+    this.socketIoServerService.on(this, socket, "node::edit", this.onEdit);
+    this.socketIoServerService.on(this, socket, "node::remove", this.onRemove);
+    for (let _id in this.logs) {
+      let log: ISocketIoLogData = _.last(this.logs[_id]);
+      socket.emit("log", log);
+    }
+    for (let _id in this.statuses)
+      socket.emit("status", this.statuses[_id]);
+  };
+
+  private async onStartServer(): Promise<void> {
+    logger.info("Server node initialize started.");
+    await this.initialize();
+    logger.info("Server node initialize finished.");
+  }
+
+  private async onStopServer(): Promise<void> {
+    logger.info("Server node destruct started.");
+    await this.finalize();
+    logger.info("Server node destruct finished.");
+  }
+
+  private async onSend(data: ISocketIoSendData): Promise<void> {
+    let node = this.getNodeById(data._id);
+    if (node) node.run(...data.args);
+  }
+
+  private async onLogs(data: ISocketIoRequestLogsData): Promise<ISocketIoResponseLogsData> {
+    let response: ISocketIoResponseLogsData = {_id: data._id, logs: []};
+    let length = this.logs[data._id].length;
+    let start = length - data.page * data.limit;
+    let end = start + data.limit;
+    if (start < 0) start = 0;
+    if (end < 0) end = 0;
+    response.logs = this.logs[data._id].slice(start, end);
+    return response;
+  }
+
+  private async onFind<T extends BaseNodeEntity>(query: ISocketIoFindQuery): Promise<T[]> {
+    return await this.tableService.find<T>(query);
+  }
+
+  private async onAdd<T extends BaseNodeEntity>(data: Object): Promise<T> {
+    let entity = <T>this.nodeEntityFactory(data);
+    let newEntity = await this.tableService.insert<T>(entity);
+    this.status(newEntity._id, "stop");
+    return newEntity;
+  }
+
+  private async onEdit<T extends BaseNodeEntity>(data: Object): Promise<T> {
+    let entity = <T>this.nodeEntityFactory(data);
+    let updatedEntity = await this.tableService.update<T>(entity);
+    return updatedEntity;
+  }
+
+  private async onRemove<T extends BaseNodeEntity>(data: Object): Promise<true> {
+    let entity = <T>this.nodeEntityFactory(data);
+    await this.tableService.remove(entity);
+    return true;
+  }
+
+  run(_id: string): void {
+    let data: ISocketIoData = {_id: _id};
+    this.socketIoServerService.emitAll("node::run", data);
+  }
+
+  log(_id: string, level: TSocketIoLogLevel, message: string): void {
+    if (!this.logs[_id]) this.logs[_id] = [];
+    let no = _.size(this.logs[_id]);
+    let log: ISocketIoLogData = {
+      _id: _id,
+      no: no,
+      level: level,
+      message: message,
+      timestamp: (new Date()).toISOString(),
+    };
+    this.logs[_id].push(log);
+    this.socketIoServerService.emitAll("node::log", log);
+  }
+
+  status(_id: string, status: TSocketIoStatus): void {
+    let data: ISocketIoStatusData = {_id: _id, status: status};
+    this.statuses[_id] = data;
+    this.socketIoServerService.emitAll("node::status", data);
+  }
+
+  register(node: BaseNode<BaseNodeEntity>): void {
     this.nodes[node.entity._id] = node;
   }
 
-  unregisterNode(_id: string): void {
+  unregister(_id: string): void {
     delete this.nodes[_id];
   }
 

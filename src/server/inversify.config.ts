@@ -1,8 +1,11 @@
 import {container} from "../common/inversify.config";
 
-import {NodeService} from "./service/node-server-service";
+import {BaseNodeEntity} from "../common/entity/node/base-node-entity";
+
+import {BaseServerService} from "./service/base-server-service";
+import {NodeServerService} from "./service/node-server-service";
 import {SocketIoServerService} from "./service/socket-io-server-service";
-import {TableService} from "./service/table-service";
+import {TableServerService} from "./service/table-server-service";
 
 import {BaseNode} from "./node/base-node";
 import {IfActionNode} from "./node/action/if-action-node";
@@ -16,11 +19,6 @@ import {PushbulletNotifierNode} from "./node/notifier/pushbullet-notifier-node";
 import {BoardNode} from "./node/board-node";
 import {JobNode} from "./node/job-node";
 import {ServerNode} from "./node/server-node";
-import {BaseNodeEntity} from "../common/entity/node/base-node-entity";
-
-container.bind<NodeService>(NodeService).toSelf().inSingletonScope();
-container.bind<SocketIoServerService>(SocketIoServerService).toSelf().inSingletonScope();
-container.bind<TableService>(TableService).toSelf().inSingletonScope();
 
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(IfActionNode).whenTargetNamed("ifAction");
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(LogActionNode).whenTargetNamed("logAction");
@@ -33,3 +31,9 @@ container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(PushbulletNotifierNode).wh
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(BoardNode).whenTargetNamed("board");
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(JobNode).whenTargetNamed("job");
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(ServerNode).whenTargetNamed("server");
+
+container.bind<NodeServerService>(NodeServerService).toSelf().inSingletonScope();
+container.bind<SocketIoServerService>(SocketIoServerService).toSelf().inSingletonScope();
+container.bind<TableServerService>(TableServerService).toSelf().inSingletonScope();
+
+container.bind<BaseServerService>("SocketIoService").toConstantValue(container.get(NodeServerService));
