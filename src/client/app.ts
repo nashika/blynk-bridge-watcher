@@ -12,8 +12,9 @@ import BootstrapVue from "bootstrap-vue";
 //Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 
-Vue.component("edit-component", require("./component/element/edit-component.vue"));
-Vue.component("logs-component", require("./component/element/logs-component.vue"));
+Vue.component("node-component", require("./component/node-component.vue"));
+Vue.component("edit-component", require("./component/modal/edit-component.vue"));
+Vue.component("logs-component", require("./component/modal/logs-component.vue"));
 Vue.component("server-node-component", require("./component/node/server-node-component.vue"));
 Vue.component("board-node-component", require("./component/node/board-node-component.vue"));
 Vue.component("job-node-component", require("./component/node/job-node-component.vue"));

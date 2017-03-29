@@ -1,7 +1,7 @@
 <template lang="pug">
   section.app-component
     template(v-if="server")
-      server-node-component(:entity="server", :depth="0")
+      node-component(:entity="server", :depth="0")
     template(v-else)
       p Loading server...
     edit-component(ref="edit")
