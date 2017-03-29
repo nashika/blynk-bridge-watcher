@@ -20,17 +20,15 @@ let logger = getLogger("system");
 export class SocketIoServerService extends BaseServerService {
 
   private io: SocketIO.Server;
-  private logs: {[_id: string]: ISocketIoLogData[]};
-  private statuses: {[_id: string]: ISocketIoStatusData};
+  private logs: { [_id: string]: ISocketIoLogData[] };
+  private statuses: { [_id: string]: ISocketIoStatusData };
 
   protected nodeService: NodeService;
-  protected tableService: TableService;
-  @inject("Factory<BaseNodeEntity>") protected nodeEntityFactory: (data: any) => BaseNodeEntity;
 
-  constructor() {
+  constructor(protected tableService: TableService,
+              @inject("Factory<BaseNodeEntity>") protected nodeEntityFactory: (data: any) => BaseNodeEntity) {
     super();
     this.nodeService = container.get(NodeService); // inject bug?
-    this.tableService = container.get(TableService);
     this.logs = {};
     this.statuses = {};
   }
@@ -128,7 +126,13 @@ export class SocketIoServerService extends BaseServerService {
   log(_id: string, level: TSocketIoLogLevel, message: string): void {
     if (!this.logs[_id]) this.logs[_id] = [];
     let no = _.size(this.logs[_id]);
-    let log: ISocketIoLogData = {_id: _id, no: no, level: level, message: message, timestamp: (new Date()).toISOString(), };
+    let log: ISocketIoLogData = {
+      _id: _id,
+      no: no,
+      level: level,
+      message: message,
+      timestamp: (new Date()).toISOString(),
+    };
     this.logs[_id].push(log);
     this.io.sockets.emit("node::log", log);
   }

@@ -2,6 +2,7 @@ import "font-awesome/css/font-awesome.css";
 import "./scss/style.scss";
 
 import "core-js";
+import "reflect-metadata";
 
 import "./inversify.config";
 import Vue = require("vue");
