@@ -7,7 +7,6 @@ import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {BridgeNode} from "./bridge/bridge-node";
 import {uid} from "../../common/util/uid";
-import {TableServerService} from "../service/table-server-service";
 import {NodeServerService} from "../service/node-server-service";
 
 @injectable()
@@ -22,9 +21,8 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
   private inputVPin: any;
   private sendDeferred: {[key: string]: {resolve: (value: string[]) => void, reject: (reason: any) => void}};
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
 

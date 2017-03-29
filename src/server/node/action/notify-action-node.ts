@@ -4,15 +4,13 @@ import {ActionNode} from "./action-node";
 import {NotifyActionNodeEntity} from "../../../common/entity/node/action/notify-action-node-entity";
 import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-notifier-node-entity";
 import {NotifierNode} from "../notifier/notifier-node";
-import {TableServerService} from "../../service/table-server-service";
 import {NodeServerService} from "../../service/node-server-service";
 
 @injectable()
 export class NotifyActionNode extends ActionNode<NotifyActionNodeEntity> {
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   run(...args:string[]) {

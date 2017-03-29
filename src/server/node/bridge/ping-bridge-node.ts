@@ -2,7 +2,6 @@ import _ = require("lodash");
 
 import {TransceiverBridgeNode} from "./transceiver-bridge-node";
 import {NodeServerService} from "../../service/node-server-service";
-import {TableServerService} from "../../service/table-server-service";
 
 export class PingBridgeNode extends TransceiverBridgeNode {
 
@@ -10,9 +9,8 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   private pingFailureCount: number = 0;
   private pingIntervalId: any = 0;
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   initialize(): Promise<void> {
@@ -67,8 +65,8 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   };
 
   /*private onPing = () => {
-    this.log("debug", `Ping from bridge, response Pong.`);
-    this.send("po", []);
-  };*/
+   this.log("debug", `Ping from bridge, response Pong.`);
+   this.send("po", []);
+   };*/
 
 }

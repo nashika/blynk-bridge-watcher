@@ -6,7 +6,6 @@ import {NotifierNode} from "./notifier/notifier-node";
 import {JobNode} from "./job-node";
 import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-notifier-node-entity";
-import {TableServerService} from "../service/table-server-service";
 import {NodeServerService} from "../service/node-server-service";
 
 @injectable()
@@ -16,9 +15,8 @@ export class ServerNode extends BaseNode<ServerNodeEntity> {
   notifiers: NotifierNode<BaseNotifierNodeEntity>[];
   jobs: JobNode[];
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   async initialize(): Promise<void> {

@@ -2,21 +2,20 @@ import path = require("path");
 
 import NeDBDataStore = require("nedb");
 import {getLogger} from "log4js";
-import {injectable, inject} from "inversify";
+import {injectable} from "inversify";
 
 import {BaseServerService} from "./base-server-service";
-import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 import {ISocketIoFindQuery} from "../../common/util/socket-io-util";
+import {BaseEntity} from "../../common/entity/base-entity";
 
 let logger = getLogger("system");
-let tableName = "nodes";
 
 @injectable()
 export class TableServerService extends BaseServerService {
 
   private dataStores: {[tableName: string]: NeDBDataStore};
 
-  constructor(@inject("Factory<BaseNodeEntity>") protected nodeEntityFactory: (data: any) => BaseNodeEntity) {
+  constructor() {
     super();
     this.dataStores = {};
   }
@@ -31,66 +30,55 @@ export class TableServerService extends BaseServerService {
     return this.dataStores[tableName];
   }
 
-  async find<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T[]> {
+  async find(tableName: string, query: ISocketIoFindQuery = {}): Promise<Object[]> {
     logger.trace(`Find ${tableName} table, query="${JSON.stringify(query)}".`);
-    return await new Promise<T[]>((resolve, reject) => {
-      this.getDataStore(tableName).find<T>(query).sort({_orderNo: 1}).exec((err, docs) => {
+    return await new Promise<Object[]>((resolve, reject) => {
+      this.getDataStore(tableName).find<Object>(query).sort({_orderNo: 1}).exec((err, datas) => {
         if (err) return reject(err);
-        let entities: T[] = docs.map(doc => <T>this.nodeEntityFactory(doc));
-        resolve(entities);
+        resolve(datas);
       });
     });
   }
 
-  async findOne<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T> {
-    return await new Promise<T>((resolve, reject) => {
-      this.getDataStore(tableName).find<T>(query).limit(1).exec((err, docs) => {
+  async findOne(tableName: string, query: ISocketIoFindQuery = {}): Promise<Object> {
+    return await new Promise<Object>((resolve, reject) => {
+      this.getDataStore(tableName).find<Object>(query).limit(1).exec((err, datas) => {
         if (err) return reject(err);
-        let entity: T = docs[0] ? <T>this.nodeEntityFactory(docs[0]) : null;
-        resolve(entity);
+        resolve(datas[0] || null);
       });
     });
   }
 
-  async findById<T extends BaseNodeEntity>(id: string): Promise<T> {
-    return await this.findOne<T>({_id: id});
-  }
-
-  async insert<T extends BaseNodeEntity>(entity: T): Promise<T> {
-    logger.trace(`Insert ${tableName} table, entity="${JSON.stringify(entity)}".`);
-    return await new Promise<T>((resolve, reject) => {
-      this.getDataStore(tableName).insert(entity, (err, newDoc) => {
+  async insert(tableName: string, data: BaseEntity): Promise<Object> {
+    logger.trace(`Insert ${tableName} table, data="${JSON.stringify(data)}".`);
+    return await new Promise<Object>((resolve, reject) => {
+      this.getDataStore(tableName).insert(data, (err, newData) => {
         if (err) return reject(err);
-        let entity: T = <T>this.nodeEntityFactory(newDoc);
-        resolve(entity);
+        resolve(newData)
       });
     });
   }
 
-  async update<T extends BaseNodeEntity>(entity: T): Promise<T> {
-    if (!entity._id) throw new Error(`update need _id key`);
-    logger.trace(`Update ${tableName} table, entity="${JSON.stringify(entity)}".`);
-    return await new Promise<T>((resolve, reject) => {
-      this.getDataStore(tableName).update({_id: entity._id}, entity, {returnUpdatedDocs: true}, err => {
+  async update(tableName: string, data: BaseEntity): Promise<Object> {
+    if (!data._id) throw new Error(`update need _id key`);
+    logger.trace(`Update ${tableName} table, entity="${JSON.stringify(data)}".`);
+    return await new Promise<Object>((resolve, reject) => {
+      this.getDataStore(tableName).update({_id: data._id}, data, {returnUpdatedDocs: true}, err => {
         if (err) return reject(err);
-        resolve(entity);
+        resolve(data);
       });
     });
   }
 
-  async remove<T extends BaseNodeEntity>(entity: T): Promise<void> {
-    if (!entity._id) throw new Error(`remove need _id key`);
-    logger.trace(`Remove ${tableName} table, entity="${JSON.stringify(entity)}".`);
+  async remove(tableName: string, id: string): Promise<void> {
+    if (!id) throw new Error(`remove need _id key`);
+    logger.trace(`Remove ${tableName} table, _id="${id}".`);
     await new Promise<void>((resolve, reject) => {
-      this.getDataStore(tableName).remove({_id: entity._id}, {}, err => {
+      this.getDataStore(tableName).remove({_id: id}, {}, err => {
         if (err) return reject(err);
         resolve();
       });
     });
-    let childEntities = await this.find({_parent: entity._id});
-    for (let childEntity of childEntities) {
-      await this.remove(childEntity);
-    }
   }
 
 }

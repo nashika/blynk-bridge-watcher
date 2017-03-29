@@ -4,7 +4,6 @@ import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
 import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-notifier-node-entity";
 import {NodeServerService} from "../../service/node-server-service";
-import {TableServerService} from "../../service/table-server-service";
 
 export abstract class NotifierNode<T extends BaseNotifierNodeEntity> extends BaseNode<T> {
 
@@ -13,9 +12,8 @@ export abstract class NotifierNode<T extends BaseNotifierNodeEntity> extends Bas
   private waiting: boolean = false;
   private messages: string[] = null;
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   initialize(): Promise<void> {

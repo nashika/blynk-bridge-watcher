@@ -18,6 +18,7 @@ import {
 } from "../../common/util/socket-io-util";
 
 let logger = getLogger("system");
+let tableName = "nodes";
 
 @injectable()
 export class NodeServerService extends BaseServerService {
@@ -37,17 +38,21 @@ export class NodeServerService extends BaseServerService {
   }
 
   async initialize(): Promise<void> {
-    let serverEntity = await this.tableService.findOne({type: "server"});
+    logger.info("Server node initialize started.");
+    let serverEntity = await this.findOne({type: "server"});
     if (!serverEntity) {
-      serverEntity = await this.tableService.insert(ServerNodeEntity.generateDefault());
+      serverEntity = await this.insert(ServerNodeEntity.generateDefault());
     }
     this.serverNode = <ServerNode>await this.generate(null, serverEntity);
     await this.serverNode.startWrap();
+    logger.info("Server node initialize finished.");
   }
 
   async finalize(): Promise<void> {
+    logger.info("Server node destruct started.");
     await this.serverNode.finalizeWrap();
     delete this.serverNode;
+    logger.info("Server node destruct finished.");
   }
 
   async generate(parent: BaseNode<BaseNodeEntity>, entity: BaseNodeEntity): Promise<BaseNode<BaseNodeEntity>> {
@@ -72,22 +77,18 @@ export class NodeServerService extends BaseServerService {
     this.socketIoServerService.on(this, socket, "node::remove", this.onRemove);
     for (let _id in this.logs) {
       let log: ISocketIoLogData = _.last(this.logs[_id]);
-      socket.emit("log", log);
+      socket.emit("node::log", log);
     }
     for (let _id in this.statuses)
-      socket.emit("status", this.statuses[_id]);
+      socket.emit("node::status", this.statuses[_id]);
   };
 
   private async onStartServer(): Promise<void> {
-    logger.info("Server node initialize started.");
     await this.initialize();
-    logger.info("Server node initialize finished.");
   }
 
   private async onStopServer(): Promise<void> {
-    logger.info("Server node destruct started.");
     await this.finalize();
-    logger.info("Server node destruct finished.");
   }
 
   private async onSend(data: ISocketIoSendData): Promise<void> {
@@ -107,26 +108,58 @@ export class NodeServerService extends BaseServerService {
   }
 
   private async onFind<T extends BaseNodeEntity>(query: ISocketIoFindQuery): Promise<T[]> {
-    return await this.tableService.find<T>(query);
+    return await this.find<T>(query);
   }
 
   private async onAdd<T extends BaseNodeEntity>(data: Object): Promise<T> {
     let entity = <T>this.nodeEntityFactory(data);
-    let newEntity = await this.tableService.insert<T>(entity);
+    let newEntity = await this.insert<T>(entity);
     this.status(newEntity._id, "stop");
     return newEntity;
   }
 
   private async onEdit<T extends BaseNodeEntity>(data: Object): Promise<T> {
     let entity = <T>this.nodeEntityFactory(data);
-    let updatedEntity = await this.tableService.update<T>(entity);
+    let updatedEntity = await this.update<T>(entity);
     return updatedEntity;
   }
 
   private async onRemove<T extends BaseNodeEntity>(data: Object): Promise<true> {
     let entity = <T>this.nodeEntityFactory(data);
-    await this.tableService.remove(entity);
+    await this.remove(entity._id);
     return true;
+  }
+
+  async find<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T[]> {
+    let datas = await this.tableService.find(tableName, query);
+    return datas.map(data => <T>this.nodeEntityFactory(data));
+  }
+
+  async findOne<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T> {
+    let data = await this.tableService.findOne(tableName, query);
+    return data ? <T>this.nodeEntityFactory(data) : null;
+  }
+
+  async findById<T extends BaseNodeEntity>(id: string): Promise<T> {
+    return await this.findOne<T>({_id: id});
+  }
+
+  async insert<T extends BaseNodeEntity>(entity: T): Promise<T> {
+    let newData = await this.tableService.insert(tableName, entity);
+    return <T>this.nodeEntityFactory(newData);
+  }
+
+  async update<T extends BaseNodeEntity>(entity: T): Promise<T> {
+    let data = await this.tableService.update(tableName, entity);
+    return <T>this.nodeEntityFactory(data);
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.tableService.remove(tableName, id);
+    let childEntities = await this.find({_parent: id});
+    for (let childEntity of childEntities) {
+      await this.remove(childEntity._id);
+    }
   }
 
   run(_id: string): void {

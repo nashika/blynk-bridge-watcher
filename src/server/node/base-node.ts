@@ -7,7 +7,6 @@ import {injectable} from "inversify";
 import {TSocketIoLogLevel, TSocketIoStatus} from "../../common/util/socket-io-util";
 import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-notifier-node-entity";
 import {NotifierNode} from "./notifier/notifier-node";
-import {TableServerService} from "../service/table-server-service";
 import {NodeServerService} from "../service/node-server-service";
 import {container} from "../../common/inversify.config";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
@@ -22,8 +21,7 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
 
   private _status: TSocketIoStatus;
 
-  constructor(protected tableService: TableServerService,
-              protected nodeServerService: NodeServerService) {
+  constructor(protected nodeServerService: NodeServerService) {
     let name = _.lowerFirst(_.replace(this.constructor.name, /Node$/, ""));
     this.EntityClass = <any>container.getNamed(BaseNodeEntity, name);
   }
@@ -51,7 +49,7 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
       this.log("debug", `Construct child '${ChildEntityClass.params.type}' objects was started.`);
       let childNodes: BaseNode<BaseNodeEntity>[] = [];
       _.set(this, key, childNodes);
-      let entities = await this.tableService.find({_parent: this.entity._id});
+      let entities = await this.nodeServerService.find({_parent: this.entity._id});
       for (let entity of entities) {
         let node = await this.nodeServerService.generate(this, entity);
         childNodes.push(node);

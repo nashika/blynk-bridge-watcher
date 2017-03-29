@@ -5,15 +5,13 @@ import {injectable} from "inversify";
 
 import {ActionNode} from "./action-node";
 import {LogActionNodeEntity} from "../../../common/entity/node/action/log-action-node-entity";
-import {TableServerService} from "../../service/table-server-service";
 import {NodeServerService} from "../../service/node-server-service";
 
 @injectable()
 export class LogActionNode extends ActionNode<LogActionNodeEntity> {
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   initialize(): Promise<void> {

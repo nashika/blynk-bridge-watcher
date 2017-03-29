@@ -1,12 +1,10 @@
 import {BaseBridgeNode} from "./base-bridge-node";
 import {NodeServerService} from "../../service/node-server-service";
-import {TableServerService} from "../../service/table-server-service";
 
 export class TransceiverBridgeNode extends BaseBridgeNode {
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   initialize(): Promise<void> {

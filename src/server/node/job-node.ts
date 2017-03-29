@@ -7,7 +7,6 @@ import {ServerNode} from "./server-node";
 import {JobNodeEntity} from "../../common/entity/node/job-node-entity";
 import {ActionNode} from "./action/action-node";
 import {BaseActionNodeEntity} from "../../common/entity/node/action/base-action-node-entity";
-import {TableServerService} from "../service/table-server-service";
 import {NodeServerService} from "../service/node-server-service";
 
 @injectable()
@@ -17,9 +16,8 @@ export class JobNode extends BaseNode<JobNodeEntity> {
 
   private cronJob: CronJob;
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   initialize(): Promise<void> {

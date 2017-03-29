@@ -3,15 +3,13 @@ import {injectable} from "inversify";
 import {ActionNode} from "./action-node";
 import {IfActionNodeEntity} from "../../../common/entity/node/action/if-action-node-entity";
 import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
-import {TableServerService} from "../../service/table-server-service";
 import {NodeServerService} from "../../service/node-server-service";
 
 @injectable()
 export class IfActionNode extends ActionNode<IfActionNodeEntity> {
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   run(...args: string[]): void {

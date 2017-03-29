@@ -3,7 +3,6 @@ import {BoardNode} from "../board-node";
 import {ActionNode} from "../action/action-node";
 import {BridgeNodeEntity} from "../../../common/entity/node/bridge-node-entity";
 import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
-import {TableServerService} from "../../service/table-server-service";
 import {NodeServerService} from "../../service/node-server-service";
 
 export type WidgetBridge = any;
@@ -14,9 +13,8 @@ export class BaseBridgeNode extends BaseNode<BridgeNodeEntity> {
   actions: ActionNode<BaseActionNodeEntity>[];
   protected widgetBridge: WidgetBridge;
 
-  constructor(protected tableServerService: TableServerService,
-              protected nodeServerService: NodeServerService) {
-    super(tableServerService, nodeServerService);
+  constructor(protected nodeServerService: NodeServerService) {
+    super(nodeServerService);
   }
 
   initialize(): Promise<void> {
