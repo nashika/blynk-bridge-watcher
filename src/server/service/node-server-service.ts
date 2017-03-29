@@ -11,11 +11,11 @@ import {container} from "../../common/inversify.config";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
 import {SocketIoServerService} from "./socket-io-server-service";
 import {
-  ISocketIoData,
-  ISocketIoFindQuery,
+  ISocketIoData, ISocketIoFindQuery,
   ISocketIoLogData, ISocketIoRequestLogsData, ISocketIoResponseLogsData, ISocketIoSendData,
   ISocketIoStatusData, TSocketIoLogLevel, TSocketIoStatus
 } from "../../common/util/socket-io-util";
+import {uid} from "../../common/util/uid";
 
 let logger = getLogger("system");
 let tableName = "nodes";
@@ -28,7 +28,7 @@ export class NodeServerService extends BaseServerService {
   private logs: { [_id: string]: ISocketIoLogData[] };
   private statuses: { [_id: string]: ISocketIoStatusData };
 
-  constructor(protected tableService: TableServerService,
+  constructor(protected tableServerService: TableServerService,
               protected socketIoServerService: SocketIoServerService,
               @inject("Factory<BaseNodeEntity>") protected nodeEntityFactory: (data: any) => BaseNodeEntity) {
     super();
@@ -131,12 +131,12 @@ export class NodeServerService extends BaseServerService {
   }
 
   async find<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T[]> {
-    let datas = await this.tableService.find(tableName, query);
+    let datas = await this.tableServerService.find(tableName, query);
     return datas.map(data => <T>this.nodeEntityFactory(data));
   }
 
   async findOne<T extends BaseNodeEntity>(query: ISocketIoFindQuery = {}): Promise<T> {
-    let data = await this.tableService.findOne(tableName, query);
+    let data = await this.tableServerService.findOne(tableName, query);
     return data ? <T>this.nodeEntityFactory(data) : null;
   }
 
@@ -145,17 +145,22 @@ export class NodeServerService extends BaseServerService {
   }
 
   async insert<T extends BaseNodeEntity>(entity: T): Promise<T> {
-    let newData = await this.tableService.insert(tableName, entity);
+    let newId: string;
+    while (!newId || await this.findById(newId)) {
+      newId = uid(4);
+    }
+    entity._id = newId;
+    let newData = await this.tableServerService.insert(tableName, entity);
     return <T>this.nodeEntityFactory(newData);
   }
 
   async update<T extends BaseNodeEntity>(entity: T): Promise<T> {
-    let data = await this.tableService.update(tableName, entity);
+    let data = await this.tableServerService.update(tableName, entity);
     return <T>this.nodeEntityFactory(data);
   }
 
   async remove(id: string): Promise<void> {
-    await this.tableService.remove(tableName, id);
+    await this.tableServerService.remove(tableName, id);
     let childEntities = await this.find({_parent: id});
     for (let childEntity of childEntities) {
       await this.remove(childEntity._id);

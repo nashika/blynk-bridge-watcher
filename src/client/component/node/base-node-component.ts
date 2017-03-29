@@ -54,7 +54,7 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
   }
 
   get title(): string {
-    return `${this.entity.shortId} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.subType || "")}${_.startCase(this.EntityClass.params.type)}]`;
+    return `${this.entity._id} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.subType || "")}${_.startCase(this.EntityClass.params.type)}]`;
   }
 
   run(..._args: any[]) {
@@ -178,6 +178,10 @@ export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseCom
       default:
         return "secondary";
     }
+  }
+
+  protected depthPadding(depth: number): number {
+    return depth * 16;
   }
 
 }

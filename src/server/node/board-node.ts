@@ -25,8 +25,7 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
     super(nodeServerService);
   }
 
-
-  initialize(): Promise<void> {
+  async initialize(): Promise<void> {
     _.defaults(this.entity, {addr: "", port: 8442});
     this.sendDeferred = {};
     this.log("debug", `Auth dummy blynk board was started.`);
@@ -46,33 +45,31 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
     this.log("debug", `Construct Input Virtual Pin 0 was started.`);
     this.inputVPin = new this.blynk.VirtualPin(0);
     this.log("debug", `Construct Input Virtual Pin 0 was finished.`);
-    return super.initialize().then(() => {
-      this.inputVPin.on("write", this.onInputVPin);
-      this.blynk.on("connect", this.onConnect);
-      this.blynk.on("disconnect", this.onDisconnect);
-      this.blynk.on("error", this.onError);
-      return;
-    });
+    this.inputVPin.on("write", this.onInputVPin);
+    this.blynk.on("connect", this.onConnect);
+    this.blynk.on("disconnect", this.onDisconnect);
+    this.blynk.on("error", this.onError);
+    await super.initialize();
   }
 
-  finalize(): Promise<void> {
+  async finalize(): Promise<void> {
     this.inputVPin.removeListener("write", this.onInputVPin);
     this.blynk.removeListener("connect", this.onConnect);
     this.blynk.removeListener("disconnect", this.onDisconnect);
     this.blynk.removeListener("error", this.onError);
-    return super.finalize();
+    await super.finalize();
   }
 
-  private onConnect = (): void => {
+  private onConnect = async (): Promise<void> => {
     this.log("debug", `Auth dummy blynk board was finished.`);
     this.log("info", `Board ${this.entity._id} was connected.`);
     for (let bridge of this.bridges)
-      bridge.connect();
+      await bridge.connect();
     this.status = "ready";
   };
 
-  private onDisconnect = (): void => {
-    this.status = "processing";
+  private onDisconnect = async (): Promise<void> => {
+    this.status = "error";
     this.log("info", `Board ${this.entity._id} was disconnected.`);
   };
 

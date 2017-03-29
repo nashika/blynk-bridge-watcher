@@ -41,7 +41,7 @@ container.bind(BaseNotifierNodeEntity).toConstructor(PushbulletNotifierNodeEntit
 
 container.bind<interfaces.Factory<BaseNodeEntity>>("Factory<BaseNodeEntity>").toFactory<BaseNodeEntity>(context => {
   return (data: any) => {
-    let fullType = data.subType ? _.camelCase(data.type + "_" + data.subType) : _.camelCase(data.type);
+    let fullType = data.subType ? _.camelCase(data.subType + "_" + data.type) : _.camelCase(data.type);
     let NodeEntityClass: typeof BaseNodeEntity = <any>context.container.getNamed(BaseNodeEntity, fullType);
     return new (<any>NodeEntityClass)(data);
   }

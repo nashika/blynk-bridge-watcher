@@ -58,13 +58,6 @@ export abstract class BaseNodeEntity extends BaseEntity {
     return <typeof BaseNodeEntity>this.constructor;
   }
 
-  get shortId(): string {
-    if (this._id)
-      return this._id.substr(0, 4);
-    else
-      return "";
-  }
-
   static generateDefault<T extends BaseNodeEntity>(): T {
     let entity: T = <T>(new (<any>this)());
     _.forEach(this.params.fields, (field: INodeEntityFieldParams, name: string) => {

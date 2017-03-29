@@ -13,18 +13,18 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
+  async initialize(): Promise<void> {
     _.defaults(this.entity, {pingInterval: 60000, pingLimit: 3});
-    return super.initialize();
+    return await super.initialize();
   }
 
-  finalize(): Promise<void> {
+  async finalize(): Promise<void> {
     if (this.pingIntervalId) clearInterval(this.pingIntervalId);
-    return super.finalize();
+    return await super.finalize();
   }
 
-  connect() {
-    super.connect();
+  async connect(): Promise<void> {
+    await super.connect();
     this.log("info", `Ping setting, interval=${this.entity.pingInterval}ms failureLimit=${this.entity.pingLimit}`);
     setTimeout(this.ping, 1000);
     if (this.pingIntervalId) clearInterval(this.pingIntervalId);

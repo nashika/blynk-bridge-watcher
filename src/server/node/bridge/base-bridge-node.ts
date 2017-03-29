@@ -17,13 +17,13 @@ export class BaseBridgeNode extends BaseNode<BridgeNodeEntity> {
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
+  async initialize(): Promise<void> {
     this.log("info", `Connect bridge was started.`);
     this.widgetBridge = new this.parent.blynk.WidgetBridge(Object.keys(this.parent.bridges).length + 1);
     return super.initialize();
   }
 
-  connect() {
+  async connect(): Promise<void> {
     this.log("info", `Connection started.`);
     this.widgetBridge.setAuthToken(this.entity.token);
   }

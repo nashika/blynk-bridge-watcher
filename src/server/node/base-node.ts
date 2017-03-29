@@ -158,7 +158,7 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
   }
 
   private keyLabel(): string {
-    return `${this.entity.shortId}(${_.replace((<any>this.constructor).name, /Node$/, "")})`;
+    return `${this.entity._id}(${_.replace((<any>this.constructor).name, /Node$/, "")})`;
   }
 
 }
