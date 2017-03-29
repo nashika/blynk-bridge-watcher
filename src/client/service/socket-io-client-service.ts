@@ -19,7 +19,8 @@ export class SocketIoClientService extends BaseClientService {
     this.socket = socketIo.connect();
     this.on(this, "connect", this.onConnect);
     this.on(this, "disconnect", this.onDisconnect);
-    return new Promise<void>(resolve => this.connectDiffered = resolve);
+    await new Promise<void>(resolve => this.connectDiffered = resolve);
+    logger.debug("socket.io client initialize finished.");
   }
 
   on(me: Object, event: string, func: Function) {
@@ -30,7 +31,10 @@ export class SocketIoClientService extends BaseClientService {
 
   private async onConnect(): Promise<void> {
     logger.debug("connected");
-    this.connectDiffered();
+    if (this.connectDiffered) {
+      this.connectDiffered();
+      this.connectDiffered = null;
+    }
   }
 
   private async onDisconnect(): Promise<void> {

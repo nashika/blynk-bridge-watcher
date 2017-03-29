@@ -41,14 +41,14 @@ export class SocketIoServerService extends BaseServerService {
   }
 
   private onConnection = (socket: SocketIO.Socket) => {
-    socket.on("server::start", this.onWrap(this.startServer));
-    socket.on("server::stop", this.onWrap(this.stopServer));
-    socket.on("node::send", this.onWrap(this.sendNode));
-    socket.on("node::logs", this.onWrap(this.logsNode));
-    socket.on("node::find", this.onWrap(this.findNode));
-    socket.on("node::add", this.onWrap(this.addNode));
-    socket.on("node::edit", this.onWrap(this.editNode));
-    socket.on("node::remove", this.onWrap(this.removeNode));
+    socket.on("server::start", this.onWrap(this.onStartServer));
+    socket.on("server::stop", this.onWrap(this.onStopServer));
+    socket.on("node::send", this.onWrap(this.onSendNode));
+    socket.on("node::logs", this.onWrap(this.onLogsNode));
+    socket.on("node::find", this.onWrap(this.onFindNode));
+    socket.on("node::add", this.onWrap(this.onAddNode));
+    socket.on("node::edit", this.onWrap(this.onEditNode));
+    socket.on("node::remove", this.onWrap(this.onRemoveNode));
     for (let _id in this.logs) {
       let log: ISocketIoLogData = _.last(this.logs[_id]);
       socket.emit("log", log);
@@ -69,24 +69,24 @@ export class SocketIoServerService extends BaseServerService {
     };
   };
 
-  async startServer(): Promise<void> {
+  private async onStartServer(): Promise<void> {
     logger.info("Server node initialize started.");
     await this.nodeService.initialize();
     logger.info("Server node initialize finished.");
   }
 
-  async stopServer(): Promise<void> {
+  private async onStopServer(): Promise<void> {
     logger.info("Server node destruct started.");
     await this.nodeService.finalize();
     logger.info("Server node destruct finished.");
   }
 
-  private async sendNode(data: ISocketIoSendData): Promise<void> {
+  private async onSendNode(data: ISocketIoSendData): Promise<void> {
     let node = this.nodeService.getNodeById(data._id);
     if (node) node.run(...data.args);
   }
 
-  private async logsNode(data: ISocketIoRequestLogsData): Promise<ISocketIoResponseLogsData> {
+  private async onLogsNode(data: ISocketIoRequestLogsData): Promise<ISocketIoResponseLogsData> {
     let response: ISocketIoResponseLogsData = {_id: data._id, logs: []};
     let length = this.logs[data._id].length;
     let start = length - data.page * data.limit;
@@ -97,24 +97,24 @@ export class SocketIoServerService extends BaseServerService {
     return response;
   }
 
-  private async findNode<T extends BaseNodeEntity>(query: ISocketIoFindQuery): Promise<T[]> {
+  private async onFindNode<T extends BaseNodeEntity>(query: ISocketIoFindQuery): Promise<T[]> {
     return await this.tableService.find<T>(query);
   }
 
-  private async addNode<T extends BaseNodeEntity>(data: Object): Promise<T> {
+  private async onAddNode<T extends BaseNodeEntity>(data: Object): Promise<T> {
     let entity = <T>this.nodeEntityFactory(data);
     let newEntity = await this.tableService.insert<T>(entity);
     this.status(newEntity._id, "stop");
     return newEntity;
   }
 
-  private async editNode<T extends BaseNodeEntity>(data: Object): Promise<T> {
+  private async onEditNode<T extends BaseNodeEntity>(data: Object): Promise<T> {
     let entity = <T>this.nodeEntityFactory(data);
     let updatedEntity = await this.tableService.update<T>(entity);
     return updatedEntity;
   }
 
-  private async removeNode<T extends BaseNodeEntity>(data: Object): Promise<true> {
+  private async onRemoveNode<T extends BaseNodeEntity>(data: Object): Promise<true> {
     let entity = <T>this.nodeEntityFactory(data);
     await this.tableService.remove(entity);
     return true;
@@ -122,7 +122,7 @@ export class SocketIoServerService extends BaseServerService {
 
   run(_id: string): void {
     let data: ISocketIoData = {_id: _id};
-    this.io.sockets.emit("run", data);
+    this.io.sockets.emit("node::run", data);
   }
 
   log(_id: string, level: TSocketIoLogLevel, message: string): void {
@@ -130,13 +130,13 @@ export class SocketIoServerService extends BaseServerService {
     let no = _.size(this.logs[_id]);
     let log: ISocketIoLogData = {_id: _id, no: no, level: level, message: message, timestamp: (new Date()).toISOString(), };
     this.logs[_id].push(log);
-    this.io.sockets.emit("log", log);
+    this.io.sockets.emit("node::log", log);
   }
 
   status(_id: string, status: TSocketIoStatus): void {
     let data: ISocketIoStatusData = {_id: _id, status: status};
     this.statuses[_id] = data;
-    this.io.sockets.emit("status", data);
+    this.io.sockets.emit("node::status", data);
   }
 
 }

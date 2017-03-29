@@ -11,7 +11,7 @@ import {SocketIoClientService} from "../service/socket-io-client-service";
 @Component({})
 export default class AppComponent extends BaseComponent {
 
-  protected entityService: NodeClientService = container.get(NodeClientService);
+  protected nodeClientService: NodeClientService = container.get(NodeClientService);
   protected socketIoClientService: SocketIoClientService = container.get(SocketIoClientService);
 
   protected server: ServerNodeEntity = null;
@@ -26,7 +26,8 @@ export default class AppComponent extends BaseComponent {
 
   async mounted(): Promise<void> {
     await this.socketIoClientService.initialize();
-    let entity = await this.entityService.findOne<ServerNodeEntity>(ServerNodeEntity);
+    await this.nodeClientService.initialize();
+    let entity = await this.nodeClientService.findOne<ServerNodeEntity>(ServerNodeEntity);
     this.server = entity;
   }
 
