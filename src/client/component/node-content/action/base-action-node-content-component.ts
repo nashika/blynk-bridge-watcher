@@ -1,10 +1,10 @@
 import Component from "vue-class-component";
 
-import BaseNodeComponent from "../base-node-component";
+import BaseNodeContentComponent from "../base-node-content-component";
 import {BaseActionNodeEntity} from "../../../../common/entity/node/action/base-action-node-entity";
 
 @Component({})
-export default class BaseActionNodeComponent<T extends BaseActionNodeEntity> extends BaseNodeComponent<T> {
+export default class BaseActionNodeContentComponent<T extends BaseActionNodeEntity> extends BaseNodeContentComponent<T> {
 
   EntityClass = BaseActionNodeEntity;
 

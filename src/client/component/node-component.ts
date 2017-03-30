@@ -153,10 +153,6 @@ export default class NodeComponent<T extends BaseNodeEntity> extends BaseCompone
     await this.reloadParent();
   }
 
-  protected get contentComponentName(): string {
-    return (_.kebabCase(this.entity.subType ? `${this.entity.subType}_${this.entity.type}` : this.entity.type)) + "-node-component";
-  }
-
   protected get isRunning(): boolean {
     return this.runningCount > 0;
   }

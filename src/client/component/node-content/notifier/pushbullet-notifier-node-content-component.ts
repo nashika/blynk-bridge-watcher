@@ -1,10 +1,10 @@
 import Component from "vue-class-component";
 
-import BaseNotifierNodeComponent from "./base-notifier-node-component";
+import BaseNotifierNodeContentComponent from "./base-notifier-node-content-component";
 import {PushbulletNotifierNodeEntity} from "../../../../common/entity/node/notifier/pushbullet-notifier-node-entity";
 
 @Component({})
-export default class PushbulletNotifierNodeComponent extends BaseNotifierNodeComponent<PushbulletNotifierNodeEntity> {
+export default class PushbulletNotifierNodeContentComponent extends BaseNotifierNodeContentComponent<PushbulletNotifierNodeEntity> {
 
   EntityClass = PushbulletNotifierNodeEntity;
 

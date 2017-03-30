@@ -1,14 +1,14 @@
 import Component from "vue-class-component";
 
 import {BridgeNodeEntity} from "../../../common/entity/node/bridge-node-entity";
-import BaseNodeComponent from "./base-node-component";
+import BaseNodeContentComponent from "./base-node-content-component";
 import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
-import BoardNodeComponent from "./board-node-component";
+import BoardNodeContentComponent from "./board-node-content-component";
 
 @Component({})
-export default class BridgeNodeComponent extends BaseNodeComponent<BridgeNodeEntity> {
+export default class BridgeNodeContentComponent extends BaseNodeContentComponent<BridgeNodeEntity> {
 
-  parent: BoardNodeComponent;
+  parent: BoardNodeContentComponent;
 
   EntityClass = BridgeNodeEntity;
   actions: BaseActionNodeEntity[] = null;

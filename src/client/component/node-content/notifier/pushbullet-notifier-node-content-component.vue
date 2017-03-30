@@ -5,4 +5,4 @@
 <style scoped lang="scss">
 </style>
 
-<script lang="ts" src="./pushbullet-notifier-node-component.ts"></script>
+<script lang="ts" src="./pushbullet-notifier-node-content-component.ts"></script>

@@ -14,7 +14,7 @@
               i.fa(:class="'fa-' + EntityClass.params.icon")
               | &nbsp;{{title}}
       .data.content
-        component(:is="contentComponentName", :entity="entity")
+        component(:is="_.kebabCase((entity.subType || '') + ' ' + this.entity.type) + '-node-content-component'", :entity="entity")
       .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
       .data.action
         b-dropdown(size="sm", :variant="buttonColor", :right="true")

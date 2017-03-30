@@ -9,4 +9,4 @@
 <style scoped lang="scss">
 </style>
 
-<script lang="ts" src="./server-node-component.ts"></script>
+<script lang="ts" src="./server-node-content-component.ts"></script>

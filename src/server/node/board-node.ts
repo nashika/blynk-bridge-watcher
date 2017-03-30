@@ -26,7 +26,7 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
   }
 
   async initialize(): Promise<void> {
-    _.defaults(this.entity, {addr: "", port: 8442});
+    _.defaults(this.entity, {addr: "", port: 8442, token: ""});
     this.sendDeferred = {};
     this.log("debug", `Auth dummy blynk board was started.`);
     let options = {

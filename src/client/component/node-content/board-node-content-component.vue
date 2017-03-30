@@ -4,4 +4,4 @@
 <style scoped lang="scss">
 </style>
 
-<script lang="ts" src="./board-node-component.ts"></script>
+<script lang="ts" src="./board-node-content-component.ts"></script>

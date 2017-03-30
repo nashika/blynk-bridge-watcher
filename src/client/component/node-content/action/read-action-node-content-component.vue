@@ -5,4 +5,4 @@
 <style scoped lang="scss">
 </style>
 
-<script lang="ts" src="./read-action-node-component.ts"></script>
+<script lang="ts" src="./read-action-node-content-component.ts"></script>

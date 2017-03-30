@@ -12,7 +12,7 @@ import {container} from "../../../common/inversify.config";
     },
   },
 })
-export default class BaseNodeComponent<T extends BaseNodeEntity> extends BaseComponent {
+export default class BaseNodeContentComponent<T extends BaseNodeEntity> extends BaseComponent {
 
   entity: T;
 
