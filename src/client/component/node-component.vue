@@ -28,10 +28,11 @@
               template(v-if="status == 'connecting'"): i.fa.fa-spinner.fa-pulse
               template(v-if="status == 'processing'"): i.fa.fa-refresh.fa-spin
           b-dropdown-item(@click="logs()") #[i.fa.fa-terminal] Show Logs
-          b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
-          b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
-          b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
-          b-dropdown-item(v-if="parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
+          template(v-if="status == 'stop'")
+            b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
+            b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
+            b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
+            b-dropdown-item(v-if="parent && !isLast", @click="move(true)") #[i.fa.fa-arrow-down] Move Down
     template(v-for="ChildEntityClass in EntityClass.params.children")
       .child-node-components(:class="ChildEntityClass.params.type")
         .node
