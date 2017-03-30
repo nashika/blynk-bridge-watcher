@@ -1,5 +1,11 @@
 <template lang="pug">
   .node-component
+    template(v-if="entity.type == 'server'")
+      .node
+        .data.title Node
+        .data.content Content
+        .data.log Log
+        .data.action Act
     .node
       .data.title
         .header(:style="{paddingLeft: depthPadding(depth) + 'px'}")
@@ -22,10 +28,6 @@
               template(v-if="status == 'connecting'"): i.fa.fa-spinner.fa-pulse
               template(v-if="status == 'processing'"): i.fa.fa-refresh.fa-spin
           b-dropdown-item(@click="logs()") #[i.fa.fa-terminal] Show Logs
-          template(v-if="EntityClass.params.type == 'server' && status != 'stop'")
-            b-dropdown-item(@click="stop()") #[i.fa.fa-power-off] Stop
-          template(v-if="EntityClass.params.type == 'server' && status == 'stop'")
-            b-dropdown-item(@click="start()") #[i.fa.fa-power-off] Start
           b-dropdown-item(@click="edit()") #[i.fa.fa-pencil] Edit
           b-dropdown-item(v-if="parent", @click="remove()") #[i.fa.fa-trash-o] Remove
           b-dropdown-item(v-if="parent && !isFirst", @click="move(false)") #[i.fa.fa-arrow-up] Move Up
@@ -77,8 +79,8 @@
       height: $height;
       border-right: 1px solid $mono-lighter;
       padding: 3px;
-      display: flex;
-      align-items: center;
+      //display: flex;
+      //align-items: center;
 
       &.title {
         flex: 1 1 300px;
