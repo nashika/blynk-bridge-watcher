@@ -38,13 +38,13 @@ export default class EditComponent extends BaseComponent {
     return this.nodeClientService.getNodeOptions(filter);
   }
 
-  protected ok() {
+  protected submit() {
+    if (this.deffered) this.deffered(this.editEntity);
     (<any>this.$refs.modal).hide();
-    this.deffered(this.editEntity);
   }
 
-  protected cancel() {
-    this.deffered(null);
+  protected hidden() {
+    if (this.deffered) this.deffered(null);
   }
 
 }

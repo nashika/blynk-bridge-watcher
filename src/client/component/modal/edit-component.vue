@@ -1,7 +1,7 @@
 <template lang="pug">
-  b-modal(title="Edit", ref="modal", @ok="ok", @cancel="cancel")
+  b-modal(title="Edit", ref="modal", :hide-footer="true", @hidden="hidden()")
     template(v-if="EntityClass")
-      form(@submit.stop.prevent="ok()")
+      form(@submit.stop.prevent="submit")
         .form-group(v-for="(field, fieldName) in EntityClass.params.fields")
           template(v-if="!field.hidden")
             label {{_.startCase(fieldName)}}
@@ -16,6 +16,8 @@
               select.form-control(v-model="editEntity[fieldName]", :disabled="field.disabled")
                 option(v-if="!field.required", :value="undefined") Empty
                 option(v-for="(label, _id) in getNodeOptions(field.filter)", :value="_id") {{label}}
+        .form-group
+          button.btn.btn-primary.btn-block(type="submit", ref="submit") Commit
 </template>
 
 <script lang="ts" src="./edit-component.ts"></script>
