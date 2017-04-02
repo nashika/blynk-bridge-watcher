@@ -4,6 +4,7 @@ import BaseComponent from "../base-component";
 import {BaseNodeEntity} from "../../../common/entity/node/base-node-entity";
 import {NodeClientService} from "../../service/node-client-service";
 import {container} from "../../../common/inversify.config";
+import NodeComponent from "../node-component";
 
 @Component({
   props: {
@@ -14,9 +15,14 @@ import {container} from "../../../common/inversify.config";
 })
 export default class BaseNodeContentComponent<T extends BaseNodeEntity> extends BaseComponent {
 
+  $parent: NodeComponent<T>;
   entity: T;
 
   EntityClass: typeof BaseNodeEntity = BaseNodeEntity;
   protected nodeClientService: NodeClientService = container.get(NodeClientService);
+
+  get status(): string {
+    return this.$parent.status;
+  }
 
 }

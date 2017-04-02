@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Run Now
+  b-button(size="sm", :block="true", variant="secondary", @click="run()", :disabled="status != 'ready'") Run Now
 </template>
 
 <style scoped lang="scss">
