@@ -16,7 +16,7 @@ import {WriteActionNode} from "./node/action/write-action-node";
 import {BridgeNode} from "./node/bridge/bridge-node";
 import {LogNotifierNode} from "./node/notifier/log-notifier-node";
 import {PushbulletNotifierNode} from "./node/notifier/pushbullet-notifier-node";
-import {BoardNode} from "./node/board-node";
+import {BoardNode} from "./node/board/board-node";
 import {JobNode} from "./node/job-node";
 import {ServerNode} from "./node/server-node";
 

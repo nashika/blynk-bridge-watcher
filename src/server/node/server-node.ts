@@ -1,7 +1,7 @@
 import {injectable} from "inversify";
 
 import {BaseNode} from "./base-node";
-import {BoardNode} from "./board-node";
+import {BoardNode} from "./board/board-node";
 import {NotifierNode} from "./notifier/notifier-node";
 import {JobNode} from "./job-node";
 import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
