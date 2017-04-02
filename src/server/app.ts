@@ -6,6 +6,7 @@ import http = require("http");
 
 import commander = require("commander");
 import _ = require("lodash");
+import {getLogger} from "log4js";
 
 import "./inversify.config";
 import {container} from "../common/inversify.config";
@@ -13,6 +14,7 @@ import {SocketIoServerService} from "./service/socket-io-server-service";
 import {app} from "./app-express";
 import {NodeServerService} from "./service/node-server-service";
 
+let logger = getLogger("system");
 let pjson = require("../../package");
 
 commander
@@ -79,5 +81,7 @@ function onListening() {
 
 
 // initialize
-container.get<SocketIoServerService>(SocketIoServerService).initialize(server);
-container.get<NodeServerService>(NodeServerService).initialize();
+(async () => {
+  await container.get<SocketIoServerService>(SocketIoServerService).initialize(server);
+  await container.get<NodeServerService>(NodeServerService).initialize();
+})().catch(err => logger.fatal(err));
