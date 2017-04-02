@@ -34,10 +34,6 @@ export default class EditComponent extends BaseComponent {
     return result;
   }
 
-  protected getNodeOptions(filter: string): {[_id: string]: string} {
-    return this.nodeClientService.getNodeOptions(filter);
-  }
-
   protected submit() {
     if (this.deffered) this.deffered(this.editEntity);
     (<any>this.$refs.modal).hide();
