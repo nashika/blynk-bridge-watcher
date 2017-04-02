@@ -41,14 +41,13 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
     } catch (e) {
       this.log("error", e);
     }
-
     this.log("debug", `Construct Input Virtual Pin 0 was started.`);
     this.inputVPin = new this.blynk.VirtualPin(0);
     this.log("debug", `Construct Input Virtual Pin 0 was finished.`);
-    this.inputVPin.on("write", this.onInputVPin);
-    this.blynk.on("connect", this.onConnect);
-    this.blynk.on("disconnect", this.onDisconnect);
-    this.blynk.on("error", this.onError);
+    this.inputVPin.on("write", (param: string[]) => this.onInputVPin(param));
+    this.blynk.on("connect", () => this.onConnect());
+    this.blynk.on("disconnect", () => this.onDisconnect());
+    this.blynk.on("error", (err: any) => this.onError(err));
     await super.initialize();
   }
 
@@ -60,25 +59,25 @@ export class BoardNode extends BaseNode<BoardNodeEntity> {
     await super.finalize();
   }
 
-  private onConnect = async (): Promise<void> => {
+  private async onConnect(): Promise<void> {
     this.log("debug", `Auth dummy blynk board was finished.`);
     this.log("info", `Board ${this.entity._id} was connected.`);
     for (let bridge of this.bridges)
       await bridge.connect();
     this.status = "ready";
-  };
+  }
 
-  private onDisconnect = async (): Promise<void> => {
+  private async onDisconnect(): Promise<void> {
     this.status = "error";
     this.log("info", `Board ${this.entity._id} was disconnected.`);
-  };
+  }
 
-  private onError = (e: any): void => {
+  private async onError(e: any): Promise<void> {
     this.status = "error";
     this.log("error", `Board ${this.entity._id} was error. error="${e}"`);
   };
 
-  private onInputVPin = (param: string[]): void => {
+  private async onInputVPin(param: string[]): Promise<void> {
     this.log("trace", `Receive data='${param[0]}'`);
     let params = param[0].split(",");
     let id: string = params[0];

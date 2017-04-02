@@ -35,11 +35,10 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
     this.nodeServerService.status(this.entity._id, value);
   }
 
-  initializeWrap(): Promise<void> {
+  async initializeWrap(): Promise<void> {
     this.log("debug", `Initialize process was started.`);
-    return this.initialize().then(() => {
-      this.log("debug", `Initialize process was finished.`)
-    });
+    await this.initialize();
+    this.log("debug", `Initialize process was finished.`)
   }
 
   protected async initialize(): Promise<void> {
@@ -49,7 +48,7 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
       this.log("debug", `Construct child '${ChildEntityClass.params.type}' objects was started.`);
       let childNodes: BaseNode<BaseNodeEntity>[] = [];
       _.set(this, key, childNodes);
-      let entities = await this.nodeServerService.find({_parent: this.entity._id});
+      let entities = await this.nodeServerService.find({type: ChildEntityClass.params.type, _parent: this.entity._id});
       for (let entity of entities) {
         let node = await this.nodeServerService.generate(this, entity);
         childNodes.push(node);
@@ -58,11 +57,10 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
     }
   }
 
-  finalizeWrap(): Promise<void> {
+  async finalizeWrap(): Promise<void> {
     this.log("debug", `Finalize process was started.`);
-    return this.finalize().then(() => {
-      this.log("debug", `Finalize process was finished.`);
-    });
+    await this.finalize();
+    this.log("debug", `Finalize process was finished.`);
   }
 
   protected async finalize(): Promise<void> {

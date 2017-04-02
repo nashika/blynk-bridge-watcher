@@ -14,9 +14,9 @@ export class LogActionNode extends ActionNode<LogActionNodeEntity> {
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
+  async initialize(): Promise<void> {
     _.defaults(this.entity, {level: "info"});
-    return super.initialize();
+    await super.initialize();
   }
 
   run(...args: string[]) {

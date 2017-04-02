@@ -13,16 +13,16 @@ export abstract class ActionNode<T extends BaseActionNodeEntity> extends BaseNod
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
+  async initialize(): Promise<void> {
     _.defaults(this.entity, {aliases: []});
-    return super.initialize();
+    await super.initialize();
   }
 
-  connect(): void {
+  async connect(): Promise<void> {
     this.status = "ready";
   }
 
-  disconnect(): void {
+  async disconnect(): Promise<void> {
     this.status = "error";
   }
 

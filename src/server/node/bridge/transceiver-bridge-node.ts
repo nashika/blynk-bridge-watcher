@@ -7,12 +7,12 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
-    return super.initialize();
+  async initialize(): Promise<void> {
+    await super.initialize();
   }
 
-  send(command: string, params: any[]): Promise<string[]> {
-    return new Promise((resolve, reject) => {
+  async send(command: string, params: any[]): Promise<string[]> {
+    return await new Promise<string[]>((resolve, reject) => {
       if (command != "pi" && this.status != "ready")
         return this.log("warn", `Send command='${command}' params=${JSON.stringify(params)} can not run. Bridge status='${this.status}' is not ready.`);
       let pin = params[0] || 0;
@@ -22,9 +22,9 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
       this.log("trace", `Send data='${output}'`);
       this.widgetBridge.virtualWrite(0, output);
     });
-  };
+  }
 
-  write = (type: string, pin: number, value: number) => {
+  write(type: string, pin: number, value: number) {
     if (this.status != "ready")
       return;
     switch (type) {
