@@ -5,7 +5,4 @@ import {LogActionNodeEntity} from "../../../../common/entity/node/action/log-act
 
 @Component({})
 export default class LogActionNodeContentComponent extends BaseActionNodeContentComponent<LogActionNodeEntity> {
-
-  EntityClass = LogActionNodeEntity;
-
 }

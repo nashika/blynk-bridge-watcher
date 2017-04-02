@@ -25,4 +25,8 @@ export default class BaseNodeContentComponent<T extends BaseNodeEntity> extends 
     return this.$parent.status;
   }
 
+  async send(...args: any[]): Promise<void> {
+    await this.nodeClientService.send(this.entity._id, ...args);
+  }
+
 }

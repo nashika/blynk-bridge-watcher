@@ -6,8 +6,6 @@ import {ReadActionNodeEntity} from "../../../../common/entity/node/action/read-a
 @Component({})
 export default class ReadActionNodeContentComponent extends BaseActionNodeContentComponent<ReadActionNodeEntity> {
 
-  EntityClass = ReadActionNodeEntity;
-
   get shortPinType(): string {
     switch (this.entity.pinType) {
       case "digital":

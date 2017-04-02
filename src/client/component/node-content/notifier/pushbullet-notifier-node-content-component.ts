@@ -5,7 +5,4 @@ import {PushbulletNotifierNodeEntity} from "../../../../common/entity/node/notif
 
 @Component({})
 export default class PushbulletNotifierNodeContentComponent extends BaseNotifierNodeContentComponent<PushbulletNotifierNodeEntity> {
-
-  EntityClass = PushbulletNotifierNodeEntity;
-
 }

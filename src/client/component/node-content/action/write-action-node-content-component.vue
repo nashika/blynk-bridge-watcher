@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run()", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Write {{entity.value}} to {{shortPinType}}{{entity.pin}}
+  b-button(:block="true", :disabled="status != 'ready'", size="sm", variant="secondary", @click="send()") Write {{entity.value}} to {{shortPinType}}{{entity.pin}}
 </template>
 
 <style scoped lang="scss">

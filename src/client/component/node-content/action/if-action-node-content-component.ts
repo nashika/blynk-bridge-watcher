@@ -5,11 +5,4 @@ import {IfActionNodeEntity} from "../../../../common/entity/node/action/if-actio
 
 @Component({})
 export default class IfActionNodeContentComponent extends BaseActionNodeContentComponent<IfActionNodeEntity> {
-
-  EntityClass = IfActionNodeEntity;
-
-  run(flag: boolean) {
-    this.nodeClientService.send(this.entity._id, flag ? "if" : "else");
-  }
-
 }

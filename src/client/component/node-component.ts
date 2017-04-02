@@ -63,10 +63,6 @@ export default class NodeComponent<T extends BaseNodeEntity> extends BaseCompone
     return `${this.entity._id} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.subType || "")}${_.startCase(this.EntityClass.params.type)}]`;
   }
 
-  run(..._args: any[]) {
-    this.nodeClientService.send(this.entity._id);
-  }
-
   notifyRun() {
     this.runningCount++;
     setTimeout(() => this.runningCount--, 1000);

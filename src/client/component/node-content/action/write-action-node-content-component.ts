@@ -6,8 +6,6 @@ import {WriteActionNodeEntity} from "../../../../common/entity/node/action/write
 @Component({})
 export default class WriteActionNodeContentComponent extends BaseActionNodeContentComponent<WriteActionNodeEntity> {
 
-  EntityClass = WriteActionNodeEntity;
-
   get shortPinType(): string {
     switch (this.entity.pinType) {
       case "digital":

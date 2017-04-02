@@ -1,5 +1,5 @@
 <template lang="pug">
-  b-button(size="sm", :block="true", variant="secondary", @click="run()", :disabled="status != 'ready'") Run Now
+  b-button(:block="true", :disabled="status != 'ready'", size="sm", variant="secondary", @click="send()") Run Now
 </template>
 
 <style scoped lang="scss">

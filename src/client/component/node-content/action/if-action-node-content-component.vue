@@ -1,9 +1,9 @@
 <template lang="pug">
   .row.no-gutter.w-100
     .col-6
-      button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run(true)", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") If
+      b-button(:block="true", :disabled="status != 'ready'", size="sm", variant="secondary", @click="send('if')") If
     .col-6
-      button.btn.btn-secondary.btn-block.btn-sm(type="button", @click="run(false)", :class="{disabled: status != 'ready'}", :disabled="status != 'ready'") Else
+      b-button(:block="true", :disabled="status != 'ready'", size="sm", variant="secondary", @click="send('else')") Else
 </template>
 
 <style scoped lang="scss">

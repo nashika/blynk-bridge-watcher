@@ -30,7 +30,7 @@ export class NodeClientService extends BaseClientService {
   initialize() {
     this.socketIoClientService.on(this, "connect", this.onConnect);
     this.socketIoClientService.on(this, "disconnect", this.onDisconnect);
-    this.socketIoClientService.on(this, "node::run", this.onRun);
+    this.socketIoClientService.on(this, "node::send", this.onRun);
     this.socketIoClientService.on(this, "node::log", this.onLog);
     this.socketIoClientService.on(this, "node::status", this.onStatus);
   }
@@ -148,7 +148,7 @@ export class NodeClientService extends BaseClientService {
   }
 
   getNodeOptions(filter: string): { [_id: string]: string } {
-    let components: { [_id: string]: NodeComponent<BaseNodeEntity> } = _.pickBy<{ [_id: string]: NodeComponent<BaseNodeEntity> }, { [_id: string]: NodeComponent<BaseNodeEntity> }>(this.components, component => !filter || filter == component.EntityClass.params.tableName);
+    let components: { [_id: string]: NodeComponent<BaseNodeEntity> } = _.pickBy<{ [_id: string]: NodeComponent<BaseNodeEntity> }, { [_id: string]: NodeComponent<BaseNodeEntity> }>(this.components, component => !filter || filter == component.EntityClass.params.type);
     return _.mapValues(components, (component: NodeComponent<BaseNodeEntity>) => component.title)
   }
 

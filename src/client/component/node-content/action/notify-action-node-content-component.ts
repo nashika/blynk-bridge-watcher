@@ -5,7 +5,4 @@ import {NotifyActionNodeEntity} from "../../../../common/entity/node/action/noti
 
 @Component({})
 export default class NotifyActionNodeContentComponent extends BaseActionNodeContentComponent<NotifyActionNodeEntity> {
-
-  EntityClass = NotifyActionNodeEntity;
-
 }

@@ -5,7 +5,4 @@ import {BaseActionNodeEntity} from "../../../../common/entity/node/action/base-a
 
 @Component({})
 export default class BaseActionNodeContentComponent<T extends BaseActionNodeEntity> extends BaseNodeContentComponent<T> {
-
-  EntityClass = BaseActionNodeEntity;
-
 }

@@ -5,7 +5,4 @@ import {LogNotifierNodeEntity} from "../../../../common/entity/node/notifier/log
 
 @Component({})
 export default class LogNotifierNodeContentComponent extends BaseNotifierNodeContentComponent<LogNotifierNodeEntity> {
-
-  EntityClass = LogNotifierNodeEntity;
-
 }
