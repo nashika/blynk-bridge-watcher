@@ -17,14 +17,9 @@ export class BaseBridgeNode extends BaseNode<BridgeNodeEntity> {
     super(nodeServerService);
   }
 
-  async initialize(): Promise<void> {
+  async connect(): Promise<void> {
     this.log("info", `Connect bridge was started.`);
     this.widgetBridge = this.parent.createNewBridge();
-    return super.initialize();
-  }
-
-  async connect(): Promise<void> {
-    this.log("info", `Connection started.`);
     this.widgetBridge.setAuthToken(this.entity.token);
   }
 

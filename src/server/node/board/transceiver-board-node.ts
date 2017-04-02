@@ -1,5 +1,5 @@
+import {VirtualPin} from "blynk-library";
 import * as _ from "lodash";
-import {VirtualPin, WidgetBridge} from "blynk-library";
 
 import {BaseBoardNode} from "./base-board-node";
 import {uid} from "../../../common/util/uid";
@@ -10,7 +10,7 @@ export class TransceiverBoardNode extends BaseBoardNode {
   private SEND_TIMEOUT: number = 10000;
 
   private inputVPin: VirtualPin;
-  private sendDeferred: { [key: string]: { resolve: (value: string[]) => void, reject: (reason: any) => void } };
+  private requestDeferreds: { [key: string]: { resolve: (value: string[]) => void, reject: (reason: any) => void, timer: any } };
 
   constructor(protected nodeServerService: NodeServerService) {
     super(nodeServerService);
@@ -18,7 +18,7 @@ export class TransceiverBoardNode extends BaseBoardNode {
 
   async initialize(): Promise<void> {
     await super.initialize();
-    this.sendDeferred = {};
+    this.requestDeferreds = {};
     this.log("debug", `Construct Input Virtual Pin 0 was started.`);
     this.inputVPin = new this.blynk.VirtualPin(0);
     this.log("debug", `Construct Input Virtual Pin 0 was finished.`);
@@ -27,6 +27,7 @@ export class TransceiverBoardNode extends BaseBoardNode {
 
   async finalize(): Promise<void> {
     this.inputVPin.removeListener("write", this.onWriteInputVPin);
+    _.each(this.requestDeferreds, requestDeffered => clearTimeout(requestDeffered.timer));
     await super.finalize();
   }
 
@@ -50,35 +51,31 @@ export class TransceiverBoardNode extends BaseBoardNode {
     }
   };
 
-  createNewBridge(): WidgetBridge {
-    return new this.blynk.WidgetBridge(_.size(this.bridges) + 1);
-  }
-
   setRequest(resolve: (value: string[]) => void, reject: (reason: any) => void): string {
     let requestId: string;
     do
       requestId = uid(3);
-    while (this.sendDeferred[requestId]);
-    this.sendDeferred[requestId] = {resolve: resolve, reject: reject};
-    setTimeout(this.requestFailure, this.SEND_TIMEOUT, requestId);
+    while (this.requestDeferreds[requestId]);
+    let timer = setTimeout(this.requestFailure, this.SEND_TIMEOUT, requestId);
+    this.requestDeferreds[requestId] = {resolve: resolve, reject: reject, timer: timer};
     return requestId;
   }
 
-  protected requestFailure = (requestId: string) => {
-    if (!this.sendDeferred[requestId])
+  private requestFailure = (requestId: string) => {
+    if (!this.requestDeferreds[requestId])
       return;
     let msg = `Request key='${requestId}' was timeout.`;
     this.log("debug", msg);
-    let reject = this.sendDeferred[requestId].reject;
-    delete this.sendDeferred[requestId];
+    let reject = this.requestDeferreds[requestId].reject;
+    delete this.requestDeferreds[requestId];
     reject(msg);
   };
 
   private response(requestId: string, args: string[]): void {
-    if (!this.sendDeferred[requestId])
+    if (!this.requestDeferreds[requestId])
       return this.log("warn", `Request callback key='${requestId}' not found.`);
-    let resolve = this.sendDeferred[requestId].resolve;
-    delete this.sendDeferred[requestId];
+    let resolve = this.requestDeferreds[requestId].resolve;
+    delete this.requestDeferreds[requestId];
     resolve(args);
   };
 
