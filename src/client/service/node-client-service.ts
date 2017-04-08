@@ -30,7 +30,7 @@ export class NodeClientService extends BaseClientService {
   initialize() {
     this.socketIoClientService.on(this, "connect", this.onConnect);
     this.socketIoClientService.on(this, "disconnect", this.onDisconnect);
-    this.socketIoClientService.on(this, "node::send", this.onRun);
+    this.socketIoClientService.on(this, "node::run", this.onRun);
     this.socketIoClientService.on(this, "node::log", this.onLog);
     this.socketIoClientService.on(this, "node::status", this.onStatus);
   }
