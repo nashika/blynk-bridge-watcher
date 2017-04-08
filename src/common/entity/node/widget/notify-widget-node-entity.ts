@@ -1,17 +1,17 @@
 import _ = require("lodash");
 
-import {BaseActionNodeEntity} from "./base-action-node-entity";
+import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
 import {INodeEntityParams} from "../base-node-entity";
 
-export class NotifyActionNodeEntity extends BaseActionNodeEntity {
+export class NotifyWidgetNodeEntity extends BaseWidgetNodeEntity {
 
   static params: INodeEntityParams = {
     table: "node",
-    type: "action",
+    type: "widget",
     subType: "notify",
     icon: "bell",
     children: {},
-    fields: _.merge({}, BaseActionNodeEntity.params.fields, {
+    fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       notifier: {
         type: "node",
         filter: "notifier",

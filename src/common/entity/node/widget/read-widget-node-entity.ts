@@ -1,17 +1,17 @@
 import _ = require("lodash");
 
-import {BaseActionNodeEntity} from "./base-action-node-entity";
+import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
 import {INodeEntityParams} from "../base-node-entity";
 
-export class WriteActionNodeEntity extends BaseActionNodeEntity {
+export class ReadWidgetNodeEntity extends BaseWidgetNodeEntity {
 
   static params: INodeEntityParams = {
     table: "node",
-    type: "action",
-    subType: "write",
-    icon: "pencil-square-o",
+    type: "widget",
+    subType: "read",
+    icon: "eye",
     children: {},
-    fields: _.merge({}, BaseActionNodeEntity.params.fields, {
+    fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       pinType: {
         type: "select",
         options: {
@@ -26,8 +26,9 @@ export class WriteActionNodeEntity extends BaseActionNodeEntity {
         type: "number",
         required: true,
       },
-      value: {
-        type: "number",
+      next: {
+        type: "node",
+        filter: "widget",
         required: true,
       },
     }),
@@ -35,6 +36,6 @@ export class WriteActionNodeEntity extends BaseActionNodeEntity {
 
   pinType: string;
   pin: number;
-  value: number;
+  next: string;
 
 }

@@ -9,4 +9,4 @@
 <style scoped lang="scss">
 </style>
 
-<script lang="ts" src="./if-action-node-content-component.ts"></script>
+<script lang="ts" src="./if-widget-node-content-component.ts"></script>

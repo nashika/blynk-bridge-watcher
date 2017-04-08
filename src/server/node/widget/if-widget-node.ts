@@ -1,12 +1,12 @@
 import {injectable} from "inversify";
 
-import {ActionNode} from "./action-node";
-import {IfActionNodeEntity} from "../../../common/entity/node/action/if-action-node-entity";
-import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
+import {BaseWidgetNode} from "./base-widget-node";
+import {IfWidgetNodeEntity} from "../../../common/entity/node/widget/if-widget-node-entity";
+import {BaseWidgetNodeEntity} from "../../../common/entity/node/widget/base-widget-node-entity";
 import {NodeServerService} from "../../service/node-server-service";
 
 @injectable()
-export class IfActionNode extends ActionNode<IfActionNodeEntity> {
+export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
 
   constructor(protected nodeServerService: NodeServerService) {
     super(nodeServerService);
@@ -15,7 +15,7 @@ export class IfActionNode extends ActionNode<IfActionNodeEntity> {
   run(...args: string[]): void {
     super.run();
     if (args.length < 1)
-      return this.log("warn", `If action called no argument.`);
+      return this.log("warn", `If widget called no argument.`);
     let result = false;
     if (args[0] == "if") {
       result = true;
@@ -24,7 +24,7 @@ export class IfActionNode extends ActionNode<IfActionNodeEntity> {
     } else {
       let arg = parseInt(args[0]);
       if (isNaN(arg))
-        return this.log("warn", `If action called not integer argument. arg='${args[0]}'`);
+        return this.log("warn", `If widget called not integer argument. arg='${args[0]}'`);
       switch (this.entity.operator) {
         case "$eq":
           result = arg == this.entity.value;
@@ -47,15 +47,15 @@ export class IfActionNode extends ActionNode<IfActionNodeEntity> {
         default:
           return this.log("warn", `Operator '${this.entity.operator}' is invalid.`);
       }
-      this.log("debug", `If action. '(${arg} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
+      this.log("debug", `If widget. '(${arg} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
     }
-    let action: ActionNode<BaseActionNodeEntity>;
+    let widget: BaseWidgetNode<BaseWidgetNodeEntity>;
     if (result && this.entity.then)
-      action = <ActionNode<BaseActionNodeEntity>>this.nodeServerService.getNodeById(this.entity.then);
+      widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.then);
     else if (!result && this.entity.else)
-      action = <ActionNode<BaseActionNodeEntity>>this.nodeServerService.getNodeById(this.entity.else);
-    if (action)
-      action.run(...args);
+      widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.else);
+    if (widget)
+      widget.run(...args);
   };
 
 }

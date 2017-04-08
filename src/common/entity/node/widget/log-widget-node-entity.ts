@@ -1,18 +1,18 @@
 import _ = require("lodash");
 
-import {BaseActionNodeEntity} from "./base-action-node-entity";
+import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
 import {TSocketIoLogLevel} from "../../../util/socket-io-util";
 import {INodeEntityParams} from "../base-node-entity";
 
-export class LogActionNodeEntity extends BaseActionNodeEntity {
+export class LogWidgetNodeEntity extends BaseWidgetNodeEntity {
 
   static params: INodeEntityParams = {
     table: "node",
-    type: "action",
+    type: "widget",
     subType: "log",
     icon: "terminal",
     children: {},
-    fields: _.merge({}, BaseActionNodeEntity.params.fields, {
+    fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       level: {
         type: "select",
         options: {

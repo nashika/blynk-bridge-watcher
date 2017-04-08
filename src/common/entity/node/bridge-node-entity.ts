@@ -1,6 +1,6 @@
 import _ = require("lodash");
 
-import {BaseActionNodeEntity} from "./action/base-action-node-entity";
+import {BaseWidgetNodeEntity} from "./widget/base-widget-node-entity";
 import {BaseNodeEntity, INodeEntityParams} from "./base-node-entity";
 
 export class BridgeNodeEntity extends BaseNodeEntity {
@@ -10,7 +10,7 @@ export class BridgeNodeEntity extends BaseNodeEntity {
     type: "bridge",
     icon: "plug",
     children: {
-      actions: BaseActionNodeEntity,
+      widgets: BaseWidgetNodeEntity,
     },
     fields: _.merge({}, BaseNodeEntity.params.fields, {
       token: {

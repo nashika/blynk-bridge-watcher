@@ -3,12 +3,12 @@ import util = require("util");
 import _ = require("lodash");
 import {injectable} from "inversify";
 
-import {ActionNode} from "./action-node";
-import {LogActionNodeEntity} from "../../../common/entity/node/action/log-action-node-entity";
+import {BaseWidgetNode} from "./base-widget-node";
+import {LogWidgetNodeEntity} from "../../../common/entity/node/widget/log-widget-node-entity";
 import {NodeServerService} from "../../service/node-server-service";
 
 @injectable()
-export class LogActionNode extends ActionNode<LogActionNodeEntity> {
+export class LogWidgetNode extends BaseWidgetNode<LogWidgetNodeEntity> {
 
   constructor(protected nodeServerService: NodeServerService) {
     super(nodeServerService);

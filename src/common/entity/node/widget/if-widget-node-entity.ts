@@ -1,17 +1,17 @@
 import _ = require("lodash");
 
-import {BaseActionNodeEntity} from "./base-action-node-entity";
+import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
 import {INodeEntityParams} from "../base-node-entity";
 
-export class IfActionNodeEntity extends BaseActionNodeEntity {
+export class IfWidgetNodeEntity extends BaseWidgetNodeEntity {
 
   static params: INodeEntityParams = {
     table: "node",
-    type: "action",
+    type: "widget",
     subType: "if",
     icon: "code-fork",
     children: {},
-    fields: _.merge({}, BaseActionNodeEntity.params.fields, {
+    fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       operator: {
         type: "select",
         options: {
@@ -31,12 +31,12 @@ export class IfActionNodeEntity extends BaseActionNodeEntity {
       },
       then: {
         type: "node",
-        filter: "action",
+        filter: "widget",
         required: false,
       },
       else: {
         type: "node",
-        filter: "action",
+        filter: "widget",
         required: false,
       },
     }),

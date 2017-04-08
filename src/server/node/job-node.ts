@@ -5,8 +5,8 @@ import {CronJob} from "cron";
 import {BaseNode} from "./base-node";
 import {ServerNode} from "./server-node";
 import {JobNodeEntity} from "../../common/entity/node/job-node-entity";
-import {ActionNode} from "./action/action-node";
-import {BaseActionNodeEntity} from "../../common/entity/node/action/base-action-node-entity";
+import {BaseWidgetNode} from "./widget/base-widget-node";
+import {BaseWidgetNodeEntity} from "../../common/entity/node/widget/base-widget-node-entity";
 import {NodeServerService} from "../service/node-server-service";
 
 @injectable()
@@ -43,12 +43,12 @@ export class JobNode extends BaseNode<JobNodeEntity> {
 
   run(): void {
     super.run();
-    let action = <ActionNode<BaseActionNodeEntity>>this.nodeServerService.getNodeById(this.entity.action);
-    if (action.status != "ready") {
-      return action.log("warn", `Job '${this.entity._id}' can not run. Action '${action.entity._id}' status='${action.status}' is not ready.`);
+    let widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.widget);
+    if (widget.status != "ready") {
+      return widget.log("warn", `Job '${this.entity._id}' can not run. Widget '${widget.entity._id}' status='${widget.status}' is not ready.`);
     }
     this.log("debug", `Job '${this.entity._id}' was kicked.`);
-    action.run();
+    widget.run();
   }
 
 }

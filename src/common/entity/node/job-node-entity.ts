@@ -15,9 +15,9 @@ export class JobNodeEntity extends BaseNodeEntity {
         default: "0 0 0 * * *",
         required: true,
       },
-      action: {
+      widget: {
         type: "node",
-        filter: "action",
+        filter: "widget",
         required: true,
       },
     }),
@@ -26,6 +26,6 @@ export class JobNodeEntity extends BaseNodeEntity {
   cronTime: string;
   board: string;
   bridge: string;
-  action: string;
+  widget: string;
 
 }

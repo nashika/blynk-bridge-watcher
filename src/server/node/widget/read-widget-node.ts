@@ -1,12 +1,12 @@
 import {injectable} from "inversify";
 
-import {ReadActionNodeEntity} from "../../../common/entity/node/action/read-action-node-entity";
-import {ActionNode} from "./action-node";
-import {BaseActionNodeEntity} from "../../../common/entity/node/action/base-action-node-entity";
+import {ReadWidgetNodeEntity} from "../../../common/entity/node/widget/read-widget-node-entity";
+import {BaseWidgetNode} from "./base-widget-node";
+import {BaseWidgetNodeEntity} from "../../../common/entity/node/widget/base-widget-node-entity";
 import {NodeServerService} from "../../service/node-server-service";
 
 @injectable()
-export class ReadActionNode extends ActionNode<ReadActionNodeEntity> {
+export class ReadWidgetNode extends BaseWidgetNode<ReadWidgetNodeEntity> {
 
   constructor(protected nodeServerService: NodeServerService) {
     super(nodeServerService);
@@ -14,7 +14,7 @@ export class ReadActionNode extends ActionNode<ReadActionNodeEntity> {
 
   run(..._args: string[]) {
     super.run();
-    this.log("debug", `Read action. type=${this.entity.pinType}, pin=${this.entity.pin}`);
+    this.log("debug", `Read widget. type=${this.entity.pinType}, pin=${this.entity.pin}`);
     let command: string;
     switch (this.entity.pinType) {
       case "digital":
@@ -33,8 +33,8 @@ export class ReadActionNode extends ActionNode<ReadActionNodeEntity> {
       let value = args[0];
       this.log("debug", `Read response. type=${this.entity.pinType}, pin=${this.entity.pin}, value=${value}`);
       if (this.entity.next) {
-        let action = <ActionNode<BaseActionNodeEntity>>this.nodeServerService.getNodeById(this.entity.next);
-        action.run(value);
+        let widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.next);
+        widget.run(value);
       }
     });
   };

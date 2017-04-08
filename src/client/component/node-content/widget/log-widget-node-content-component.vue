@@ -5,4 +5,4 @@
 <style scoped lang="scss">
 </style>
 
-<script lang="ts" src="./log-action-node-content-component.ts"></script>
+<script lang="ts" src="./log-widget-node-content-component.ts"></script>

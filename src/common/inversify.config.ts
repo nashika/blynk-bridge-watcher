@@ -2,12 +2,12 @@ import {Container, interfaces} from "inversify";
 import _ = require("lodash");
 
 import {BaseNodeEntity} from "./entity/node/base-node-entity";
-import {BaseActionNodeEntity} from "./entity/node/action/base-action-node-entity";
-import {IfActionNodeEntity} from "./entity/node/action/if-action-node-entity";
-import {LogActionNodeEntity} from "./entity/node/action/log-action-node-entity";
-import {NotifyActionNodeEntity} from "./entity/node/action/notify-action-node-entity";
-import {ReadActionNodeEntity} from "./entity/node/action/read-action-node-entity";
-import {WriteActionNodeEntity} from "./entity/node/action/write-action-node-entity";
+import {BaseWidgetNodeEntity} from "./entity/node/widget/base-widget-node-entity";
+import {IfWidgetNodeEntity} from "./entity/node/widget/if-widget-node-entity";
+import {LogWidgetNodeEntity} from "./entity/node/widget/log-widget-node-entity";
+import {NotifyWidgetNodeEntity} from "./entity/node/widget/notify-widget-node-entity";
+import {ReadWidgetNodeEntity} from "./entity/node/widget/read-widget-node-entity";
+import {WriteWidgetNodeEntity} from "./entity/node/widget/write-widget-node-entity";
 import {LogNotifierNodeEntity} from "./entity/node/notifier/log-notifier-node-entity";
 import {PushbulletNotifierNodeEntity} from "./entity/node/notifier/pushbullet-notifier-node-entity";
 import {BoardNodeEntity} from "./entity/node/board-node-entity";
@@ -18,11 +18,11 @@ import {BaseNotifierNodeEntity} from "./entity/node/notifier/base-notifier-node-
 
 export var container = new Container();
 
-container.bind(BaseNodeEntity).toConstructor(IfActionNodeEntity).whenTargetNamed("ifAction");
-container.bind(BaseNodeEntity).toConstructor(LogActionNodeEntity).whenTargetNamed("logAction");
-container.bind(BaseNodeEntity).toConstructor(NotifyActionNodeEntity).whenTargetNamed("notifyAction");
-container.bind(BaseNodeEntity).toConstructor(ReadActionNodeEntity).whenTargetNamed("readAction");
-container.bind(BaseNodeEntity).toConstructor(WriteActionNodeEntity).whenTargetNamed("writeAction");
+container.bind(BaseNodeEntity).toConstructor(IfWidgetNodeEntity).whenTargetNamed("ifWidget");
+container.bind(BaseNodeEntity).toConstructor(LogWidgetNodeEntity).whenTargetNamed("logWidget");
+container.bind(BaseNodeEntity).toConstructor(NotifyWidgetNodeEntity).whenTargetNamed("notifyWidget");
+container.bind(BaseNodeEntity).toConstructor(ReadWidgetNodeEntity).whenTargetNamed("readWidget");
+container.bind(BaseNodeEntity).toConstructor(WriteWidgetNodeEntity).whenTargetNamed("writeWidget");
 container.bind(BaseNodeEntity).toConstructor(LogNotifierNodeEntity).whenTargetNamed("logNotifier");
 container.bind(BaseNodeEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbulletNotifier");
 container.bind(BaseNodeEntity).toConstructor(BoardNodeEntity).whenTargetNamed("board");
@@ -30,11 +30,11 @@ container.bind(BaseNodeEntity).toConstructor(BridgeNodeEntity).whenTargetNamed("
 container.bind(BaseNodeEntity).toConstructor(JobNodeEntity).whenTargetNamed("job");
 container.bind(BaseNodeEntity).toConstructor(ServerNodeEntity).whenTargetNamed("server");
 
-container.bind(BaseActionNodeEntity).toConstructor(IfActionNodeEntity).whenTargetNamed("if");
-container.bind(BaseActionNodeEntity).toConstructor(LogActionNodeEntity).whenTargetNamed("log");
-container.bind(BaseActionNodeEntity).toConstructor(NotifyActionNodeEntity).whenTargetNamed("notify");
-container.bind(BaseActionNodeEntity).toConstructor(ReadActionNodeEntity).whenTargetNamed("read");
-container.bind(BaseActionNodeEntity).toConstructor(WriteActionNodeEntity).whenTargetNamed("write");
+container.bind(BaseWidgetNodeEntity).toConstructor(IfWidgetNodeEntity).whenTargetNamed("if");
+container.bind(BaseWidgetNodeEntity).toConstructor(LogWidgetNodeEntity).whenTargetNamed("log");
+container.bind(BaseWidgetNodeEntity).toConstructor(NotifyWidgetNodeEntity).whenTargetNamed("notify");
+container.bind(BaseWidgetNodeEntity).toConstructor(ReadWidgetNodeEntity).whenTargetNamed("read");
+container.bind(BaseWidgetNodeEntity).toConstructor(WriteWidgetNodeEntity).whenTargetNamed("write");
 
 container.bind(BaseNotifierNodeEntity).toConstructor(LogNotifierNodeEntity).whenTargetNamed("log");
 container.bind(BaseNotifierNodeEntity).toConstructor(PushbulletNotifierNodeEntity).whenTargetNamed("pushbullet");
