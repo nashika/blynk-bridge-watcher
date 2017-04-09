@@ -11,8 +11,8 @@ export class WriteWidgetNode extends BaseWidgetNode<WriteWidgetNodeEntity> {
     super(nodeServerService);
   }
 
-  run(..._args: string[]) {
-    super.run();
+  async run(..._args: string[]): Promise<void> {
+    await super.run();
     this.log("debug", `Write widget. type=${this.entity.pinType}, pin=${this.entity.pin}, value=${this.entity.value}`);
     this.parent.write(this.entity.pinType, this.entity.pin, this.entity.value);
   };

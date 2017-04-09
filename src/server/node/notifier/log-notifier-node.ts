@@ -12,9 +12,9 @@ export class LogNotifierNode extends NotifierNode<LogNotifierNodeEntity> {
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
+  protected async initialize(): Promise<void> {
     this.status = "ready";
-    return super.initialize();
+    await super.initialize();
   }
 
   protected send(messages: string[]) {

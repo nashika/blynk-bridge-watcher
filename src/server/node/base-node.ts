@@ -97,7 +97,7 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
   protected async stop(): Promise<void> {
   }
 
-  run(..._args: string[]): void {
+  async run(..._args: string[]): Promise<void> {
     this.nodeServerService.run(this.entity._id);
   }
 

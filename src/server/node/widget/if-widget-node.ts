@@ -12,7 +12,7 @@ export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
     super(nodeServerService);
   }
 
-  run(...args: string[]): void {
+  async run(...args: string[]): Promise<void> {
     super.run();
     if (args.length < 1)
       return this.log("warn", `If widget called no argument.`);
@@ -55,7 +55,7 @@ export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
     else if (!result && this.entity.else)
       widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.else);
     if (widget)
-      widget.run(...args);
+      await widget.run(...args);
   };
 
 }

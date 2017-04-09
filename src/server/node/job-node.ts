@@ -20,35 +20,33 @@ export class JobNode extends BaseNode<JobNodeEntity> {
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
-    return super.initialize().then(() => {
-      _.defaults(this.entity, {});
-      try {
-        this.cronJob = new CronJob(this.entity.cronTime, () => this.run());
-      } catch (e) {
-        this.log("fatal", `cronTime '${this.entity.cronTime}' is invalid format.`);
-        process.exit(1);
-      }
-      this.cronJob.start();
-      this.status = "ready";
-    });
+  protected async initialize(): Promise<void> {
+    await super.initialize();
+    _.defaults(this.entity, {});
+    try {
+      this.cronJob = new CronJob(this.entity.cronTime, () => this.run());
+    } catch (e) {
+      this.log("fatal", `cronTime '${this.entity.cronTime}' is invalid format.`);
+      process.exit(1);
+    }
+    this.cronJob.start();
+    this.status = "ready";
   }
 
-  finalize(): Promise<void> {
-    return super.finalize().then(() => {
-      this.cronJob.stop();
-      this.cronJob = null;
-    });
+  protected async finalize(): Promise<void> {
+    await super.finalize();
+    this.cronJob.stop();
+    this.cronJob = null;
   }
 
-  run(): void {
-    super.run();
+  async run(): Promise<void> {
+    await super.run();
     let widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.widget);
     if (widget.status != "ready") {
       return widget.log("warn", `Job '${this.entity._id}' can not run. Widget '${widget.entity._id}' status='${widget.status}' is not ready.`);
     }
     this.log("debug", `Job '${this.entity._id}' was kicked.`);
-    widget.run();
+    await widget.run();
   }
 
 }

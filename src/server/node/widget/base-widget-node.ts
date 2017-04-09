@@ -13,7 +13,7 @@ export abstract class BaseWidgetNode<T extends BaseWidgetNodeEntity> extends Bas
     super(nodeServerService);
   }
 
-  async initialize(): Promise<void> {
+  protected async initialize(): Promise<void> {
     _.defaults(this.entity, {aliases: []});
     await super.initialize();
   }

@@ -16,7 +16,7 @@ export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierNodeE
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
+  protected async initialize(): Promise<void> {
     this.pushbullet = new Pushbullet(this.entity.apiKey);
     this.pushbullet.me((err: any, response: any) => {
       if (err) {
@@ -27,7 +27,7 @@ export class PushbulletNotifierNode extends NotifierNode<PushbulletNotifierNodeE
         this.status = "ready";
       }
     });
-    return super.initialize();
+    await super.initialize();
   }
 
   protected send(messages: string[]) {

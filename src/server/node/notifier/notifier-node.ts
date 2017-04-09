@@ -16,13 +16,13 @@ export abstract class NotifierNode<T extends BaseNotifierNodeEntity> extends Bas
     super(nodeServerService);
   }
 
-  initialize(): Promise<void> {
+  protected async initialize(): Promise<void> {
     this.messages = [];
-    return super.initialize();
+    await super.initialize();
   }
 
-  run(message: string, ...args: string[]) {
-    super.run();
+  async run(message: string, ...args: string[]): Promise<void> {
+    await super.run();
     message = message || "%s";
     message = util.format(message, ...args);
     this.messages.push(message);
