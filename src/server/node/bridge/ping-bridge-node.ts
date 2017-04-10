@@ -36,7 +36,7 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     this.log("debug", `Ping to bridge, waiting Pong...`);
     this.pinging = true;
     try {
-      await this.send("pi", []);
+      await this.request("pi");
     } catch (_e) {
       if (this.pinging) {
         this.pingFailureCount++;
