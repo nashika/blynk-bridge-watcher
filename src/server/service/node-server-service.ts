@@ -1,6 +1,7 @@
 import {inject, injectable} from "inversify";
 import _ = require("lodash");
 import {getLogger} from "log4js";
+import moment = require("moment");
 
 import {BaseServerService} from "./base-server-service";
 import {TableServerService} from "./table-server-service";
@@ -103,7 +104,7 @@ export class NodeServerService extends BaseServerService {
     let end = start + data.limit;
     if (start < 0) start = 0;
     if (end < 0) end = 0;
-    response.logs = this.logs[data._id].slice(start, end);
+    response.logs = _.reverse(this.logs[data._id].slice(start, end));
     return response;
   }
 
@@ -180,7 +181,7 @@ export class NodeServerService extends BaseServerService {
       no: no,
       level: level,
       message: message,
-      timestamp: (new Date()).toISOString(),
+      timestamp: moment().toISOString(),
     };
     this.logs[_id].push(log);
     this.socketIoServerService.emitAll("node::log", log);

@@ -9,7 +9,7 @@
             th Message
         tbody
           tr(v-for="log in logs", :class="{'table-danger': log.level == 'fatal' || log.level == 'error', 'table-warning': log.level == 'warn'}")
-            td {{log.timestamp}}
+            td {{moment(log.timestamp).format('YYYY-MM-DD HH:mm:ss.SSS')}}
             td {{log.level}}
             td {{log.message}}
       pre Page:{{page}} Now:{{(page - 1) * limit + 1}}-{{page * limit > lastLog.no ? lastLog.no : page * limit}} Count:{{lastLog.no}}
