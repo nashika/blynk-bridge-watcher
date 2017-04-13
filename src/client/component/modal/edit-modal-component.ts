@@ -8,7 +8,7 @@ import {BaseNodeEntity} from "../../../common/entity/node/base-node-entity";
 import {NodeClientService} from "../../service/node-client-service";
 
 @Component({})
-export default class EditComponent extends BaseComponent {
+export default class EditModalComponent extends BaseComponent {
 
   $parent: AppComponent;
 

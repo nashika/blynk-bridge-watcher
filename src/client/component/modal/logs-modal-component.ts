@@ -6,7 +6,7 @@ import {container} from "../../../common/inversify.config";
 import {NodeClientService} from "../../service/node-client-service";
 
 @Component({})
-export default class LogsComponent extends BaseComponent {
+export default class LogsModalComponent extends BaseComponent {
 
   protected nodeClientService: NodeClientService = container.get(NodeClientService);
 

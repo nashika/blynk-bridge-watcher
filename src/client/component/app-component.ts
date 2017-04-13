@@ -4,8 +4,8 @@ import BaseComponent from "./base-component";
 import {ServerNodeEntity} from "../../common/entity/node/server-node-entity";
 import {NodeClientService} from "../service/node-client-service";
 import {container} from "../../common/inversify.config";
-import EditComponent from "./modal/edit-component";
-import LogsComponent from "./modal/logs-component";
+import EditComponent from "./modal/edit-modal-component";
+import LogsComponent from "./modal/logs-modal-component";
 import {SocketIoClientService} from "../service/socket-io-client-service";
 
 @Component({})

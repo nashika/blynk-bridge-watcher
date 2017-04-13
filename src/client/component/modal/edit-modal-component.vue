@@ -17,4 +17,4 @@
           button.btn.btn-primary.btn-block(type="submit", ref="submit") Commit
 </template>
 
-<script lang="ts" src="./edit-component.ts"></script>
+<script lang="ts" src="./edit-modal-component.ts"></script>

@@ -13,7 +13,7 @@ export interface INodeEntityParams {
 }
 
 export interface INodeEntityFieldParams {
-  type: string;
+  type: "text" | "number" | "boolean";
   default?: any;
   hidden?: boolean;
   required?: boolean;

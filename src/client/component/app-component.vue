@@ -4,8 +4,8 @@
       node-component(:entity="server", :depth="0")
     template(v-else)
       p Loading server...
-    edit-component(ref="edit")
-    logs-component(ref="logs")
+    edit-modal-component(ref="edit")
+    logs-modal-component(ref="logs")
 </template>
 
 <style scoped lang="scss">

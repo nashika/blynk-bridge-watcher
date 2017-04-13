@@ -1,6 +1,6 @@
 import _ = require("lodash");
 
-import {INodeEntityParams} from "../base-node-entity";
+import {INodeEntityFieldParams, INodeEntityParams} from "../base-node-entity";
 import {BasePinWidgetNodeEntity} from "./base-pin-node-widget-entity";
 
 export abstract class BaseInputPinWidgetNodeEntity extends BasePinWidgetNodeEntity {
@@ -11,7 +11,15 @@ export abstract class BaseInputPinWidgetNodeEntity extends BasePinWidgetNodeEnti
     subType: "*",
     icon: "cog",
     children: {},
-    fields: _.merge({}, BasePinWidgetNodeEntity.params.fields, {
+    fields: _.merge({}, BasePinWidgetNodeEntity.params.fields, <{[name: string]: INodeEntityFieldParams}>{
+      pullup: {
+        type: "boolean",
+        default: false,
+      },
+      watch: {
+        type: "boolean",
+        default: false,
+      }
     }),
   };
 

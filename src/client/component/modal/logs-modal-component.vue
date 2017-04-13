@@ -17,4 +17,4 @@
     div(v-else).loading #[i.fa.fa-pulse.fa-spinner] Loading...
 </template>
 
-<script lang="ts" src="./logs-component.ts"></script>
+<script lang="ts" src="./logs-modal-component.ts"></script>
