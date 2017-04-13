@@ -13,6 +13,9 @@ import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 
 Vue.component("node-component", require("./component/node-component.vue"));
+Vue.component("node-input-component",  require("./component/input/node-input-component.vue"));
+Vue.component("number-input-component",  require("./component/input/number-input-component.vue"));
+Vue.component("text-input-component",  require("./component/input/text-input-component.vue"));
 Vue.component("edit-modal-component", require("./component/modal/edit-modal-component.vue"));
 Vue.component("logs-modal-component", require("./component/modal/logs-modal-component.vue"));
 Vue.component("server-node-content-component", require("./component/node-content/server-node-content-component.vue"));
