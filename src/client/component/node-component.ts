@@ -8,6 +8,7 @@ import {ISocketIoLogData, TSocketIoStatus} from "../../common/util/socket-io-uti
 import {NodeClientService} from "../service/node-client-service";
 import {container} from "../../common/inversify.config";
 import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
+import {MyTimer} from "../../common/util/my-timer";
 
 @Component({
   props: {
@@ -36,11 +37,11 @@ export default class NodeComponent<T extends BaseNodeEntity> extends BaseCompone
   protected nodeClientService: NodeClientService = container.get(NodeClientService);
 
   childEntities: {[key: string]: BaseNodeEntity[]} = null;
-  showEdit: boolean = false;
-  showLogs: boolean = false;
   runningCount: number = 0;
   status: TSocketIoStatus = "connecting";
   lastLog: ISocketIoLogData = null;
+  private stackLogs: ISocketIoLogData[] = [];
+  private logTimer: MyTimer = null;
 
   get me(): NodeComponent<BaseNodeEntity> {
     return this;
@@ -49,6 +50,7 @@ export default class NodeComponent<T extends BaseNodeEntity> extends BaseCompone
   async mounted(): Promise<void> {
     this.EntityClass = container.getNamed<typeof BaseNodeEntity>(<any>BaseNodeEntity, _.camelCase(`${this.entity.subType || ""} ${this.entity.type}`));
     this.childEntities = {};
+    this.stackLogs = [];
     for (let key in this.EntityClass.params.children)
       Vue.set(this.childEntities, key, []);
     if (this.entity) {
@@ -69,7 +71,18 @@ export default class NodeComponent<T extends BaseNodeEntity> extends BaseCompone
   }
 
   setLastLog(log: ISocketIoLogData) {
-    this.lastLog = log;
+    this.stackLogs.push(log);
+    this.nextLog();
+  }
+
+  private async nextLog(): Promise<void> {
+    if (this.logTimer) return;
+    while (this.stackLogs.length > 0) {
+      this.lastLog = this.stackLogs.shift();
+      this.logTimer = new MyTimer(3000);
+      await this.logTimer.toPromise();
+    }
+    this.logTimer = null;
   }
 
   clearLog() {

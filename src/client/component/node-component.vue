@@ -15,7 +15,9 @@
               | &nbsp;{{title}}
       .data.content
         component(:is="_.kebabCase((entity.subType || '') + ' ' + this.entity.type) + '-node-content-component'", :entity="entity")
-      .data.log [{{lastLog ? lastLog.no : 0}}] {{lastLog ? lastLog.message : ""}}
+      .data.log(@click="logs()")
+        b-badge(:variant="logTimer ? 'info' : 'default'") {{lastLog ? lastLog.no : 0}}{{stackLogs.length > 0 ? "+" + stackLogs.length : ""}}
+        | &nbsp;{{lastLog ? lastLog.message : ""}}
       .data.action
         b-dropdown(size="sm", :variant="buttonColor", :right="true")
           template(slot="text")
@@ -38,7 +40,9 @@
         .node
           .data.title
             .header(:style="{paddingLeft: depthPadding(depth + 0.5) + 'px'}")
-              | #[i.fa(:class="'fa-' + ChildEntityClass.params.icon")] [{{_.startCase(pluralize.plural(ChildEntityClass.params.type))}}]
+              b-badge #[i.fa(:class="'fa-' + ChildEntityClass.params.icon")] {{_.startCase(pluralize.plural(ChildEntityClass.params.type))}}
+          .data.content
+          .data.log
           .data.action
             b-dropdown(v-if="status == 'stop'", size="sm", :variant="buttonColor", :right="true")
               template(slot="text")
@@ -58,11 +62,17 @@
             .data.title
               .header(:style="{paddingLeft: depthPadding(depth + 1) + 'px'}")
                 | #[i.fa.fa-spinner.fa-pulse] Loading {{_.startCase(ChildEntityClass.params.type)}}...
+            .data.content
+            .data.log
+            .data.action
         template(v-if="getChildEntities(ChildEntityClass) && getChildEntities(ChildEntityClass).length == 0")
           .node
             .data.title
               .header(:style="{paddingLeft: depthPadding(depth + 1)+ 'px'}")
                 | #[i.fa.fa-ban] No {{_.startCase(ChildEntityClass.params.type)}}
+            .data.content
+            .data.log
+            .data.action
 </template>
 
 <style scoped lang="scss">
@@ -100,6 +110,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        cursor: pointer;
       }
 
       &.action {
