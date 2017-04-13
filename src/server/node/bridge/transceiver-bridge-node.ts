@@ -7,13 +7,9 @@ export class TransceiverBridgeNode extends BaseBridgeNode {
     super(nodeServerService);
   }
 
-  async initialize(): Promise<void> {
-    await super.initialize();
-  }
-
   async request(command: string, pin: number = 0, param: any = ""): Promise<string[]> {
     return await new Promise<string[]>((resolve, reject) => {
-      if (command != "pi" && this.status != "ready")
+      if (command != "co" && command != "pi" && this.status != "ready")
         return this.log("warn", `Send command='${command}', pin=${pin}, param=${JSON.stringify(param)} can not run. Bridge status='${this.status}' is not ready.`);
       let requestId = this.parent.setRequest(resolve, reject);
       let output: string = `${requestId},${command},${pin},${param}`;

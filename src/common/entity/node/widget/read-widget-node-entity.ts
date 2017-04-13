@@ -1,9 +1,9 @@
 import _ = require("lodash");
 
-import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
 import {INodeEntityParams} from "../base-node-entity";
+import {BaseInputPinWidgetNodeEntity} from "./base-input-pin-widget-node-entity";
 
-export class ReadWidgetNodeEntity extends BaseWidgetNodeEntity {
+export class ReadWidgetNodeEntity extends BaseInputPinWidgetNodeEntity {
 
   static params: INodeEntityParams = {
     table: "node",
@@ -11,21 +11,7 @@ export class ReadWidgetNodeEntity extends BaseWidgetNodeEntity {
     subType: "read",
     icon: "eye",
     children: {},
-    fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
-      pinType: {
-        type: "select",
-        options: {
-          digital: "digital",
-          analog: "analog",
-          virtual: "virtual",
-        },
-        default: "digital",
-        required: true,
-      },
-      pin: {
-        type: "number",
-        required: true,
-      },
+    fields: _.merge({}, BaseInputPinWidgetNodeEntity.params.fields, {
       next: {
         type: "node",
         filter: "widget",
@@ -34,8 +20,6 @@ export class ReadWidgetNodeEntity extends BaseWidgetNodeEntity {
     }),
   };
 
-  pinType: string;
-  pin: number;
   next: string;
 
 }

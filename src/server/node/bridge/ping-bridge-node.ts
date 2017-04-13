@@ -26,12 +26,22 @@ export class PingBridgeNode extends TransceiverBridgeNode {
   async connect(): Promise<void> {
     await super.connect();
     this.log("info", `Ping setting, interval=${this.entity.pingInterval}ms failureLimit=${this.entity.pingLimit}`);
-    setTimeout(this.ping, 1000);
+    this.log("info", `Connect bridge started, id=${this.entity._id}`);
+    try {
+      await this.request("co", 0, this.entity._id);
+    } catch (_e) {
+      this.log("error", `Connect bridge failed, id=${this.entity._id}`);
+      this.status = "error";
+    }
+    this.log("info", `Connect bridge succeed, id=${this.entity._id}`);
+    this.status = "ready";
+    for (let actionName in this.widgets)
+      await this.widgets[actionName].connect();
     if (this.pingIntervalId) clearInterval(this.pingIntervalId);
-    this.pingIntervalId = setInterval(this.ping, this.entity.pingInterval);
+    this.pingIntervalId = setInterval(() => this.ping(), this.entity.pingInterval);
   }
 
-  private ping = async (): Promise<void> => {
+  private async ping(): Promise<void> {
     if (this.pinging) return;
     this.log("debug", `Ping to bridge, waiting Pong...`);
     this.pinging = true;
@@ -55,11 +65,9 @@ export class PingBridgeNode extends TransceiverBridgeNode {
     }
     this.log("debug", `Pong from bridge.`);
     this.pinging = false;
-    if (this.status != "ready")
-      for (let actionName in this.widgets)
-        await this.widgets[actionName].connect();
-    this.status = "ready";
     this.pingFailureCount = 0;
+    if (this.status != "ready")
+      await this.connect();
   }
 
   /*private onPing = () => {
