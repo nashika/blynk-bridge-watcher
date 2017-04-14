@@ -5,8 +5,11 @@ import {BaseNodeEntity, INodeEntityFieldParams} from "../../../common/entity/nod
 
 @Component({
   props: {
-    editEntity: {
+    entity: {
       type: Object,
+    },
+    fieldName: {
+      type: String,
     },
     field: {
       type: Object,
@@ -15,7 +18,10 @@ import {BaseNodeEntity, INodeEntityFieldParams} from "../../../common/entity/nod
 })
 export default class BaseInputComponent extends BaseComponent {
 
-  protected editEntity: BaseNodeEntity =  null;
+  protected entity: BaseNodeEntity =  null;
+  protected fieldName: string = "";
   protected field: INodeEntityFieldParams = null;
+
+  protected value: string = "";
 
 }

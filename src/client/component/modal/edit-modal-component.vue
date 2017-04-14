@@ -6,14 +6,7 @@
           template(v-if="!field.hidden")
             .form-group
               label {{_.startCase(fieldName)}}
-              template(v-if="field.type == 'text'")
-                b-form-input(type="text", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default")
-              template(v-else-if="field.type == 'number'")
-                b-form-input(type="number", v-model="editEntity[fieldName]", :required="field.required", :disabled="field.disabled", :placeholder="field.default ? String(field.default) : null")
-              template(v-else-if="field.type == 'select'")
-                b-form-select(v-model="editEntity[fieldName]", :options="field.options", :disabled="field.disabled")
-              template(v-else-if="field.type == 'node'")
-                b-form-select(v-model="editEntity[fieldName]", :options="nodeClientService.getNodeOptions(field.filter)", :disabled="field.disabled")
+              component(:is="field.type + '-input-component'", :entity="entity", :fieldName="fieldName", :field="field")
         .form-group
           button.btn.btn-primary.btn-block(type="submit", ref="submit") Commit
 </template>

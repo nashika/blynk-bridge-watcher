@@ -15,27 +15,27 @@ export default class EditModalComponent extends BaseComponent {
   protected nodeClientService: NodeClientService = container.get(NodeClientService);
 
   protected EntityClass: typeof BaseNodeEntity = null;
-  protected editEntity: BaseNodeEntity = null;
+  protected entity: BaseNodeEntity = null;
   protected deffered: (entity: any) => void = null;
 
   async edit<T extends BaseNodeEntity>(EntityClass: typeof BaseNodeEntity, entity: T): Promise<T> {
     this.EntityClass = EntityClass;
     if (entity)
-      this.editEntity = _.cloneDeep(entity);
+      this.entity = _.cloneDeep(entity);
     else
-      this.editEntity = EntityClass.generateDefault<T>();
+      this.entity = EntityClass.generateDefault<T>();
     (<any>this.$refs.modal).show();
     let result = await new Promise<T>((resolve) => {
       this.deffered = resolve;
     });
     this.EntityClass = null;
-    this.editEntity = null;
+    this.entity = null;
     this.deffered = null;
     return result;
   }
 
   protected submit() {
-    if (this.deffered) this.deffered(this.editEntity);
+    if (this.deffered) this.deffered(this.entity);
     (<any>this.$refs.modal).hide();
   }
 
