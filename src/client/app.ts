@@ -13,6 +13,7 @@ import BootstrapVue from "bootstrap-vue";
 Vue.use(BootstrapVue);
 
 Vue.component("node-component", require("./component/node-component.vue"));
+Vue.component("boolean-input-component", require("./component/input/boolean-input-component.vue"));
 Vue.component("node-input-component",  require("./component/input/node-input-component.vue"));
 Vue.component("number-input-component",  require("./component/input/number-input-component.vue"));
 Vue.component("select-input-component", require("./component/input/select-input-component.vue"));
