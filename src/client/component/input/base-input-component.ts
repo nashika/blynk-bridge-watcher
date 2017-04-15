@@ -18,10 +18,8 @@ import {BaseNodeEntity, INodeEntityFieldParams} from "../../../common/entity/nod
 })
 export default class BaseInputComponent extends BaseComponent {
 
-  protected entity: BaseNodeEntity =  null;
-  protected fieldName: string = "";
-  protected field: INodeEntityFieldParams = null;
-
-  protected value: string = "";
+  protected entity: BaseNodeEntity;
+  protected fieldName: string;
+  protected field: INodeEntityFieldParams;
 
 }

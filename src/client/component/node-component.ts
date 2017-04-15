@@ -111,7 +111,8 @@ export default class NodeComponent<T extends BaseNodeEntity> extends BaseCompone
     if (this.parent) {
       await this.parent.reload();
     } else {
-      this.entity = await this.nodeClientService.findOne<T>(this.EntityClass, this.entity._id);
+      let reloadEntity = await this.nodeClientService.findOne<T>(this.EntityClass, this.entity._id);
+      _.assign(this.entity, reloadEntity);
       await this.reload();
     }
   }
