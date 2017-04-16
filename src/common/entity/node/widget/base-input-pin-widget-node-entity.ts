@@ -23,4 +23,7 @@ export abstract class BaseInputPinWidgetNodeEntity extends BasePinWidgetNodeEnti
     }),
   };
 
+  pullup: boolean;
+  watch: boolean;
+
 }

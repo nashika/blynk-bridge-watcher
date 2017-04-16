@@ -9,7 +9,11 @@ export abstract class BaseOutputPinWidgetNode<T extends BaseOutputPinWidgetNodeE
   }
 
   async connect(): Promise<void> {
-    await this.setPinMode(BaseOutputPinWidgetNodeEntity.OUTPUT);
+    if (this.entity.initialize) {
+      let mode = 0;
+      mode += 0b1;
+      await this.setPinMode(mode);
+    }
     await super.connect();
   }
 

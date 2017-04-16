@@ -15,5 +15,4 @@ export abstract class BaseOutputPinWidgetNodeEntity extends BasePinWidgetNodeEnt
     }),
   };
 
-
 }

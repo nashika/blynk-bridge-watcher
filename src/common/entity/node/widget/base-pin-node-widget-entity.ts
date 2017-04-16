@@ -5,12 +5,6 @@ import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
 
 export abstract class BasePinWidgetNodeEntity extends BaseWidgetNodeEntity {
 
-  static INPUT = 0;
-  static OUTPUT = 1;
-  static INPUT_PULLUP = 2;
-  static INPUT_WATCH = 3;
-  static INPUT_PULLUP_WATCH = 4;
-
   static params: INodeEntityParams = {
     table: "node",
     type: "widget",
@@ -41,5 +35,6 @@ export abstract class BasePinWidgetNodeEntity extends BaseWidgetNodeEntity {
 
   pinType: string;
   pin: number;
+  initialize: boolean;
 
 }

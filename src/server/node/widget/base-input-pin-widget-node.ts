@@ -9,7 +9,12 @@ export abstract class BaseInputPinWidgetNode<T extends BaseInputPinWidgetNodeEnt
   }
 
   async connect(): Promise<void> {
-    await this.setPinMode(BaseInputPinWidgetNodeEntity.INPUT_PULLUP);
+    if (this.entity.initialize) {
+      let mode: number = 0b0;
+      if (this.entity.pullup) mode += 0b10;
+      if (this.entity.watch) mode += 0b100;
+      await this.setPinMode(mode);
+    }
     await super.connect();
   }
 
