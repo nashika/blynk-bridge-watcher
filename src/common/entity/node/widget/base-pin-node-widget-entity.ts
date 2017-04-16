@@ -32,6 +32,10 @@ export abstract class BasePinWidgetNodeEntity extends BaseWidgetNodeEntity {
         type: "number",
         required: true,
       },
+      initialize: {
+        type: "boolean",
+        default: true,
+      }
     }),
   };
 
