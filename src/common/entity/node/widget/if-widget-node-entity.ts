@@ -1,7 +1,7 @@
 import _ = require("lodash");
 
 import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
-import {INodeEntityParams} from "../base-node-entity";
+import {INodeEntityParams, TNodeEntityNextNode} from "../base-node-entity";
 
 export class IfWidgetNodeEntity extends BaseWidgetNodeEntity {
 
@@ -10,6 +10,8 @@ export class IfWidgetNodeEntity extends BaseWidgetNodeEntity {
     type: "widget",
     subType: "if",
     icon: "code-fork",
+    input: "integer",
+    output: "none",
     children: {},
     fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       operator: {
@@ -32,19 +34,17 @@ export class IfWidgetNodeEntity extends BaseWidgetNodeEntity {
       then: {
         type: "node",
         filter: "widget",
-        required: false,
       },
       else: {
         type: "node",
         filter: "widget",
-        required: false,
       },
     }),
   };
 
   operator: string;
   value: number;
-  then: string;
-  else: string;
+  then: TNodeEntityNextNode[];
+  else: TNodeEntityNextNode[];
 
 }

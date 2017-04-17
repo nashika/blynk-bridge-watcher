@@ -13,7 +13,7 @@ export class NotifyWidgetNode extends BaseWidgetNode<NotifyWidgetNodeEntity> {
     super(nodeServerService);
   }
 
-  async run(...args:string[]): Promise<void> {
+  async run(...args: string[]): Promise<void> {
     await super.run();
     this.log("debug", `Notify widget. notifier="${this.entity.notifier}", message="${this.entity.message}", args="${JSON.stringify(args)}"`);
     let notifier = <NotifierNode<BaseNotifierNodeEntity>>this.nodeServerService.getNodeById(this.entity.notifier);

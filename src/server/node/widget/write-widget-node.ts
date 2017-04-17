@@ -11,7 +11,7 @@ export class WriteWidgetNode extends BaseOutputPinWidgetNode<WriteWidgetNodeEnti
     super(nodeServerService);
   }
 
-  async run(..._args: string[]): Promise<void> {
+  async run(): Promise<void> {
     await super.run();
     this.log("debug", `Writing type=${this.entity.pinType}, pin=${this.entity.pin}, value=${this.entity.value}.`);
     let command: string = this.pinTypeToCommand(this.entity.pinType);

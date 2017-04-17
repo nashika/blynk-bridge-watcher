@@ -6,7 +6,7 @@ import BaseInputComponent from "./base-input-component";
 @Component({})
 export default class NumberInputComponent extends BaseInputComponent {
 
-  protected val_: number = 0;
+  private val_: number = 0;
 
   async mounted(): Promise<void> {
     await super.mounted();

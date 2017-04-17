@@ -10,6 +10,8 @@ export class LogNotifierNodeEntity extends BaseNotifierNodeEntity {
     type: "notifier",
     subType: "log",
     icon: "terminal",
+    input: "string",
+    output: "none",
     children: {},
     fields: _.merge({}, BaseNotifierNodeEntity.params.fields, {}),
   };

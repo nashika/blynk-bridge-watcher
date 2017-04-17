@@ -9,6 +9,8 @@ export class BridgeNodeEntity extends BaseNodeEntity {
     table: "node",
     type: "bridge",
     icon: "plug",
+    input: "none",
+    output: "none",
     children: {
       widgets: BaseWidgetNodeEntity,
     },

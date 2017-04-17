@@ -8,8 +8,10 @@ export interface INodeEntityParams {
   type: string;
   subType?: string;
   icon: string;
-  children: {[key: string]: typeof BaseNodeEntity};
-  fields: {[name: string]: INodeEntityFieldParams};
+  input: "none" | "integer" | "string";
+  output: "none" | "integer" | "string";
+  children: { [key: string]: typeof BaseNodeEntity };
+  fields: { [name: string]: INodeEntityFieldParams };
 }
 
 export interface INodeEntityFieldParams {
@@ -18,9 +20,11 @@ export interface INodeEntityFieldParams {
   hidden?: boolean;
   required?: boolean;
   disabled?: boolean;
-  options?: {[key: string]: string};
+  options?: { [key: string]: string };
   filter?: string;
 }
+
+export type TNodeEntityNextNode = { id: string, param: string };
 
 export abstract class BaseNodeEntity extends BaseEntity {
 
@@ -28,6 +32,8 @@ export abstract class BaseNodeEntity extends BaseEntity {
     table: "node",
     type: "*",
     icon: "times",
+    input: "none",
+    output: "none",
     children: {},
     fields: {
       _id: {

@@ -10,6 +10,8 @@ export class PushbulletNotifierNodeEntity extends BaseNotifierNodeEntity {
     type: "notifier",
     subType: "pushbullet",
     icon: "bullhorn",
+    input: "string",
+    output: "none",
     children: {},
     fields: _.merge({}, BaseNotifierNodeEntity.params.fields, {
       apiKey: {

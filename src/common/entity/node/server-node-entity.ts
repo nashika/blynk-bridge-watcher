@@ -11,6 +11,8 @@ export class ServerNodeEntity extends BaseNodeEntity {
     table: "node",
     type: "server",
     icon: "globe",
+    input: "none",
+    output: "none",
     children: {
       boards: BoardNodeEntity,
       notifiers: BaseNotifierNodeEntity,

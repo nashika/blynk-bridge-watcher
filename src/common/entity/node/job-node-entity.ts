@@ -1,6 +1,6 @@
 import _ = require("lodash");
 
-import {BaseNodeEntity, INodeEntityParams} from "./base-node-entity";
+import {BaseNodeEntity, INodeEntityParams, TNodeEntityNextNode} from "./base-node-entity";
 
 export class JobNodeEntity extends BaseNodeEntity {
 
@@ -8,6 +8,8 @@ export class JobNodeEntity extends BaseNodeEntity {
     table: "node",
     type: "job",
     icon: "clock-o",
+    input: "none",
+    output: "none",
     children: {},
     fields: _.merge({}, BaseNodeEntity.params.fields, {
       cronTime: {
@@ -15,7 +17,7 @@ export class JobNodeEntity extends BaseNodeEntity {
         default: "0 0 0 * * *",
         required: true,
       },
-      widget: {
+      next: {
         type: "node",
         filter: "widget",
         required: true,
@@ -24,8 +26,6 @@ export class JobNodeEntity extends BaseNodeEntity {
   };
 
   cronTime: string;
-  board: string;
-  bridge: string;
-  widget: string;
+  next: TNodeEntityNextNode[];
 
 }

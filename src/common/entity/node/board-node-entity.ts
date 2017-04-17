@@ -9,6 +9,8 @@ export class BoardNodeEntity extends BaseNodeEntity {
     table: "node",
     type: "board",
     icon: "sitemap",
+    input: "none",
+    output: "none",
     children: {
       bridges: BridgeNodeEntity,
     },

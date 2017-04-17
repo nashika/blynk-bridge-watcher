@@ -9,7 +9,7 @@ import {BaseNotifierNodeEntity} from "../../common/entity/node/notifier/base-not
 import {NotifierNode} from "./notifier/notifier-node";
 import {NodeServerService} from "../service/node-server-service";
 import {container} from "../../common/inversify.config";
-import {BaseNodeEntity} from "../../common/entity/node/base-node-entity";
+import {BaseNodeEntity, TNodeEntityNextNode} from "../../common/entity/node/base-node-entity";
 
 @injectable()
 export abstract class BaseNode<T extends BaseNodeEntity> {
@@ -99,6 +99,16 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
 
   async run(..._args: string[]): Promise<void> {
     this.nodeServerService.run(this.entity._id);
+  }
+
+  async runNextNodes(nextNodes: TNodeEntityNextNode[], ...args: string[]): Promise<void> {
+    for (let nextNode of nextNodes) {
+      let node: BaseNode<BaseNodeEntity> = this.nodeServerService.getNodeById(nextNode.id);
+      if (node.status != "ready") {
+        return this.log("warn", `Next node "${nextNode.id}" can not run. Node status="${node.status}" is not ready.`);
+      }
+      await node.run(...args);
+    }
   }
 
   log(level: TSocketIoLogLevel, message: string, ...args: any[]): void {

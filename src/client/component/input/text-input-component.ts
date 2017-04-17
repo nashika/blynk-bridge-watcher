@@ -6,7 +6,7 @@ import BaseInputComponent from "./base-input-component";
 @Component({})
 export default class TextInputComponent extends BaseInputComponent {
 
-  protected val_: string = "";
+  private val_: string = "";
 
   async mounted(): Promise<void> {
     await super.mounted();

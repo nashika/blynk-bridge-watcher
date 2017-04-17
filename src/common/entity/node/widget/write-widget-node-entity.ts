@@ -10,6 +10,8 @@ export class WriteWidgetNodeEntity extends BaseOutputPinWidgetNodeEntity {
     type: "widget",
     subType: "write",
     icon: "pencil-square-o",
+    input: "integer",
+    output: "integer",
     children: {},
     fields: _.merge({}, BaseOutputPinWidgetNodeEntity.params.fields, {
       value: {

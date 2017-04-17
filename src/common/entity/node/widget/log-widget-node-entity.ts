@@ -11,6 +11,8 @@ export class LogWidgetNodeEntity extends BaseWidgetNodeEntity {
     type: "widget",
     subType: "log",
     icon: "terminal",
+    input: "string",
+    output: "none",
     children: {},
     fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       level: {

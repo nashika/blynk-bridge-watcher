@@ -10,6 +10,8 @@ export abstract class BaseNotifierNodeEntity extends BaseNodeEntity {
     type: "notifier",
     subType: "*",
     icon: "bell",
+    input: "string",
+    output: "none",
     children: {},
     fields: _.merge({}, BaseNodeEntity.params.fields, {
       firstDelay: {

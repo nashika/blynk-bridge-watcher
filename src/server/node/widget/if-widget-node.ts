@@ -2,8 +2,8 @@ import {injectable} from "inversify";
 
 import {BaseWidgetNode} from "./base-widget-node";
 import {IfWidgetNodeEntity} from "../../../common/entity/node/widget/if-widget-node-entity";
-import {BaseWidgetNodeEntity} from "../../../common/entity/node/widget/base-widget-node-entity";
 import {NodeServerService} from "../../service/node-server-service";
+import {TNodeEntityNextNode} from "../../../common/entity/node/base-node-entity";
 
 @injectable()
 export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
@@ -13,7 +13,7 @@ export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
   }
 
   async run(...args: string[]): Promise<void> {
-    super.run();
+    await super.run();
     if (args.length < 1)
       return this.log("warn", `If widget called no argument.`);
     let result = false;
@@ -49,13 +49,8 @@ export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
       }
       this.log("debug", `If widget. '(${arg} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
     }
-    let widget: BaseWidgetNode<BaseWidgetNodeEntity>;
-    if (result && this.entity.then)
-      widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.then);
-    else if (!result && this.entity.else)
-      widget = <BaseWidgetNode<BaseWidgetNodeEntity>>this.nodeServerService.getNodeById(this.entity.else);
-    if (widget)
-      await widget.run(...args);
-  };
+    let nextNodes: TNodeEntityNextNode[] = result ? (this.entity.then || []) : (this.entity.else || []);
+    await this.runNextNodes(nextNodes, ...args);
+  }
 
 }

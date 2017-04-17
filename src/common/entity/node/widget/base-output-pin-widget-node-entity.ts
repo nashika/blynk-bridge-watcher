@@ -10,6 +10,8 @@ export abstract class BaseOutputPinWidgetNodeEntity extends BasePinWidgetNodeEnt
     type: "widget",
     subType: "*",
     icon: "cog",
+    input: "none",
+    output: "none",
     children: {},
     fields: _.merge({}, BasePinWidgetNodeEntity.params.fields, {
     }),

@@ -9,6 +9,8 @@ export abstract class BaseWidgetNodeEntity extends BaseNodeEntity {
     type: "widget",
     subType: "*",
     icon: "cog",
+    input: "none",
+    output: "none",
     children: {},
     fields: _.merge({}, BaseNodeEntity.params.fields, {}),
   };
