@@ -99,6 +99,7 @@ export class NodeServerService extends BaseServerService {
 
   private async onLogs(data: ISocketIoRequestLogsData): Promise<ISocketIoResponseLogsData> {
     let response: ISocketIoResponseLogsData = {_id: data._id, logs: []};
+    if (!this.logs[data._id]) return <any>{logs: []};
     let length = this.logs[data._id].length;
     let start = length - data.page * data.limit;
     let end = start + data.limit;

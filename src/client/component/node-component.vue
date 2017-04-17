@@ -15,7 +15,7 @@
               | &nbsp;{{title}}
       .data.content
         component(:is="_.kebabCase((entity.subType || '') + ' ' + this.entity.type) + '-node-content-component'", :entity="entity")
-      .data.log(@click="logs()")
+      .data.log(@click="lastLog && logs()")
         b-badge(:variant="logTimer ? 'info' : 'default'") {{lastLog ? lastLog.no : 0}}{{stackLogs.length > 0 ? "+" + stackLogs.length : ""}}
         | &nbsp;{{lastLog ? lastLog.message : ""}}
       .data.action
