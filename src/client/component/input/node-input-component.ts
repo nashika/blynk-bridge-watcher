@@ -16,7 +16,7 @@ export default class NodeInputComponent extends BaseInputComponent {
 
   async mounted(): Promise<void> {
     this.options = this.nodeClientService.getNodeOptions(this.field.filter);
-    this.val = _.get<TNodeEntityNextNode[]>(this.entity, this.fieldName);
+    this.val = _.get<TNodeEntityNextNode[]>(this.entity, this.fieldName) || [];
   }
 
   protected add() {

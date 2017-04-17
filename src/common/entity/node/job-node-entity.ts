@@ -9,7 +9,7 @@ export class JobNodeEntity extends BaseNodeEntity {
     type: "job",
     icon: "clock-o",
     input: "none",
-    output: "none",
+    output: "null",
     children: {},
     fields: _.merge({}, BaseNodeEntity.params.fields, {
       cronTime: {

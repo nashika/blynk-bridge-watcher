@@ -10,13 +10,12 @@ export class ReadWidgetNodeEntity extends BaseInputPinWidgetNodeEntity {
     type: "widget",
     subType: "read",
     icon: "eye",
-    input: "none",
+    input: "null",
     output: "integer",
     children: {},
     fields: _.merge({}, BaseInputPinWidgetNodeEntity.params.fields, {
       next: {
         type: "node",
-        filter: "widget",
       },
     }),
   };

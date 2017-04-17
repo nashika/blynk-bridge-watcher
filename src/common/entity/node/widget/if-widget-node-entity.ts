@@ -11,7 +11,7 @@ export class IfWidgetNodeEntity extends BaseWidgetNodeEntity {
     subType: "if",
     icon: "code-fork",
     input: "integer",
-    output: "none",
+    output: "null",
     children: {},
     fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       operator: {

@@ -10,8 +10,8 @@ export class NotifyWidgetNodeEntity extends BaseWidgetNodeEntity {
     type: "widget",
     subType: "notify",
     icon: "bell",
-    input: "string",
-    output: "none",
+    input: "null",
+    output: "string",
     children: {},
     fields: _.merge({}, BaseWidgetNodeEntity.params.fields, {
       notifier: {

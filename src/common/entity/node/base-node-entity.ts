@@ -8,8 +8,8 @@ export interface INodeEntityParams {
   type: string;
   subType?: string;
   icon: string;
-  input: "none" | "integer" | "string";
-  output: "none" | "integer" | "string";
+  input: "none" | "null" | "integer" | "string";
+  output: "none" | "null" | "integer" | "string";
   children: { [key: string]: typeof BaseNodeEntity };
   fields: { [name: string]: INodeEntityFieldParams };
 }

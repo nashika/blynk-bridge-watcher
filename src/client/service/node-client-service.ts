@@ -148,7 +148,11 @@ export class NodeClientService extends BaseClientService {
   }
 
   getNodeOptions(filter: string): { [_id: string]: string } {
-    let components: { [_id: string]: NodeComponent<BaseNodeEntity> } = _.pickBy<{ [_id: string]: NodeComponent<BaseNodeEntity> }, { [_id: string]: NodeComponent<BaseNodeEntity> }>(this.components, component => !filter || filter == component.EntityClass.params.type);
+    let components: { [_id: string]: NodeComponent<BaseNodeEntity> } = _.pickBy<{ [_id: string]: NodeComponent<BaseNodeEntity> }, { [_id: string]: NodeComponent<BaseNodeEntity> }>(this.components, component => {
+      if (filter && filter != component.EntityClass.params.type) return false;
+      if (component.EntityClass.params.input == "none") return false;
+      return true;
+    });
     return _.mapValues(components, (component: NodeComponent<BaseNodeEntity>) => component.title)
   }
 
