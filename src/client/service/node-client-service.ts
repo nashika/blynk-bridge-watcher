@@ -143,25 +143,33 @@ export class NodeClientService extends BaseClientService {
     this.components[component.entity._id] = component;
   }
 
-  unregisterComponent(_id: string) {
-    delete this.components[_id];
+  unregisterComponent(id: string) {
+    delete this.components[id];
   }
 
-  getNodeOptions(filter: string): { [_id: string]: string } {
-    let components: { [_id: string]: NodeComponent<BaseNodeEntity> } = _.pickBy<{ [_id: string]: NodeComponent<BaseNodeEntity> }, { [_id: string]: NodeComponent<BaseNodeEntity> }>(this.components, component => {
+  getComponent(id: string): NodeComponent<BaseNodeEntity> {
+    return this.components[id];
+  }
+
+  getNodeOptions(filter: string): { text: string, value: string }[] {
+    let components = _.filter<NodeComponent<BaseNodeEntity>>(this.components, component => {
       if (filter && filter != component.EntityClass.params.type) return false;
       if (component.EntityClass.params.input == "none") return false;
       return true;
     });
-    return _.mapValues(components, (component: NodeComponent<BaseNodeEntity>) => component.title)
+    let result = _.map(components, component => {
+      return {text: component.title, value: component.id};
+    });
+    result.unshift({text: "Select Node", value: ""});
+    return result;
   }
 
-  getStatus(_id: string): TSocketIoStatus {
-    return this.statuses[_id] ? this.statuses[_id].status : "connecting";
+  getStatus(id: string): TSocketIoStatus {
+    return this.statuses[id] ? this.statuses[id].status : "connecting";
   }
 
-  getLastLog(_id: string): ISocketIoLogData {
-    return this.lastLogs[_id] || null;
+  getLastLog(id: string): ISocketIoLogData {
+    return this.lastLogs[id] || null;
   }
 
 }

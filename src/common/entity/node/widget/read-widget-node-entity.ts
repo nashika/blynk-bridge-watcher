@@ -1,6 +1,6 @@
 import _ = require("lodash");
 
-import {INodeEntityParams, TNodeEntityNextNode} from "../base-node-entity";
+import {INodeEntityParams, INodeEntityNextNode} from "../base-node-entity";
 import {BaseInputPinWidgetNodeEntity} from "./base-input-pin-widget-node-entity";
 
 export class ReadWidgetNodeEntity extends BaseInputPinWidgetNodeEntity {
@@ -20,6 +20,6 @@ export class ReadWidgetNodeEntity extends BaseInputPinWidgetNodeEntity {
     }),
   };
 
-  next: TNodeEntityNextNode[];
+  next: INodeEntityNextNode[];
 
 }

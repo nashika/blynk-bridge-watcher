@@ -3,7 +3,7 @@ import {injectable} from "inversify";
 import {BaseWidgetNode} from "./base-widget-node";
 import {IfWidgetNodeEntity} from "../../../common/entity/node/widget/if-widget-node-entity";
 import {NodeServerService} from "../../service/node-server-service";
-import {TNodeEntityNextNode} from "../../../common/entity/node/base-node-entity";
+import {INodeEntityNextNode} from "../../../common/entity/node/base-node-entity";
 
 @injectable()
 export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
@@ -49,7 +49,7 @@ export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
       }
       this.log("debug", `If widget. '(${arg} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
     }
-    let nextNodes: TNodeEntityNextNode[] = result ? (this.entity.then || []) : (this.entity.else || []);
+    let nextNodes: INodeEntityNextNode[] = result ? (this.entity.then || []) : (this.entity.else || []);
     await this.runNextNodes(nextNodes, ...args);
   }
 

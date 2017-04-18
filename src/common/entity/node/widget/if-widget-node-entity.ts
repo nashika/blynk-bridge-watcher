@@ -1,7 +1,7 @@
 import _ = require("lodash");
 
 import {BaseWidgetNodeEntity} from "./base-widget-node-entity";
-import {INodeEntityParams, TNodeEntityNextNode} from "../base-node-entity";
+import {INodeEntityParams, INodeEntityNextNode} from "../base-node-entity";
 
 export class IfWidgetNodeEntity extends BaseWidgetNodeEntity {
 
@@ -33,18 +33,16 @@ export class IfWidgetNodeEntity extends BaseWidgetNodeEntity {
       },
       then: {
         type: "node",
-        filter: "widget",
       },
       else: {
         type: "node",
-        filter: "widget",
       },
     }),
   };
 
   operator: string;
   value: number;
-  then: TNodeEntityNextNode[];
-  else: TNodeEntityNextNode[];
+  then: INodeEntityNextNode[];
+  else: INodeEntityNextNode[];
 
 }

@@ -1,6 +1,6 @@
 import _ = require("lodash");
 
-import {BaseNodeEntity, INodeEntityParams, TNodeEntityNextNode} from "./base-node-entity";
+import {BaseNodeEntity, INodeEntityParams, INodeEntityNextNode} from "./base-node-entity";
 
 export class JobNodeEntity extends BaseNodeEntity {
 
@@ -19,13 +19,11 @@ export class JobNodeEntity extends BaseNodeEntity {
       },
       next: {
         type: "node",
-        filter: "widget",
-        required: true,
       },
     }),
   };
 
   cronTime: string;
-  next: TNodeEntityNextNode[];
+  next: INodeEntityNextNode[];
 
 }

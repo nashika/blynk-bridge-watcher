@@ -24,7 +24,11 @@ export interface INodeEntityFieldParams {
   filter?: string;
 }
 
-export type TNodeEntityNextNode = { id: string, param: string };
+export interface INodeEntityNextNode {
+  id: string;
+  output: boolean;
+  param: string;
+}
 
 export abstract class BaseNodeEntity extends BaseEntity {
 

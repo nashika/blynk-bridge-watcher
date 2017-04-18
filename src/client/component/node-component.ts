@@ -61,6 +61,10 @@ export default class NodeComponent<T extends BaseNodeEntity> extends BaseCompone
     }
   }
 
+  get id(): string {
+    return this.entity._id;
+  }
+
   get title(): string {
     return `${this.entity._id} ${this.entity.label ? '(' + this.entity.label + ') ' : ''}[Type: ${_.startCase(this.EntityClass.params.subType || "")}${_.startCase(this.EntityClass.params.type)}]`;
   }
