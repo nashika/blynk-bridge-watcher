@@ -1,5 +1,5 @@
 <template lang="pug">
-  .row.no-gutter.w-100
+  .row.no-gutters
     .col-6
       b-button(:block="true", :disabled="status != 'ready'", size="sm", variant="secondary", @click="send('if')") If
     .col-6
