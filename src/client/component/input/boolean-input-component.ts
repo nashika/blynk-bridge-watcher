@@ -13,7 +13,7 @@ export default class BooleanInputComponent extends BaseInputComponent {
     if (_.has(this.entity, this.fieldName))
       this.val_ = _.get<boolean>(this.entity, this.fieldName);
     else
-      this.val_ = this.field.default;
+      this.val = this.field.default;
   }
 
   get val(): boolean {
