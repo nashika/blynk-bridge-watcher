@@ -12,45 +12,45 @@ export class IfWidgetNode extends BaseWidgetNode<IfWidgetNodeEntity> {
     super(nodeServerService);
   }
 
-  async run(...args: string[]): Promise<void> {
+  async run(param: string): Promise<void> {
     await super.run();
-    if (args.length < 1)
+    if (!param)
       return this.log("warn", `If widget called no argument.`);
     let result = false;
-    if (args[0] == "if") {
+    if (param == "if") {
       result = true;
-    } else if (args[0] == "else") {
+    } else if (param == "else") {
       result = false;
     } else {
-      let arg = parseInt(args[0]);
-      if (isNaN(arg))
-        return this.log("warn", `If widget called not integer argument. arg='${args[0]}'`);
+      let intParam = parseInt(param);
+      if (isNaN(intParam))
+        return this.log("warn", `If widget called not integer argument. arg='${param}'`);
       switch (this.entity.operator) {
         case "$eq":
-          result = arg == this.entity.value;
+          result = intParam == this.entity.value;
           break;
         case "$lt":
-          result = arg < this.entity.value;
+          result = intParam < this.entity.value;
           break;
         case "$gt":
-          result = arg > this.entity.value;
+          result = intParam > this.entity.value;
           break;
         case "$lte":
-          result = arg <= this.entity.value;
+          result = intParam <= this.entity.value;
           break;
         case "$gte":
-          result = arg >= this.entity.value;
+          result = intParam >= this.entity.value;
           break;
         case "$ne":
-          result = arg != this.entity.value;
+          result = intParam != this.entity.value;
           break;
         default:
           return this.log("warn", `Operator '${this.entity.operator}' is invalid.`);
       }
-      this.log("debug", `If widget. '(${arg} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
+      this.log("debug", `If widget. '(${intParam} ${this.entity.operator} ${this.entity.value}) = ${result}'`);
     }
     let nextNodes: INodeEntityNextNode[] = result ? (this.entity.then || []) : (this.entity.else || []);
-    await this.runNextNodes(nextNodes, ...args);
+    await this.runNextNodes(nextNodes);
   }
 
 }

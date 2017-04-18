@@ -1,5 +1,3 @@
-import util = require("util");
-
 import {BaseNode} from "../base-node";
 import {ServerNode} from "../server-node";
 import {BaseNotifierNodeEntity} from "../../../common/entity/node/notifier/base-notifier-node-entity";
@@ -21,10 +19,8 @@ export abstract class NotifierNode<T extends BaseNotifierNodeEntity> extends Bas
     await super.initialize();
   }
 
-  async run(message: string, ...args: string[]): Promise<void> {
+  async run(message: string): Promise<void> {
     await super.run();
-    message = message || "%s";
-    message = util.format(message, ...args);
     this.messages.push(message);
     if (!this.waiting) {
       this.waiting = true;

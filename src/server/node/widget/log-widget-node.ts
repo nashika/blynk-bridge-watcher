@@ -19,9 +19,9 @@ export class LogWidgetNode extends BaseWidgetNode<LogWidgetNodeEntity> {
     await super.initialize();
   }
 
-  async run(...args: string[]): Promise<void> {
+  async run(param: string): Promise<void> {
     await super.run();
-    this.parent.log(this.entity.level, util.format(this.entity.message, ...args));
+    this.parent.log(this.entity.level, util.format(this.entity.message, param));
   };
 
 }

@@ -101,13 +101,14 @@ export abstract class BaseNode<T extends BaseNodeEntity> {
     this.nodeServerService.run(this.entity._id);
   }
 
-  async runNextNodes(nextNodes: INodeEntityNextNode[], ...args: string[]): Promise<void> {
+  async runNextNodes(nextNodes: INodeEntityNextNode[], output: string = ""): Promise<void> {
     for (let nextNode of nextNodes) {
       let node: BaseNode<BaseNodeEntity> = this.nodeServerService.getNodeById(nextNode.id);
+      let param: string = nextNode.output ? output : nextNode.param;
       if (node.status != "ready") {
         return this.log("warn", `Next node "${nextNode.id}" can not run. Node status="${node.status}" is not ready.`);
       }
-      await node.run(...args);
+      await node.run(param);
     }
   }
 
