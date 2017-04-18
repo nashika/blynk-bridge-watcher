@@ -9,8 +9,6 @@ import {TableServerService} from "./service/table-server-service";
 
 import {BaseNode} from "./node/base-node";
 import {IfWidgetNode} from "./node/widget/if-widget-node";
-import {LogWidgetNode} from "./node/widget/log-widget-node";
-import {NotifyWidgetNode} from "./node/widget/notify-widget-node";
 import {ReadWidgetNode} from "./node/widget/read-widget-node";
 import {WriteWidgetNode} from "./node/widget/write-widget-node";
 import {BridgeNode} from "./node/bridge/bridge-node";
@@ -21,8 +19,6 @@ import {JobNode} from "./node/job-node";
 import {ServerNode} from "./node/server-node";
 
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(IfWidgetNode).whenTargetNamed("ifWidget");
-container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(LogWidgetNode).whenTargetNamed("logWidget");
-container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(NotifyWidgetNode).whenTargetNamed("notifyWidget");
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(ReadWidgetNode).whenTargetNamed("readWidget");
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(WriteWidgetNode).whenTargetNamed("writeWidget");
 container.bind<BaseNode<BaseNodeEntity>>(BaseNode).to(BridgeNode).whenTargetNamed("bridge");

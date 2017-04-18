@@ -25,8 +25,6 @@ Vue.component("board-node-content-component", require("./component/node-content/
 Vue.component("job-node-content-component", require("./component/node-content/job-node-content-component.vue"));
 Vue.component("bridge-node-content-component", require("./component/node-content/bridge-node-content-component.vue"));
 Vue.component("if-widget-node-content-component", require("./component/node-content/widget/if-widget-node-content-component.vue"));
-Vue.component("log-widget-node-content-component", require("./component/node-content/widget/log-widget-node-content-component.vue"));
-Vue.component("notify-widget-node-content-component", require("./component/node-content/widget/notify-widget-node-content-component.vue"));
 Vue.component("read-widget-node-content-component", require("./component/node-content/widget/read-widget-node-content-component.vue"));
 Vue.component("write-widget-node-content-component", require("./component/node-content/widget/write-widget-node-content-component.vue"));
 Vue.component("log-notifier-node-content-component", require("./component/node-content/notifier/log-notifier-node-content-component.vue"));
